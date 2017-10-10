@@ -1,6 +1,8 @@
 import { Module } from "./Module";
-import { ICodeGenerator, CodeGeneratorJS, CodeGeneratorPY } from './CodeGenerators';
 import { INode } from "./INode";
+import { ICodeGenerator, } from './CodeGenerators';
+import { CodeGeneratorJS } from './code_generators/javascript_generator';
+import { CodeGeneratorPY } from './code_generators/python_generator';
 
 export interface IFlowchart{
 	_module: Module;
@@ -32,6 +34,9 @@ export class FlowchartFactory{
 		}
 		else if(type == "py"){
 			return new FlowchartPY();
+		}
+		else{
+			console.error("Invalid language specified!");
 		}
 	}
 }
@@ -73,7 +78,7 @@ class Flowchart implements IFlowchart{
 
 	addLink(link: any): void{
 		// add dependency on the destination node
-		this.getNode(link.dest.nodeID).addDependency([link.source.nodeID, link.source.connectorIndex]);
+		this.getNode(link.dest.nodeID).addDependency([link.source.nodeID, link.source.connectorIndex, link.dest.connectorIndex]);
 		this._connections.push(link);
 	}
 
@@ -83,26 +88,33 @@ class Flowchart implements IFlowchart{
 
 	resetAllNodes(): void{
 		for(let n=0; n < this._nodes.length; n++){
-			this._nodes[n].setStatus(0);
+			this._nodes[n].reset();
 		}
 	}
 
 	executeNode(node: INode){
-		if( node.isIndependent() ){
-			return this.code_generator.executeNode(node, null);
-		}
-		else{
-			let params :any = {};
+		
+		let params :any = null;
+
+		if( node.isIndependent() == false ){
+			params = {};
 			let dependencies :any = node.getDependencies();
+
 			for(let d=0; d < dependencies.length; d++){
-				let parent_node = this.getNode(dependencies[d][0]);
+				// dependencies are stored as an array of arrays - [ [], [], [] ]
+				// the 0th index stores the node, the 1st index stores the port number
+				let parent_node = this.getNode(dependencies[d][0]); 
 				if(parent_node.getStatus() == 1){
-					let port = parent_node.getOutputByIndex(dependencies[d][1]);
-					params[port.getName()]  = port.getValue();
+					let source_port = parent_node.getOutputByIndex(dependencies[d][1]);
+					let my_port = node.getInputByIndex(dependencies[d][2]);
+					params[my_port.getName()]  = source_port.getValue();
+					my_port.setValue(source_port.getValue());
 				}
-				console.log(params);
 			}
 		}
+		
+		node.executeNode(this.code_generator, params);
+
 	}
 
 	execute() :any{
@@ -116,16 +128,17 @@ class Flowchart implements IFlowchart{
 		let timeStarted	:number = (new Date()).getTime();
 		for( let nc=0; nc < this._nodes.length; nc++ ){
 
-			let node = this.getNode(nc);
+			let node = this.getNode(nc); 
 
 			// check status of the node; don't rerun
-			if( node.getStatus() == 1 )
+			if( node.getStatus() == 1 ){
 				continue;
+			}
 
-			console.log(this.executeNode(node));
+			this.executeNode(node);
+			console.log(node.getValue());
 
 		}
-
 		// run nodes by rank
 		// supply output of one node to input of another node
 

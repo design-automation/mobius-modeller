@@ -1,4 +1,5 @@
 import { InputPort, OutputPort } from "./IPort";
+import { ICodeGenerator } from "./CodeGenerators";
 import { IProcedure, Procedure, ProcedureFactory } from "./IProcedure";
 
 export interface INode{
@@ -13,6 +14,8 @@ export interface INode{
 	getName(): string; 
 	isIndependent(): boolean;
 
+	reset(): void;
+
 	setStatus(code: number): number;	// 0 - not executed; 1 - executed
 	getStatus(): number;
 
@@ -25,13 +28,16 @@ export interface INode{
 	removeInput(): number;
 	removeOutput(): number;
 
-	addDependency(node_port_idx: number[]): void;
+	addDependency(node_port_input_idx: number[]): void;
 	removeDependency(node_port_idx: number[]): void;
 	getDependencies(): number[][];
 
 	getProcedure(): any;
 	addProcedureBlock(lines: any): void;
 	addProcedureLine(line: IProcedure): void;
+
+	executeNode(code_generator: ICodeGenerator, params?: any): void;
+	getValue(): any;
 }
 
 export class Node implements INode{
@@ -82,6 +88,13 @@ export class Node implements INode{
 		this._procedure = [];
 	}
 
+	reset(): void{
+		this._status = 0; 
+		for(let c=0; c < this._outputs.length; c++){
+			this._outputs[c].reset();
+		}
+	}
+
 	isIndependent(): boolean{
 		if(this._dependencies.length > 0)
 			return false; 
@@ -97,8 +110,8 @@ export class Node implements INode{
 		return this._status;
 	}
 
-	addDependency(node_port_idx){
-		this._dependencies.push(node_port_idx);
+	addDependency(node_port_input_idx : number[]){
+		this._dependencies.push(node_port_input_idx);
 	}
 
 	removeDependency(node_port_idx: number[]){
@@ -148,6 +161,32 @@ export class Node implements INode{
 	addProcedureLine(d: any): void{
 		let prod = new Procedure(d.id, d.dataName, d.dataValue, d.selected, d.title, d.type);
 		this._procedure.push(prod);
+	}
+
+	executeNode(code_generator: ICodeGenerator, params ?:any ): void{
+
+		// use code generator to execute code
+		let result: any  = code_generator.executeNode(this, params);
+
+		// add results to this node
+		for( let n=0;  n < this._outputs.length; n++ ){
+			let output_port = this._outputs[n];
+			output_port.setValue(result[output_port.getName()]);
+		}
+
+		// change status of the node
+		this.setStatus(1);
+		
+	}
+
+	getValue():any{
+		let final_values :any = {};
+		for(let o=0; o < this._outputs.length; o++ ){
+			let output :OutputPort = this._outputs[o];
+			final_values[output.getName()] = output.getValue();
+		}
+
+		return final_values;
 	}
 
 }

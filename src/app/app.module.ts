@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { HttpClientModule } from '@angular/common/http';
 
@@ -17,7 +18,8 @@ import { FlowchartViewerComponent } from './flowchart-viewer/flowchart-viewer.co
   ],
   imports: [
     BrowserModule,
-    HttpClientModule
+    HttpClientModule, 
+    FormsModule
   ],
   providers: [FlowchartService],
   bootstrap: [AppComponent]

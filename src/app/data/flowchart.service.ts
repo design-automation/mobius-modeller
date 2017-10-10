@@ -34,13 +34,15 @@ export class FlowchartService {
   //
   //    sets the main scene
   //
-  loadChartFromData(data: any): void{
+  loadChartFromData(data: any, language: string = "js"): void{
 
     // change the module based on the module name
-    this._flowchart = this._fc.dataToFlowchart(data);
+    this._flowchart = this._fc.dataToFlowchart(data, language);
 
     // tell subcribers to update 
   	this._origData = data; 
+
+    console.log(this._flowchart);
 
     this.sendMessage("Updated");
   }

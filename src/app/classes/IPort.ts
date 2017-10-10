@@ -6,6 +6,8 @@ interface IPort{
 	toggle(): boolean;
 	getName(): string;
 	getValue(): any;
+	setValue(value: any): any;
+	reset(): void;
 }
 
 class Port implements IPort{
@@ -15,12 +17,17 @@ class Port implements IPort{
 	private _connected: boolean; 
 	private _default: any;
 	private _selected: boolean;
+	private _value: any;
 
 	constructor(parentId: number, name: string, connected: boolean, id: number){ 
 		this._belongsTo = parentId;
 		this._name = name;
 		this._connected = connected; 
 		this._id = id;
+	}
+
+	reset(): void{
+		this._value = undefined;
 	}
 
 	getParent(): number{
@@ -49,15 +56,13 @@ class Port implements IPort{
 	}
 
 	getValue(): any{
-		return undefined;
+		return this._value;
 	}
 
-	getCode(): string{
-		if( this._connected == true ) 
-			return "";
-
-		return "let " + this.getName() + " = " + this.getValue(); 
+	setValue(value: any): any{
+		this._value = value;
 	}
+
 
 }
 
@@ -88,7 +93,7 @@ export class InputPort extends Port{
 
 	getValue(): any{
 		if (this._inputType.connected == true)
-			return "-compute-";
+			return super.getValue();
 
 		return this._inputType.dataValue;
 	}

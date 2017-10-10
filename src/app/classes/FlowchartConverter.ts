@@ -10,12 +10,12 @@ export class FlowchartConverter{
 		return "";
 	}
 
-	dataToFlowchart(data: any): IFlowchart{
+	dataToFlowchart(data: any, language?: string): IFlowchart{
 
 		// todo: check if data is valid
 
 		// convert to flowchart
-		let fc = this._factory.getFlowchart(data.language);
+		let fc = this._factory.getFlowchart(language);
 
 		for( let i=0; i < data.graph.nodes.length; i++ ){
 

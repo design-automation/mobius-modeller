@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgModule } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FlowchartService } from '../data/flowchart.service';
 
@@ -10,7 +10,13 @@ import { FlowchartService } from '../data/flowchart.service';
 })
 export class MenuComponent implements OnInit {
 
-  constructor(private http: HttpClient, private flowchart: FlowchartService) {}
+  languages = [
+     {id: 1, name: "Javascript", symbol: "js"},
+     {id: 2, name: "Python", symbol: "py"}
+   ];
+  selectedValue = null;
+
+  constructor(private http: HttpClient, private flowchartService: FlowchartService) {}
 
   ngOnInit() {
   }
@@ -23,7 +29,7 @@ export class MenuComponent implements OnInit {
             // todo: check validity of data
 
   	      	// Load data in app service
-            this.flowchart.loadChartFromData(data);
+            this.flowchartService.loadChartFromData(data, "js");
       });
     }
 

@@ -5,7 +5,22 @@ export interface IProcedure{
 	getType(): string;
 	getTitle(): string;
 
-	getCode(): string;
+	getName(): string;
+	getValue(): string;
+}
+
+export class ProcedureFactory{
+
+	constructor(){ }
+
+	getProcedure(data: any){
+		if(data.title == "Data"){
+			return new Procedure_Data(data.id, data.selected, data.title, data.type, data.dataName, data.dataValue);
+		}
+		else if(data.title == "Action"){
+			return new Procedure_Action(data.id, data.selected, data.title, data.type, data.method, data.category, data.expression, data.parameters);
+		}
+	}
 
 }
 
@@ -40,27 +55,15 @@ export class Procedure implements IProcedure{
 		return this._title; 
 	}
 
-	getCode(): string{
+	getName(): string{
+		return "";
+	}
+
+	getValue(): string{
 		return "";
 	}
 
 }
-
-export class ProcedureFactory{
-
-	constructor(){ }
-
-	getProcedure(data: any){
-		if(data.title == "Data"){
-			return new Procedure_Data(data.id, data.selected, data.title, data.type, data.dataName, data.dataValue);
-		}
-		else if(data.title == "Action"){
-			return new Procedure_Action(data.id, data.selected, data.title, data.type, data.method, data.category, data.expression, data.parameters);
-		}
-	}
-
-}
-		
 
 export class Procedure_Data extends Procedure{
 	private _name: string; 
@@ -72,9 +75,14 @@ export class Procedure_Data extends Procedure{
 		this._value = value;
 	}
 
-	getCode(): string{
-		return  "\n" + this._name + " = " + this._value + ";";
+	getName(): string{
+		return this._name;
 	}
+
+	getValue() : string{
+		return this._value;
+	}
+
 }
 
 export class Procedure_Action extends Procedure{
@@ -91,10 +99,6 @@ export class Procedure_Action extends Procedure{
 		this._category = category; 
 		this._expression = expression;
 		this._params = params;
-	}
-
-	getCode(): string{
-		return  ""; //\n" + this._name + " = " + this._value + ";";
 	}
 
 }
