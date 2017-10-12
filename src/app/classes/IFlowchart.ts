@@ -20,7 +20,7 @@ export interface IFlowchart{
 	add(node: any): void;
 	addLink(link: any): void;
 
-	getExecutionCode() :string;
+	getDisplayCode() :string;
 	execute(): boolean;
 
 };
@@ -82,7 +82,7 @@ class Flowchart implements IFlowchart{
 		this._connections.push(link);
 	}
 
-	getExecutionCode(): string{
+	getDisplayCode(): string{
 		return this.code_generator.getCode(this);
 	}
 
@@ -93,6 +93,8 @@ class Flowchart implements IFlowchart{
 	}
 
 	executeNode(node: INode){
+
+		console.log("Executing ", node.getName());
 		
 		let params :any = null;
 
@@ -117,18 +119,48 @@ class Flowchart implements IFlowchart{
 
 	}
 
+	sortNodesByRank(nodes: INode[]): INode[]{
+
+		let ranked: any[] = [];
+		let sorted: INode[] = [];
+
+		for(let i=0; i < nodes.length; i++){
+
+			let node :INode = nodes[i];
+			let rank :number = node.rank();
+			console.log(node.getName(), rank)
+
+			if( ranked[rank] == undefined){
+				ranked[rank] = [];
+			}
+			ranked[rank].push(node);
+		}
+
+		let all_ranks = Object.keys(ranked).map(function(num){ return parseInt(num); }).sort();
+		for( let r=0; r < all_ranks.length; r++){
+			let rank = all_ranks[r];
+			let nodes_with_rank = ranked[rank];
+			sorted = sorted.concat(nodes_with_rank);
+		}
+
+		return sorted;
+	}
+
 	execute() :any{
 
 		// set all nodes to status not executed
 		// future: cache results and set status based on changes
 		this.resetAllNodes();
 
+		// sort nodes 
+		let sorted_nodes: INode[] = this.sortNodesByRank(this._nodes);
+
 		// execute each node
 		// provide input to next 
 		let timeStarted	:number = (new Date()).getTime();
-		for( let nc=0; nc < this._nodes.length; nc++ ){
+		for( let nc=0; nc < sorted_nodes.length; nc++ ){
 
-			let node = this.getNode(nc); 
+			let node = sorted_nodes[nc]
 
 			// check status of the node; don't rerun
 			if( node.getStatus() == 1 ){
@@ -136,11 +168,8 @@ class Flowchart implements IFlowchart{
 			}
 
 			this.executeNode(node);
-			console.log(node.getValue());
-
+			console.log(node.getName(), node.getValue());
 		}
-		// run nodes by rank
-		// supply output of one node to input of another node
 
 		return true;
 	}
@@ -148,11 +177,11 @@ class Flowchart implements IFlowchart{
 
 class FlowchartJS extends Flowchart{
 	_author: string = "AKM"; 
-	code_generator: ICodeGenerator = new CodeGeneratorJS;
+	code_generator: ICodeGenerator = new CodeGeneratorJS();
 };
 
 class FlowchartPY extends Flowchart{
 	_author: string = "AKM"; 
-	code_generator: ICodeGenerator = new CodeGeneratorPY;
+	code_generator: ICodeGenerator = new CodeGeneratorPY();
 }
 

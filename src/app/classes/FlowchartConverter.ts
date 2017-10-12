@@ -35,7 +35,7 @@ export class FlowchartConverter{
 			}
 
 			// add procedure to node
-			nodeInst.addProcedureBlock(data.procedure[i])
+			nodeInst.addProcedureBlock(data.procedure[i], data.module.name);
 
 			// add node to flowchart
 			fc.add(nodeInst);

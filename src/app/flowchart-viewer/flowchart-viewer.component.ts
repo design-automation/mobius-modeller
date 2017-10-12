@@ -1,56 +1,61 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Injector } from '@angular/core';
+import { NgClass } from '@angular/common';
 
-import { Subscription } from 'rxjs/Subscription';
-import { FlowchartService } from '../data/flowchart.service';
 import { INode } from '../classes/INode';
+import { InputPort } from '../classes/IPort';
+
+import { Viewer } from '../classes/Viewer';
+import { FlowchartService } from '../data/flowchart.service';
 
 @Component({
   selector: 'app-flowchart-viewer',
   templateUrl: './flowchart-viewer.component.html',
-  styleUrls: ['./flowchart-viewer.component.css']
+  styleUrls: ['./flowchart-viewer.component.scss']
 })
-export class FlowchartViewerComponent implements OnInit, OnDestroy {
+export class FlowchartViewerComponent extends Viewer{
 
-  subscription: Subscription;
-  message: any;
-  data: any;
-
+  selectedNode: number = 0;
   nodes: INode[] = [];
   conn: any = [];
-  codeblock :string= "";
 
-  constructor(private flowchartService: FlowchartService) { 
-		this.subscription = this.flowchartService.getMessage().subscribe(message => { 
-			this.message = message; 
-			this.update();
-		});
-  }
+  constructor(injector: Injector){  super(injector);  }
 
-  ngOnInit() { this.update(); }
-
-  ngOnDestroy() {
-        // unsubscribe to ensure no memory leaks
-        this.subscription.unsubscribe();
+  ngOnInit(){
+    let c = <HTMLCanvasElement> document.getElementById("myCanvas");
+    let ctx = c.getContext("2d");
+    ctx.beginPath();
+    ctx.moveTo(20, 20);
+    ctx.bezierCurveTo(20, 100, 200, 100, 200, 20);
+    ctx.stroke();
   }
 
   update(){
     this.nodes = this.flowchartService.getNodes();
-    this.conn = this.flowchartService.getConnections();
+    this.conn = this.flowchartService.getConnections()
 
-    this.data = this.flowchartService.getChartData();
+    //this.data = this.flowchartService.getChartData();
+  }
+
+  updateInput(input_port: InputPort, event: any){
+    input_port.setValue(event.target.value);
+    console.log(input_port.getValue());
   }
 
   getData():string {
   	return JSON.stringify(this.flowchartService.getChartData());
   }
 
-  displayCode(): string{
-    this.codeblock = this.flowchartService.getCode();
-    return this.codeblock;
-  }  
+  selectNode(node:INode): void{
+    this.flowchartService.selectNode(node);
+  }
 
-  execute(): void{
-    this.flowchartService.execute();
+  isSelected(node: INode): boolean{
+    return this.flowchartService.isSelected(node);
+  }
+
+  graphclick($event): void{
+    alert("you clicked graph");
+    console.log($event);
   }
 
 }

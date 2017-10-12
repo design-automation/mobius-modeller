@@ -95,7 +95,7 @@ export class InputPort extends Port{
 		if (this._inputType.connected == true)
 			return super.getValue();
 
-		return this._inputType.dataValue;
+		return (super.getValue() != undefined ? super.getValue() : this._inputType.dataValue);
 	}
 
 }

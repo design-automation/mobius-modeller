@@ -4,9 +4,15 @@ export interface IProcedure{
 	toggle(): boolean; 
 	getType(): string;
 	getTitle(): string;
+	getModule(): string;
 
 	getName(): string;
 	getValue(): string;
+	getCategory() :string;
+	getMethod() :string;
+	getParams(): any;
+	getResult(): string;
+
 }
 
 export class ProcedureFactory{
@@ -15,10 +21,10 @@ export class ProcedureFactory{
 
 	getProcedure(data: any){
 		if(data.title == "Data"){
-			return new Procedure_Data(data.id, data.selected, data.title, data.type, data.dataName, data.dataValue);
+			return new Procedure_Data(data);
 		}
 		else if(data.title == "Action"){
-			return new Procedure_Action(data.id, data.selected, data.title, data.type, data.method, data.category, data.expression, data.parameters);
+			return new Procedure_Action(data);
 		}
 	}
 
@@ -30,12 +36,14 @@ export class Procedure implements IProcedure{
 	private _selected: boolean; 
 	private _type: string; 
 	private _title: string;
+	private _module : string;
 
-	constructor(id: number, selected: boolean, title: string, type: string, name?: string, value?: any){
-		this._id = id; 
-		this._selected = selected; 
-		this._title = title; 
-		this._type = type; 
+	constructor(d){
+		this._id = d.id; 
+		this._selected = d.selected; 
+		this._title = d.title; 
+		this._type = d.type; 
+		this._module = d.module;
 	}
 
 	isSelected(): boolean{
@@ -45,6 +53,10 @@ export class Procedure implements IProcedure{
 	toggle(): boolean{
 		this._selected = !this._selected; 
 		return this._selected;
+	}
+
+	getModule(): string{
+		return this._module;
 	}
 
 	getType(): string{
@@ -63,16 +75,33 @@ export class Procedure implements IProcedure{
 		return "";
 	}
 
+	getCategory(): string{
+		return undefined;
+	}
+
+	getMethod(): string{
+		return undefined;
+	}
+
+	getParams(): any{
+		return undefined;
+	}
+
+	getResult(): string{
+		return undefined;
+	}
+
+
 }
 
 export class Procedure_Data extends Procedure{
 	private _name: string; 
 	private _value: string;
 
-	constructor(id: number, selected: boolean, title: string, type: string, name?: string, value?: any){
-		super(id, selected, title, type);
+	constructor(d){
+		super(d);
 		this._name = name; 
-		this._value = value;
+		this._value = d.value;
 	}
 
 	getName(): string{
@@ -92,14 +121,33 @@ export class Procedure_Action extends Procedure{
 	private _expression: string;
 	private _method: string;
 	private _params: any[];
+	private _result: string;
 
-	constructor(id: number, selected: boolean, title: string, type: string, method:string, category?: string, expression?: any, params?: any[]){
-		super(id, selected, title, type);
-		this._method = method;
-		this._category = category; 
-		this._expression = expression;
-		this._params = params;
+	constructor(d){
+		super(d);
+		this._method = d.method;
+		this._category = d.category; 
+		this._expression = d.expression;
+		this._params = d.parameters;
+		this._result = d.result; 
 	}
+
+	getMethod(): string{
+		return this._method;
+	}
+
+	getCategory(): string{
+		return this._category;
+	}
+
+	getParams(): any{
+		return this._params;
+	}
+
+	getResult(): string{
+		return this._result;
+	}
+
 
 }
 

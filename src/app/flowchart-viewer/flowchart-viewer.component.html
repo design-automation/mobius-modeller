@@ -1,25 +1,29 @@
-<div>
+<div class='viewer'>
 	<h3>Flowchart Viewer</h3>
-	<p>This section shows all the nodes and connections in the flowchart with the inputs and the outputs</p>
 	<div>
-		Flowchart has {{nodes.length}} nodes and {{conn.length}} connections <br>
-		<ul>
-	    	<li *ngFor="let node of nodes">
-	    		------<br>
-	     	 	{{ node.getName() }} - {{node.getInputs().length}} inputs and {{node.getOutputs().length}} outputs
-	     	 	<h4>Inputs</h4>
-	     	 	<ol >
-	     	 		<li *ngFor="let inp of node.getInputs()">{{inp.getName()}} - <b> {{inp.getValue()}} </b></li>
-	     	 	</ol>
-	     	 	<h4>Outputs</h4>
-	     	 	<ol>
-	     	 		<li *ngFor="let otp of node.getOutputs()">{{otp.getName()}} - <b> {{otp.getValue()}} </b></li>
-	     	 	</ol>
-	   		</li>
-	  	</ul>
+		<div class='container'>
+			<canvas id="myCanvas" width="450" height="200" style="border:1px solid #d3d3d3;position: absolute;" (click)='graphclick($event)'>
+			Your browser does not support the HTML5 canvas tag.</canvas>
+	    	<div class='node' *ngFor="let node of nodes" (click)='selectNode(node)' [class.selected]="isSelected(node)" >
+	     	 	
+	     	 	<div class='node-name'>
+	     	 		{{ node.getName() }}
+	     	 	</div>
+
+	     	 	<div class='port-container input'>
+	     	 		<div class='port' *ngFor="let inp of node.getInputs()">
+	     	 			<!-- {{inp.getName()}} -->
+	     	 		</div>
+	     	 	</div>
+
+	     	 	<div class='port-container output'>
+	     	 		<div class='port' *ngFor="let otp of node.getOutputs()">
+	     	 			<!-- {{otp.getName()}} -->
+	     	 		</div>
+	     	 	</div>
+
+	   		</div>
+   		</div>
 	
-	  	<button (click)="displayCode()" [disabled]="nodes.length == 0">Display Code</button>
-	  	<button (click)="execute()" [disabled]="nodes.length == 0"  style='display:  inline-block;'>Run Code</button>
-	  	<div>{{ codeblock }}</div>
 	</div>
 </div>

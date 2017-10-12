@@ -32,6 +32,9 @@ export interface INode{
 	removeDependency(node_port_idx: number[]): void;
 	getDependencies(): number[][];
 
+	getDependencyNodes(): number[];
+	rank(): number;
+
 	getProcedure(): any;
 	addProcedureBlock(lines: any): void;
 	addProcedureLine(line: IProcedure): void;
@@ -56,6 +59,7 @@ export class Node implements INode{
 	private _version: number;
 	private _procedure: IProcedure[];
 	private _dependencies: any = [];
+	private _dependencyNodes: number[] = [];
 
 	private _prodFactory: ProcedureFactory = new ProcedureFactory();
 
@@ -72,6 +76,8 @@ export class Node implements INode{
 	getOutputs(): OutputPort[]{ return this._outputs };
 
 	getProcedure(): any{ return this._procedure; };
+
+
 
 	constructor(id: number, name: string, data?: any){ 
 		this._id = id;
@@ -111,12 +117,20 @@ export class Node implements INode{
 	}
 
 	addDependency(node_port_input_idx : number[]){
+
+		if( this._dependencyNodes.indexOf( node_port_input_idx[0] ) == -1){
+			this._dependencyNodes.push(node_port_input_idx[0]);
+		}
+
 		this._dependencies.push(node_port_input_idx);
 	}
 
 	removeDependency(node_port_idx: number[]){
 		
 	}
+
+	rank(): number{ return this._dependencyNodes.length };
+	getDependencyNodes(): number[]{ return this._dependencyNodes };
 
 	getDependencies(): number[][]{
 		return this._dependencies;
@@ -150,16 +164,17 @@ export class Node implements INode{
 		return this._outputs.length; 
 	}
 
-	addProcedureBlock(data: any): void{
+	addProcedureBlock(data: any, module ?: string): void{
 		for(let p=0; p < data.length; p ++){
 			let d = data[p];
+			d.module = module;
 			let prod = this._prodFactory.getProcedure(d);
 			this._procedure.push(prod);
 		}
 	}		
 
 	addProcedureLine(d: any): void{
-		let prod = new Procedure(d.id, d.dataName, d.dataValue, d.selected, d.title, d.type);
+		let prod = new Procedure(d);
 		this._procedure.push(prod);
 	}
 

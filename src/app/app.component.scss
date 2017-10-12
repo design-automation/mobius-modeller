@@ -1,0 +1,17 @@
+#app-container{
+	position: relative;
+	height: 100%; 
+	width: 100%; 
+
+	.viewer{
+		width: 450px;
+		min-height: 60px;
+		display: inline-block;
+		border: 1px solid gray;
+		margin: 10px; 
+		max-height: 600px;
+		overflow: auto;
+		padding: 15px;
+	}
+
+}

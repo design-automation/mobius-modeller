@@ -12,6 +12,7 @@ export class FlowchartService {
   private _origData: any;
   private _flowchart: IFlowchart;
   private _fc = new FlowchartConverter();
+  private _selectedNode: number = 0;
 
   constructor() {  }
 
@@ -32,6 +33,12 @@ export class FlowchartService {
   }
 
   //
+  //  message to all viewers that flowchart updated
+  //
+  update(): void{
+     this.sendMessage("Updated");
+  }
+  //
   //    sets the main scene
   //
   loadChartFromData(data: any, language: string = "js"): void{
@@ -39,12 +46,10 @@ export class FlowchartService {
     // change the module based on the module name
     this._flowchart = this._fc.dataToFlowchart(data, language);
 
-    // tell subcribers to update 
   	this._origData = data; 
-
-    console.log(this._flowchart);
-
-    this.sendMessage("Updated");
+    
+    // tell subcribers to update 
+    this.update();
   }
 
   //
@@ -58,6 +63,7 @@ export class FlowchartService {
   //  returns the flowchart
   //
   getFlowchart(): IFlowchart{
+    console.warn("Flowchart shouldnot be modified outside of this service");
     return this._flowchart; 
   }
 
@@ -80,13 +86,36 @@ export class FlowchartService {
   //
   execute(): any{
     this._flowchart.execute();
+    this.update();
   }
 
   //
   // get execution code    
   //
   getCode(): string{
-    return this._flowchart.getExecutionCode();
+    return this._flowchart.getDisplayCode();
+  }
+
+  //
+  //  check if flowchart is there
+  //
+  hasFlowchart(): boolean{
+    return this._flowchart != undefined;
+  }
+
+  //
+  //  select node
+  //
+  selectNode(node: INode): void{
+    this._selectedNode = node.getID();
+    this.update();
+  }
+
+  //
+  //  
+  //
+  isSelected(node: INode): boolean{
+    return this._selectedNode == node.getID();
   }
 
 }
