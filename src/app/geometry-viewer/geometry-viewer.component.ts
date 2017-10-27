@@ -24,17 +24,10 @@ export class GeometryViewerComponent extends Viewer implements OnInit{
 		renderer.setSize( window.innerWidth, window.innerHeight );
 		document.getElementById("app-geometry-viewer").appendChild( renderer.domElement );
 
-		var geometry = new THREE.BoxGeometry( 1, 1, 1 );
-		var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-		var cube = new THREE.Mesh( geometry, material );
-		scene.add( cube );
-
 		camera.position.z = 5;
 
 		function animate() {
 			requestAnimationFrame( animate );
-			cube.rotation.x += 0.01;
-			cube.rotation.y += 0.01;
 			renderer.render( scene, camera );
 		}
 		animate();
@@ -42,6 +35,7 @@ export class GeometryViewerComponent extends Viewer implements OnInit{
 
 	update() :void{
 		this._nodes = this.flowchartService.getNodes();		
+		console.log("updated");
 	}
 
 	getGeometry(node: INode): string[]{
@@ -50,8 +44,9 @@ export class GeometryViewerComponent extends Viewer implements OnInit{
 		let valueObject: any = node.getValue();
 
 		for( let key in valueObject ){
-			valueTypes.push(typeof(valueObject[key]));
+			valueTypes.push(valueObject[key]);
 		}
+
 
 		return valueTypes;
 	}
