@@ -6,18 +6,17 @@
 	    <split [gutterSize]="10" [visibleTransition]="true">
 
 	    	<!-- Pane 1 -->
-	        <split-area [visible]="true" [size]="50">
+	        <split-area [visible]="true" [size]="80">
 	            	<!-- Viewers -->
 					<div class="output-viewer">
 						<!-- Geometry Viewer -->
 						<app-geometry-viewer></app-geometry-viewer>
 						<!-- Code Viewer -->
-						<app-code-viewer></app-code-viewer>
 					</div>
 	        </split-area>
 
 	        <!-- Pane 2 -->
-	        <split-area [visible]="true" [size]="25">
+	        <split-area [visible]="true" [size]="10">
 	            	<!-- Designers -->
 
 					<!-- Flowchart Designer -->
@@ -25,11 +24,14 @@
 					<!-- Procedure Designer : todo -->
 					<!-- Module Viewer -->
 					<!-- Parameter Designer : todo -->
+
+					<app-code-viewer></app-code-viewer>
+
 	        </split-area>
 
 
 	        <!-- Pane 3 -->
-	        <split-area [visible]="true" [size]="25">
+	        <split-area [visible]="true" [size]="10">
 					<!-- Parameter Viewer  : todo -->
 					<app-module-viewer></app-module-viewer>
 					<!-- Controls -->

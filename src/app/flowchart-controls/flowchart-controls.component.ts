@@ -19,7 +19,7 @@ export class FlowchartControlsComponent extends Viewer {
   }
 
   loadFile(filename: string): void{
-  	let file = "../assets/examples/test_models.json";
+  	let file = "../assets/examples/test_cube.json";
   	this.http.get(file).subscribe(data => {
   	      	
             // Read the result field from the JSON response.

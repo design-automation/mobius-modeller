@@ -1,4 +1,5 @@
 import { Module } from './Module';
+import * as THREE from 'three'
 
 //
 //		Mobius Classes
@@ -17,6 +18,11 @@ class Polygon {
     isPlanar():boolean {
         return false;
     }
+}
+
+class Frame{
+	xAxis: number[];
+	yAxis: number[];
 }
 
 interface HasIsPlanar{
@@ -43,7 +49,15 @@ export class gis_module extends Module{
 	}
 
 	isPlanar< T extends HasIsPlanar>(entity:T):boolean {
-   		 return entity.isPlanar();
+   		return entity.isPlanar();
+	}
+
+	byXYPoints(): Frame{
+		return new Frame();
+	}
+
+	makeCube(size: number): any{
+		return new THREE.Mesh(new THREE.BoxGeometry(size, size, size));
 	}
 }
 

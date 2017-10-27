@@ -4,8 +4,6 @@ import { InputPort, OutputPort } from "../IPort";
 import { IFlowchart } from "../IFlowchart";
 import { IProcedure } from "../IProcedure";
 
-import {Scene, PerspectiveCamera, WebGLRenderer, BoxGeometry, MeshBasicMaterial, Mesh} from 'three';
-
 import * as ts from "typescript";
 
 
@@ -16,25 +14,10 @@ export class CodeGeneratorJS extends CodeGenerator{
 		executeNode(node: INode, params: any): any{
 			console.log("here", this.module_service.getModule("gis").getPoint());
 			let gis = this.module_service.getModule("gis");
-			/*let transpileOptions = {
-			  compilerOptions: {
-			    module: ts.ModuleKind.CommonJS
-			  },
-			  
-			};
-			let diag = [];
-			console.log(ts.transpile);
-			let js = ts.transpileModule(string, {
-						  compilerOptions: {
-						    module: ts.ModuleKind.CommonJS
-						  },
-						  reportDiagnostics: true
-						});
-			console.log("errors", js.diagnostics);*/
 			let result: any = eval("(function(){ \
 						" + this.getNodeCode(node) + "\n" + this.getFunctionCall(node, params) + "\n" + "return " + node.getName() + ";" + "})(); \
 						");
-			return "";//result;// return result of the node
+			return result;//result;// return result of the node
 		}
 		getFunctionCall(node: INode, params?: any): string{
 			let fn_call: string = "";
