@@ -6,6 +6,7 @@ export interface Module{
 	lastupdated: Date; 
 
 	functions: any;
+	getFunctions: any[];
 
 }
 

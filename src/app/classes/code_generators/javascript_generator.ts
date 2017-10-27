@@ -1,23 +1,41 @@
-import { ICodeGenerator } from '../CodeGenerators';
+import { ICodeGenerator, CodeGenerator } from '../CodeGenerators';
 import { INode } from "../INode";
 import { InputPort, OutputPort } from "../IPort";
 import { IFlowchart } from "../IFlowchart";
 import { IProcedure } from "../IProcedure";
-import { ModuleService } from '../../data/module.service'; 
 
-export class CodeGeneratorJS implements ICodeGenerator{
+import {Scene, PerspectiveCamera, WebGLRenderer, BoxGeometry, MeshBasicMaterial, Mesh} from 'three';
+
+import * as ts from "typescript";
+
+
+export class CodeGeneratorJS extends CodeGenerator{
 
 		_language: string = "js";
-		private module_service: ModuleService
-
-		constructor(){};
 
 		executeNode(node: INode, params: any): any{
-			console.log(this.module_service.getModule("GIS"));
-			let result: any = eval("(function(){ " + this.getNodeCode(node) + "\n" + this.getFunctionCall(node, params) + "\n" + "return " + node.getName() + ";" + "})();");
-			return result;// return result of the node
+			console.log("here", this.module_service.getModule("gis").getPoint());
+			let gis = this.module_service.getModule("gis");
+			/*let transpileOptions = {
+			  compilerOptions: {
+			    module: ts.ModuleKind.CommonJS
+			  },
+			  
+			};
+			let diag = [];
+			console.log(ts.transpile);
+			let js = ts.transpileModule(string, {
+						  compilerOptions: {
+						    module: ts.ModuleKind.CommonJS
+						  },
+						  reportDiagnostics: true
+						});
+			console.log("errors", js.diagnostics);*/
+			let result: any = eval("(function(){ \
+						" + this.getNodeCode(node) + "\n" + this.getFunctionCall(node, params) + "\n" + "return " + node.getName() + ";" + "})(); \
+						");
+			return "";//result;// return result of the node
 		}
-
 		getFunctionCall(node: INode, params?: any): string{
 			let fn_call: string = "";
 			let param_values: string[] = [];
@@ -117,8 +135,9 @@ export class CodeGeneratorJS implements ICodeGenerator{
 		generateProcedureCode(procedure: IProcedure){
 			// change based on type
 			let code: string; 
-			if(procedure.getTitle() == "Data")
+			if(procedure.getTitle() == "Data"){
 				code =  "\n" + procedure.getName() + " = " + procedure.getValue() + ";";
+			}
 			else if(procedure.getTitle() == "Action"){
 				let paramList :string[]= [];
 				let params  = procedure.getParams();
@@ -129,7 +148,7 @@ export class CodeGeneratorJS implements ICodeGenerator{
 					else
 						paramList.push(param.type)
 				}
-				code = procedure.getResult() + " = MODULES[\"" + procedure.getModule().trim() + "\"]." + procedure.getCategory() + "." + procedure.getMethod() + "( " + paramList.join(",") + " );\n";
+				code = procedure.getResult() + " = " + "gis"/*procedure.getModule().trim()*/ + "." + procedure.getMethod() + "( " + paramList.join(",") + " );\n";
 			}
 			else if(procedure.getTitle() == "Control")
 				code = "";

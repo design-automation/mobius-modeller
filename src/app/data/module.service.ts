@@ -1,19 +1,22 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Module } from '../modules/Module'
+import { gis_module } from '../modules/gis_module'
 
 @Injectable()
 export class ModuleService {
 
-  _modules: any[] = [];
+  private _modules: any[] = [];
 
-  constructor(private http: HttpClient) { }
+  constructor() { 
+      let gis = new gis_module();
+      this._modules["gis"] = gis;
+  }
 
   loadModules(module: any) :void{
-  	console.log("loading ", module);
-  	let file = "../assets/modules/" + module.name + ".js";
-  	this.http.get(file).subscribe(data => {
-  		this._modules.push(JSON.parse(file));
-    });
+  	let file = "../assets/modules/" + module.name + ".js" + '?hash_id=' + Math.random();
+    let gis = new gis_module();
+    this._modules["gis"] = gis;
   }	
 
   getModule(module: string): any{

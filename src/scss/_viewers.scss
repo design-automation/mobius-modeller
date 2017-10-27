@@ -1,0 +1,36 @@
+.viewer{
+
+	display: inline-block;
+	border: 1px solid gray;
+	margin: 10px; 
+	overflow: auto;
+	padding: 0px;
+	margin: 0px;
+	height: 300px;
+	width: 100%;
+
+
+	.header{
+		background-color: #999696;
+		height: 10px; 
+		font-size: 14px; 
+		font-weight: 600; 
+		line-height: 14px;
+		padding: 10px 5px;
+	}
+
+	button{
+		
+		background: white; 
+		padding: 10px; 
+		border: 1px solid #B4B1B1;
+		box-shadow: none;
+		margin: 10px;
+	
+
+		&:focus{
+			
+		}
+	}
+
+}

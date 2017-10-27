@@ -1,11 +1,44 @@
 <div id='app-container'>
-	<h1>Mobius</h1>
-
+	<!-- Menu -->
 	<app-menu></app-menu>
 
-	<hr>
-	<app-flowchart-controls class='viewer'></app-flowchart-controls>
-	<app-flowchart-viewer class='viewer'></app-flowchart-viewer>
-	<app-geometry-viewer class='viewer'></app-geometry-viewer>
-	<app-code-viewer class='viewer'></app-code-viewer>
+	<div class="container">
+	    <split [gutterSize]="10" [visibleTransition]="true">
+
+	    	<!-- Pane 1 -->
+	        <split-area [visible]="true" [size]="50">
+	            	<!-- Viewers -->
+					<div class="output-viewer">
+						<!-- Geometry Viewer -->
+						<app-geometry-viewer></app-geometry-viewer>
+						<!-- Code Viewer -->
+						<app-code-viewer></app-code-viewer>
+					</div>
+	        </split-area>
+
+	        <!-- Pane 2 -->
+	        <split-area [visible]="true" [size]="25">
+	            	<!-- Designers -->
+
+					<!-- Flowchart Designer -->
+					<app-flowchart-viewer></app-flowchart-viewer>
+					<!-- Procedure Designer : todo -->
+					<!-- Module Viewer -->
+					<!-- Parameter Designer : todo -->
+	        </split-area>
+
+
+	        <!-- Pane 3 -->
+	        <split-area [visible]="true" [size]="25">
+					<!-- Parameter Viewer  : todo -->
+					<app-module-viewer></app-module-viewer>
+					<!-- Controls -->
+					<app-flowchart-controls></app-flowchart-controls>
+
+					<!-- Console : todo -->
+	        </split-area>
+	    </split>
+	</div>
+
+
 </div>

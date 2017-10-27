@@ -1,11 +1,8 @@
-import { Module } from "./Module";
 import { INode } from "./INode";
 import { ICodeGenerator, } from './CodeGenerators';
-import { CodeGeneratorJS } from './code_generators/javascript_generator';
-import { CodeGeneratorPY } from './code_generators/python_generator';
+import { CodeFactory } from './CodeFactory';
 
 export interface IFlowchart{
-	_module: Module;
 	_author: string; 
 	code_generator: ICodeGenerator;
 
@@ -22,18 +19,16 @@ export interface IFlowchart{
 
 	getDisplayCode() :string;
 	execute(): boolean;
-
 };
 
 export class FlowchartFactory{
-	constructor(){ }
 
+	private code_factory: CodeFactory = new CodeFactory();
+	
 	getFlowchart(type: string): IFlowchart{
-		if(type == "js"){
-			return new FlowchartJS();
-		}
-		else if(type == "py"){
-			return new FlowchartPY();
+		if(type == "js" || type == "py"){
+			let code_generator: ICodeGenerator = this.code_factory.getCodeGenerator("js");
+			return new Flowchart(code_generator);
 		}
 		else{
 			console.error("Invalid language specified!");
@@ -49,8 +44,10 @@ class Flowchart implements IFlowchart{
 	private _node_order: number[];
 	
 	_author: string; 
-	_module: null;
-	code_generator: ICodeGenerator;	
+	code_generator: ICodeGenerator;
+
+	constructor(code_generator: ICodeGenerator){ this.code_generator = code_generator; };
+
 
 	getLanguage(): string{
 		return this.code_generator._language;
@@ -174,14 +171,3 @@ class Flowchart implements IFlowchart{
 		return true;
 	}
 }
-
-class FlowchartJS extends Flowchart{
-	_author: string = "AKM"; 
-	code_generator: ICodeGenerator = new CodeGeneratorJS();
-};
-
-class FlowchartPY extends Flowchart{
-	_author: string = "AKM"; 
-	code_generator: ICodeGenerator = new CodeGeneratorPY();
-}
-

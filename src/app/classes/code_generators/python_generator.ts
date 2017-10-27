@@ -1,10 +1,11 @@
-import { ICodeGenerator } from '../CodeGenerators';
+import { CodeGenerator } from '../CodeGenerators';
 import { INode } from "../INode";
 import { InputPort, OutputPort } from "../IPort";
 import { IFlowchart } from "../IFlowchart";
 import { IProcedure } from "../IProcedure";
 
-export class CodeGeneratorPY implements ICodeGenerator{
+export class CodeGeneratorPY extends CodeGenerator{
+	
 		_language: string = "py";
 
 		// required only for execution

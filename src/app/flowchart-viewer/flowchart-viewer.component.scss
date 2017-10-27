@@ -1,53 +1,61 @@
+@import '../../scss/globals';
+
 .viewer{
-	height: 100vh;
+
+	@extend .viewer;
+	
+	.node{
+
+		position: relative;
+
+		border: 1px solid black; 
+		height: 80px; 
+		width: 150px;
+		margin: 80px 30px;
+		border-radius: 16px;
+
+		overflow: auto;
+
+		&.selected{
+			background-color: #8181D6;
+			border-width: 4px;
+		}
+
+		.node-name{
+			position: absolute;
+			top: 50%;
+			left: 50%;
+		}
+
+		.port-container{
+			position: absolute;
+			left: 25px;
+			padding: 0px; 
+			margin: 0px;
+
+			.port{
+				width: 20px;
+				height: 20px; 
+				border-radius: 50%;
+				border: 3px solid black;
+				display: inline-block;
+				background-color: white;
+				z-index: 2;
+				margin: 10px;
+			}
+
+			&.input{
+				top: -25px;
+			}
+
+			&.output{
+				bottom: -25px;
+			}
+
+		}
+
+	}
+	
 }
 
-.node{
-	position: relative;
-
-	border: 1px solid black; 
-	height: 80px; 
-	width: 150px;
-	margin: 80px 30px;
-	border-radius: 16px;
-
-	&.selected{
-		background-color: #8181D6;
-		border-width: 4px;
-	}
-
-	.node-name{
-		position: absolute;
-		top: 50%;
-		left: 50%;
-	}
-
-	.port-container{
-		position: absolute;
-		left: 25px;
-		padding: 0px; 
-		margin: 0px;
-
-		.port{
-			width: 20px;
-			height: 20px; 
-			border-radius: 50%;
-			border: 3px solid black;
-			display: inline-block;
-			background-color: white;
-			z-index: 2;
-			margin: 10px;
-		}
-
-		&.input{
-			top: -25px;
-		}
-
-		&.output{
-			bottom: -25px;
-		}
-
-	}
-
-}
 

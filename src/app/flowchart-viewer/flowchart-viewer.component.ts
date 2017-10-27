@@ -58,5 +58,18 @@ export class FlowchartViewerComponent extends Viewer{
     console.log($event);
   }
 
+  dragNode($event): void{
+    console.log("drag end");
+    if($event.clientX == 0 && $event.clientY == 0){
+      console.log("returning");
+      return;
+    }
+    let square =  $event.srcElement;
+    square.style.top = $event.clientY;
+    square.style.left = $event.clientX;
+    console.log($event);
+    console.log("assigned" , $event.clientX, $event.clientY, square);
+  }
+
 }
 

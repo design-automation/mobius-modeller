@@ -1,3 +1,47 @@
-.menu{
-	border: 1px solid black;
+@import '../../scss/globals';
+
+.menu-bar{
+
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: space-between;
+
+	border-bottom: 1px solid gray;
+	
+	background-color: $toolbar-color;
+	height: $toolbar-height;
+	line-height: $toolbar-height;
+
+	padding: $default-padding;
+
+	.section{
+		width: auto;
+		display: inline-block;
+	}
+
+	#branding{
+		font-weight: bolder;
+		cursor: pointer;
+	}
+
+
+	ul.menu{
+		
+		@extend .reset;
+
+		list-style: none;
+
+		li{
+			display: inline;
+			font-size: $heading-3;
+			margin-right: $default-item-spacing;
+
+			&:hover{
+				color: #5D5959;
+				cursor: pointer;
+			}
+		}
+	}
+
+
 }
