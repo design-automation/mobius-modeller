@@ -18,7 +18,7 @@ export class FlowchartControlsComponent extends Viewer {
     this.flowchartService.execute();
   }
 
-  loadFile(filename: string): void{
+  loadFile(): void{
   	let file = "../assets/examples/test_cube.json";
   	this.http.get(file).subscribe(data => {
   	      	

@@ -10,7 +10,7 @@ import * as THREE from 'three';
 })
 export class GeometryViewerComponent extends Viewer implements OnInit{
 
-	private _nodes: INode[];
+	_nodes: INode[];
 
 	constructor(injector: Injector){ 
 		super(injector, "Geometry Viewer", "Displayed geometry with each node;");  

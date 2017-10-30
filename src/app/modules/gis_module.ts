@@ -35,6 +35,7 @@ export class gis_module extends Module{
 	public sld : any;
 
 	constructor(){
+		// name of module, author of module
 		super("gis", "akm");
 	}
 

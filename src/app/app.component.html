@@ -1,43 +1,22 @@
 <div id='app-container'>
-	<!-- Menu -->
 	<app-menu></app-menu>
 
 	<div class="container">
 	    <split [gutterSize]="10" [visibleTransition]="true">
-
-	    	<!-- Pane 1 -->
-	        <split-area [visible]="true" [size]="80">
-	            	<!-- Viewers -->
+	        <split-area [visible]="true" [size]="60">
 					<div class="output-viewer">
-						<!-- Geometry Viewer -->
 						<app-geometry-viewer></app-geometry-viewer>
-						<!-- Code Viewer -->
+						<app-code-viewer></app-code-viewer>
 					</div>
 	        </split-area>
 
-	        <!-- Pane 2 -->
-	        <split-area [visible]="true" [size]="10">
-	            	<!-- Designers -->
-
-					<!-- Flowchart Designer -->
+	        <split-area [visible]="true" [size]="20">
 					<app-flowchart-viewer></app-flowchart-viewer>
-					<!-- Procedure Designer : todo -->
-					<!-- Module Viewer -->
-					<!-- Parameter Designer : todo -->
-
-					<app-code-viewer></app-code-viewer>
-
 	        </split-area>
 
-
-	        <!-- Pane 3 -->
-	        <split-area [visible]="true" [size]="10">
-					<!-- Parameter Viewer  : todo -->
+	        <split-area [visible]="true" [size]="20">
 					<app-module-viewer></app-module-viewer>
-					<!-- Controls -->
 					<app-flowchart-controls></app-flowchart-controls>
-
-					<!-- Console : todo -->
 	        </split-area>
 	    </split>
 	</div>
