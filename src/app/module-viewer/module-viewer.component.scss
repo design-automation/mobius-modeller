@@ -2,4 +2,15 @@
 
 .viewer{
 	@extend .viewer;
+
+	.function{
+		border-bottom: 1px solid gray; 
+		padding: 5px;
+		margin: 0px 5px 0px 5px;
+
+		&:hover{
+			background-color: #BDBABA;
+			cursor: move;
+		}
+	}
 }

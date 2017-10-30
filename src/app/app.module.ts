@@ -19,6 +19,7 @@ import { AceEditorModule } from 'ng2-ace-editor';
 import { ModuleViewerComponent } from './module-viewer/module-viewer.component';
 
 import { AngularSplitModule } from 'angular-split';
+import { ProcedureViewerComponent } from './procedure-viewer/procedure-viewer.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { AngularSplitModule } from 'angular-split';
     CodeViewerComponent,
     GeometryViewerComponent,
     FlowchartControlsComponent,
-    ModuleViewerComponent
+    ModuleViewerComponent,
+    ProcedureViewerComponent
   ],
   imports: [
     BrowserModule,
