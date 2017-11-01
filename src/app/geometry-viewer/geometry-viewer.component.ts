@@ -1,6 +1,6 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { Viewer } from '../classes/Viewer';
-import { INode } from '../classes/INode';
+import { IGraphNode } from '../classes/IGraphNode';
 import * as THREE from 'three';
 
 @Component({
@@ -10,7 +10,7 @@ import * as THREE from 'three';
 })
 export class GeometryViewerComponent extends Viewer implements OnInit{
 
-	_nodes: INode[];
+	_nodes: IGraphNode[];
 
 	constructor(injector: Injector){ 
 		super(injector, "Geometry Viewer", "Displayed geometry with each node;");  
@@ -38,7 +38,7 @@ export class GeometryViewerComponent extends Viewer implements OnInit{
 		console.log("updated");
 	}
 
-	getGeometry(node: INode): string[]{
+	getGeometry(node: IGraphNode): string[]{
 
 		let valueTypes: string[] = [];
 		let valueObject: any = node.getValue();

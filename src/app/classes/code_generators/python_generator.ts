@@ -1,5 +1,5 @@
 import { CodeGenerator } from '../CodeGenerators';
-import { INode } from "../INode";
+import { IGraphNode } from "../IGraphNode";
 import { InputPort, OutputPort } from "../IPort";
 import { IFlowchart } from "../IFlowchart";
 import { IProcedure } from "../IProcedure";
@@ -9,13 +9,13 @@ export class CodeGeneratorPY extends CodeGenerator{
 		_language: string = "py";
 
 		// required only for execution
-		executeNode(node: INode, params: any): any{
+		executeNode(node: IGraphNode, params: any): any{
 			let result: any = eval("(function(){ " + this.getNodeCode(node) + "\n" + this.getFunctionCall(node, params) + "\n" + "return " + node.getName() + ";" + "})();");
 			return result;// return result of the node
 		}
 
 		// required only for execution
-		getDefinition(node: INode): string{
+		getDefinition(node: IGraphNode): string{
 			let fn_def: string = "";
 
 			let params :string[] = [];
@@ -31,12 +31,12 @@ export class CodeGeneratorPY extends CodeGenerator{
 		}
 
 		// required for code generation
-		getNodeOutputCode(node: INode, output_idx: number): string{
+		getNodeOutputCode(node: IGraphNode, output_idx: number): string{
 			return  node.getName() + "[\"" + node.getOutputByIndex(output_idx).getName() + "\"]"; 
 		}
 
 		// required for code generation
-		getFunctionCall(node: INode, params?: any): string{
+		getFunctionCall(node: IGraphNode, params?: any): string{
 			let fn_call: string = "";
 			let param_values: string[] = [];
 
@@ -62,7 +62,7 @@ export class CodeGeneratorPY extends CodeGenerator{
 		}
 
 		// required for code generation
-		getNodeCode(node: INode): string{
+		getNodeCode(node: IGraphNode): string{
 			let fn_code :string = "";
 
 			// add initializations
@@ -133,7 +133,7 @@ export class CodeGeneratorPY extends CodeGenerator{
 		// 
 		//	required for code generation
 		//
-		generateConnectionLine(destination_node: INode, destination_port: number, source_node: INode, source_port: number): string{
+		generateConnectionLine(destination_node: IGraphNode, destination_port: number, source_node: IGraphNode, source_port: number): string{
 			let code :string = destination_node.getInputByIndex(destination_port).getName() + "=" + "fc_" + this.getNodeOutputCode(source_node, source_port) + "\n";
 			return code;
 		}

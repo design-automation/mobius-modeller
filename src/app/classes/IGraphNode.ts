@@ -2,7 +2,7 @@ import { InputPort, OutputPort } from "./IPort";
 import { ICodeGenerator } from "./CodeGenerators";
 import { IProcedure, Procedure, ProcedureFactory } from "./IProcedure";
 
-export interface INode{
+export interface IGraphNode{
 
 	getID(): number;
 	isDisabled(): boolean;
@@ -37,13 +37,14 @@ export interface INode{
 
 	getProcedure(): any;
 	addProcedureBlock(lines: any): void;
-	addProcedureLine(line: IProcedure): void;
+	addProcedureLine(prod: IProcedure): void;
+	removeProcedureLine(lineIndex: number): void;
 
 	executeNode(code_generator: ICodeGenerator, params?: any): void;
 	getValue(): any;
 }
 
-export class Node implements INode{
+export class GraphNode implements IGraphNode{
 
 	private _id: number; 
 	private _name: string;
@@ -78,16 +79,16 @@ export class Node implements INode{
 	getProcedure(): any{ return this._procedure; };
 
 
-
 	constructor(id: number, name: string, data?: any){ 
 		this._id = id;
-		this._name = name; 
-		this._disabled = data.disabled || false; 
-		this._error = data.error || false; 
-		this._position = [data.x || 0, data.y || 0];
-		this._type = data.type; 
-		this._version = data.version || 1;
-		this._subgraph = data.subgraph || false;
+		this._name = name;
+		 
+		this._disabled = data ? data.disabled || false : false; 
+		this._error = data ? data.error || false : false; 
+		this._position = data ? [data.x || 0, data.y || 0] : [0,0];
+		this._type = data ? data.type : undefined; 
+		this._version = data ? data.version || 1 : 1;
+		this._subgraph = data ? data.subgraph || false : false;
 
 		this._inputs = [];
 		this._outputs = [];
@@ -171,11 +172,14 @@ export class Node implements INode{
 			let prod = this._prodFactory.getProcedure(d);
 			this._procedure.push(prod);
 		}
-	}		
+	}	
 
-	addProcedureLine(d: any): void{
-		let prod = new Procedure(d);
+	addProcedureLine(prod: IProcedure): void{
 		this._procedure.push(prod);
+	}
+
+	removeProcedureLine(index: number): void{
+		this._procedure.splice(index, 1);
 	}
 
 	executeNode(code_generator: ICodeGenerator, params ?:any ): void{

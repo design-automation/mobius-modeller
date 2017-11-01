@@ -1,0 +1,23 @@
+@import '../../scss/globals';
+
+.viewer{
+	@extend .viewer;
+
+	.container{
+
+		.procedure{
+			padding: 4px; 
+			border-bottom: 1px solid gray;
+
+
+			&.disabled{
+				background-color: red;
+			}
+
+		}
+
+	}
+
+		
+}
+

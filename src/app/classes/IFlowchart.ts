@@ -1,4 +1,4 @@
-import { INode } from "./INode";
+import { IGraphNode } from "./IGraphNode";
 import { ICodeGenerator, } from './CodeGenerators';
 import { CodeFactory } from './CodeFactory';
 
@@ -6,10 +6,10 @@ export interface IFlowchart{
 	_author: string; 
 	code_generator: ICodeGenerator;
 
-	getNodes(): INode[];
+	getNodes(): IGraphNode[];
 	getConnections(): any;
 
-	getNode(index: number): INode;
+	getNode(index: number): IGraphNode;
 
 	getLanguage() :string;
 	getDetails() :string;
@@ -39,15 +39,15 @@ export class FlowchartFactory{
 
 class Flowchart implements IFlowchart{
 	
-	private _nodes: INode[] = []; 
+	private _nodes: IGraphNode[] = []; 
 	private _connections: any = [];
 	private _node_order: number[];
+	private _selected: number;
 	
 	_author: string; 
 	code_generator: ICodeGenerator;
 
 	constructor(code_generator: ICodeGenerator){ this.code_generator = code_generator; };
-
 
 	getLanguage(): string{
 		return this.code_generator._language;
@@ -61,7 +61,7 @@ class Flowchart implements IFlowchart{
 		return this._nodes;
 	}
 
-	getNode(index: number): INode{
+	getNode(index: number): IGraphNode{
 		return this._nodes[index];
 	}
 
@@ -69,7 +69,7 @@ class Flowchart implements IFlowchart{
 		return this._connections;
 	}
 
-	add(node: INode): void{
+	add(node: IGraphNode): void{
 		this._nodes.push(node);
 	};
 
@@ -89,7 +89,7 @@ class Flowchart implements IFlowchart{
 		}
 	}
 
-	executeNode(node: INode){
+	executeNode(node: IGraphNode){
 
 		console.log("Executing ", node.getName());
 		
@@ -116,14 +116,14 @@ class Flowchart implements IFlowchart{
 
 	}
 
-	sortNodesByRank(nodes: INode[]): INode[]{
+	sortNodesByRank(nodes: IGraphNode[]): IGraphNode[]{
 
 		let ranked: any[] = [];
-		let sorted: INode[] = [];
+		let sorted: IGraphNode[] = [];
 
 		for(let i=0; i < nodes.length; i++){
 
-			let node :INode = nodes[i];
+			let node :IGraphNode = nodes[i];
 			let rank :number = node.rank();
 			console.log(node.getName(), rank)
 
@@ -150,7 +150,7 @@ class Flowchart implements IFlowchart{
 		this.resetAllNodes();
 
 		// sort nodes 
-		let sorted_nodes: INode[] = this.sortNodesByRank(this._nodes);
+		let sorted_nodes: IGraphNode[] = this.sortNodesByRank(this._nodes);
 
 		// execute each node
 		// provide input to next 

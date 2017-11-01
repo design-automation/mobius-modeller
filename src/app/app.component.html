@@ -3,23 +3,24 @@
 
 	<div class="container">
 	    <split [gutterSize]="10" [visibleTransition]="true">
-	        <split-area [visible]="true" [size]="60">
+	        <split-area [visible]="true" [size]="40">
 					<div class="output-viewer">
 						<app-geometry-viewer></app-geometry-viewer>
 						<app-code-viewer></app-code-viewer>
+						<app-flowchart-controls></app-flowchart-controls>
 					</div>
 	        </split-area>
 
-	        <split-area [visible]="true" [size]="20">
-					<app-flowchart-viewer></app-flowchart-viewer>
+	        <split-area [visible]="true" [size]="30">
+					<app-flowchart-viewer>
+					</app-flowchart-viewer>
+					<app-procedure-editor></app-procedure-editor>
+					<app-module-viewer></app-module-viewer>
 	        </split-area>
 
-	        <split-area [visible]="true" [size]="20">
-					<app-module-viewer></app-module-viewer>
-					<app-flowchart-controls></app-flowchart-controls>
+	        <split-area [visible]="true" [size]="30">
 	        </split-area>
 	    </split>
 	</div>
-
 
 </div>

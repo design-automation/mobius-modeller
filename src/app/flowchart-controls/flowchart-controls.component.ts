@@ -10,16 +10,20 @@ import { ModuleService } from '../data/module.service';
 })
 export class FlowchartControlsComponent extends Viewer {
 
-
   // doesn't really need to extend viewer 
   constructor(injector: Injector, private http: HttpClient, private modules: ModuleService) { super(injector); }
+
+  newfile(): void{
+    console.log("new file");
+    this.flowchartService.newFlowchart();
+  }
 
   execute(): void{
     this.flowchartService.execute();
   }
 
   loadFile(): void{
-  	let file = "../assets/examples/test_cube.json";
+  	let file = "../assets/examples/test_models.json";
   	this.http.get(file).subscribe(data => {
   	      	
             // Read the result field from the JSON response.

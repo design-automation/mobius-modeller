@@ -1,6 +1,9 @@
 export interface IProcedure{
 
 	isSelected(): boolean; 
+	isDisabled(): boolean; 
+	toggleDisabled(): boolean;
+
 	toggle(): boolean; 
 	getType(): string;
 	getTitle(): string;
@@ -12,6 +15,9 @@ export interface IProcedure{
 	getMethod() :string;
 	getParams(): any;
 	getResult(): string;
+
+	getNodes(): IProcedure[];
+	getControlType(): string;
 
 }
 
@@ -26,6 +32,9 @@ export class ProcedureFactory{
 		else if(data.title == "Action"){
 			return new Procedure_Action(data);
 		}
+		else if(data.title == "Control"){
+			return new Procedure_Control(data);
+		}
 	}
 
 }
@@ -37,6 +46,7 @@ export class Procedure implements IProcedure{
 	private _type: string; 
 	private _title: string;
 	private _module : string;
+	private _disabled: boolean; 
 
 	constructor(d){
 		this._id = d.id; 
@@ -44,15 +54,25 @@ export class Procedure implements IProcedure{
 		this._title = d.title; 
 		this._type = d.type; 
 		this._module = d.module;
+		this._disabled = false;
 	}
 
 	isSelected(): boolean{
 		return this._selected; 
 	}
 
+	isDisabled(): boolean{
+		return this._disabled;
+	}
+
 	toggle(): boolean{
 		this._selected = !this._selected; 
 		return this._selected;
+	}
+
+	toggleDisabled(): boolean{
+		this._disabled = !this._disabled;
+		return this._disabled;
 	}
 
 	getModule(): string{
@@ -89,6 +109,14 @@ export class Procedure implements IProcedure{
 
 	getResult(): string{
 		return undefined;
+	}
+
+	getNodes(): IProcedure[]{
+		return [];
+	}
+
+	getControlType(): string{
+		return "undefined"
 	}
 
 
@@ -153,4 +181,24 @@ export class Procedure_Action extends Procedure{
 
 export class Procedure_Control extends Procedure{
 
+	private _controlType: string;
+	private _children: IProcedure[];
+	private factory: ProcedureFactory = new ProcedureFactory();
+
+	constructor(d){
+		super(d);
+		let _factory = this.factory;
+		this._children = d.nodes.map(function(node){
+			return _factory.getProcedure(node);
+		});
+		this._controlType = d.controlType;
+	}
+
+	getControlType(): string{
+		return this._controlType; 
+	}
+
+	getNodes(): IProcedure[]{
+		return this._children;
+	}
 }

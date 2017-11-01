@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ProcedureViewerComponent } from './procedure-viewer.component';
+import { ProcedureEditorComponent } from './procedure-editor.component';
 
-describe('ProcedureViewerComponent', () => {
-  let component: ProcedureViewerComponent;
-  let fixture: ComponentFixture<ProcedureViewerComponent>;
+describe('ProcedureEditorComponent', () => {
+  let component: ProcedureEditorComponent;
+  let fixture: ComponentFixture<ProcedureEditorComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ProcedureViewerComponent ]
+      declarations: [ ProcedureEditorComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ProcedureViewerComponent);
+    fixture = TestBed.createComponent(ProcedureEditorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,3 +1,5 @@
+$header-height: 30px; 
+
 .viewer{
 
 	display: inline-block;
@@ -7,26 +9,44 @@
 	padding: 0px;
 	margin: 0px;
 	height: 300px;
-	width: 100%;
+	width: 300px;
 
 
 	.header{
 		background-color: #999696;
-		height: 10px; 
+		height: $header-height; 
 		font-size: 14px; 
 		font-weight: 600; 
-		line-height: 14px;
-		padding: 10px 5px;
+		line-height: $header-height;
+		padding: 0px 5px;
+
+		.btn-group{
+			float: right;
+			padding: 0px; 
+			margin: 0px;
+			height: $header-height; 
+
+			button{
+				width: 0.9*$header-height; 
+				height: 0.9*$header-height; 
+				margin: 0px;
+				background: white; 
+				border: 1px solid #B4B1B1;
+				box-shadow: none;
+
+				&:focus{
+					
+				}
+			}
+			
+		}
+
 	}
 
 	button{
-		
 		background: white; 
-		padding: 10px; 
 		border: 1px solid #B4B1B1;
 		box-shadow: none;
-		margin: 10px;
-	
 
 		&:focus{
 			

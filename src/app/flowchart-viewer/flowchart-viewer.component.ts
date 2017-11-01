@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, Injector } from '@angular/core';
 import { NgClass } from '@angular/common';
 
-import { INode } from '../classes/INode';
+import { IGraphNode } from '../classes/IGraphNode';
 import { InputPort } from '../classes/IPort';
 
 import { Viewer } from '../classes/Viewer';
@@ -15,18 +15,18 @@ import { FlowchartService } from '../data/flowchart.service';
 export class FlowchartViewerComponent extends Viewer{
 
   selectedNode: number = 0;
-  nodes: INode[] = [];
+  nodes: IGraphNode[] = [];
   conn: any = [];
 
   constructor(injector: Injector){  super(injector);  }
 
   ngOnInit(){
-    let c = <HTMLCanvasElement> document.getElementById("myCanvas");
+    /*let c = <HTMLCanvasElement> document.getElementById("myCanvas");
     let ctx = c.getContext("2d");
     ctx.beginPath();
     ctx.moveTo(20, 20);
     ctx.bezierCurveTo(20, 100, 200, 100, 200, 20);
-    ctx.stroke();
+    ctx.stroke();*/
   }
 
   update(){
@@ -45,17 +45,20 @@ export class FlowchartViewerComponent extends Viewer{
   	return JSON.stringify(this.flowchartService.getChartData());
   }
 
-  selectNode(node:INode): void{
-    this.flowchartService.selectNode(node);
-  }
-
-  isSelected(node: INode): boolean{
+  isSelected(node: IGraphNode): boolean{
     return this.flowchartService.isSelected(node);
   }
 
   graphclick($event): void{
-    alert("you clicked graph");
     console.log($event);
+  }
+
+  addNode(): void{
+      this.flowchartService.addNode();
+  }
+
+  nodeclick($event, node): void{
+    this.flowchartService.selectNode(node);
   }
 
   dragNode($event): void{

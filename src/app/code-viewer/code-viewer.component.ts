@@ -17,9 +17,7 @@ export class CodeViewerComponent extends Viewer {
 	}
 
 	update(): void{
-		if( this.flowchartService.hasFlowchart() )
-			this.code = this.flowchartService.getCode();
-			console.log(this.code);
+		this.code = this.flowchartService.getCode();
 	}
 
 }

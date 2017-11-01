@@ -1,6 +1,6 @@
 import { FlowchartFactory } from '../classes/IFlowchart';
 import { IFlowchart } from '../classes/IFlowchart';
-import { Node } from '../classes/INode';
+import { GraphNode } from '../classes/IGraphNode';
 
 export class FlowchartConverter{
 
@@ -20,7 +20,7 @@ export class FlowchartConverter{
 		for( let i=0; i < data.graph.nodes.length; i++ ){
 
 			let node = data.graph.nodes[i];
-			let nodeInst = new Node(node.id, node.name, node);
+			let nodeInst = new GraphNode(node.id, node.name, node);
 
 			// add inputs to node
 			for( let p=0; p < node.inputConnectors.length; p++ ){

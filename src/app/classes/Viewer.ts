@@ -25,21 +25,39 @@ export class Viewer implements OnInit, OnDestroy, IViewer{
 		this.flowchartService = injector.get(FlowchartService);
 		this._subscription = this.flowchartService.getMessage().subscribe(message => { 
 			this._message = message; 
-			this.update();
+			this.notify();
 		});
   	}
 
+  	//
+  	//	checks if the flowchart service has a flowchart and calls update function for the viewer
+  	//
+  	notify(): void{
+  		if ( this.flowchartService.hasFlowchart() ){
+  			this.update();
+  		}
+  		else{
+  			console.log("No Flowchart Loaded")
+  		}
+  	}
+
+  	//
+  	//	gets flowchart service
+  	//
   	getService(): FlowchartService{
   		return this.flowchartService;
   	}
 
-	ngOnInit() { this.update(); }
+	ngOnInit() { this.notify(); }
 
 	ngOnDestroy() {
 	    // unsubscribe to ensure no memory leaks
 	    this._subscription.unsubscribe();
 	}
 
+	// 
+	//	update function to be overriden by each viewer
+	//
 	update(){
 		console.log(this._name + " has not implemented the update function!");
 	}

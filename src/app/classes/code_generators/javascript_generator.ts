@@ -1,5 +1,5 @@
 import { ICodeGenerator, CodeGenerator } from '../CodeGenerators';
-import { INode } from "../INode";
+import { IGraphNode } from "../IGraphNode";
 import { InputPort, OutputPort } from "../IPort";
 import { IFlowchart } from "../IFlowchart";
 import { IProcedure } from "../IProcedure";
@@ -11,7 +11,7 @@ export class CodeGeneratorJS extends CodeGenerator{
 
 		_language: string = "js";
 
-		executeNode(node: INode, params: any): any{
+		executeNode(node: IGraphNode, params: any): any{
 			console.log("here", this.module_service.getModule("gis").getPoint());
 			let gis = this.module_service.getModule("gis");
 			let result: any = eval("(function(){ \
@@ -19,7 +19,7 @@ export class CodeGeneratorJS extends CodeGenerator{
 						");
 			return result;//result;// return result of the node
 		}
-		getFunctionCall(node: INode, params?: any): string{
+		getFunctionCall(node: IGraphNode, params?: any): string{
 			let fn_call: string = "";
 			let param_values: string[] = [];
 
@@ -42,7 +42,7 @@ export class CodeGeneratorJS extends CodeGenerator{
 			return fn_call;
 		}
 
-		getDefinition(node: INode): string{
+		getDefinition(node: IGraphNode): string{
 			let fn_def: string = "";
 
 			let params :string[] = [];
@@ -57,7 +57,7 @@ export class CodeGeneratorJS extends CodeGenerator{
 			return fn_def;
 		}
 
-		getNodeCode(node: INode): string{
+		getNodeCode(node: IGraphNode): string{
 			let fn_code :string = "";
 
 			// add initializations
@@ -106,11 +106,11 @@ export class CodeGeneratorJS extends CodeGenerator{
 			return fn_code;
 		}
 
-		getNodeOutputCode(node: INode, output_idx: number): string{
+		getNodeOutputCode(node: IGraphNode, output_idx: number): string{
 			return node.getName() + "." + node.getOutputByIndex(output_idx).getName(); 
 		}
 
-		generateConnectionLine(destination_node: INode, destination_port: number, source_node: INode, source_port: number): string{
+		generateConnectionLine(destination_node: IGraphNode, destination_port: number, source_node: IGraphNode, source_port: number): string{
 			let code :string = "let " + destination_node.getInputByIndex(destination_port).getName() + "=" + this.getNodeOutputCode(source_node, source_port) + "\n";
 			return code;
 		}

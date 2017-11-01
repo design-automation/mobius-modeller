@@ -1,0 +1,32 @@
+<div class='viewer'>
+	<div class='header'>
+		Procedure
+
+		<div class='btn-group'>
+			<button (click)="addVariable()">V</button>
+			<button (click)="addAction()">A</button>
+			<button (click)="addControl()">P</button>
+		</div>
+
+	</div>
+	<div class='container'>
+		<tree-root #tree [nodes]='_tree' [options]='_tree_options'>
+			  <ng-template #treeNodeTemplate let-node let-index="index">
+					
+					<div class='data-node-template procedure'>
+						{{node.name}}
+						<span>{{ node.data.name }}</span> = <span>{{  node.data.value }}</span>
+					</div>
+
+				    <div class='btn-group'>
+					    <button (click)="deleteProcedure(index, $event)">Delete</button>
+					    <button (click)="disableProcedure(index, $event)">Disable</button>
+					    <button (click)="go($event)">Copy</button>
+					</div>
+
+			  </ng-template>
+		</tree-root>
+	</div>
+
+	<button (click)="expandAll(tree)">Expand All</button>
+</div>

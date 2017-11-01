@@ -29,6 +29,7 @@ interface HasIsPlanar{
     isPlanar(): boolean;
 }
 
+
 export class gis_module extends Module{
 	
 	public srf : any;
@@ -38,7 +39,7 @@ export class gis_module extends Module{
 		// name of module, author of module
 		super("gis", "akm");
 	}
-
+	
 	getPoint(): Point{
 		let pnt: Point = new Point();
 		return pnt;

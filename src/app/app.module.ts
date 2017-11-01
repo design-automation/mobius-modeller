@@ -10,6 +10,8 @@ import { MenuComponent } from './menu/menu.component';
 import { FlowchartService } from './data/flowchart.service';
 import { ModuleService } from './data/module.service';
 
+import { AngularSplitModule } from 'angular-split';
+
 import { FlowchartViewerComponent } from './flowchart-viewer/flowchart-viewer.component';
 import { CodeViewerComponent } from './code-viewer/code-viewer.component';
 import { GeometryViewerComponent } from './geometry-viewer/geometry-viewer.component';
@@ -18,8 +20,10 @@ import { FlowchartControlsComponent } from './flowchart-controls/flowchart-contr
 import { AceEditorModule } from 'ng2-ace-editor';
 import { ModuleViewerComponent } from './module-viewer/module-viewer.component';
 
-import { AngularSplitModule } from 'angular-split';
-import { ProcedureViewerComponent } from './procedure-viewer/procedure-viewer.component';
+
+import { ProcedureEditorComponent } from './procedure-editor/procedure-editor.component';
+import { TreeModule } from 'angular-tree-component';
+
 
 @NgModule({
   declarations: [
@@ -30,14 +34,15 @@ import { ProcedureViewerComponent } from './procedure-viewer/procedure-viewer.co
     GeometryViewerComponent,
     FlowchartControlsComponent,
     ModuleViewerComponent,
-    ProcedureViewerComponent
+    ProcedureEditorComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule, 
     FormsModule,
     AceEditorModule,
-    AngularSplitModule
+    AngularSplitModule, 
+    TreeModule
   ],
   providers: [FlowchartService, ModuleService],
   bootstrap: [AppComponent]

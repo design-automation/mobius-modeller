@@ -1,4 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
+@import '~angular-tree-component/dist/angular-tree-component.css';
+
 html{
 	position: relative;
 	height: 100%; 
@@ -19,8 +21,15 @@ body{
 	height: 100%;
 }
 
+// overrides for plugins
+
+
+// angular-split
 split-gutter{
 	min-height: 400px !important;
 	background-color: #AEA8A8 !important;
 }
+
+
+// angular-tree-component
 

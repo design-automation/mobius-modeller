@@ -2,6 +2,8 @@
 
 .viewer{
 
+	position: relative;
+
 	@extend .viewer;
 	
 	.node{
@@ -13,8 +15,6 @@
 		width: 150px;
 		margin: 80px 30px;
 		border-radius: 16px;
-
-		overflow: auto;
 
 		&.selected{
 			background-color: #8181D6;
@@ -54,6 +54,21 @@
 
 		}
 
+	}
+
+	button{
+		width: 45px; 
+		height: 45px; 
+		border-radius: 50%;
+		border: 3px solid gray; 
+		background-color: transparent;
+		position: absolute;
+		right: 30px;
+		bottom: 30px;
+		line-height: 30px; 
+		font-weight: 600;
+		color: gray; 
+		font-size: 18px;
 	}
 	
 }
