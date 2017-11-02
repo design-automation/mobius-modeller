@@ -1,0 +1,25 @@
+<mat-expansion-panel class='viewer'>
+  	<mat-expansion-panel-header>
+	    <mat-panel-title class='header'>
+	      <div class='header'>Parameter Viewer</div>
+	    </mat-panel-title>
+  	</mat-expansion-panel-header>
+	<div class='container'>
+		<div class='input' *ngFor="let inp of _inputs">
+			<div class='row'>
+				<span class='label'>Name</span>
+				<span class='content'>{{ inp.getName() }}</span>
+			</div>
+			<div class='row'>
+				<span class='label'>Value</span>
+				<span class='content'>
+					<span contenteditable="true" (keyup)="updateInputDataValue($event, inp)">{{ inp.getValue() }}</span>
+				</span>
+			</div>
+			<div class='row'>
+				<span class='label'>Default</span>
+				<span class='content'>{{ inp.getType() }}</span>
+			</div>
+		</div>
+	</div>
+</mat-expansion-panel>

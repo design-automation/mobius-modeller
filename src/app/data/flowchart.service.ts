@@ -16,6 +16,7 @@ export class FlowchartService {
   private _flowchart: IFlowchart;
 
   private _selectedNode: number = 0;
+  private _selectedPort: number = 0;
 
   private check(){
     return this._flowchart != undefined;
@@ -71,8 +72,6 @@ export class FlowchartService {
     return JSON.stringify(this._flowchart); //this._fc.flowchartToData(this._flowchart);
   }
 
-
-
   //
   //  check if flowchart is there
   //
@@ -85,6 +84,9 @@ export class FlowchartService {
   //
   newFlowchart(): IFlowchart{
     this._flowchart = this._ffactory.getFlowchart("js");
+    this._selectedNode = 0;
+    this._selectedPort = 0;
+    this.update();
     return this._flowchart;
   }
 
@@ -118,11 +120,20 @@ export class FlowchartService {
   //
   selectNode(node: IGraphNode): void{
     this._selectedNode = node.getID();
+    this._selectedPort = undefined;
     this.update();
+  }
+
+  selectPort(index: number):void{
+    this._selectedPort = index; 
   }
 
   getSelectedNode(): IGraphNode{
     return this._flowchart.getNode(this._selectedNode);
+  }
+
+  getSelectedPort(): number{
+    return this._selectedPort;
   }
 
   //

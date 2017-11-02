@@ -1,10 +1,12 @@
-<div class='viewer'>
-	
-	<div class='header'>Modules</div>
-	
-	<div *ngFor="let fn of functions">
-		<div class='function'>{{fn}}</div>
+<mat-expansion-panel class='viewer'>
+  	<mat-expansion-panel-header>
+	    <mat-panel-title class='header'>
+	      <div class='header'>Modules</div>
+	    </mat-panel-title>
+  	</mat-expansion-panel-header>
+	<div class='container'>
+		<div *ngFor="let fn of functions">
+			<div class='function'>{{fn}}</div>
+		</div>
 	</div>
-
-</div>
-
+</mat-expansion-panel>

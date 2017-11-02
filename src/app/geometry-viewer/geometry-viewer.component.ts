@@ -21,7 +21,7 @@ export class GeometryViewerComponent extends Viewer implements OnInit{
 		var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
 		var renderer = new THREE.WebGLRenderer();
-		renderer.setSize( window.innerWidth, window.innerHeight );
+		renderer.setSize( 300, 300 );
 		document.getElementById("app-geometry-viewer").appendChild( renderer.domElement );
 
 		camera.position.z = 5;

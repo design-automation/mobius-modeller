@@ -25,7 +25,9 @@ export class FlowchartConverter{
 			// add inputs to node
 			for( let p=0; p < node.inputConnectors.length; p++ ){
 				let port = node.inputConnectors[p];
-				nodeInst.addInput(port.name, port.connected, port);
+				let inp = nodeInst.addInput();
+				inp.setName(port.name)
+				inp.setConnected(port.connected)
 			}
 
 			// add outputs to node

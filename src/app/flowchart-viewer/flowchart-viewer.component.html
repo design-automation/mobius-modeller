@@ -1,7 +1,10 @@
-<div class='viewer'>
-	<div class='header'>Flowchart Viewer</div>
-	<div>
-		<div class='container'>
+<mat-expansion-panel class='viewer'>
+  	<mat-expansion-panel-header>
+	    <mat-panel-title class='header'>
+	      <div class='header'>Flowchart Viewer</div>
+	    </mat-panel-title>
+  	</mat-expansion-panel-header>
+	<div class='container'>
 	    	<div class='node' *ngFor="let node of nodes" (click)='nodeclick($event, node)' [class.selected]="isSelected(node)" draggable="true" (drag)='dragNode($event)'>
 	     	 	
 	     	 	<div class='node-name'>
@@ -9,7 +12,7 @@
 	     	 	</div>
 
 	     	 	<div class='port-container input'>
-	     	 		<div class='port' *ngFor="let inp of node.getInputs()">
+	     	 		<div class='port' *ngFor="let inp of node.getInputs()" (click)='clickedInput(inp)'>
 	     	 			<!-- {{inp.getName()}} -->
 	     	 		</div>
 	     	 	</div>
@@ -24,7 +27,5 @@
 	   		<button (click)="addNode()">+</button>
 			<!-- <canvas id="myCanvas" width="250" height="600" (click)='graphclick($event)'>
 			Your browser does not support the HTML5 canvas tag.</canvas> -->
-   		</div>
-	
 	</div>
-</div>
+</mat-expansion-panel>

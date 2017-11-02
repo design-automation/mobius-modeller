@@ -1,4 +1,4 @@
-import { Component, Injector } from '@angular/core';
+import { Component, Injector, OnInit } from '@angular/core';
 import { Viewer } from '../classes/Viewer';
 import { HttpClient } from '@angular/common/http';
 import { ModuleService } from '../data/module.service';
@@ -8,13 +8,16 @@ import { ModuleService } from '../data/module.service';
   templateUrl: './flowchart-controls.component.html',
   styleUrls: ['./flowchart-controls.component.scss']
 })
-export class FlowchartControlsComponent extends Viewer {
+export class FlowchartControlsComponent extends Viewer implements OnInit{
 
   // doesn't really need to extend viewer 
   constructor(injector: Injector, private http: HttpClient, private modules: ModuleService) { super(injector); }
 
+  ngOnInit(): void{
+    this.newfile();
+  }
+
   newfile(): void{
-    console.log("new file");
     this.flowchartService.newFlowchart();
   }
 

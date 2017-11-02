@@ -2,6 +2,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { CustomMaterialModule } from './custom_modules/CustomMaterialModule';
+
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
@@ -23,6 +25,8 @@ import { ModuleViewerComponent } from './module-viewer/module-viewer.component';
 
 import { ProcedureEditorComponent } from './procedure-editor/procedure-editor.component';
 import { TreeModule } from 'angular-tree-component';
+import { ParameterViewerComponent } from './parameter-viewer/parameter-viewer.component';
+import { ParameterEditorComponent } from './parameter-editor/parameter-editor.component';
 
 
 @NgModule({
@@ -34,7 +38,9 @@ import { TreeModule } from 'angular-tree-component';
     GeometryViewerComponent,
     FlowchartControlsComponent,
     ModuleViewerComponent,
-    ProcedureEditorComponent
+    ProcedureEditorComponent,
+    ParameterViewerComponent,
+    ParameterEditorComponent,
   ],
   imports: [
     BrowserModule,
@@ -42,7 +48,8 @@ import { TreeModule } from 'angular-tree-component';
     FormsModule,
     AceEditorModule,
     AngularSplitModule, 
-    TreeModule
+    TreeModule,
+    CustomMaterialModule
   ],
   providers: [FlowchartService, ModuleService],
   bootstrap: [AppComponent]

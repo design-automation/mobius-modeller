@@ -1,14 +1,15 @@
-<div class="viewer" id="app-geometry-viewer">
-	
-	<div class='header'>Geometry Viewer</div>
-	
-	<div>
+<mat-expansion-panel class='viewer'>
+  	<mat-expansion-panel-header>
+	    <mat-panel-title class='header'>
+	      <div class='header'>Geometry Viewer</div>
+	    </mat-panel-title>
+  	</mat-expansion-panel-header>
+	<div class='container'>
 		<ul>
 	    	<li *ngFor="let node of _nodes">
 	    		{{  getGeometry(node) }}
 	   		</li>
 	  	</ul>
+		<div id="app-geometry-viewer"></div>
 	</div>
-
-</div>
-
+</mat-expansion-panel>

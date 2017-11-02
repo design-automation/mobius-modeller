@@ -1,14 +1,14 @@
-<div class='viewer'>
-	<div class='header'>
-		Procedure
-
-		<div class='btn-group'>
+<mat-expansion-panel class='viewer'>
+  	<mat-expansion-panel-header>
+	    <mat-panel-title class='header'>
+	      <div>Procedure</div>
+	      <div class='btn-group'>
 			<button (click)="addVariable()">V</button>
 			<button (click)="addAction()">A</button>
 			<button (click)="addControl()">P</button>
-		</div>
-
-	</div>
+		  </div>
+	    </mat-panel-title>
+  	</mat-expansion-panel-header>
 	<div class='container'>
 		<tree-root #tree [nodes]='_tree' [options]='_tree_options'>
 			  <ng-template #treeNodeTemplate let-node let-index="index">
@@ -27,6 +27,5 @@
 			  </ng-template>
 		</tree-root>
 	</div>
-
 	<button (click)="expandAll(tree)">Expand All</button>
-</div>
+</mat-expansion-panel>

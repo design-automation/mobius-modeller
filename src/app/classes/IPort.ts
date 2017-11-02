@@ -1,33 +1,41 @@
 interface IPort{
+	getId(): number;
 	getParent(): number;
 	getType(): string;
 	isConnected(): boolean;
 	isSelected(): boolean;
 	toggle(): boolean;
+
+	setName(name: string): void; 
+	setConnected(val: boolean): void;
+
 	getName(): string;
 	getValue(): any;
-	setValue(value: any): any;
+	setDValue(value: any): any;
 	reset(): void;
 }
 
 class Port implements IPort{
 	private _id: number;
 	private _belongsTo: number;
+	private _connected: boolean = false; 
 	private _name: string;
-	private _connected: boolean; 
-	private _default: any;
+	private _dValue: any = undefined;  // defaults
 	private _selected: boolean;
-	private _value: any;
 
-	constructor(parentId: number, name: string, connected: boolean, id: number){ 
+	constructor(parentId: number, name: string, id: number, value?: any){ 
 		this._belongsTo = parentId;
 		this._name = name;
-		this._connected = connected; 
 		this._id = id;
+		this._dValue = value;
 	}
 
 	reset(): void{
-		this._value = undefined;
+		this._dValue = undefined;
+	}
+
+	getId(): number{
+		return this._id;
 	}
 
 	getParent(): number{
@@ -51,16 +59,26 @@ class Port implements IPort{
 		return this._selected
 	}
 
+	setName(name: string): void{
+		//todo: validate the name
+		
+		this._name = name;
+	}
+
+	setConnected(conn: boolean): void{
+		this._connected = conn;
+	}
+
 	getName(): string{
 		return this._name;
 	}
 
 	getValue(): any{
-		return this._value;
+		return this._dValue;
 	}
 
-	setValue(value: any): any{
-		this._value = value;
+	setDValue(value: any): any{
+		this._dValue = value;
 	}
 
 
@@ -68,34 +86,42 @@ class Port implements IPort{
 
 export class InputPort extends Port{
 	
-	private _inputType: any;
+	private _inputType: any = {name: "input", id: 1};
+	private _dataValue: any;
 
-	constructor(parentId: number, name: string, connected: boolean, id: number, opts?:any){ 
-		super(parentId, name, connected, id);
-		this._inputType = opts;
+
+	constructor(parentId: number, name: string, id: number, dValue?: any, type?:any){ 
+		super(parentId, name, id, dValue);
+		this._inputType = type ? type : {name: "input", id: 1};
 	}
 
 	getType(): string{
-		return "input";
+		return this._inputType.name;
 	}
 
-	default(): any{
-		return 0;
-	}
-
-	getInputType(): any{
-		return this._inputType;
-	}
-
-	setInputType(type: any): void{
+	setType(type: any): void{
 		this._inputType = type;
 	}
 
-	getValue(): any{
-		if (this._inputType.connected == true)
-			return super.getValue();
+	setValue(value: any){
+		this._dataValue = value;
+	}
 
-		return (super.getValue() != undefined ? super.getValue() : this._inputType.dataValue);
+	getValue(): any{
+
+		// ??
+		/*if (this._inputType.connected == true){
+			console.warn("here here !");
+			return super.getValue();
+		}*/
+
+		// super.getValue() - gets the default value
+		//return (super.getValue() != undefined ? super.getValue() : this._inputType.dataValue);
+		if( this._dataValue == undefined )
+			return super.getValue();
+		else
+			return this._dataValue; 
+
 	}
 
 }

@@ -64,8 +64,10 @@ export class ProcedureEditorComponent extends Viewer {
 
 	update(){
 		this._node = this.flowchartService.getSelectedNode();
-		this._procedureArr = this._node.getProcedure();
-		this.updateProcedureTree();
+		if( this._node !== undefined ){
+			this._procedureArr = this._node.getProcedure();
+			this.updateProcedureTree();
+		}
 	}
 
 	addVariable():void{
@@ -76,7 +78,7 @@ export class ProcedureEditorComponent extends Viewer {
 		// data name
 		// data value
 
-		this.update();		
+		this.flowchartService.update();
 	}
 
 	addAction(): void{

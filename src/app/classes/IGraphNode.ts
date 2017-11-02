@@ -23,9 +23,10 @@ export interface IGraphNode{
 	getOutputs(): OutputPort[];
 	getInputByIndex(idx:number): InputPort;
 	getOutputByIndex(idx:number): OutputPort;
-	addInput(name: string, connected: boolean, data?:any): number;
+
+	addInput(): InputPort;
 	addOutput(name: string, connected: boolean): number;
-	removeInput(): number;
+	removeInput(port: InputPort): number;
 	removeOutput(): number;
 
 	addDependency(node_port_input_idx: number[]): void;
@@ -61,6 +62,8 @@ export class GraphNode implements IGraphNode{
 	private _procedure: IProcedure[];
 	private _dependencies: any = [];
 	private _dependencyNodes: number[] = [];
+
+	private portCounter: number = 0;
 
 	private _prodFactory: ProcedureFactory = new ProcedureFactory();
 
@@ -137,27 +140,49 @@ export class GraphNode implements IGraphNode{
 		return this._dependencies;
 	}
 
-	addInput(name: string, connected:boolean, data?: any): number{
-		let inp = new InputPort(this._id, name, connected, this._inputs.length, data);
+	addInput(): InputPort{
+		let default_name = this._name + "_in" + this.portCounter; 
+		let inp = new InputPort(this._id, default_name, this.portCounter);
 		this._inputs.push(inp);
-		return this._inputs.length; 
+		this.portCounter++;
+		return inp;
 	}
 
 	addOutput(name: string, connected: boolean): number{ 
-		let oup = new OutputPort(this._id, name, connected, this._outputs.length);
+		let default_name = this._name + "_out" + this.portCounter; 
+		let oup = new OutputPort(this._id, default_name, this.portCounter);
 		this._outputs.push(oup);
+		this.portCounter++;
 		return this._outputs.length; 
 	}
 
 	getInputByIndex(id:number): InputPort{
-		return this._inputs[id];
+		for(let i=0; i < this._inputs.length; i++){
+			let inp = this._inputs[i]
+			if(inp.getId() == id){
+				return inp;
+			}
+		}
 	}
 
 	getOutputByIndex(id:number): OutputPort{
-		return this._outputs[id];
+		for(let i=0; i < this._outputs.length; i++){
+			let out = this._outputs[i]
+			if(out.getId() == id){
+				return out;
+			}
+		}
 	}
 
-	removeInput(): number{
+	removeInput(port: InputPort): number{
+		let index = port.getId();
+		for(let i=0; i < this._inputs.length; i++){
+			let inp = this._inputs[i]
+			if(inp.getId() == index){
+				this._inputs.splice(i, 1);
+				break;
+			}
+		}
 		return this._inputs.length; 
 	}
 
@@ -190,7 +215,7 @@ export class GraphNode implements IGraphNode{
 		// add results to this node
 		for( let n=0;  n < this._outputs.length; n++ ){
 			let output_port = this._outputs[n];
-			output_port.setValue(result[output_port.getName()]);
+			output_port.setDValue(result[output_port.getName()]);
 		}
 
 		// change status of the node

@@ -2,15 +2,14 @@ $header-height: 30px;
 
 .viewer{
 
-	display: inline-block;
 	border: 1px solid gray;
 	margin: 10px; 
 	overflow: auto;
 	padding: 0px;
 	margin: 0px;
-	height: 300px;
+	//height: 300px;
 	width: 300px;
-
+	float: left;
 
 	.header{
 		background-color: #999696;

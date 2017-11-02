@@ -61,6 +61,10 @@ export class FlowchartViewerComponent extends Viewer{
     this.flowchartService.selectNode(node);
   }
 
+  inputclick($event, input): void{
+    console.log($event, input);
+  }
+
   dragNode($event): void{
     console.log("drag end");
     if($event.clientX == 0 && $event.clientY == 0){
