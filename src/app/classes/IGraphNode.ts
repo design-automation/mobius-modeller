@@ -65,7 +65,7 @@ export class GraphNode implements IGraphNode{
 
 	private portCounter: number = 0;
 
-	private _prodFactory: ProcedureFactory = new ProcedureFactory();
+	private _prodFactory: ProcedureFactory = ProcedureFactory.getInstance();
 
 	getID(): number { return this._id; };
 	isDisabled(): boolean{ return this._disabled; };

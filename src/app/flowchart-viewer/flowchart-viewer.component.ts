@@ -18,7 +18,13 @@ export class FlowchartViewerComponent extends Viewer{
   nodes: IGraphNode[] = [];
   conn: any = [];
 
-  constructor(injector: Injector){  super(injector);  }
+  constructor(injector: Injector){  super(injector, "FlowchartViewer");  }
+
+  reset(): void{
+    this.selectedNode = 0;
+    this.nodes = [];
+    this.conn = [];
+  }
 
   ngOnInit(){
     /*let c = <HTMLCanvasElement> document.getElementById("myCanvas");
@@ -32,7 +38,6 @@ export class FlowchartViewerComponent extends Viewer{
   update(){
     this.nodes = this.flowchartService.getNodes();
     this.conn = this.flowchartService.getConnections()
-
     //this.data = this.flowchartService.getChartData();
   }
 

@@ -4,9 +4,10 @@ import { Subscription } from 'rxjs/Subscription';
 
 interface IViewer{
 	update(): void;
+	reset(): void;
 }
 
-export class Viewer implements OnInit, OnDestroy, IViewer{
+export abstract class Viewer implements OnInit, OnDestroy, IViewer{
 
 	private _name: string;
 	private _description: string;
@@ -33,11 +34,11 @@ export class Viewer implements OnInit, OnDestroy, IViewer{
   	//	checks if the flowchart service has a flowchart and calls update function for the viewer
   	//
   	notify(): void{
-  		if ( this.flowchartService.hasFlowchart() ){
+  		if ( this.flowchartService.hasFlowchart() && this.flowchartService.getNodes().length > 0 ){
   			this.update();
   		}
   		else{
-  			console.log("No Flowchart Loaded")
+  			this.reset();  		
   		}
   	}
 
@@ -53,6 +54,10 @@ export class Viewer implements OnInit, OnDestroy, IViewer{
 	ngOnDestroy() {
 	    // unsubscribe to ensure no memory leaks
 	    this._subscription.unsubscribe();
+	}
+
+	reset(){
+		console.log(this._name + " has not implemented the reset function!");
 	}
 
 	// 

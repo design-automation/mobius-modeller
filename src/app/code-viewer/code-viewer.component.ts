@@ -20,4 +20,8 @@ export class CodeViewerComponent extends Viewer {
 		this.code = this.flowchartService.getCode();
 	}
 
+	reset(): void{
+		this.code = "";
+	}
+
 }

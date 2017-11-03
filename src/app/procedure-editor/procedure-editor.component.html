@@ -11,18 +11,55 @@
   	</mat-expansion-panel-header>
 	<div class='container'>
 		<tree-root #tree [nodes]='_tree' [options]='_tree_options'>
-			  <ng-template #treeNodeTemplate let-node let-index="index">
-					
-					<div class='data-node-template procedure'>
-						{{node.name}}
-						<span>{{ node.data.name }}</span> = <span>{{  node.data.value }}</span>
+			  <ng-template #treeNodeTemplate let-prod let-index="index">
+
+					<!-- template for data -->
+					<div *ngIf="prod.data.type == 'Data'">
+						<div class='data-node-template procedure'>
+							<span contenteditable="true">{{ prod.data.result || "undefined" }}</span> = <span contenteditable="true">{{  prod.data.value || "undefined" }}</span>
+						</div>
 					</div>
 
-				    <div class='btn-group'>
-					    <button (click)="deleteProcedure(index, $event)">Delete</button>
-					    <button (click)="disableProcedure(index, $event)">Disable</button>
-					    <button (click)="go($event)">Copy</button>
+					<!-- template for action -->
+					<div *ngIf="prod.data.type == 'Action'">
+						<div class='data-node-template procedure'>
+							<span class='editable' contenteditable="true">{{prod.data.result}}</span> =
+							<span>{{ prod.data.name }}
+								(	
+								<span *ngFor="let arg of prod.data.params" contenteditable="true">
+									{{ arg.value || arg.type }}
+								</span>
+								)
+
+							</span>
+						</div>
 					</div>
+
+					<!-- template for control -->
+					<div *ngIf="prod.data.type == 'Control'">
+						
+						<!-- for each-->
+						<div class='data-node-template procedure' *ngIf="prod.data.name == 'for each'">
+							for <span contenteditable="true">{{ prod.data.result }}</span> in <span contenteditable="true">{{prod.data.expression}}</span>
+						</div>
+
+						<!-- if else -->
+						<div class='data-node-template procedure' *ngIf="prod.data.name == 'if'">
+							{{ prod.data.name }} <span contenteditable="true">{{prod.data.expression}}</span>
+						</div>
+
+						<!-- if / else  -->
+						<div class='data-node-template procedure' *ngIf="prod.data.name != 'for each' && prod.data.name != 'if'">
+							<span>{{ prod.data.name }}</span>
+						</div>
+					
+					</div>
+
+				    <!-- <div class='btn-group'>
+				    					    <button (click)="deleteProcedure(index, $event)">Delete</button>
+				    					    <button (click)="disableProcedure(index, $event)">Disable</button>
+				    					    <button (click)="go($event)">Copy</button>
+				    					</div> -->
 
 			  </ng-template>
 		</tree-root>

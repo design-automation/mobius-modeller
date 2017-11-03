@@ -10,18 +10,23 @@ import { InputPort } from '../classes/IPort';
 })
 export class ParameterEditorComponent extends Viewer{
 
-	private _node: IGraphNode;
-	private _inputs: InputPort[];
+	  private _node: IGraphNode;
+	  private _inputs: InputPort[];
 
-  // shift to iport
-  private portOpts: any[] = [
-    {name: "default", id: 0},
-    {name: "input", id: 1},
-    {name: "colorpicker", id: 2}, 
-    {name: "dropdown", id: 3}
-  ]
+    // shift to iport
+    private portOpts: any[] = [
+      {name: "default", id: 0},
+      {name: "input", id: 1},
+      {name: "colorpicker", id: 2}, 
+      {name: "dropdown", id: 3}
+    ]
 
-	constructor(injector: Injector){  super(injector); }
+	  constructor(injector: Injector){  super(injector, "parameter-editor"); }
+
+    reset(){ 
+      this._node = undefined;
+      this._inputs = undefined;
+    }
 
   	addInput(): void{
       console.log(this._node.addInput());

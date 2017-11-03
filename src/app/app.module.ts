@@ -28,6 +28,7 @@ import { TreeModule } from 'angular-tree-component';
 import { ParameterViewerComponent } from './parameter-viewer/parameter-viewer.component';
 import { ParameterEditorComponent } from './parameter-editor/parameter-editor.component';
 
+import {ResizeEvent} from 'angular-resizable-element';
 
 @NgModule({
   declarations: [

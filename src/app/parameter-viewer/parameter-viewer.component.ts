@@ -10,20 +10,23 @@ import { InputPort } from '../classes/IPort';
 })
 export class ParameterViewerComponent extends Viewer {
 
-	private _disabled: boolean;
+	  private _node: IGraphNode;
+	  private _inputs: InputPort[];
 
-	private _node: IGraphNode;
-	private _inputs: InputPort[];
+  	constructor(injector: Injector){  super(injector, "parameter-viewer"); }
 
-  	constructor(injector: Injector){  super(injector); }
+  	ngOnInit() {
+  	}
 
-	ngOnInit() {
-	}
+    reset(): void{
+      this._node = undefined; 
+      this._inputs = [];
+    }
 
   	addInput(): void{
       	this._node.addInput();
   		this.flowchartService.update();
-	}
+	  }
 
     updateInputName($event, input): void{
       let name: string = $event.srcElement.innerText;
@@ -41,7 +44,6 @@ export class ParameterViewerComponent extends Viewer {
     updateInputDataValue($event, input): void{
       let value: string = $event.srcElement.innerText;
       input.setDataValue(value);
-      console.log(input);
 
       // put a timeout on this update or something similar to solve jumpiness
       this.flowchartService.update();
@@ -53,13 +55,7 @@ export class ParameterViewerComponent extends Viewer {
   	//
   	update(): void{
   		this._node = this.flowchartService.getSelectedNode();
-		if( this._node !== undefined ){
-			   this._inputs = this._node.getInputs();
-			   this._disabled = false;
-		}
-		else{
-			this._disabled = true;
-		}
+      this._inputs = this._node.getInputs();
   	}
 
 }

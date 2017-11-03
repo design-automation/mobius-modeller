@@ -19,6 +19,7 @@ export class CodeGeneratorJS extends CodeGenerator{
 						");
 			return result;//result;// return result of the node
 		}
+
 		getFunctionCall(node: IGraphNode, params?: any): string{
 			let fn_call: string = "";
 			let param_values: string[] = [];
@@ -116,6 +117,7 @@ export class CodeGeneratorJS extends CodeGenerator{
 		}
 
 		generateProcedureCode(procedure: IProcedure){
+
 			// change based on type
 			let code: string; 
 			if(procedure.getTitle() == "Data"){
@@ -133,8 +135,9 @@ export class CodeGeneratorJS extends CodeGenerator{
 				}
 				code = procedure.getResult() + " = " + "gis"/*procedure.getModule().trim()*/ + "." + procedure.getMethod() + "( " + paramList.join(",") + " );\n";
 			}
-			else if(procedure.getTitle() == "Control")
+			else if(procedure.getTitle() == "Control"){
 				code = "";
+			}
 
 			return code;
 		}

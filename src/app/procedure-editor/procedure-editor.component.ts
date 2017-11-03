@@ -10,7 +10,7 @@ import { IProcedure, Procedure, ProcedureFactory } from '../classes/IProcedure';
 })
 export class ProcedureEditorComponent extends Viewer {
 
-	private _prodFactory: ProcedureFactory = new ProcedureFactory(); 
+	private _prodFactory: ProcedureFactory = ProcedureFactory.getInstance();
 
   	_procedureArr: IProcedure[] = [];
   	_node: IGraphNode;
@@ -24,7 +24,13 @@ export class ProcedureEditorComponent extends Viewer {
 	  }
 	};
 
-	constructor(injector: Injector){  super(injector); }
+	constructor(injector: Injector){  super(injector, "procedure-editor"); }
+
+	reset():void{
+		this._procedureArr = [];
+		this._node = undefined;
+		this._tree = [];
+	}
 
 	expandAll(tree){
 		tree.treeModel.expandAll();
@@ -35,16 +41,23 @@ export class ProcedureEditorComponent extends Viewer {
 		let getTreeItem = function(data : IProcedure): any{
 
 			let procedure_type = data.getTitle();
-			let dataObj = { id: Math.random() , name: data.getTitle(), type: data.getTitle(), model: data } ; 
+			let dataObj = { id: Math.random() , name: data.getTitle(), type: procedure_type, model: data } ; 
 			
 			if(procedure_type === "Data"){
-				
+				dataObj["result"] = data.getResult();
 			}
 			else if(procedure_type == "Action"){
 				dataObj.name = data.getCategory() + "::" + data.getMethod();
+				dataObj["params"] = data.getParams();
+				dataObj["result"] = data.getResult();
 			}
 			else if(procedure_type == "Control"){
+				// if else (if else)
+				// for 
 				dataObj.name = data.getControlType();
+				dataObj["result"] = data.getResult();
+				dataObj["expression"] = data.getExpression();
+
 				dataObj["children"] = data.getNodes().map(function(node){
 					return getTreeItem(node)
 				})
@@ -64,10 +77,8 @@ export class ProcedureEditorComponent extends Viewer {
 
 	update(){
 		this._node = this.flowchartService.getSelectedNode();
-		if( this._node !== undefined ){
-			this._procedureArr = this._node.getProcedure();
-			this.updateProcedureTree();
-		}
+		this._procedureArr = this._node.getProcedure();
+		this.updateProcedureTree();
 	}
 
 	addVariable():void{

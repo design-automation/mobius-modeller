@@ -7,7 +7,18 @@
 
 		.procedure{
 			padding: 4px; 
-			border-bottom: 1px solid gray;
+			width: 100%;
+
+			[contenteditable="true"]:active,
+			[contenteditable="true"]:focus{
+			border:none;
+			outline:none;
+			}
+
+			[contenteditable="true"]{
+				color: blue;
+				border-bottom: 1px dashed blue;
+			}
 
 
 			&.disabled{

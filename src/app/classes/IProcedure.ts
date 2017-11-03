@@ -1,3 +1,8 @@
+/*enum ControlTypes{
+	FOR = "for each", 
+	IF = "if else"
+}*/
+
 export interface IProcedure{
 
 	isSelected(): boolean; 
@@ -19,27 +24,47 @@ export interface IProcedure{
 	getNodes(): IProcedure[];
 	getControlType(): string;
 
+	getExpression(): any;
+
 }
 
 export class ProcedureFactory{
 
-	constructor(){ }
+	private static instance: ProcedureFactory; 
+
+	constructor(){}
+
+	static getInstance():	ProcedureFactory{
+		if (ProcedureFactory.instance == undefined){
+			ProcedureFactory.instance = new ProcedureFactory();
+		}
+		
+		return ProcedureFactory.instance;
+	}
 
 	getProcedure(data: any){
+
 		if(data.title == "Data"){
-			return new Procedure_Data(data);
+			return new DataProcedure(data);
 		}
 		else if(data.title == "Action"){
-			return new Procedure_Action(data);
+			return new ActionProcedure(data);
 		}
 		else if(data.title == "Control"){
-			return new Procedure_Control(data);
+			if(data.controlType == "if else" || data.controlType == "if" || data.controlType == "else") 
+				return new IfElseControl(data);
+			else if(data.controlType == "for each"){
+				return new ForLoopControl(data);
+			}
+		}
+		else{
+			throw Error("Invalid control");
 		}
 	}
 
 }
 
-export class Procedure implements IProcedure{
+export abstract class Procedure implements IProcedure{
 
 	private _id: number;
 	private _selected: boolean; 
@@ -119,10 +144,47 @@ export class Procedure implements IProcedure{
 		return "undefined"
 	}
 
-
+	getExpression(): any{
+		return undefined;
+	}
 }
 
-export class Procedure_Data extends Procedure{
+export abstract class ControlProcedure extends Procedure{
+
+	private factory: ProcedureFactory = ProcedureFactory.getInstance();
+	
+	private _controlType: string;
+	private _children: IProcedure[];
+
+	private dataName: undefined;
+	private forList: undefined;
+
+	constructor(d){
+		super(d);
+		let _factory = this.factory;
+		this._children = d.nodes.map(function(node){
+			return _factory.getProcedure(node);
+		});
+		this._controlType = d.controlType;
+	}
+
+	getControlType(): string{
+		return this._controlType; 
+	}
+
+	getNodes(): IProcedure[]{
+		return this._children;
+	}
+}
+
+
+
+//
+//
+//
+//
+
+export class DataProcedure extends Procedure{
 	private _name: string; 
 	private _value: string;
 
@@ -142,7 +204,7 @@ export class Procedure_Data extends Procedure{
 
 }
 
-export class Procedure_Action extends Procedure{
+export class ActionProcedure extends Procedure{
 
 	//private _module: IModule; 
 	private _category: string;
@@ -179,26 +241,41 @@ export class Procedure_Action extends Procedure{
 
 }
 
-export class Procedure_Control extends Procedure{
-
-	private _controlType: string;
-	private _children: IProcedure[];
-	private factory: ProcedureFactory = new ProcedureFactory();
+export class ForLoopControl extends ControlProcedure{
+	private _dataName: string; 
+	private _forList: any[];
 
 	constructor(d){
 		super(d);
-		let _factory = this.factory;
-		this._children = d.nodes.map(function(node){
-			return _factory.getProcedure(node);
-		});
-		this._controlType = d.controlType;
+
+		// for loops
+		this._dataName = d.dataName || undefined;
+		this._forList = d.forList || [];
 	}
 
-	getControlType(): string{
-		return this._controlType; 
+	getResult() :string{
+		return this._dataName; 
 	}
 
-	getNodes(): IProcedure[]{
-		return this._children;
+	getExpression(): any{
+		return this._forList;
 	}
+
+}
+
+export class IfElseControl extends ControlProcedure{
+	private _ifExpression: string; 
+
+	constructor(d){
+		super(d);
+
+		// for loops
+		this._ifExpression = d.ifExpression || undefined;
+	}
+
+
+	getExpression(): any{
+		return this._ifExpression; 
+	}
+
 }

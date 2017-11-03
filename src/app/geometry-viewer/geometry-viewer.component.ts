@@ -11,13 +11,22 @@ import * as THREE from 'three';
 export class GeometryViewerComponent extends Viewer implements OnInit{
 
 	_nodes: IGraphNode[];
+	private scene = new THREE.Scene();
 
 	constructor(injector: Injector){ 
 		super(injector, "Geometry Viewer", "Displayed geometry with each node;");  
 	}
 
+	reset(){ 
+		this._nodes = [];
+		let scene = this.scene;
+		while(scene.children.length > 0){ 
+		    scene.remove(scene.children[0]); 
+		}
+	}
+
 	ngOnInit(){
-		var scene = new THREE.Scene();
+		var scene = this.scene;
 		var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
 		var renderer = new THREE.WebGLRenderer();
@@ -30,12 +39,13 @@ export class GeometryViewerComponent extends Viewer implements OnInit{
 			requestAnimationFrame( animate );
 			renderer.render( scene, camera );
 		}
+		
 		animate();
-	}
+
+	}	
 
 	update() :void{
 		this._nodes = this.flowchartService.getNodes();		
-		console.log("updated");
 	}
 
 	getGeometry(node: IGraphNode): string[]{
