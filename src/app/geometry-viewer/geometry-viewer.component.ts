@@ -10,6 +10,7 @@ import * as THREE from 'three';
 })
 export class GeometryViewerComponent extends Viewer implements OnInit{
 
+	isVisible: boolean = false;
 	_nodes: IGraphNode[];
 	private scene = new THREE.Scene();
 
@@ -45,7 +46,8 @@ export class GeometryViewerComponent extends Viewer implements OnInit{
 	}	
 
 	update() :void{
-		this._nodes = this.flowchartService.getNodes();		
+		this._nodes = this.flowchartService.getNodes();	
+		this.isVisible = this._nodes.length > 0 ? true : false;
 	}
 
 	getGeometry(node: IGraphNode): string[]{

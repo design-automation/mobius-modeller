@@ -12,6 +12,7 @@ export class ParameterViewerComponent extends Viewer {
 
 	  private _node: IGraphNode;
 	  private _inputs: InputPort[];
+    private isVisible: boolean = false;
 
   	constructor(injector: Injector){  super(injector, "parameter-viewer"); }
 
@@ -56,6 +57,7 @@ export class ParameterViewerComponent extends Viewer {
   	update(): void{
   		this._node = this.flowchartService.getSelectedNode();
       this._inputs = this._node.getInputs();
+      this.isVisible = true;
   	}
 
 }

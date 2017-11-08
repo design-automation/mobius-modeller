@@ -11,6 +11,7 @@ import { IProcedure, Procedure, ProcedureFactory } from '../classes/IProcedure';
 export class ProcedureEditorComponent extends Viewer {
 
 	private _prodFactory: ProcedureFactory = ProcedureFactory.getInstance();
+	private isVisible: boolean = false;
 
   	_procedureArr: IProcedure[] = [];
   	_node: IGraphNode;
@@ -91,6 +92,7 @@ export class ProcedureEditorComponent extends Viewer {
 		this._node = this.flowchartService.getSelectedNode();
 		this._procedureArr = this._node.getProcedure();
 		this.updateProcedureTree();
+		this.isVisible = true;
 	}
 
 	addVariable():void{

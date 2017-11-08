@@ -7,18 +7,21 @@
 	position: relative;
 	overflow: hidden;
 
-	.wrapper{
-		position: absolute;
-		height: 1000px;
-		width: 1000px;
-		cursor: move;
-		border: 2px solid blue;
-		//overflow: hidden;
-	}
-	
+
 	.container{
 		height: 500px;
 		overflow: hidden;
+		border: 1px solid black;
+
+		.wrapper{
+			position: absolute;
+			height: 1000px;
+			width: 1000px;
+			cursor: move;
+			border: 2px solid blue;
+			//overflow: hidden;
+		}
+	
 	}
 	/* .node{
 	

@@ -12,6 +12,7 @@ export class ParameterEditorComponent extends Viewer{
 
 	  private _node: IGraphNode;
 	  private _inputs: InputPort[];
+    private isVisible: boolean = false;
 
     // shift to iport
     private portOpts: any[] = [
@@ -68,6 +69,7 @@ export class ParameterEditorComponent extends Viewer{
   		this._node = this.flowchartService.getSelectedNode();
       if( this._node !== undefined ){
   		   this._inputs = this._node.getInputs();
+         this.isVisible = true;
       }
   	}
 
