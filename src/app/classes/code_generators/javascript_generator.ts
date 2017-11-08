@@ -121,7 +121,7 @@ export class CodeGeneratorJS extends CodeGenerator{
 			// change based on type
 			let code: string; 
 			if(procedure.getTitle() == "Data"){
-				code =  "\n" + procedure.getName() + " = " + procedure.getValue() + ";";
+				code =  "\n" + procedure.getResult() + " = " + procedure.getExpression() + ";";
 			}
 			else if(procedure.getTitle() == "Action"){
 				let paramList :string[]= [];

@@ -19,6 +19,8 @@ export interface IFlowchart{
 
 	getDisplayCode() :string;
 	execute(): boolean;
+
+	save(): string;
 };
 
 export class FlowchartFactory{
@@ -169,5 +171,9 @@ class Flowchart implements IFlowchart{
 		}
 
 		return true;
+	}
+
+	save(): string{
+		return JSON.stringify(this);
 	}
 }

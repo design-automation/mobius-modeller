@@ -159,4 +159,8 @@ export class FlowchartService {
     return this._flowchart.getDisplayCode();
   }
 
+  save(): void{
+    console.log(this._flowchart.save());
+  }
+
 }

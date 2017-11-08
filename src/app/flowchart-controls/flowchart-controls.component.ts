@@ -40,4 +40,8 @@ export class FlowchartControlsComponent extends Viewer implements OnInit{
       });
   }
 
+  save(): void{
+    this.flowchartService.save();
+  }
+
 }

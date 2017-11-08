@@ -123,7 +123,7 @@ export class CodeGeneratorPY extends CodeGenerator{
 
 			let code: string = ""; 
 			if( procedure.getTitle() == "Data" ){
-				code =  "\n" + procedure.getName() + " = " + procedure.getValue() + ";";
+				code =  "\n" + procedure.getName() + " = " + procedure.getExpression() + ";";
 			}
 
 			return code;

@@ -15,7 +15,6 @@ export interface IProcedure{
 	getModule(): string;
 
 	getName(): string;
-	getValue(): string;
 	getCategory() :string;
 	getMethod() :string;
 	getParams(): any;
@@ -25,6 +24,9 @@ export interface IProcedure{
 	getControlType(): string;
 
 	getExpression(): any;
+
+	setResult(value: string): void;
+	setExpression(value: string): void;
 
 }
 
@@ -72,6 +74,7 @@ export abstract class Procedure implements IProcedure{
 	private _title: string;
 	private _module : string;
 	private _disabled: boolean; 
+	private _allowDrag: boolean;
 
 	constructor(d){
 		this._id = d.id; 
@@ -80,6 +83,7 @@ export abstract class Procedure implements IProcedure{
 		this._type = d.type; 
 		this._module = d.module;
 		this._disabled = false;
+		this._allowDrag = d.allowDrag || true;
 	}
 
 	isSelected(): boolean{
@@ -116,10 +120,6 @@ export abstract class Procedure implements IProcedure{
 		return "";
 	}
 
-	getValue(): string{
-		return "";
-	}
-
 	getCategory(): string{
 		return undefined;
 	}
@@ -147,6 +147,14 @@ export abstract class Procedure implements IProcedure{
 	getExpression(): any{
 		return undefined;
 	}
+
+	setResult(value: string): void{
+
+	}
+
+	setExpression(expression: string): void{
+		
+	}
 }
 
 export abstract class ControlProcedure extends Procedure{
@@ -154,7 +162,7 @@ export abstract class ControlProcedure extends Procedure{
 	private factory: ProcedureFactory = ProcedureFactory.getInstance();
 	
 	private _controlType: string;
-	private _children: IProcedure[];
+	protected _children: IProcedure[] = [];
 
 	private dataName: undefined;
 	private forList: undefined;
@@ -162,7 +170,7 @@ export abstract class ControlProcedure extends Procedure{
 	constructor(d){
 		super(d);
 		let _factory = this.factory;
-		this._children = d.nodes.map(function(node){
+		this._children = (d.nodes || []).map(function(node){
 			return _factory.getProcedure(node);
 		});
 		this._controlType = d.controlType;
@@ -175,6 +183,11 @@ export abstract class ControlProcedure extends Procedure{
 	getNodes(): IProcedure[]{
 		return this._children;
 	}
+
+	addChild(prod: IProcedure){
+		this._children.push(prod);
+	}
+
 }
 
 
@@ -198,8 +211,16 @@ export class DataProcedure extends Procedure{
 		return this._name;
 	}
 
-	getValue() : string{
+	getExpression() : string{
 		return this._value;
+	}
+
+	setResult(result: string){
+		this._name = result;
+	}
+
+	setExpression(exp: string){
+		this._value = exp;
 	}
 
 }
@@ -218,7 +239,7 @@ export class ActionProcedure extends Procedure{
 		this._method = d.method;
 		this._category = d.category; 
 		this._expression = d.expression;
-		this._params = d.parameters;
+		this._params = d.parameters || [];
 		this._result = d.result; 
 	}
 
@@ -234,6 +255,10 @@ export class ActionProcedure extends Procedure{
 		return this._params;
 	}
 
+	setResult(var_name: string){
+		this._result = var_name;
+	}
+
 	getResult(): string{
 		return this._result;
 	}
@@ -243,7 +268,7 @@ export class ActionProcedure extends Procedure{
 
 export class ForLoopControl extends ControlProcedure{
 	private _dataName: string; 
-	private _forList: any[];
+	private _forList: string;
 
 	constructor(d){
 		super(d);
@@ -261,6 +286,14 @@ export class ForLoopControl extends ControlProcedure{
 		return this._forList;
 	}
 
+	setResult(result: string): void{
+		this._dataName = result;
+	}
+
+	setExpression(expression: string): void{
+		this._forList = expression;
+	}
+
 }
 
 export class IfElseControl extends ControlProcedure{
@@ -269,6 +302,13 @@ export class IfElseControl extends ControlProcedure{
 	constructor(d){
 		super(d);
 
+		if(super.getNodes().length == 0 && d.controlType == "if else"){
+			let if_control: IProcedure = new IfElseControl({title: "Control", controlType: "if", allowDrag: false })
+			let else_control: IProcedure = new IfElseControl({title: "Control", controlType: "else", allowDrag: false})
+			super.addChild(if_control);
+			super.addChild(else_control);
+		}
+
 		// for loops
 		this._ifExpression = d.ifExpression || undefined;
 	}
@@ -276,6 +316,10 @@ export class IfElseControl extends ControlProcedure{
 
 	getExpression(): any{
 		return this._ifExpression; 
+	}
+
+	setExpression(expression: string): void{
+		this._ifExpression = expression;
 	}
 
 }

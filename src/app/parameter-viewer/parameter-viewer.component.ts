@@ -43,7 +43,7 @@ export class ParameterViewerComponent extends Viewer {
 
     updateInputDataValue($event, input): void{
       let value: string = $event.srcElement.innerText;
-      input.setDataValue(value);
+      input.setValue(value);
 
       // put a timeout on this update or something similar to solve jumpiness
       this.flowchartService.update();

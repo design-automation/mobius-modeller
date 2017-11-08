@@ -26,6 +26,21 @@ export class ProcedureEditorComponent extends Viewer {
 
 	constructor(injector: Injector){  super(injector, "procedure-editor"); }
 
+	updateProcedure($event, prod, property){
+		let procedure : IProcedure = prod.data.model;
+		let value: string = $event.srcElement.innerText;
+		console.log(value);
+		if( property == -1){
+			procedure.setResult(value);
+		}
+		else if(property == 1){
+			procedure.setExpression(value);
+		}
+		else{
+			throw Error("Invalid Procedure Update");
+		}
+	}
+
 	reset():void{
 		this._procedureArr = [];
 		this._node = undefined;
@@ -42,22 +57,19 @@ export class ProcedureEditorComponent extends Viewer {
 
 			let procedure_type = data.getTitle();
 			let dataObj = { id: Math.random() , name: data.getTitle(), type: procedure_type, model: data } ; 
+				dataObj["expression"] = data.getExpression();
+				dataObj["result"] = data.getResult();
 			
 			if(procedure_type === "Data"){
-				dataObj["result"] = data.getResult();
 			}
 			else if(procedure_type == "Action"){
 				dataObj.name = data.getCategory() + "::" + data.getMethod();
 				dataObj["params"] = data.getParams();
-				dataObj["result"] = data.getResult();
 			}
 			else if(procedure_type == "Control"){
 				// if else (if else)
 				// for 
 				dataObj.name = data.getControlType();
-				dataObj["result"] = data.getResult();
-				dataObj["expression"] = data.getExpression();
-
 				dataObj["children"] = data.getNodes().map(function(node){
 					return getTreeItem(node)
 				})
@@ -83,11 +95,35 @@ export class ProcedureEditorComponent extends Viewer {
 
 	addVariable():void{
 		// create the procedure
-		let prod:IProcedure = this._prodFactory.getProcedure({ id: this._procedureArr.length, title: "Data" });
-		this._node.addProcedureLine(prod);
+		
+		
 
 		// data name
 		// data value
+
+		
+	}
+
+	addProcedure(type: number): void{
+		if(type == 0){
+			let prod:IProcedure = this._prodFactory.getProcedure({ id: this._procedureArr.length, title: "Data" });
+			this._node.addProcedureLine(prod);
+		}
+		else if(type == 1){
+			let prod:IProcedure = this._prodFactory.getProcedure({ id: this._procedureArr.length, title: "Action" });
+			this._node.addProcedureLine(prod);
+		}
+		else if(type == 2){
+			let prod:IProcedure = this._prodFactory.getProcedure({ id: this._procedureArr.length, title: "Control", controlType: "for each" });
+			this._node.addProcedureLine(prod);
+		}
+		else if(type == 3){
+			let prod:IProcedure = this._prodFactory.getProcedure({ id: this._procedureArr.length, title: "Control", controlType: "if else" });
+			this._node.addProcedureLine(prod);
+		}
+		else{
+			throw Error("Invalid Procedure Type")
+		}
 
 		this.flowchartService.update();
 	}
