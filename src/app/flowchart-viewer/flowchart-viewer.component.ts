@@ -14,16 +14,38 @@ import { FlowchartService } from '../data/flowchart.service';
 })
 export class FlowchartViewerComponent extends Viewer{
 
+  zoom: number = 1; 
+  pan_mode: boolean = false;
+  pan_init; 
+  left: number = 0; 
+  top: number = 0;
+
   selectedNode: number = 0;
   nodes: IGraphNode[] = [];
   conn: any = [];
 
   constructor(injector: Injector){  super(injector, "FlowchartViewer");  }
 
+  resetViewer(): void{
+    this.zoom = 1; 
+    this.left = 0; 
+    this.top = 0; 
+    this.pan_mode = false;
+  }
+
+
   reset(): void{
     this.selectedNode = 0;
     this.nodes = [];
     this.conn = [];
+  }
+
+  scale($event): void{
+    if(this.zoom == 1.5) return; 
+    if(this.zoom == 0.5) return;
+
+    let scaleFactor: number = 0.1;
+    this.zoom = this.zoom  + (Math.sign($event.wheelDelta))*scaleFactor;
   }
 
   ngOnInit(){
@@ -37,7 +59,20 @@ export class FlowchartViewerComponent extends Viewer{
 
   update(){
     this.nodes = this.flowchartService.getNodes();
-    this.conn = this.flowchartService.getConnections()
+    console.log(this.nodes)
+    this.conn = this.flowchartService.getConnections();
+
+    this.nodes.map(function(node){
+          let margin = 10; 
+          let port_width = 15; 
+          let inputs = node.getInputs().length; 
+          let outputs =  node.getOutputs().length;
+          let max = inputs > outputs ? inputs : outputs; 
+          let width = margin*(max+1) + (max)*port_width;
+          node["position"] = node.getPosition();
+          console.log(node.getPosition());
+          node["width"] = width;
+    }) 
     //this.data = this.flowchartService.getChartData();
   }
 
@@ -66,21 +101,59 @@ export class FlowchartViewerComponent extends Viewer{
     this.flowchartService.selectNode(node);
   }
 
-  inputclick($event, input): void{
-    console.log($event, input);
+  startPan($event): void{
+    console.log("startpan")
+    this.pan_mode = true;
+    this.pan_init = [$event.layerX, $event.layerY];
   }
 
-  dragNode($event): void{
-    console.log("drag end");
-    if($event.clientX == 0 && $event.clientY == 0){
-      console.log("returning");
-      return;
+  panning($event): void{
+    if (this.pan_mode == true){
+        console.log("panning")
+
+        let relX = $event.layerX - this.pan_init[0];
+        let relY = $event.layerY - this.pan_init[1];
+        let factor: number = 1; 
+        this.left += relX; 
+        this.top += relY;
+        this.pan_init = [$event.layerX, $event.layerY];
     }
-    let square =  $event.srcElement;
-    square.style.top = $event.clientY;
-    square.style.left = $event.clientX;
-    console.log($event);
-    console.log("assigned" , $event.clientX, $event.clientY, square);
+  }
+
+  stopPan($event): void{
+    console.log("panstopped")
+    this.pan_mode = false;
+    this.pan_init = undefined;
+  }
+
+  onDragStart($event, node): void{
+    $event.dataTransfer.setDragImage( new Image(), 0, 0);
+    // todo : find more elegant solution
+    node.dragStart = {x: $event.pageX, y: $event.pageY}; 
+    this.pan_mode = false;
+  }
+
+  onDrag($event, node): void{
+    this.pan_mode = false;
+    let relX: number = $event.pageX - node.dragStart.x; 
+    let relY: number = $event.pageY - node.dragStart.y;
+    node.position.x += relX; 
+    node.position.y += relY; 
+    node.dragStart = {x: $event.pageX, y: $event.pageY}; 
+  }
+
+  dragEnd($event, node): void{
+    this.pan_mode = false;
+    let relX: number = $event.pageX - node.dragStart.x; 
+    let relY: number = $event.pageY - node.dragStart.y;
+    node.position.x += relX; 
+    node.position.y += relY; 
+
+    node.setPosition(node.position);
+  }
+
+  inputclick($event, input): void{
+    console.log($event, input);
   }
 
 }

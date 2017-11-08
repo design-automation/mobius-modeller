@@ -43,6 +43,9 @@ export interface IGraphNode{
 
 	executeNode(code_generator: ICodeGenerator, params?: any): void;
 	getValue(): any;
+
+	setPosition(pos: any): void;
+	getPosition(): any;
 }
 
 export class GraphNode implements IGraphNode{
@@ -55,7 +58,7 @@ export class GraphNode implements IGraphNode{
 	private _type: string;
 	private _inputs: InputPort[];
 	private _outputs: OutputPort[];
-	private _position: number[];
+	private _position: any;
 	private _subgraph: boolean;
 	private _overwrite: boolean;
 	private _version: number;
@@ -88,7 +91,7 @@ export class GraphNode implements IGraphNode{
 		 
 		this._disabled = data ? data.disabled || false : false; 
 		this._error = data ? data.error || false : false; 
-		this._position = data ? [data.x || 0, data.y || 0] : [0,0];
+		this._position = data ? { x: (data.x || 0), y: (data.y || 0) } : {x: 0, y: 0};
 		this._type = data ? data.type : undefined; 
 		this._version = data ? data.version || 1 : 1;
 		this._subgraph = data ? data.subgraph || false : false;
@@ -96,6 +99,15 @@ export class GraphNode implements IGraphNode{
 		this._inputs = [];
 		this._outputs = [];
 		this._procedure = [];
+
+	}
+
+	setPosition(pos: any){
+		this._position = pos; 
+	}
+
+	getPosition(): any{
+		return this._position;
 	}
 
 	reset(): void{

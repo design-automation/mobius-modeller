@@ -2,30 +2,54 @@
   	<mat-expansion-panel-header>
 	    <mat-panel-title class='header'>
 	      <div class='header'>Flowchart Viewer</div>
+	      <div class='btn-group'>
+			<button (click)="resetViewer()">R</button>
+			<button (click)="addNode()">+</button>
+		  </div>
 	    </mat-panel-title>
   	</mat-expansion-panel-header>
 	<div class='container'>
-	    	<div class='node' *ngFor="let node of nodes" (click)='nodeclick($event, node)' [class.selected]="isSelected(node)" draggable="true" (drag)='dragNode($event)'>
-	     	 	
-	     	 	<div class='node-name'>
-	     	 		{{ node.getName() }}
-	     	 	</div>
 
-	     	 	<div class='port-container input'>
-	     	 		<div class='port' *ngFor="let inp of node.getInputs()" (click)='clickedInput(inp)'>
-	     	 			<!-- {{inp.getName()}} -->
-	     	 		</div>
-	     	 	</div>
+		<div class='wrapper' 
+				(wheel)="scale($event)"
+				(mousedown)="startPan($event)" (drag)="panning($event)" (mouseup)="stopPan($event)"
+				[style.zoom]="zoom" 
+				[style.left.px]="left" [style.top.px]="top">
+			
+			<canvas class="graph-container" id="graph-edges" width="700" height="700" >
+			</canvas>
 
-	     	 	<div class='port-container output'>
-	     	 		<div class='port' *ngFor="let otp of node.getOutputs()">
-	     	 			<!-- {{otp.getName()}} -->
-	     	 		</div>
-	     	 	</div>
+			<div class="graph-container" id="graph-nodes" ondragover="return false">
+				
+				<div class="node-container">
+					<!--- node 1 -->
+					<div  class="node" draggable=true *ngFor="let node of nodes" 
+										[class.selected]="isSelected(node)" 
+										[style.width.px]="node.width"
+										[style.top.px]="node.position.y" [style.left.px]="node.position.x" 
+										(click)="nodeclick($event, node)"
+										(dragstart)="onDragStart($event, node)" (drag)="onDrag($event, node)" (dragend)="dragEnd($event, node)">
+						
 
-	   		</div>
-	   		<button (click)="addNode()">+</button>
-			<!-- <canvas id="myCanvas" width="250" height="600" (click)='graphclick($event)'>
-			Your browser does not support the HTML5 canvas tag.</canvas> -->
+						<div class="port-container input">
+							<div class="port" *ngFor="let port of node.getInputs()" (click)="link($event, port)"></div>
+						</div>
+
+						<div class="port-container output">
+							<div class="port" 
+								*ngFor="let port of node.getOutputs()" 
+								(dragStart)="link($event, port)"
+								(drag)="dragLink($event, port)" 
+								(dragEnd)="createLink($event, port)"></div>
+						</div>
+						
+
+					</div>
+
+				</div>
+			</div>
+
+		</div>
 	</div>
 </mat-expansion-panel>
+
