@@ -15,158 +15,92 @@
 
 		.wrapper{
 			position: absolute;
-			height: 1000px;
-			width: 1000px;
 			cursor: move;
-			border: 2px solid blue;
+			background-color: blue;
+			z-index: 1;
 			//overflow: hidden;
 		}
 	
 	}
-	/* .node{
-	
-		position: relative;
-	
-		border: 1px solid black; 
-		height: 80px; 
-		width: 150px;
-		margin: 80px 30px;
-		border-radius: 16px;
-	
-		
-	
-		.node-name{
-			position: absolute;
-			top: 50%;
-			left: 50%;
-		}
-	
-		.port-container{
-			position: absolute;
-			left: 25px;
-			padding: 0px; 
-			margin: 0px;
-	
-			.port{
-				width: 20px;
-				height: 20px; 
-				border-radius: 50%;
-				border: 3px solid black;
-				display: inline-block;
-				background-color: white;
-				z-index: 2;
-				margin: 10px;
-			}
-	
-			&.input{
-				top: -25px;
-			}
-	
-			&.output{
-				bottom: -25px;
-			}
-	
-		}
-	
-	} */
-
 
 	.graph-container{
 		position: absolute;
 		display: inline-block;
 		height: 700px;
 		width: 700px;
-	}
+		#graph-edges{
+			background-color: transparent;
+		}
 
-	#graph-edges{
-		background-color: transparent;
-	}
-
-	#graph-nodes{
-		background-color: transparent;
-		overflow: hidden;
-	}
-
-	.node-container{
-		position: relative;
-	}
-
-	.node{
-		position: absolute;
-		height: 60px;
-		border: 3px solid black;
-		border-radius: 10px;
-		min-width: 20px;
-		background-color: white;
-		z-index: 3;
-		cursor: move !important;
-		margin: 0px;
-		&.selected{
-			background-color: #8181D6;
-			border-width: 4px;
+		#graph-nodes{
+			background-color: transparent;
+			overflow: hidden;
 		}
 	}
 
-	.node:active{
-		cursor: none;
+
+	.node-container{
+		position: relative;
+	
+		.node{
+			position: absolute;
+			height: 60px;
+			border: 3px solid black;
+			border-radius: 10px;
+			min-width: 20px;
+			background-color: white;
+			z-index: 3;
+			cursor: move !important;
+			margin: 0px;
+
+
+			.port-container{
+				height: 10px;
+				text-align: center;
+				z-index: 3;
+
+				&.input{
+					margin-top: -15px;
+				}
+
+				&.output{
+					margin-top: 70px;
+					transform: rotate(180deg)
+				}
+
+				.port{
+					height: 7.5px;
+					width: 15px;
+					border: 2px solid black;
+					border-radius: 50%;
+					display: inline-block;
+					background-color: black;
+					margin: 0px 2px;
+					border-top-right-radius: 15px;
+					border-top-left-radius: 15px;
+					z-index: 3;
+
+					&:hover{
+						background-color: orange;
+						cursor: pointer;
+					}
+				}
+
+			}
+
+			&.selected{
+				background-color: #8181D6;
+				border-width: 4px;
+			}
+
+			&:active{
+				cursor: none;
+			}
+		}
 	}
 
-	.move{
-		position: absolute;
-		top: 40%;
-		left: 45%;
-		width: 15px; 
-		height: 15px; 
-		background: black;	
-		cursor: move;
-	}
 
-	.port-container{
-		height: 10px;
-		text-align: center;
-		z-index: 3;
-	}
 
-	.port-container.input{
-		margin-top: -15px
-	}
-
-	.port-container.output{
-		margin-top: 70px;
-		transform: rotate(180deg)
-	}
-
-	.port{
-		height: 7.5px;
-		width: 15px;
-		border: 2px solid black;
-		border-radius: 50%;
-		display: inline-block;
-		background-color: black;
-		margin: 0px 2px;
-		border-top-right-radius: 15px;
-		border-top-left-radius: 15px;
-		z-index: 3;
-	}
-
-	.port:hover{
-		background-color: orange;
-		cursor: pointer;
-	}
-
-	button{
-		width: 45px; 
-		height: 45px; 
-		border-radius: 50%;
-		border: 3px solid gray; 
-		background-color: transparent;
-		right: 30px;
-		bottom: 30px;
-		line-height: 30px; 
-		font-weight: 600;
-		color: gray; 
-		font-size: 18px;
-	}
 	
 }
 

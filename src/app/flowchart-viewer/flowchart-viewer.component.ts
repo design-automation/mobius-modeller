@@ -41,9 +41,6 @@ export class FlowchartViewerComponent extends Viewer{
   }
 
   scale($event): void{
-    if(this.zoom == 1.5) return; 
-    if(this.zoom == 0.5) return;
-
     let scaleFactor: number = 0.1;
     this.zoom = this.zoom  + (Math.sign($event.wheelDelta))*scaleFactor;
   }
@@ -137,8 +134,8 @@ export class FlowchartViewerComponent extends Viewer{
     this.pan_mode = false;
     let relX: number = $event.pageX - node.dragStart.x; 
     let relY: number = $event.pageY - node.dragStart.y;
-    node.position.x += relX; 
-    node.position.y += relY; 
+    node.position.x += relX/this.zoom; 
+    node.position.y += relY/this.zoom; 
     node.dragStart = {x: $event.pageX, y: $event.pageY}; 
   }
 

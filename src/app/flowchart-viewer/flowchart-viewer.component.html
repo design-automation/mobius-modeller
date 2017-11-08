@@ -8,18 +8,12 @@
 		  </div>
 	    </mat-panel-title>
   	</mat-expansion-panel-header>
-	<div class='container'>
+	<div class='container' (wheel)="scale($event)">
 
-		<div class='wrapper' 
-				(wheel)="scale($event)"
-				(mousedown)="startPan($event)" (drag)="panning($event)" (mouseup)="stopPan($event)"
-				[style.zoom]="zoom" 
-				[style.left.px]="left" [style.top.px]="top">
-			
-			<canvas class="graph-container" id="graph-edges" width="700" height="700" >
+			<canvas class="graph-container" id="graph-edges" width="700" height="700" [style.zoom]="zoom" >
 			</canvas>
-
-			<div class="graph-container" id="graph-nodes" ondragover="return false">
+ 
+			<div class="graph-container" id="graph-nodes" ondragover="return false" [style.zoom]="zoom" >
 				
 				<div class="node-container">
 					<!--- node 1 -->
@@ -49,7 +43,6 @@
 				</div>
 			</div>
 
-		</div>
 	</div>
 </mat-expansion-panel>
 
