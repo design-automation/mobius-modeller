@@ -1,0 +1,16 @@
+<mat-expansion-panel class='viewer' 
+		(opened)="panelOpenState = true" 
+		(closed)="panelOpenState = false"
+		[expanded]="panelOpenState">
+  	<mat-expansion-panel-header>
+	    <mat-panel-title class='header'>
+	      <div class='header'>Flowchart Controls</div>
+	    </mat-panel-title>
+  	</mat-expansion-panel-header>
+	<div class='container'>
+		<button (click)="newfile()">New File</button>
+		<button type="submit" (click)="loadFile()">Load File</button>
+		<button (click)="execute()">Run Code</button>
+		<button (click)="save()">Save Flowchart</button>
+	</div>
+</mat-expansion-panel>

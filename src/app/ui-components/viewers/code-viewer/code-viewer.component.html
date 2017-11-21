@@ -1,0 +1,13 @@
+<mat-expansion-panel class='viewer' 
+		(opened)="panelOpenState = true" 
+		(closed)="panelOpenState = false"
+		[expanded]="panelOpenState">
+  	<mat-expansion-panel-header>
+	    <mat-panel-title class='header'>
+	      <div class='header'>Code Viewer</div>
+	    </mat-panel-title>
+  	</mat-expansion-panel-header>
+	<div class='container'>
+		<div ace-editor [(text)]="code" style='min-height: 300px;'></div>
+	</div>
+</mat-expansion-panel>

@@ -29,6 +29,7 @@ import { ParameterViewerComponent } from './parameter-viewer/parameter-viewer.co
 import { ParameterEditorComponent } from './parameter-editor/parameter-editor.component';
 
 import {ResizeEvent} from 'angular-resizable-element';
+import { ClickStopPropogationDirective } from './click-stop-propogation.directive';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import {ResizeEvent} from 'angular-resizable-element';
     ProcedureEditorComponent,
     ParameterViewerComponent,
     ParameterEditorComponent,
+    ClickStopPropogationDirective,
   ],
   imports: [
     BrowserModule,

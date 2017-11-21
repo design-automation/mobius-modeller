@@ -1,0 +1,111 @@
+@import '../../scss/globals';
+
+.viewer{
+
+	@extend .viewer;
+
+	position: relative;
+	overflow: hidden;
+
+
+	.container{
+		position: relative;
+
+		height: 500px;
+		overflow: hidden;
+
+		.wrapper{
+			position: absolute;
+			cursor: move;
+			background-color: blue;
+			z-index: 1;
+		}
+	
+	}
+
+	.graph-container{
+		position: absolute; 
+		top: 0px; 
+		left: 0px; 
+		height: 100%; 
+		width: 100%;
+
+		#graph-edges{
+			background-color: transparent;
+		}
+
+		#graph-nodes{
+			background-color: transparent;
+			overflow: hidden;
+		}
+	}
+
+
+	.node-container{
+		position: relative;
+	
+		.node{
+			position: absolute;
+			z-index: 3;
+			cursor: move !important;
+			margin: 0px;
+			min-width: 70px;
+
+			.node-body{
+				height: 60px;
+				border: 3px solid black;
+				border-radius: 10px;
+				background-color: white;
+				text-align: center;
+
+				&.selected{
+					background-color: #A4EAA4;
+				}
+			}
+
+			.port-container{
+				height: 10px;
+				width: 100%;
+				text-align: center;
+				z-index: 4;
+
+				&.input{
+					margin-top: -2px;
+				}
+
+				&.output{
+					transform: rotate(180deg)
+				}
+
+				.port{
+					height: 7.5px;
+					width: 15px;
+					border: 2px solid black;
+					border-radius: 50%;
+					display: inline-block;
+					background-color: black;
+					margin: 0px 2px;
+					border-top-right-radius: 15px;
+					border-top-left-radius: 15px;
+					z-index: 3;
+
+					&:hover{
+						background-color: orange;
+						cursor: pointer;
+					}
+				}
+
+			}
+
+			&:active{
+				cursor: none;
+			}
+		}
+	}
+
+
+
+	
+}
+
+

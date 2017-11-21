@@ -1,0 +1,59 @@
+<mat-expansion-panel class='viewer' 
+		[expanded]="panelOpenState">
+  	<mat-expansion-panel-header>
+	    <mat-panel-title class='header'>
+	      <div class='header'>Flowchart Viewer</div>
+	      <div class='btn-group' click-stop-propagation>
+			<button (click)="resetViewer()">R</button>
+			<button (click)="addNode($event)">+</button>
+		  </div>
+	    </mat-panel-title>
+  	</mat-expansion-panel-header>
+	<div class='container' (wheel)="scale($event)">
+
+			<svg xmlns="http://www.w3.org/2000/svg" class="graph-container" id="graph-edges" [style.zoom]="zoom">
+				<circle cx="10" cy="10" r="2" fill="red"></circle>
+				<g *ngFor="let connection of conn">
+					<path d="connection.getPath()" stroke="black" fill="transparent"/>
+				</g>
+			</svg>
+ 
+			<div class="graph-container" id="graph-nodes" ondragover="return false" [style.zoom]="zoom" >
+				
+				<div class="node-container">
+					<!--- node 1 -->
+					<div  class="node" draggable=true 
+							*ngFor="let node of nodes" 
+							[style.width.px]="node.width"
+							[style.top.px]="node.position.y" 
+							[style.left.px]="node.position.x" 
+							(dragstart)="onDragStart($event, node)" 
+							(drag)="onDrag($event, node)" 
+							(dragend)="dragEnd($event, node)">
+						
+						<div class="port-container input">
+							<div class="port" 
+								*ngFor="let port of node.getInputs()"  
+								(click)="link($event, port)"></div>
+						</div>
+
+						<div class="node-body" [class.selected]="isSelected(node)" 
+							(click)="nodeclick($event, node)">
+							{{node.getName()}}
+						</div>
+
+						<div class="port-container output">
+							<div class="port" 
+								*ngFor="let port of node.getOutputs()"
+								(click)="link($event, port)"></div>
+						</div>
+						
+
+					</div>
+
+				</div>
+			</div>
+
+	</div>
+</mat-expansion-panel>
+
