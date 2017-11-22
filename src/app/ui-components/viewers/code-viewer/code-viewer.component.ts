@@ -1,6 +1,7 @@
 import { Component, Injector } from '@angular/core';
-import { Viewer } from '../classes/Viewer';
 import { AceEditorModule } from 'ng2-ace-editor';
+
+import { Viewer } from '../../../base-classes/viz/Viewer';
 
 
 @Component({

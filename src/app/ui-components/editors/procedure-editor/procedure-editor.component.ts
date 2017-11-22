@@ -1,7 +1,10 @@
 import { Component, Injector, OnInit } from '@angular/core';
-import { Viewer } from '../classes/Viewer';
-import { IGraphNode } from '../classes/IGraphNode';
-import { IProcedure, Procedure, ProcedureFactory } from '../classes/IProcedure';
+
+import { IGraphNode } from '../../../base-classes/node/NodeModule';
+import { IProcedure, ProcedureFactory } from '../../../base-classes/procedure/ProcedureModule';
+
+import { Viewer } from '../../../base-classes/viz/Viewer';
+import { FlowchartService } from '../../../global-services/flowchart.service';
 
 @Component({
   selector: 'app-procedure-editor',

@@ -2,15 +2,14 @@ import { Injectable, Input, Output } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Subject } from 'rxjs/Subject';
 
-import { FlowchartConverter } from '../classes/FlowchartConverter';
-import { IFlowchart, FlowchartFactory } from '../classes/IFlowchart';
-import { IGraphNode, GraphNode } from '../classes/IGraphNode';
+import { IFlowchart } from '../base-classes/flowchart/FlowchartModule';
+import { IGraphNode, GraphNode } from '../base-classes/node/NodeModule';
 
 @Injectable()
 export class FlowchartService {
 
-  private _ffactory = new FlowchartFactory();
-  private _fc = new FlowchartConverter();
+  /*private _ffactory = new FlowchartFactory();
+  private _fc = new FlowchartConverter();*/
  
   private _origData: any;
   private _flowchart: IFlowchart;

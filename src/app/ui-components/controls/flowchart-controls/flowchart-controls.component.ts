@@ -1,7 +1,9 @@
 import { Component, Injector, OnInit } from '@angular/core';
-import { Viewer } from '../classes/Viewer';
 import { HttpClient } from '@angular/common/http';
-import { ModuleService } from '../data/module.service';
+
+import { ModuleService } from '../../../global-services/module.service';
+
+import { Viewer } from '../../../base-classes/viz/Viewer';
 
 @Component({
   selector: 'app-flowchart-controls',

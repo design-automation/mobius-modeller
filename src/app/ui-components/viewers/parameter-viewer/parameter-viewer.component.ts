@@ -1,7 +1,8 @@
 import { Component, Injector } from '@angular/core';
-import { Viewer } from '../classes/Viewer';
-import { IGraphNode } from '../classes/IGraphNode';
-import { InputPort } from '../classes/IPort';
+
+import { Viewer } from '../../../base-classes/viz/Viewer';
+import { IGraphNode } from '../../../base-classes/node/NodeModule';
+import { InputPort } from '../../../base-classes/port/PortModule';
 
 @Component({
   selector: 'app-parameter-viewer',

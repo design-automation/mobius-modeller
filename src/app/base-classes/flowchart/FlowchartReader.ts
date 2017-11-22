@@ -1,4 +1,4 @@
-import { FlowchartFactory } from '../classes/IFlowchart';
+/*import { FlowchartFactory } from '../classes/IFlowchart';
 import { IFlowchart } from '../classes/IFlowchart';
 import { GraphNode } from '../classes/IGraphNode';
 
@@ -53,4 +53,4 @@ export class FlowchartConverter{
 		return fc;
 	}
 
-}
+}*/

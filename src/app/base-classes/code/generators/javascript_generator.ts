@@ -1,44 +1,47 @@
-import { ICodeGenerator, CodeGenerator } from '../CodeGenerators';
-import { IGraphNode } from "../IGraphNode";
-import { InputPort, OutputPort } from "../IPort";
-import { IFlowchart } from "../IFlowchart";
-import { IProcedure } from "../IProcedure";
+import { CodeGenerator } from '../CodeGenerator';
+
+import { IFlowchart } from "../../flowchart/FlowchartModule";
+import { IGraphNode, IEdge } from "../../node/NodeModule";
+import { IProcedure } from "../../procedure/ProcedureModule";
+import { InputPort, OutputPort } from "../../port/PortModule";
 
 import * as ts from "typescript";
 
-
 export class CodeGeneratorJS extends CodeGenerator{
 
-		private _language: string = "js";
+		constructor(){ 
+			super("js");
+		}
 
-		getCode(flow: IFlowchart){
+		//
+		//	gets the display code for the flowchart
+		//
+		getDisplayCode(flow: IFlowchart){
 
 			let fn_calls :string[]= [];
 			let code_defs: string[] = [];
 			let connector_lines: any = [];
 			let code_block: string = "";
 
-			let all_nodes = flow.getNodes();
-			let all_conn = flow.getConnections();
+			let all_nodes: IGraphNode[] = flow.getNodes();
+			let all_edges: IEdge[] = flow.getEdges();
 
 			// connector lines
-			for(let c=0; c < all_conn.length; c++){
+			for(let c=0; c < all_edges.length; c++){
 
-				let connection_source = all_conn[c].source; 
-				let connection_dest = all_conn[c].dest;
-
-				// source is always output
-				// dest is always input
-				let srcNode = flow.getNode(connection_source.nodeID);
-				let destNode = flow.getNode(connection_dest.nodeID);
+				let edge: IEdge = all_edges[c];
+				let input_node: IGraphNode = flow.getNodeByIndex(edge.input_address[0]);
+				let output_node: IGraphNode = flow.getNodeByIndex(edge.output_address[0]);
 
 				// create line assigning values
-				let code = this.generateConnectionLine(destNode, connection_dest.connectorIndex, srcNode, connection_source.connectorIndex)
+				let code = this.generateConnectionLine(input_node, edge.input_address[1], 
+														output_node, edge.output_address[1]);
 
-				if(connector_lines[connection_dest.nodeID] == undefined){
-					connector_lines[connection_dest.nodeID] = [];
+				if(connector_lines[edge.input_address[0]] == undefined){
+					connector_lines[edge.input_address[0]] = [];
 				} 
-				connector_lines[connection_dest.nodeID].push(code);
+
+				connector_lines[edge.input_address[0]].push(code);
 			}
 
 			// get all the codes of the different functions and the function calls 
@@ -63,13 +66,7 @@ export class CodeGeneratorJS extends CodeGenerator{
 			return code_block;
 		}
 
-		executeNode(node: IGraphNode, params: any): any{
-			let gis = this.module_service.getModule("gis");
-			let result: any = eval("(function(){ \
-						" + this.getNodeCode(node) + "\n" + this.getFunctionCall(node, params) + "\n" + "return " + node.getName() + ";" + "})(); \
-						");
-			return result;//result;// return result of the node
-		}
+
 
 		getFunctionCall(node: IGraphNode, params?: any): string{
 			let fn_call: string = "";
@@ -89,7 +86,7 @@ export class CodeGeneratorJS extends CodeGenerator{
 			}
 
 			// make function call and assign to variable of same name
-			fn_call = "let " + node.getName() +  "=" + node.getName() + node.version() + "( " + param_values.join(", ") + " )" ;
+			fn_call = "let " + node.getName() +  "=" + node.getName() + node.getVersion() + "( " + param_values.join(", ") + " )" ;
 			
 			return fn_call;
 		}
@@ -104,7 +101,7 @@ export class CodeGeneratorJS extends CodeGenerator{
 			}
 
 			// make function
-			fn_def += "function " + node.getName() + node.version() + "( " + params.join(", ") + " )() \n" ;
+			fn_def += "function " + node.getName() + node.getVersion() + "( " + params.join(", ") + " )() \n" ;
 			
 			return fn_def;
 		}
@@ -129,7 +126,7 @@ export class CodeGeneratorJS extends CodeGenerator{
 			}
 
 			// make function
-			fn_code += "function " + node.getName() + node.version() + "( " + params.join(", ") + " ) { \n" ;
+			fn_code += "function " + node.getName() + node.getVersion() + "( " + params.join(", ") + " ) { \n" ;
 			fn_code += initializations.join(";\n") + ";\n";
 			
 			// add outputs 
@@ -211,6 +208,13 @@ export class CodeGeneratorJS extends CodeGenerator{
 			return "let " + port.getName() + " = " + port.getValue(); 
 		}
 
+		executeNode(node: IGraphNode, params: any): any{
+			//let gis = this._modules["gis"];
 
+			let result: any = eval("(function(){ \
+						" + this.getNodeCode(node) + "\n" + this.getFunctionCall(node, params) + "\n" + "return " + node.getName() + ";" + "})(); \
+						");
+			return result;//result;// return result of the node
+		}
 
 };

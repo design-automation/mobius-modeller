@@ -1,22 +1,33 @@
-import { Injector } from '@angular/core';
-import { ModuleService } from '../data/module.service'; 
-import { IFlowchart } from "./IFlowchart";
-import { IGraphNode } from "./IGraphNode";
-import { InputPort, OutputPort } from "./IPort";
-import { IProcedure } from "./IProcedure";
+import { Module } from './computation-modules/Module'; 
 
-import {ICodeGenerator} from './ICodeGenerator';
+import { ICodeGenerator } from "./ICodeGenerator";
 
-export class CodeGenerator implements ICodeGenerator{
+import { IFlowchart } from "../flowchart/FlowchartModule";
+import { IGraphNode } from "../node/NodeModule";
+import { IProcedure } from "../procedure/ProcedureModule";
+import { InputPort, OutputPort } from "../port/PortModule";
+
+export abstract class CodeGenerator implements ICodeGenerator{
 
 	private _language: string; 
-	private module_service: ModuleService;
+	private _modules: Module[];
 
-	constructor(module_service: ModuleService){ this.module_service = module_service;  };
+	constructor(language: string){ 
+		this._language = language;
+	};
+
+	setModules(modules: Module[]){
+		this._modules = modules;
+	}
 
 	getLanguage(): string{
 		return this._language; 
 	}
+
+	// takes a flowchart and generates some code string 
+	getDisplayCode(flowchart:IFlowchart) :string{
+		throw Error("Not implemented");
+	};
 
 	executeNode(node: IGraphNode, params: any): any{
 		throw Error("Not implemented");
@@ -54,9 +65,6 @@ export class CodeGenerator implements ICodeGenerator{
 		throw Error("Not implemented");
 	};
 
-	// takes a flowchart and generates some code string 
-	getCode(flowchart:IFlowchart) :string{
-		throw Error("Not implemented");
-	};
+
 
 }

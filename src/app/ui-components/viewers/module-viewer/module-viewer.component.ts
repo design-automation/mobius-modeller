@@ -1,5 +1,5 @@
 import { Component, OnInit, Injector } from '@angular/core';
-import { ModuleService } from '../data/module.service'; 
+import { ModuleService } from '../../../global-services/module.service'; 
 
 @Component({
   selector: 'app-module-viewer',

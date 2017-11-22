@@ -1,23 +1,22 @@
-import { ModuleService } from '../data/module.service'; 
-import { CodeGenerator } from './CodeGenerators';
-import { CodeGeneratorPY } from './code_generators/python_generator';
-import { CodeGeneratorJS } from './code_generators/javascript_generator';
-
+import {ICodeGenerator} from './ICodeGenerator';
+import {CodeGeneratorPY} from './generators/python_generator';
+import {CodeGeneratorJS} from './generators/javascript_generator';
+import {Module} from './computation-modules/Module'; 
 
 export class CodeFactory{
 
-	private _moduleService: ModuleService;
+	private _modules: Module[];
 
-	constructor(){ this._moduleService = new ModuleService(); }
+	constructor(){}
 
-	getCodeGenerator(language: string): CodeGenerator{
+	getCodeGenerator(language: string): ICodeGenerator{
 
 		if(language == "js"){
-			return new CodeGeneratorJS(this._moduleService);
+			return new CodeGeneratorJS();
 		}
-		else if(language == "py"){
-			return new CodeGeneratorPY(this._moduleService);
-		}
+		/*else if(language == "py"){
+			return new CodeGeneratorPY();
+		}*/
 		else
 			throw Error("Unknown language");
 

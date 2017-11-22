@@ -1,6 +1,8 @@
 import { Component, Injector, OnInit } from '@angular/core';
-import { Viewer } from '../classes/Viewer';
-import { IGraphNode } from '../classes/IGraphNode';
+
+import { Viewer } from '../../../base-classes/viz/Viewer';
+import { IGraphNode } from '../../../base-classes/node/NodeModule';
+
 import * as THREE from 'three';
 
 @Component({

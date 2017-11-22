@@ -1,7 +1,10 @@
 import { Component, Injector } from '@angular/core';
-import { Viewer } from '../classes/Viewer';
-import { IGraphNode } from '../classes/IGraphNode';
-import { InputPort } from '../classes/IPort';
+
+import { IGraphNode } from '../../../base-classes/node/NodeModule';
+import { InputPort } from '../../../base-classes/port/PortModule';
+
+import { Viewer } from '../../../base-classes/viz/Viewer';
+import { FlowchartService } from '../../../global-services/flowchart.service';
 
 @Component({
   selector: 'app-parameter-editor',

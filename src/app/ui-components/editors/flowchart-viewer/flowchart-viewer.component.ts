@@ -1,11 +1,11 @@
 import { Component, OnInit, OnDestroy, Injector } from '@angular/core';
 import { NgClass } from '@angular/common';
 
-import { IGraphNode } from '../classes/IGraphNode';
-import { InputPort } from '../classes/IPort';
+import { IGraphNode } from '../../../base-classes/node/NodeModule';
+import { InputPort } from '../../../base-classes/port/PortModule';
 
-import { Viewer } from '../classes/Viewer';
-import { FlowchartService } from '../data/flowchart.service';
+import { Viewer } from '../../../base-classes/viz/Viewer';
+import { FlowchartService } from '../../../global-services/flowchart.service';
 
 @Component({
   selector: 'app-flowchart-viewer',

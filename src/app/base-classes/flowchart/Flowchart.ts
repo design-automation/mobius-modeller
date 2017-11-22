@@ -5,14 +5,15 @@
 //
 
 import {IFlowchart} from './IFlowchart';
-import {IGraphNode} from '../nodes/IGraphNode';
+import {IGraphNode, IEdge} from '../node/NodeModule';
+import {ICodeGenerator} from '../code/CodeModule';
 
 class Flowchart implements IFlowchart{
-		
+
 	private _author: string; 
 
 	private _nodes: IGraphNode[] = [];
-	private _edges: any = [];
+	private _edges: IEdge[] = [];
 
 	private _sortOrder: number[];
 	private _selected: number;
@@ -30,7 +31,7 @@ class Flowchart implements IFlowchart{
 	}
 
 	//	Summary of flowchart
-	getDetails(): string{
+	getSummary(): string{
 		return "This is a flowchart, with " + this._nodes.length + " nodes, written by " + this._author;
 	}
 
@@ -49,14 +50,16 @@ class Flowchart implements IFlowchart{
 		return this._nodes.length;
 	};
 
-	addEdge(outputNode: number[], inputNode: number[]): number{
+	addEdge(outputAddress: number[], inputAddress: number[]): number{
 
-		if(outputNode.length !== 2 || inputNode.length !== 2){
+		if(outputAddress.length !== 2 || inputAddress.length !== 2){
 			throw Error("Invalid arguments for edge");
 		}
 
+		let edge: IEdge = { output_address: outputAddress, input_address: inputAddress };
+		
 		// todo: check for valid input/output addresses and port address
-		this._edges.push( [ outputNode, inputNode ] );
+		this._edges.push(edge);
 
 		return this._edges.length;
 	};
@@ -69,7 +72,7 @@ class Flowchart implements IFlowchart{
 		return this._nodes.length;
 	}
 
-	deleteEdge(edgeIndex: number): void{
+	deleteEdge(edgeIndex: number): number{
 
 		// todo: check for valid edge index
 		this._edges.splice(edgeIndex, 1);
@@ -81,7 +84,7 @@ class Flowchart implements IFlowchart{
 		return this._nodes;
 	}
 
-	getEdges(): number[][]{ 
+	getEdges(): [number[]]{ 
 		return this._edges;
 	}
 
@@ -93,75 +96,25 @@ class Flowchart implements IFlowchart{
 		return this._nodes[index];
 	}
 
-	getEdgeByIndex(index: number): number[][]{
+	getEdgeByIndex(index: number): number[]{
 		return this._edges[index];
 	}
 
-	resetAllNodes(): void{
+
+	//
+	//	clears all the cached results
+	//
+	reset(): void{
 		for(let n=0; n < this._nodes.length; n++){
 			this._nodes[n].reset();
 		}
 	}
 
+
 	//
-	//	executes the flowchart
+	// todo: should this happen realtime?
 	//
-	execute() :any{
-
-		// set all nodes to status not executed
-		// future: cache results and set status based on changes
-		this.resetAllNodes();
-
-		// sort nodes 
-		let sorted_nodes: IGraphNode[] = this.sortNodesByRank(this._nodes);
-
-		// execute each node
-		// provide input to next 
-		let timeStarted	:number = (new Date()).getTime();
-		for( let nc=0; nc < sorted_nodes.length; nc++ ){
-
-			let node = sorted_nodes[nc]
-
-			// check status of the node; don't rerun
-			if( node.getStatus() == 1 ){
-				continue;
-			}
-
-			this.executeNode(node);
-			console.log(node.getName(), node.getValue());
-		}
-
-		return true;
-	}
-
-	executeNode(node: IGraphNode){
-
-		console.log("Executing ", node.getName());
-		
-		let params :any = null;
-
-		if( node.isIndependent() == false ){
-			params = {};
-			let dependencies :any = node.getDependencies();
-
-			for(let d=0; d < dependencies.length; d++){
-				// dependencies are stored as an array of arrays - [ [], [], [] ]
-				// the 0th index stores the node, the 1st index stores the port number
-				let parent_node = this.getNode(dependencies[d][0]); 
-				if(parent_node.getStatus() == 1){
-					let source_port = parent_node.getOutputByIndex(dependencies[d][1]);
-					let my_port = node.getInputByIndex(dependencies[d][2]);
-					params[my_port.getName()]  = source_port.getValue();
-					my_port.setValue(source_port.getValue());
-				}
-			}
-		}
-		
-		node.executeNode(this.code_generator, params);
-
-	}
-
-	sortNodesByRank(nodes: IGraphNode[]): IGraphNode[]{
+	private sortNodesByRank(nodes: IGraphNode[]): IGraphNode[]{
 
 		let ranked: any[] = [];
 		let sorted: IGraphNode[] = [];
@@ -188,8 +141,86 @@ class Flowchart implements IFlowchart{
 		return sorted;
 	}
 
+	//
+	//	executes the flowchart
+	//
+	execute(code_generator: ICodeGenerator) :any{
+
+		// set all nodes to status not executed
+		// future: cache results and set status based on changes
+		this.reset();
+
+		// sort nodes 
+		let sorted_nodes: IGraphNode[] = this.sortNodesByRank(this._nodes);
+
+		// execute each node
+		// provide input to next 
+		let timeStarted	:number = (new Date()).getTime();
+		for( let nc=0; nc < sorted_nodes.length; nc++ ){
+
+			let node = sorted_nodes[nc]
+
+			// check status of the node; don't rerun
+			if( node.hasExecuted() == true ){
+				console.log("is this needed?");
+				continue;
+			}
+
+			node.execute(code_generator);
+			console.log(node.getName(), node.getValue());
+
+			//todo: print time taken
+		}
+
+		return true;
+	}
+
+	//
+	//
+	//
+	getDisplayCode(code_generator: ICodeGenerator): string{
+		//todo
+		code_generator.getCode(this);
+		return "";
+	}
+
+	/*executeNode(node: IGraphNode){
+
+		console.log("Executing ", node.getName());
+		
+		let params :any = null;
+
+		if( node.isIndependent() == false ){
+			params = {};
+			let dependencies :any = node.getDependencies();
+
+			for(let d=0; d < dependencies.length; d++){
+				// dependencies are stored as an array of arrays - [ [], [], [] ]
+				// the 0th index stores the node, the 1st index stores the port number
+				let parent_node = this.getNode(dependencies[d][0]); 
+				if(parent_node.getStatus() == 1){
+					let source_port = parent_node.getOutputByIndex(dependencies[d][1]);
+					let my_port = node.getInputByIndex(dependencies[d][2]);
+					params[my_port.getName()]  = source_port.getValue();
+					my_port.setValue(source_port.getValue());
+				}
+			}
+		}
+		
+		node.executeNode(this.code_generator, params);
+
+	}*/
 
 	save(): string{
+		this.reset();
+		//todo:
+		console.log(JSON.stringify(this));
 		return JSON.stringify(this);
 	}
+
+	readFromJSON(filename: string): void{
+		// todo:
+		// read the nodes and edges and add to the flowchart
+	}
+
 }
