@@ -14,6 +14,7 @@ export interface IGraphNode{
 	getType(): string; // id of another node - if undefined, means not derived from another
 	
 	overwrite(node: IGraphNode): number; 
+	update(nodeData: IGraphNode);
 
 	// get / set
 	addInput(name?: string): number;
@@ -34,8 +35,9 @@ export interface IGraphNode{
 	//
 	// flowchart specific
 	//
-	toggle(): boolean;
 	isDisabled(): boolean;
+	disable(): void;
+	enable(): void
 	hasExecuted(): boolean;
 	reset(): void;
 	hasError(): boolean; 

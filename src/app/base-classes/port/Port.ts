@@ -1,9 +1,11 @@
 import {IdGenerator} from '../misc/GUID';
+import {IPort} from './IPort';
+import {PortTypes} from './PortTypes';
 
 export abstract class Port implements IPort{
 
 	private _id: string;
-	private _type: string;
+	private _type: PortTypes;
 
 	private _selected: boolean = false;
 	private _disabled: boolean = false;
@@ -25,19 +27,44 @@ export abstract class Port implements IPort{
 		return this._id;
 	}
 
-	getType(): string{
-		throw Error("Not implemented");
+	getType(): PortTypes{
+		return PortTypes.Default;
+	}
+
+	setType(type: PortTypes): void{
+		this._type = type;
 	}
 
 	isSelected(): boolean{
 		return this._selected; 
 	}
 
-	toggle(): boolean{
-		this._disabled  = !this._disabled;
-		return this._disabled
+	isDisabled(): boolean{
+		return this._disabled;
 	}
+
+	disable(): void{
+		this._disabled = true;
+	}
+
+	enable(): void{
+		this._disabled = false;
+	}	
 	
+	//
+	//
+	//
+	update(portData: IPort): void{
+		this._id = portData["_id"];
+		this._type = portData["_type"];
+		this._selected = portData["_selected"];
+		this._disabled = portData["_disabled"];
+		this._connected = portData["_connected"];
+		this._default = portData["_default"];
+
+		// todo: assign computed also??
+	}	
+
 
 	//
 	//

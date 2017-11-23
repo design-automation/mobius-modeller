@@ -1,4 +1,5 @@
 import {Port} from "./Port";
+import {PortTypes} from "./PortTypes";
 
 export class OutputPort extends Port{
 
@@ -6,8 +7,8 @@ export class OutputPort extends Port{
 		super(name);
 	}
 
-	getType(): string{
-		return "output";
+	getType(): PortTypes{
+		return PortTypes.Output;
 	}
 
 }

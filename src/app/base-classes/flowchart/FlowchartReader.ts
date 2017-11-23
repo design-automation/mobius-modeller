@@ -1,56 +1,37 @@
-/*import { FlowchartFactory } from '../classes/IFlowchart';
-import { IFlowchart } from '../classes/IFlowchart';
-import { GraphNode } from '../classes/IGraphNode';
+import { IFlowchart } from './IFlowchart';
+import { Flowchart } from './Flowchart';
 
-export class FlowchartConverter{
+import { IGraphNode, GraphNode, IEdge } from '../node/NodeModule';
 
-	_factory = new FlowchartFactory();
+export abstract class FlowchartReader{
 
-	flowchartToData(flowchart: IFlowchart): string{
-		return "";
+
+	static readFlowchartFromData(data: IFlowchart): IFlowchart{
+
+	    // recreate the flowchart from data
+	    let fc: IFlowchart = new Flowchart(data["author"]);
+
+	    let nodes: IGraphNode[] = data["_nodes"];
+	    let edges: IEdge[] = data["_edges"];
+
+	    // add nodes
+	    for(let index in nodes){
+	      let n_data = nodes[index];
+	      let node: IGraphNode = new GraphNode(n_data["name"], n_data["type"]);
+
+	      node.update(n_data);
+
+	      fc.addNode(node);
+
+	    }  
+
+	    // add edges
+	    for(let index in edges){
+	    	let e_data :IEdge = edges[index];
+	    	fc.addEdge(e_data.output_address, e_data.input_address);
+	    }
+
+	    return fc;
 	}
 
-	dataToFlowchart(data: any, language?: string): IFlowchart{
-
-		// todo: check if data is valid
-
-		// convert to flowchart
-		let fc = this._factory.getFlowchart(language);
-
-		for( let i=0; i < data.graph.nodes.length; i++ ){
-
-			let node = data.graph.nodes[i];
-			let nodeInst = new GraphNode(node.id, node.name, node);
-
-			// add inputs to node
-			for( let p=0; p < node.inputConnectors.length; p++ ){
-				let port = node.inputConnectors[p];
-				let inp = nodeInst.addInput();
-				inp.setName(port.name)
-				inp.setConnected(port.connected)
-			}
-
-			// add outputs to node
-			for( let p=0; p < node.outputConnectors.length; p++ ){
-				let port = node.outputConnectors[p];
-				nodeInst.addOutput(port.name, port.connected);
-			}
-
-			// add procedure to node
-			nodeInst.addProcedureBlock(data.procedure[i], data.module.name);
-
-			// add node to flowchart
-			fc.add(nodeInst);
-
-		}
-
-		// add connections between nodes in flowchart
-		for( let c=0; c < data.graph.connections.length; c++ ){
-			let conn = data.graph.connections[c];
-			fc.addLink(conn);
-		}
-
-		return fc;
-	}
-
-}*/
+}

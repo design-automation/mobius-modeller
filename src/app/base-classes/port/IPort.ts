@@ -1,10 +1,19 @@
-interface IPort{
+import {PortTypes} from "./PortTypes";
+
+export interface IPort{
 
 	getId(): string;
-	getType(): string;
+	getType(): PortTypes;
+
+	setType(type: PortTypes): void;
+
 
 	isSelected(): boolean;
-	toggle(): boolean;
+	isDisabled(): boolean;
+	disable(): void;
+	enable(): void;
+
+	update(portData: IPort): void;
 
 	getName(): string;
 	setName(name: string): void; 
@@ -19,6 +28,5 @@ interface IPort{
 	getValue(): any;
 
 	reset(); 
-
 }
 

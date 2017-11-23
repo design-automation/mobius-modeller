@@ -33,14 +33,13 @@ export class GraphNode implements IGraphNode{
 
 	public position: number[] = [0,0];
 
-	constructor(name: string, type ?: string){
+	constructor(name: string, type?: string){
 		this._id = IdGenerator.getId();
 		this._name = name;
 
 		if(type !== undefined){
 			// find in library and copy properties
 		}
-
 	}
 
 	//	
@@ -68,6 +67,37 @@ export class GraphNode implements IGraphNode{
 		this._outputs = node.getOutputs();
 		this._procedure = node.getProcedure();
 		return this._version++;
+	}
+
+	update(nodeData: IGraphNode): void{
+
+		this._id = nodeData["_id"];
+
+		// map direct properties
+		this.portCounter = nodeData["portCounter"];
+		this.position = nodeData["position"];
+		this._isDisabled = nodeData["_isDisabled"];
+
+		// add inputs
+		let inputs: InputPort[] = nodeData["_inputs"];
+		for( let input_index in inputs ){
+			let inp_data :InputPort = inputs[input_index];
+			let input :InputPort = new InputPort(inp_data["_name"]);
+
+			input.update(inp_data);
+			this._inputs.push(input);
+		}
+
+		// add outputs
+		let outputs: OutputPort[] = nodeData["_outputs"];
+		for( let output_index in outputs ){
+			let output_data: OutputPort = outputs[output_index];
+			let output: OutputPort = new OutputPort(output_data["_name"]);
+
+			output.update(output_data);
+			this._outputs.push(output);
+		}
+
 	}
 
 	//
@@ -147,14 +177,18 @@ export class GraphNode implements IGraphNode{
 	//
 	//
 	//
-	toggle(): boolean{
-		this._isDisabled = !this._isDisabled;
-		return this._isDisabled;
-	}
-
 	isDisabled(): boolean{
 		return this._isDisabled;
 	}
+
+	enable(): void{
+		this._isDisabled = false; 
+	}
+
+	disable(): void{
+		this._isDisabled = true;
+	}
+
 
 	hasExecuted(): boolean{
 		return this._hasExecuted; 

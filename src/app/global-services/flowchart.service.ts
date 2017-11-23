@@ -3,7 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Subject} from 'rxjs/Subject';
 
-import {IFlowchart, Flowchart} from '../base-classes/flowchart/FlowchartModule';
+import {IFlowchart, Flowchart, FlowchartReader} from '../base-classes/flowchart/FlowchartModule';
 import {IGraphNode, GraphNode} from '../base-classes/node/NodeModule';
 import {ICodeGenerator, CodeFactory} from "../base-classes/code/CodeModule";
 
@@ -12,6 +12,8 @@ export class FlowchartService {
 
   /*private _ffactory = new FlowchartFactory();
   private _fc = new FlowchartConverter();*/
+
+  private _user: string = "AKM";
  
   private _origData: any;
   private _flowchart: IFlowchart;
@@ -50,7 +52,6 @@ export class FlowchartService {
     this.sendMessage("Updated");
   }
 
-
   //
   //    sets the main scene
   //
@@ -73,20 +74,16 @@ export class FlowchartService {
               this.code_generator = CodeFactory.getCodeGenerator(data["language"])
             }
 
-            this._flowchart = <Flowchart>data["flowchart"];
+            this._flowchart = FlowchartReader.readFlowchartFromData(data["flowchart"])
+            console.log(this._flowchart);
+            this.update();
 
-
-            //this.update();
-
-            // Load data in app service
-            //this.flowchartService.loadChartFromData(data, "js");
       });
 
     // change the module based on the module name
     //this._flowchart = <IFlowchart>JSON.parse();//this._fc.dataToFlowchart(data, language);
     
     // tell subcribers to update 
-    this.update();
   }
 
 
@@ -108,7 +105,7 @@ export class FlowchartService {
   //
   //
   newFile(): IFlowchart{
-    this._flowchart = new Flowchart("AKM");
+    this._flowchart = new Flowchart(this._user);
     this._selectedNode = 0;
     this._selectedPort = 0;
     this.update();
@@ -164,7 +161,8 @@ export class FlowchartService {
     return this._flowchart.getNodeByIndex(this._selectedNode);
   }
 
-  getSelectedPort(): IPort{
+  getSelectedPort(): any{
+    // todo: where is this used?
     return this.getSelectedNode().getOutputByIndex(this._selectedPort);
   }
 
