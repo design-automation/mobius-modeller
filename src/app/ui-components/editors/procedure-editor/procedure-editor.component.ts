@@ -1,9 +1,9 @@
 import { Component, Injector, OnInit } from '@angular/core';
 
 import { IGraphNode } from '../../../base-classes/node/NodeModule';
-import { IProcedure, ProcedureFactory } from '../../../base-classes/procedure/ProcedureModule';
-
+import { IProcedure, ProcedureFactory, ProcedureTypes } from '../../../base-classes/procedure/ProcedureModule';
 import { Viewer } from '../../../base-classes/viz/Viewer';
+
 import { FlowchartService } from '../../../global-services/flowchart.service';
 
 @Component({
@@ -16,24 +16,44 @@ export class ProcedureEditorComponent extends Viewer {
 	private _prodFactory: ProcedureFactory = ProcedureFactory.getInstance();
 	private isVisible: boolean = false;
 
-  	_procedureArr: IProcedure[] = [];
-  	_node: IGraphNode;
+  	private _procedureArr: IProcedure[] = [];
+  	private _node: IGraphNode;
 
-  	_tree = [];
-	_tree_options = {
+  	private _tree = [];
+	private _tree_options = {
 	  allowDrag: true,
 	  allowDrop:  (element, { parent, index }) => {
 	    // return true / false based on element, to.parent, to.index. e.g.
-	    return  (parent.data.type === "Control" || parent.hasChildren);
+	    return  parent.getType() == ProcedureTypes.IfElseControl;
 	  }
 	};
 
 	constructor(injector: Injector){  super(injector, "procedure-editor"); }
 
-	updateProcedure($event, prod, property){
-		let procedure : IProcedure = prod.data.model;
-		let value: string = $event.srcElement.innerText;
-		console.log(value);
+	reset():void{
+		this._procedureArr = [];
+		this._node = undefined;
+		this._tree = [];
+	}
+
+	updateProcedureLeft($event, prod){
+
+	}
+
+	updateProcedureRight($event, prod){
+
+	}
+
+	updateProcedure($event: Event, prod: IProcedure, property: number){
+
+		if(property == -1){
+
+		}
+		else if(property == 1){
+
+		}
+
+		/*let value: string = $event.srcElement.innerText;
 		if( property == -1){
 			procedure.setResult(value);
 		}
@@ -42,14 +62,10 @@ export class ProcedureEditorComponent extends Viewer {
 		}
 		else{
 			throw Error("Invalid Procedure Update");
-		}
+		}*/
 	}
 
-	reset():void{
-		this._procedureArr = [];
-		this._node = undefined;
-		this._tree = [];
-	}
+
 
 	expandAll(tree){
 		tree.treeModel.expandAll();
@@ -57,7 +73,7 @@ export class ProcedureEditorComponent extends Viewer {
 
 	updateProcedureTree(){
 
-		let getTreeItem = function(data : IProcedure): any{
+		/*let getTreeItem = function(data : IProcedure): any{
 
 			let procedure_type = data.getTitle();
 			let dataObj = { id: Math.random() , name: data.getTitle(), type: procedure_type, model: data } ; 
@@ -87,7 +103,7 @@ export class ProcedureEditorComponent extends Viewer {
 
 		this._tree = this._procedureArr.map(function(prod, index){
 			return getTreeItem(prod);
-		})
+		})*/
 
 	}
 
@@ -102,7 +118,7 @@ export class ProcedureEditorComponent extends Viewer {
 	addOutput(): void{
 	  // add an output port
 	  let default_output_name: string = "output" + this._node.getOutputs().length;
-      this._node.addOutput(default_output_name, false);
+      this._node.addOutput(default_output_name);
 
       // add corresponding data line
 	  /*let prod:IProcedure = this._prodFactory.getProcedure({ id: this._procedureArr.length, title: "Data" });
@@ -114,7 +130,9 @@ export class ProcedureEditorComponent extends Viewer {
 
 
 	addProcedure(type: number): void{
-		if(type == 0){
+		//todo
+
+		/*if(type == 0){
 			let prod:IProcedure = this._prodFactory.getProcedure({ id: this._procedureArr.length, title: "Data" });
 			this._node.addProcedureLine(prod);
 		}
@@ -132,7 +150,7 @@ export class ProcedureEditorComponent extends Viewer {
 		}
 		else{
 			throw Error("Invalid Procedure Type")
-		}
+		}*/
 
 		this.flowchartService.update();
 	}
@@ -156,12 +174,12 @@ export class ProcedureEditorComponent extends Viewer {
 
 	// todo:
 	disableProcedure(prod: IProcedure): void{
-		prod.toggleDisabled();
+		prod.disable();
 		this.update();
 	}
 
 	deleteProcedure(index: number): void{
-		this._node.removeProcedureLine(index);
+		this._node.deleteProcedure(index);
 		this.flowchartService.update();
 	}
 

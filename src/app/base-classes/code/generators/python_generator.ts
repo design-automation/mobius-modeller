@@ -1,4 +1,4 @@
-import { CodeGenerator } from '../CodeGenerators';
+/*import { CodeGenerator } from '../CodeGenerators';
 import { IGraphNode } from "../IGraphNode";
 import { InputPort, OutputPort } from "../IPort";
 import { IFlowchart } from "../IFlowchart";
@@ -211,4 +211,4 @@ export class CodeGeneratorPY extends CodeGenerator{
 			
 			return code_block;
 		}
-};
+};*/

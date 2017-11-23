@@ -1,30 +1,46 @@
-import {ControlProcedure} from "./ControlProcedure";
 import {IProcedure} from "./IProcedure";
+import {Procedure} from "./Procedure";
+import {ProcedureTypes} from "./ProcedureTypes";
 
-export class IfElseControlProcedure extends ControlProcedure{
-	private _ifExpression: string; 
+export class IfElseControlProcedure extends Procedure{
 
-	constructor(d){
-		super(d);
+	private _title: ProcedureTypes.IfControl|ProcedureTypes.ElseControl|ProcedureTypes.IfElseControl 
+			= ProcedureTypes.IfElseControl; 
 
-		if(super.getNodes().length == 0 && d.controlType == "if else"){
-			let if_control: IProcedure = new IfElseControl({title: "Control", controlType: "if", allowDrag: false })
-			let else_control: IProcedure = new IfElseControl({title: "Control", controlType: "else", allowDrag: false})
+	constructor(title?: ProcedureTypes.IfControl|ProcedureTypes.ElseControl, 
+		data ?: {if_condition: string, el_condition: string}){
+		
+		super(ProcedureTypes.IfElseControl, true);
+
+		if (title !== undefined){
+			this._title = title;
+
+			if(title == ProcedureTypes.IfControl){
+
+			}
+			else if(title == ProcedureTypes.ElseControl){
+
+			}
+
+
+		}
+		else{
+			let if_control: IProcedure = new IfElseControlProcedure( ProcedureTypes.IfControl, data )
+			let else_control: IProcedure = new IfElseControlProcedure( ProcedureTypes.ElseControl, data)
+			
 			super.addChild(if_control);
 			super.addChild(else_control);
 		}
 
-		// for loops
-		this._ifExpression = d.ifExpression || undefined;
 	}
 
-
-	getExpression(): any{
-		return this._ifExpression; 
-	}
-
-	setExpression(expression: string): void{
-		this._ifExpression = expression;
+	addChild(procedure: IProcedure): void{
+		if(this._title = ProcedureTypes.IfElseControl){
+			throw Error("Cannot add child to if-else block.");
+		}
+		else{
+			super.addChild(procedure);
+		}
 	}
 
 }

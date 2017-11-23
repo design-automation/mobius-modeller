@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, Injector } from '@angular/core';
-import { FlowchartService } from '../data/flowchart.service';
+import { FlowchartService } from '../../global-services/flowchart.service';
 import { Subscription } from 'rxjs/Subscription';
 
 interface IViewer{

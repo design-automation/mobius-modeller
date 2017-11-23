@@ -12,24 +12,24 @@
 	</div> -->
 <div class="container">
     <split [gutterSize]="10" [visibleTransition]="true">
-        <split-area [visible]="true" [size]="40">
+        <split-area [visible]="true" [size]="20">
 				<div class="output-viewer">
 					<app-flowchart-controls></app-flowchart-controls>
-					<app-geometry-viewer></app-geometry-viewer>
-					<!-- <app-code-viewer></app-code-viewer> -->
+					<!-- <app-geometry-viewer></app-geometry-viewer> -->
+					<!-- <app-code-viewer></app-code-viewer>	 -->		
 				</div>
         </split-area>
 
-        <split-area [visible]="true" [size]="30">
-				<!-- <app-flowchart-viewer></app-flowchart-viewer> -->
+        <split-area [visible]="true" [size]="80">
+			<app-flowchart-viewer></app-flowchart-viewer>
         </split-area>
 
-        <split-area [visible]="true" [size]="30">
-    		<!-- <app-parameter-editor></app-parameter-editor>
-    					<app-procedure-editor></app-procedure-editor>
-    					<app-module-viewer></app-module-viewer>
-    					<app-parameter-viewer></app-parameter-viewer> -->
-        </split-area>
+        <!-- <split-area [visible]="true" [size]="30">
+        			<app-parameter-editor></app-parameter-editor>
+        			<app-procedure-editor></app-procedure-editor>
+        			<app-module-viewer></app-module-viewer>
+        			<app-parameter-viewer></app-parameter-viewer>
+        </split-area> -->
     </split>
 </div> 
 

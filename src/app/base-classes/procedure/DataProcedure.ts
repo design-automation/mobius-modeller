@@ -1,29 +1,27 @@
 import {Procedure} from "./Procedure";
+import {ProcedureTypes} from "./ProcedureTypes";
+import {IComponent} from "./IComponent";
 
 export class DataProcedure extends Procedure{
-	private _name: string; 
-	private _value: string;
 
-	constructor(d){
-		super(d);
-		this._name = name; 
-		this._value = d.value;
-	}
-
-	getResult(): string{
-		return this._name;
-	}
-
-	getExpression() : string{
-		return this._value;
-	}
-
-	setResult(result: string){
-		this._name = result;
-	}
-
-	setExpression(exp: string){
-		this._value = exp;
+	constructor(data ?: {result: string, value: string}){
+		super(ProcedureTypes.Data, false); 
+		let left: IComponent = { expression: data.result, 
+								 isAction: false, 
+								 module: undefined, 
+								 category: undefined, 
+								 fn_name: undefined,
+								 params: undefined
+								}
+		let right: IComponent = { expression: data.value, 
+								 isAction: false, 
+								 module: undefined, 
+								 category: undefined, 
+								 fn_name: undefined,
+								 params: undefined
+								}
+		super.setLeftComponent(left);
+		super.setRightComponent(right);
 	}
 
 }

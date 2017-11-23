@@ -1,42 +1,31 @@
 import {Procedure} from "./Procedure";
+import {ProcedureTypes} from "./ProcedureTypes";
+import {IComponent} from "./IComponent";
 
 export class ActionProcedure extends Procedure{
 
-	//private _module: IModule; 
-	private _category: string;
-	private _expression: string;
-	private _method: string;
-	private _params: any[];
-	private _result: string;
+	constructor(data ?: any){
+		super(ProcedureTypes.Action, false); 
+		let left: IComponent = { expression: data.result, 
+								 isAction: false, 
+								 module: undefined, 
+								 category: undefined, 
+								 fn_name: undefined,
+								 params: undefined
+								}
+		let right: IComponent = { expression: data.module + "." + data.category + "::" + data.function, 
+								 isAction: true, 
+								 module: data.module, 
+								 category: data.category, 
+								 fn_name: data.function,
+								 params: data.params
+								}
 
-	constructor(d){
-		super(d);
-		this._method = d.method;
-		this._category = d.category; 
-		this._expression = d.expression;
-		this._params = d.parameters || [];
-		this._result = d.result; 
+		if(data.result !== undefined){
+			super.setLeftComponent(left);
+		}
+
+		super.setRightComponent(right);
 	}
-
-	getMethod(): string{
-		return this._method;
-	}
-
-	getCategory(): string{
-		return this._category;
-	}
-
-	getParams(): any{
-		return this._params;
-	}
-
-	setResult(var_name: string){
-		this._result = var_name;
-	}
-
-	getResult(): string{
-		return this._result;
-	}
-
 
 }

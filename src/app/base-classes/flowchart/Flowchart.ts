@@ -8,7 +8,7 @@ import {IFlowchart} from './IFlowchart';
 import {IGraphNode, IEdge} from '../node/NodeModule';
 import {ICodeGenerator} from '../code/CodeModule';
 
-class Flowchart implements IFlowchart{
+export class Flowchart implements IFlowchart{
 
 	private _author: string; 
 
@@ -84,7 +84,7 @@ class Flowchart implements IFlowchart{
 		return this._nodes;
 	}
 
-	getEdges(): [number[]]{ 
+	getEdges(): IEdge[]{ 
 		return this._edges;
 	}
 
@@ -96,7 +96,7 @@ class Flowchart implements IFlowchart{
 		return this._nodes[index];
 	}
 
-	getEdgeByIndex(index: number): number[]{
+	getEdgeByIndex(index: number): IEdge{
 		return this._edges[index];
 	}
 
@@ -167,21 +167,12 @@ class Flowchart implements IFlowchart{
 			}
 
 			node.execute(code_generator);
-			console.log(node.getName(), node.getValue());
+			console.log(node.getName(), node.getResult());
 
 			//todo: print time taken
 		}
 
 		return true;
-	}
-
-	//
-	//
-	//
-	getDisplayCode(code_generator: ICodeGenerator): string{
-		//todo
-		code_generator.getCode(this);
-		return "";
 	}
 
 	/*executeNode(node: IGraphNode){

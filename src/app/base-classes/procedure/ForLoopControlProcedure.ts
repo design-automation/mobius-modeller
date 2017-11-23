@@ -1,31 +1,29 @@
-import {ControlProcedure} from "./ControlProcedure";
+import {ProcedureTypes} from "./ProcedureTypes";
+import {IComponent} from "./IComponent";
+import {Procedure} from "./Procedure";
 
-export class ForLoopControlProcedure extends ControlProcedure{
-	private _dataName: string; 
-	private _forList: string;
+export class ForLoopControlProcedure extends Procedure{
 
-	constructor(d){
-		super(d);
+	constructor(data ?: {variable: string, array_name: string}){
+		super(ProcedureTypes.ForLoopControl, true);
 
-		// for loops
-		this._dataName = d.dataName || undefined;
-		this._forList = d.forList || [];
-	}
+		let left: IComponent = { expression: data.variable, 
+								 isAction: false, 
+								 module: undefined, 
+								 category: undefined, 
+								 fn_name: undefined,
+								 params: undefined
+								}
+		let right: IComponent = { expression: data.array_name, 
+								 isAction: false, 
+								 module: undefined, 
+								 category: undefined, 
+								 fn_name: undefined,
+								 params: undefined
+								}
+		super.setLeftComponent(left);
+		super.setRightComponent(right);
 
-	getResult() :string{
-		return this._dataName; 
-	}
-
-	getExpression(): any{
-		return this._forList;
-	}
-
-	setResult(result: string): void{
-		this._dataName = result;
-	}
-
-	setExpression(expression: string): void{
-		this._forList = expression;
 	}
 
 }

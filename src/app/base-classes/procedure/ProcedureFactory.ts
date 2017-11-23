@@ -1,4 +1,4 @@
-import {ProcedureTypes} from "./IProcedure"; 
+import {ProcedureTypes} from "./ProcedureTypes"; 
 import {DataProcedure} from "./DataProcedure";
 import {ActionProcedure} from "./ActionProcedure";
 import {IfElseControlProcedure} from "./IfElseControlProcedure";
@@ -21,7 +21,7 @@ export class ProcedureFactory{
 	getProcedure(type: ProcedureTypes, data: any){
 
 		if(type == ProcedureTypes.Data){
-			return new DataProcedure(data);
+			return new DataProcedure();
 		}
 		else if(type == ProcedureTypes.Action){
 			return new ActionProcedure(data);

@@ -4,6 +4,8 @@ import {IProcedure} from "../procedure/ProcedureModule";
 
 export interface IGraphNode{
 
+	position: number[];
+
 	// prototype
 	getName(): string; 
 	getId(): string;
@@ -46,9 +48,7 @@ export interface IGraphNode{
 	getDependencyNodes(): number[];
 	rank(): number;
 
-	setPosition(pos: any): void;
-	getPosition(): any;
-	
+
 	execute(code_generator: ICodeGenerator,  params ?:any): void;
 	getResult(): Object;
 

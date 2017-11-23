@@ -30,6 +30,9 @@ export class GraphNode implements IGraphNode{
 	private _dependencies: any = [];
 	private _dependencyNodes: number[] = [];
 
+
+	public position: number[] = [0,0];
+
 	constructor(name: string, type ?: string){
 		this._id = IdGenerator.getId();
 		this._name = name;
@@ -201,18 +204,6 @@ export class GraphNode implements IGraphNode{
 	rank(): number{ 
 		return this._dependencyNodes.length 
 	};
-
-
-	//
-	//
-	//
-	setPosition(pos: number[]): void{
-		this._position = pos; 
-	}
-
-	getPosition(): number[]{
-		return this._position;
-	}
 
 
 	//

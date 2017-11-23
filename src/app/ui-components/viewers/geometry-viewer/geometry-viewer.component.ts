@@ -55,7 +55,7 @@ export class GeometryViewerComponent extends Viewer implements OnInit{
 	getGeometry(node: IGraphNode): string[]{
 
 		let valueTypes: string[] = [];
-		let valueObject: any = node.getValue();
+		let valueObject: any = node.getResult();
 
 		for( let key in valueObject ){
 			valueTypes.push(valueObject[key]);

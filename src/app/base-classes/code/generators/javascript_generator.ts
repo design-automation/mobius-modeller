@@ -2,16 +2,15 @@ import { CodeGenerator } from '../CodeGenerator';
 
 import { IFlowchart } from "../../flowchart/FlowchartModule";
 import { IGraphNode, IEdge } from "../../node/NodeModule";
-import { IProcedure } from "../../procedure/ProcedureModule";
+import { IProcedure, ProcedureTypes, IComponent } from "../../procedure/ProcedureModule";
 import { InputPort, OutputPort } from "../../port/PortModule";
+
 
 import * as ts from "typescript";
 
 export class CodeGeneratorJS extends CodeGenerator{
 
-		constructor(){ 
-			super("js");
-		}
+		constructor(){ 	super("js");	}
 
 		//
 		//	gets the display code for the flowchart
@@ -168,12 +167,12 @@ export class CodeGeneratorJS extends CodeGenerator{
 
 			// change based on type
 			let code: string; 
-			if(procedure.getTitle() == "Data"){
-				code =  "\n" + procedure.getResult() + " = " + procedure.getExpression() + ";";
+			if(procedure.getType() == ProcedureTypes.Data){
+				code =  "\n" + procedure.getLeftComponent().expression + " = " + procedure.getRightComponent().expression + ";";
 			}
-			else if(procedure.getTitle() == "Action"){
+			else if(procedure.getType() == ProcedureTypes.Action){
 				let paramList :string[]= [];
-				let params  = procedure.getParams();
+				let params  = procedure.getRightComponent().params;
 				for( let p=0; p < params.length; p++){
 					let param = params[p];
 					if(param.value !== undefined)
@@ -181,10 +180,31 @@ export class CodeGeneratorJS extends CodeGenerator{
 					else
 						paramList.push(param.type)
 				}
-				code = procedure.getResult() + " = " + "gis"/*procedure.getModule().trim()*/ + "." + procedure.getMethod() + "( " + paramList.join(",") + " );\n";
+
+				let right :IComponent = procedure.getRightComponent();
+				code = procedure.getLeftComponent().expression 
+						+ " = " + right.module.trim()
+						+ "." + right.fn_name + "( " + paramList.join(",") + " );\n";
 			}
-			else if(procedure.getTitle() == "Control"){
+			else if(procedure.getType() == ProcedureTypes.ForLoopControl){
 				code = "";
+				// todo
+				throw Error("Not Implemeented")
+			}
+			else if(procedure.getType() == ProcedureTypes.IfElseControl){
+				code = "";
+				// todo
+				throw Error("Not Implemeented")
+			}
+			else if(procedure.getType() == ProcedureTypes.IfControl){
+				code = "";
+				// todo
+				throw Error("Not Implemeented")
+			}
+			else if(procedure.getType() == ProcedureTypes.ElseControl){
+				code = "";
+				// todo
+				throw Error("Not Implemeented")
 			}
 
 			return code;

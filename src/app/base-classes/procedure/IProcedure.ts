@@ -15,41 +15,28 @@
 //
 
 import {ICodeGenerator} from "../code/CodeModule";
-
-export enum ProcedureTypes{
-	Data,
-	Action,
-	IfElseControl, 
-	IfControl, 
-	ElseControl,
-	ForLoopControl
-}
-
-interface IComponent{
-	expression: string;
-	isAction: boolean;
-	module: string;
-	category: string; 
-	fn_name: string; 
-	params: Object;
-}
-
+import {ProcedureTypes} from "./ProcedureTypes";
+import {IComponent} from "./IComponent"; 
 
 export interface IProcedure{
 
 	getType(): ProcedureTypes; 
 
 	isSelected(): boolean; 
+	select(): void;
+	unselect(): void;
 	isDisabled(): boolean; 
-	toggle(): boolean;
+	enable(): void;
+	disable(): void;
 	
 	hasChildren(): boolean;
 	getChildren(): IProcedure[];
+	addChild(procedure: IProcedure): void;
 
 	getLeftComponent(): IComponent;
-	setLeftComponent(expression: string);
+	setLeftComponent(expression: IComponent): void;
 	getRightComponent(): IComponent;
-	setRightComponent(expression: IComponent);
+	setRightComponent(expression: IComponent): void;
 
 	getCodeString(code_generator: ICodeGenerator): string;
 

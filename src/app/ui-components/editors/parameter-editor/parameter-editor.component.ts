@@ -33,12 +33,12 @@ export class ParameterEditorComponent extends Viewer{
     }
 
   	addInput(): void{
-      console.log(this._node.addInput());
+      this._node.addInput();
   		this.flowchartService.update();
 	  }
 
-    deleteInput(inp: InputPort) :void{
-      this._node.removeInput(inp);
+    deleteInput(portIndex: number) :void{
+      this._node.deleteInput(portIndex);
       this.flowchartService.update();
     }
 
@@ -52,16 +52,16 @@ export class ParameterEditorComponent extends Viewer{
     }
 
     updateInputType(type:number, input: InputPort){
-       input.setType( this.portOpts[type] )
-       this.flowchartService.update();
+       /*input.setType( this.portOpts[type] )
+       this.flowchartService.update();*/
     }
 
     updateInputDValue($event, input: InputPort): void{
-      let value: string = $event.srcElement.innerText;
+      /*let value: string = $event.srcElement.innerText;
       input.setDValue(value);
 
       // put a timeout on this update or something similar to solve jumpiness
-      this.flowchartService.update();
+      this.flowchartService.update();*/
     }
 
   	//

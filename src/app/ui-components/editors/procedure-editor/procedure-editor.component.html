@@ -18,12 +18,12 @@
 					<!-- template for data -->
 					<div *ngIf="prod.data.type == 'Data'">
 						<div class='data-node-template procedure'>
-							<span contenteditable="true" (blur)="updateProcedure($event, prod, -1)">
-								{{ prod.data.result || "undefined" }}
+							<span contenteditable="true" (blur)="updateProcedure($event, prod, 'left')">
+								{{prod.getLeftComponent().expression}}
 							</span> 
 							= 
-							<span contenteditable="true" (blur)="updateProcedure($event, prod, 1)">
-								{{ prod.data.expression || "undefined" }}
+							<span contenteditable="true" (blur)="updateProcedure($event, prod, 'right')">
+								{{prod.getRightComponent().expression}}
 							</span>
 						</div>
 					</div>
@@ -31,13 +31,13 @@
 					<!-- template for action -->
 					<div *ngIf="prod.data.type == 'Action'">
 						<div class='data-node-template procedure'>
-							<span class='editable' contenteditable="true" (blur)="updateProcedure($event, prod, -1)">
-								{{prod.data.result}}
+							<span class='editable' contenteditable="true" (blur)="updateProcedure($event, prod, 'left')">
+								{{prod.getLeftComponent().expression}}
 							</span> 
 							=
-							<span>{{ prod.data.name }}
+							<span>{{prod.getRightComponent().expression}}
 								(	
-								<span *ngFor="let arg of prod.data.params" contenteditable="true" (blur)="updateProcedure($event, prod, 0)">
+								<span *ngFor="let arg of prod.getRightComponent().params" contenteditable="true" (blur)="updateProcedure($event, prod, 'right')">
 									{{ arg.value || arg.type }}
 								</span>
 								)
@@ -46,27 +46,28 @@
 					</div>
 
 					<!-- template for control -->
-					<div *ngIf="prod.data.type == 'Control'">
+					<!-- todo -->
+					<!-- <div *ngIf="prod.data.type == 'Control'">
 						
-						<!-- for each-->
+						for each
 						<div class='data-node-template procedure' *ngIf="prod.data.name == 'for each'">
 							for 
 							<span contenteditable="true" (blur)="updateProcedure($event, prod, -1)">{{ prod.data.result }}</span> 
 							in 
 							<span contenteditable="true" (blur)="updateProcedure($event, prod, 1)">{{prod.data.expression}}</span>
 						</div>
-
-						<!-- if else -->
+					
+						if else
 						<div class='data-node-template procedure' *ngIf="prod.data.name == 'if'">
 							if <span contenteditable="true" (blur)="updateProcedure($event, prod, 1)">( {{prod.data.expression}} )</span>
 						</div>
-
-						<!-- if / else  -->
+					
+						if / else
 						<div class='data-node-template procedure' *ngIf="prod.data.name != 'for each' && prod.data.name != 'if'">
 							<span>{{ prod.data.name }}</span>
 						</div>
 					
-					</div>
+					</div> -->
 
 				    <div class='btn-group'>
 					    <button (click)="deleteProcedure(index, $event)">Delete</button>

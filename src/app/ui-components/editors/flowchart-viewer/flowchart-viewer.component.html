@@ -20,38 +20,44 @@
  
 			<div class="graph-container" id="graph-nodes" ondragover="return false" [style.zoom]="zoom" >
 				
+				<!-- all nodes -->
 				<div class="node-container">
-					<!--- node 1 -->
+
+					<!-- one node -->
 					<div  class="node" draggable=true 
-							*ngFor="let node of nodes" 
+							*ngFor="let node of _nodes; let i = index" 
 							[style.width.px]="node.width"
-							[style.top.px]="node.position.y" 
-							[style.left.px]="node.position.x" 
+							[style.left.px]="node.position[0]" 
+							[style.top.px]="node.position[1]" 
 							(dragstart)="onDragStart($event, node)" 
 							(drag)="onDrag($event, node)" 
 							(dragend)="dragEnd($event, node)">
 						
+						<!--inputs-->
 						<div class="port-container input">
 							<div class="port" 
 								*ngFor="let port of node.getInputs()"  
 								(click)="link($event, port)"></div>
 						</div>
-
+					
+						<!-- node body -->
 						<div class="node-body" [class.selected]="isSelected(node)" 
-							(click)="nodeclick($event, node)">
+							(click)="clickNode($event, i)">
 							{{node.getName()}}
 						</div>
-
+				
+						<!-- outputs -->
 						<div class="port-container output">
 							<div class="port" 
 								*ngFor="let port of node.getOutputs()"
 								(click)="link($event, port)"></div>
 						</div>
 						
-
+				
 					</div>
-
+				
 				</div>
+
 			</div>
 
 	</div>

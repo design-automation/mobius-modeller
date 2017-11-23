@@ -35,7 +35,6 @@ export interface IFlowchart{
 	reset(): void;
 
 	// output related
-	getDisplayCode(code_generator: ICodeGenerator) :string;
 	execute(code_generator: ICodeGenerator): boolean;
 	
 

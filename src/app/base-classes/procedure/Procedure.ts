@@ -1,92 +1,103 @@
 import {IProcedure} from "./IProcedure";
+import {ProcedureTypes} from "./ProcedureTypes";
+import {IComponent} from "./IComponent";
+import {ICodeGenerator} from "../code/CodeModule";
 
 export abstract class Procedure implements IProcedure{
 
-	private _id: number;
+	private _type: ProcedureTypes; 
+	private _hasChildren: boolean;
 	private _selected: boolean; 
-	private _type: string; 
-	private _title: string;
-	private _module : string;
-	private _disabled: boolean; 
-	private _allowDrag: boolean;
+	private _disabled: boolean = false; 
+	private _allowDrag: boolean = true;
 
-	constructor(d){
-		this._id = d.id; 
-		this._selected = d.selected; 
-		this._title = d.title; 
-		this._type = d.type; 
-		this._module = d.module;
-		this._disabled = false;
-		this._allowDrag = d.allowDrag || true;
+	protected _leftComponent: IComponent; 
+	protected _rightComponent: IComponent; 
+
+	protected _children: IProcedure[] = []; 
+
+	constructor(type: ProcedureTypes, hasChildren: boolean){
+		this._type = type; 
+		this._hasChildren = hasChildren;
+	}	
+
+	getType(): ProcedureTypes{
+		return this._type; 
 	}
 
 	isSelected(): boolean{
 		return this._selected; 
 	}
 
+	select(): void{
+		this._selected = true;
+	}
+
+	unselect(): void{
+		this._selected = false;
+	}
+
 	isDisabled(): boolean{
 		return this._disabled;
 	}
 
-	toggle(): boolean{
-		this._selected = !this._selected; 
-		return this._selected;
+	enable(): void{
+		this._disabled = false;
 	}
 
-	toggleDisabled(): boolean{
-		this._disabled = !this._disabled;
-		return this._disabled;
+	disable(): void{
+		this._disabled = true;
 	}
 
-	getModule(): string{
-		return this._module;
+
+
+
+	hasChildren():  boolean{
+		return this._hasChildren;
 	}
 
-	getType(): string{
-		return this._type; 
-	}
-
-	getTitle(): string{
-		return this._title; 
-	}
-
-	getName(): string{
-		return "";
-	}
-
-	getCategory(): string{
-		return undefined;
-	}
-
-	getMethod(): string{
-		return undefined;
-	}
-
-	getParams(): any{
-		return undefined;
-	}
-
-	getResult(): string{
-		return undefined;
-	}
-
-	getNodes(): IProcedure[]{
-		return [];
-	}
-
-	getControlType(): string{
-		return "undefined"
-	}
-
-	getExpression(): any{
-		return undefined;
-	}
-
-	setResult(value: string): void{
-
-	}
-
-	setExpression(expression: string): void{
+	getChildren(): IProcedure[]{
+		if( this._hasChildren == false){
+			throw Error("This Procedure Type is not a container");
+		}
+		else{
+			throw Error(" No Children ");
+		}
 		
+	}	
+
+	addChild(child: IProcedure): void{
+		if( this._hasChildren ){
+			this._children.push(child);
+		}
+		else{
+			throw Error("Cannot add child to this procedure");
+		}
 	}
+
+
+
+
+	getLeftComponent(): IComponent{
+		return this._leftComponent; 
+	}
+
+	setLeftComponent(component: IComponent): void{
+		this._leftComponent = component;
+	}
+
+	getRightComponent(): IComponent{
+		return this._rightComponent; 
+	}
+
+	setRightComponent(component: IComponent): void{
+		this._rightComponent = component;
+	}
+
+
+
+	getCodeString(code_generator: ICodeGenerator): string{
+		return code_generator.generateProcedureCode(this);
+	}
+
 }

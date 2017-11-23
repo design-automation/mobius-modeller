@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, Injector } from '@angular/core';
 import { NgClass } from '@angular/common';
 
-import { IGraphNode } from '../../../base-classes/node/NodeModule';
+import { IGraphNode, IEdge } from '../../../base-classes/node/NodeModule';
 import { InputPort } from '../../../base-classes/port/PortModule';
 
 import { Viewer } from '../../../base-classes/viz/Viewer';
@@ -14,20 +14,27 @@ import { FlowchartService } from '../../../global-services/flowchart.service';
 })
 export class FlowchartViewerComponent extends Viewer{
 
-  zoom: number = 1; 
   pan_mode: boolean = false;
-  pan_init; 
+  pan_init;
   left: number = 0; 
   top: number = 0;
+  zoom: number = 1; 
 
-  selectedNode: number = 0;
-  nodes: IGraphNode[] = [];
-  conn: any = [];
+  _portWidth: number = 15; 
+  _margin: number = 10; 
+
+  _selectedNode: number = 0;
+  _nodes: IGraphNode[] = [];
+  _edges: IEdge[] = [];
 
   constructor(injector: Injector){  super(injector, "FlowchartViewer");  }
 
+  //
+  //
+  //  Viewer Related Functions
+  //
+  //
   resetViewer(): void{
-
     this.zoom = 1; 
     this.left = 0; 
     this.top = 0; 
@@ -35,65 +42,12 @@ export class FlowchartViewerComponent extends Viewer{
 
   }
 
-  reset(): void{
-    this.selectedNode = 0;
-    this.nodes = [];
-    this.conn = [];
-  }
-
   scale($event): void{
     let scaleFactor: number = 0.1;
     this.zoom = this.zoom  + (Math.sign($event.wheelDelta))*scaleFactor;
   }
 
-  ngOnInit(){
-  }
-
-  update(){
-    this.nodes = this.flowchartService.getNodes();
-    this.conn = this.flowchartService.getConnections();
-
-    this.nodes.map(function(node){
-          let margin = 10; 
-          let port_width = 15; 
-          let inputs = node.getInputs().length; 
-          let outputs =  node.getOutputs().length;
-          let max = inputs > outputs ? inputs : outputs; 
-          let width = margin*(max+1) + (max)*port_width;
-          node["position"] = node.getPosition();
-          node["width"] = width;
-    }) 
-    //this.data = this.flowchartService.getChartData();
-  }
-
-  updateInput(input_port: InputPort, event: any){
-    input_port.setValue(event.target.value);
-    console.log(input_port.getValue());
-  }
-
-  getData():string {
-  	return JSON.stringify(this.flowchartService.getChartData());
-  }
-
-  isSelected(node: IGraphNode): boolean{
-    return this.flowchartService.isSelected(node);
-  }
-
-  graphclick($event): void{
-    console.log($event);
-  }
-
-  addNode($event): void{
-    $event.stopPropagation();
-    this.flowchartService.addNode();
-  }
-
-  nodeclick($event, node): void{
-    this.flowchartService.selectNode(node);
-  }
-
   startPan($event): void{
-    console.log("startpan")
     this.pan_mode = true;
     this.pan_init = [$event.layerX, $event.layerY];
   }
@@ -110,7 +64,6 @@ export class FlowchartViewerComponent extends Viewer{
   }
 
   stopPan($event): void{
-    console.log("panstopped")
     this.pan_mode = false;
     this.pan_init = undefined;
   }
@@ -126,8 +79,8 @@ export class FlowchartViewerComponent extends Viewer{
     this.pan_mode = false;
     let relX: number = $event.pageX - node.dragStart.x; 
     let relY: number = $event.pageY - node.dragStart.y;
-    node.position.x += relX/this.zoom; 
-    node.position.y += relY/this.zoom; 
+    node.position[0] += relX/this.zoom; 
+    node.position[1] += relY/this.zoom; 
     node.dragStart = {x: $event.pageX, y: $event.pageY}; 
   }
 
@@ -135,11 +88,78 @@ export class FlowchartViewerComponent extends Viewer{
     this.pan_mode = false;
     let relX: number = $event.pageX - node.dragStart.x; 
     let relY: number = $event.pageY - node.dragStart.y;
-    node.position.x += relX; 
-    node.position.y += relY; 
+    node.position[0] += relX; 
+    node.position[1] += relY; 
 
-    node.setPosition(node.position);
   }
+
+
+
+  //
+  //
+  //  Data Related Functions
+  //
+  //
+
+  update(){
+    this._nodes = this.flowchartService.getNodes();
+    this._edges = this.flowchartService.getEdges();
+
+    let m = this._margin; 
+    let pw = this._portWidth;
+    this._nodes.map(function(node){
+
+          let inputs = node.getInputs().length; 
+          let outputs =  node.getOutputs().length;
+          let max = inputs > outputs ? inputs : outputs; 
+
+          let width = m*(max+1) + (max)*pw;
+    }) 
+  }
+
+  resetData(): void{
+    this._selectedNode = 0;
+    this._nodes = [];
+    this._edges = [];
+  }
+
+  addNode($event): void{
+    $event.stopPropagation();
+    this.flowchartService.addNode();
+  }
+
+
+
+
+  updateInput(input_port: InputPort, event: any){
+    /*input_port.set(event.target.value);
+    console.log(input_port.getValue());
+*/  }
+
+  getData():string {
+  	return JSON.stringify(this.flowchartService.getChartData());
+  }
+
+  isSelected(node: IGraphNode): boolean{
+    return this.flowchartService.isSelected(node);
+  }
+
+
+
+
+  //
+  //
+  //  Events
+  //
+  //
+
+
+  clickNode($event: Event, nodeIndex: number): void{
+    // select the node
+    this.flowchartService.selectNode(nodeIndex);
+  }
+
+
 
   inputclick($event, input): void{
     console.log($event, input);
@@ -151,12 +171,6 @@ export class FlowchartViewerComponent extends Viewer{
   _startPort: any = undefined; 
   link($event, port){
 
-    if(this._startPort != undefined){
-      this.conn.push(this.flowchartService.addLink(this._startPort, port));
-    }
-    else{
-      this._startPort = port; 
-    }
 
   }
 
