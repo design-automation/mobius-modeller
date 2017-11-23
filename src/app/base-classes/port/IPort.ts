@@ -22,6 +22,7 @@ export interface IPort{
 	connect(): void;
 	disconnect(): void;
 
+	getDefaultValue(): any;
 	setDefaultValue(value: any): void; 
 	setComputedValue(value: any): void;
 

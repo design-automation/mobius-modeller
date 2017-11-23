@@ -82,7 +82,6 @@ export abstract class Port implements IPort{
 	//
 	//
 	//
-
 	isConnected(): boolean{
 		return this._connected;
 	}
@@ -101,6 +100,10 @@ export abstract class Port implements IPort{
 
 	setComputedValue(value: any): void{
 		this._computed = value;
+	}
+
+	getDefaultValue(): any{
+		return this._default;
 	}
 
 	getValue(): any{

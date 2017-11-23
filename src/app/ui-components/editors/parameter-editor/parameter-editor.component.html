@@ -13,19 +13,23 @@
 		<div class='input' *ngFor="let inp of _inputs">
 			<div class='row'>
 				<span class='label'>Name</span>
-				<span class='content' contenteditable="true" (keyup)="updateInputName($event, inp)">{{ inp.getName() || "undefined" }}</span>
+				<span class='content' contenteditable="true" (blur)="updateInputName($event, inp)">
+					{{ inp.getName() || "undefined" }}
+				</span>
 			</div>
 			<div class='row'>
 				<span class='label'>Type</span>
 				<span class='content'>
 					<select (change)="updateInputType($event.target.value, inp)">
-						         	    <option *ngFor="let x of portOpts" [value]="x.id" [selected]="inp.getType() == x.name">{{x.name}}</option>
+						         	    <option *ngFor="let x of portOpts" [value]="x" [selected]="inp.getType() == x">{{x}}</option>
 						            </select>
 				</span>
 			</div>
 			<div class='row'>
 				<span class='label'>Default</span>
-				<span class='content' contenteditable="true" (keyup)="updateInputDValue($event, inp)">{{inp.getValue() || "undefined"}}</span>
+				<span class='content' contenteditable="true" (blur)="updateDefaultValue($event, inp)">
+					{{inp.getDefaultValue() || "undefined"}}
+				</span>
 			</div>
 			<span class='btn btn-small' (click)='deleteInput(inp)'>Delete</span>
 		</div>

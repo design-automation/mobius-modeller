@@ -10,16 +10,16 @@
 				<span class='label'>Name</span>
 				<span class='content'>{{ inp.getName() }}</span>
 			</div>
+			<!-- todo: disable if port is connected -->
 			<div class='row'>
 				<span class='label'>Value</span>
-				<span class='content'>
-					<span contenteditable="true" (keyup)="updateInputDataValue($event, inp)">{{ inp.getValue() }}</span>
+				<span class='content' contenteditable="true" 
+					(blur)="updateComputedValue($event, inp)">
+						{{ inp.getValue() || "undefined" }}
 				</span>
 			</div>
-			<div class='row'>
-				<span class='label'>Default</span>
-				<span class='content'>{{ inp.getType() }}</span>
-			</div>
+			<!-- ui options based on type -->
+			<!-- todo: -->
 		</div>
 	</div>
 </mat-expansion-panel>
