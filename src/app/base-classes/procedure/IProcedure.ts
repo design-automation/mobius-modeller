@@ -28,7 +28,7 @@ export interface IProcedure{
 	isDisabled(): boolean; 
 	enable(): void;
 	disable(): void;
-	
+
 	hasChildren(): boolean;
 	getChildren(): IProcedure[];
 	addChild(procedure: IProcedure): void;

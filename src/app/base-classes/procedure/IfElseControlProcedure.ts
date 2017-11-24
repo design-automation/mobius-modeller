@@ -16,10 +16,8 @@ export class IfElseControlProcedure extends Procedure{
 			this._title = title;
 
 			if(title == ProcedureTypes.IfControl){
-
 			}
 			else if(title == ProcedureTypes.ElseControl){
-
 			}
 
 

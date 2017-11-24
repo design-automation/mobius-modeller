@@ -1,5 +1,5 @@
 export enum ProcedureTypes{
-	Data,
+	Data, 
 	Action,
 	IfElseControl, 
 	IfControl, 

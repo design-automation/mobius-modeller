@@ -6,22 +6,10 @@ import {ForLoopControlProcedure} from "./ForLoopControlProcedure";
 
 export class ProcedureFactory{
 
-	private static instance: ProcedureFactory; 
-
-	constructor(){}
-
-	static getInstance():	ProcedureFactory{
-		if (ProcedureFactory.instance == undefined){
-			ProcedureFactory.instance = new ProcedureFactory();
-		}
-		
-		return ProcedureFactory.instance;
-	}
-
-	getProcedure(type: ProcedureTypes, data: any){
+	static getProcedure(type: ProcedureTypes, data: any){
 
 		if(type == ProcedureTypes.Data){
-			return new DataProcedure();
+			return new DataProcedure(data);
 		}
 		else if(type == ProcedureTypes.Action){
 			return new ActionProcedure(data);

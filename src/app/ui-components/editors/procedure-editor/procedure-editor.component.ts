@@ -13,11 +13,17 @@ import { FlowchartService } from '../../../global-services/flowchart.service';
 })
 export class ProcedureEditorComponent extends Viewer {
 
-	private _prodFactory: ProcedureFactory = ProcedureFactory.getInstance();
 	private isVisible: boolean = false;
 
   	private _procedureArr: IProcedure[] = [];
   	private _node: IGraphNode;
+
+  	private procedureTypes: ProcedureTypes[] = [
+  			ProcedureTypes.Data, 
+  			ProcedureTypes.Action, 
+  			ProcedureTypes.ForLoopControl, 
+  			ProcedureTypes.IfElseControl
+  	];
 
   	private _tree = [];
 	private _tree_options = {
@@ -71,39 +77,62 @@ export class ProcedureEditorComponent extends Viewer {
 		tree.treeModel.expandAll();
 	}
 
+	getString(type: ProcedureTypes): string{
+		console.log(type.toString())
+		return type.toString()
+	}
+
 	updateProcedureTree(){
 
-		/*let getTreeItem = function(data : IProcedure): any{
+		// converts the procedure into a tree item
+		let getTreeItem = function(prod : IProcedure, index: number): 
+												{ id: number,   
+												  type: ProcedureTypes
+												  leftExpression: string, 
+												  rightExpression: string
+												}{
 
-			let procedure_type = data.getTitle();
-			let dataObj = { id: Math.random() , name: data.getTitle(), type: procedure_type, model: data } ; 
-			dataObj["result"] = data.getResult();
-			dataObj["expression"] = data.getExpression();
-			
-			if(procedure_type === "Data"){
+			let procedure_type :ProcedureTypes = prod.getType();
+			let treeItem = {id: index, type: procedure_type, 
+							leftExpression: undefined, 
+							rightExpression: undefined};
+
+			//let dataObj = { id: Math.random() , name: data.getTitle(), type: procedure_type, model: data } ; 
+
+			// ProcedureType.Data
+			if(procedure_type === ProcedureTypes.Data){
+				// do nothing
+				treeItem["leftExpression"] = prod.getLeftComponent().expression;
+				treeItem["rightExpression"] = prod.getRightComponent().expression;
+				console.log(treeItem);
 			}
-			else if(procedure_type == "Action"){
-				dataObj.name = data.getCategory() + "::" + data.getMethod();
-				dataObj["params"] = data.getParams();
+			else if(procedure_type === ProcedureTypes.Action ){
+				// todo
 			}
-			else if(procedure_type == "Control"){
+			else if(prod.hasChildren() == true){
+
+				// todo
+				// if prod type is if or else individually, disallow drag
+
 				// if else (if else)
 				// for 
-				dataObj.name = data.getControlType();
+				/*dataObj.name = data.getControlType();
 				dataObj["children"] = data.getNodes().map(function(node){
 					return getTreeItem(node)
-				})
+				})*/
 			}
 			else{
 				throw Error("unknown procedure type");
 			}
+
+			console.log(treeItem);
 			
-			return dataObj;
+			return treeItem;
 		}
 
 		this._tree = this._procedureArr.map(function(prod, index){
-			return getTreeItem(prod);
-		})*/
+			return getTreeItem(prod, index);
+		})
 
 	}
 
@@ -115,26 +144,18 @@ export class ProcedureEditorComponent extends Viewer {
 	}
 
 
-	addOutput(): void{
-	  // add an output port
-	  let default_output_name: string = "output" + this._node.getOutputs().length;
-      this._node.addOutput(default_output_name);
+	addProcedure(type: ProcedureTypes): void{
 
-      // add corresponding data line
-	  /*let prod:IProcedure = this._prodFactory.getProcedure({ id: this._procedureArr.length, title: "Data" });
-	  prod.setResult(default_output_name);
-	  this._node.addProcedureLine(prod);*/
+		if( type == ProcedureTypes.Data){
+			let default_variable_name: string = "var" + this._procedureArr.length;
+			let prod:IProcedure = ProcedureFactory.getProcedure( ProcedureTypes.Data, {result: default_variable_name, value: "undefined"});
+			this._node.addProcedure(prod);
+		}
 
-      this.flowchartService.update();
-    }
-
-
-	addProcedure(type: number): void{
 		//todo
 
 		/*if(type == 0){
-			let prod:IProcedure = this._prodFactory.getProcedure({ id: this._procedureArr.length, title: "Data" });
-			this._node.addProcedureLine(prod);
+			
 		}
 		else if(type == 1){
 			let prod:IProcedure = this._prodFactory.getProcedure({ id: this._procedureArr.length, title: "Action" });

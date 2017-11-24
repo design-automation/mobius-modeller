@@ -49,9 +49,6 @@ export abstract class Procedure implements IProcedure{
 		this._disabled = true;
 	}
 
-
-
-
 	hasChildren():  boolean{
 		return this._hasChildren;
 	}

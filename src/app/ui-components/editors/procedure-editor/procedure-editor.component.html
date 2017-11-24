@@ -3,33 +3,30 @@
 	    <mat-panel-title class='header'>
 	      <div>Procedure</div>
 	      <div class='btn-group'>
-			<button (click)="addProcedure(0)">var</button>
-			<button (click)="addProcedure(1)">act</button>
-			<button (click)="addProcedure(2)">for</button>
-			<button (click)="addProcedure(3)">if</button>
-			<button (click)="addOutput()">out</button>
+			<button *ngFor="let type of procedureTypes"
+			 (click)="addProcedure(type)">{{getString(type)}}</button>
 		  </div>
 	    </mat-panel-title>
   	</mat-expansion-panel-header>
 	<div class='container'>
 		<tree-root #tree [nodes]='_tree' [options]='_tree_options'>
 			  <ng-template #treeNodeTemplate let-prod let-index="index">
-
 					<!-- template for data -->
-					<div *ngIf="prod.data.type == 'Data'">
+					{{index}} 
+					<div *ngIf="prod.type == 0">
 						<div class='data-node-template procedure'>
 							<span contenteditable="true" (blur)="updateProcedure($event, prod, 'left')">
-								{{prod.getLeftComponent().expression}}
+								{{prod.leftExpression || "undefined" }}
 							</span> 
 							= 
 							<span contenteditable="true" (blur)="updateProcedure($event, prod, 'right')">
-								{{prod.getRightComponent().expression}}
+								{{prod.rightExpression || "undefined" }}
 							</span>
 						</div>
 					</div>
 
 					<!-- template for action -->
-					<div *ngIf="prod.data.type == 'Action'">
+					<!-- <div *ngIf="prod.data.type == 'Action'">
 						<div class='data-node-template procedure'>
 							<span class='editable' contenteditable="true" (blur)="updateProcedure($event, prod, 'left')">
 								{{prod.getLeftComponent().expression}}
@@ -43,7 +40,7 @@
 								)
 							</span>
 						</div>
-					</div>
+					</div> -->
 
 					<!-- template for control -->
 					<!-- todo -->
