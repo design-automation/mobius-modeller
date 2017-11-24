@@ -78,32 +78,23 @@ export class ProcedureEditorComponent extends Viewer {
 	}
 
 	getString(type: ProcedureTypes): string{
-		console.log(type.toString())
 		return type.toString()
 	}
 
 	updateProcedureTree(){
 
 		// converts the procedure into a tree item
-		let getTreeItem = function(prod : IProcedure, index: number): 
-												{ id: number,   
-												  type: ProcedureTypes
-												  leftExpression: string, 
-												  rightExpression: string
-												}{
+		let getTreeItem = function(prod : IProcedure, index: number): Object{
 
-			let procedure_type :ProcedureTypes = prod.getType();
-			let treeItem = {id: index, type: procedure_type, 
-							leftExpression: undefined, 
-							rightExpression: undefined};
+			let procedure_type :string = prod.getType();
+			let treeItem = { id: index, name: procedure_type, data: {}};
 
 			//let dataObj = { id: Math.random() , name: data.getTitle(), type: procedure_type, model: data } ; 
 
 			// ProcedureType.Data
 			if(procedure_type === ProcedureTypes.Data){
-				// do nothing
-				treeItem["leftExpression"] = prod.getLeftComponent().expression;
-				treeItem["rightExpression"] = prod.getRightComponent().expression;
+				treeItem.data["leftExpression"] = prod.getLeftComponent().expression;
+				treeItem.data["rightExpression"] = prod.getRightComponent().expression;
 				console.log(treeItem);
 			}
 			else if(procedure_type === ProcedureTypes.Action ){

@@ -12,15 +12,14 @@
 		<tree-root #tree [nodes]='_tree' [options]='_tree_options'>
 			  <ng-template #treeNodeTemplate let-prod let-index="index">
 					<!-- template for data -->
-					{{index}} 
-					<div *ngIf="prod.type == 0">
+					<div>
 						<div class='data-node-template procedure'>
 							<span contenteditable="true" (blur)="updateProcedure($event, prod, 'left')">
-								{{prod.leftExpression || "undefined" }}
+								{{prod.data.leftExpression}}
 							</span> 
-							= 
+							{{prod.data.leftExpression}}={{prod.data.rightExpression}} 
 							<span contenteditable="true" (blur)="updateProcedure($event, prod, 'right')">
-								{{prod.rightExpression || "undefined" }}
+								{{prod.data.rightExpression}}
 							</span>
 						</div>
 					</div>

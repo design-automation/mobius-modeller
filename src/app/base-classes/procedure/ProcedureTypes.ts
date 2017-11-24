@@ -1,8 +1,8 @@
 export enum ProcedureTypes{
-	Data, 
-	Action,
-	IfElseControl, 
-	IfControl, 
-	ElseControl,
-	ForLoopControl
+	Data = "Data", 
+	Action = "Action",
+	IfElseControl = "IfElse", 
+	IfControl = "If", 
+	ElseControl = "Else",
+	ForLoopControl = "For Loop"
 }
