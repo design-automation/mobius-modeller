@@ -27,10 +27,11 @@ export interface IGraphNode{
 	getInputByIndex(input_port_index: number): InputPort;
 	getOutputByIndex(output_port_index: number): OutputPort;
 
-
 	getProcedure(): IProcedure[];
 	addProcedure(prod: IProcedure): void;
-	deleteProcedure(lineIndex: number): void;
+	addProcedureAtPosition(prod: IProcedure, index: number): void;
+	deleteProcedure(prod: IProcedure);
+	deleteProcedureAtPosition(lineIndex: number): void;
 
 	//
 	// flowchart specific

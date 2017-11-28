@@ -29,9 +29,15 @@ export interface IProcedure{
 	enable(): void;
 	disable(): void;
 
+	hasParent(): boolean;
+	setParent(parent: IProcedure): void;
+	getParent(): IProcedure;
+
 	hasChildren(): boolean;
 	getChildren(): IProcedure[];
 	addChild(procedure: IProcedure): void;
+	addChildAtPosition(procedure: IProcedure, index: number): void;
+	deleteChild(procedure: IProcedure): void;
 
 	getLeftComponent(): IComponent;
 	setLeftComponent(expression: IComponent): void;

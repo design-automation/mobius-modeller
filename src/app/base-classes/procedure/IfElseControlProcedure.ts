@@ -1,43 +1,47 @@
 import {IProcedure} from "./IProcedure";
 import {Procedure} from "./Procedure";
 import {ProcedureTypes} from "./ProcedureTypes";
+import {IComponent} from "./IComponent";
 
 export class IfElseControlProcedure extends Procedure{
 
-	private _title: ProcedureTypes.IfControl|ProcedureTypes.ElseControl|ProcedureTypes.IfElseControl 
-			= ProcedureTypes.IfElseControl; 
-
-	constructor(title?: ProcedureTypes.IfControl|ProcedureTypes.ElseControl, 
+	constructor(title: ProcedureTypes.IfElseControl|ProcedureTypes.IfControl|ProcedureTypes.ElseControl, 
 		data ?: {if_condition: string, el_condition: string}){
 		
-		super(ProcedureTypes.IfElseControl, true);
+		super(title, true);
 
-		if (title !== undefined){
-			this._title = title;
-
-			if(title == ProcedureTypes.IfControl){
-			}
-			else if(title == ProcedureTypes.ElseControl){
-			}
-
-
-		}
-		else{
+		if (title == ProcedureTypes.IfElseControl){
 			let if_control: IProcedure = new IfElseControlProcedure( ProcedureTypes.IfControl, data )
 			let else_control: IProcedure = new IfElseControlProcedure( ProcedureTypes.ElseControl, data)
 			
 			super.addChild(if_control);
 			super.addChild(else_control);
 		}
+		else{
+
+			if(title == ProcedureTypes.IfControl){
+				let left: IComponent = { 
+									 expression: data.if_condition, 
+									 isAction: false, 
+									 module: undefined, 
+									 category: undefined, 
+									 fn_name: undefined,
+									 params: undefined
+								}
+				this.setLeftComponent(left)
+			}
+			else if(title == ProcedureTypes.ElseControl){
+			}
+		}
 
 	}
 
-	addChild(procedure: IProcedure): void{
-		if(this._title = ProcedureTypes.IfElseControl){
-			throw Error("Cannot add child to if-else block.");
+	addChild(prod: IProcedure): void{
+		if(this.getType() == ProcedureTypes.IfElseControl){
+			alert("Cannot add child to this");
 		}
 		else{
-			super.addChild(procedure);
+			super.addChild(prod);
 		}
 	}
 

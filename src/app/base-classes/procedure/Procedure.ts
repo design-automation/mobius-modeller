@@ -5,11 +5,13 @@ import {ICodeGenerator} from "../code/CodeModule";
 
 export abstract class Procedure implements IProcedure{
 
+
 	private _type: ProcedureTypes; 
 	private _hasChildren: boolean;
 	private _selected: boolean; 
 	private _disabled: boolean = false; 
-	private _allowDrag: boolean = true;
+	
+	private _parent: IProcedure;
 
 	protected _leftComponent: IComponent; 
 	protected _rightComponent: IComponent; 
@@ -49,6 +51,27 @@ export abstract class Procedure implements IProcedure{
 		this._disabled = true;
 	}
 
+
+
+
+	hasParent(): boolean{
+		if(this._parent == undefined){
+			return false;
+		}
+		else{
+			return true;
+		}
+	}
+
+	getParent(): IProcedure{
+		return this._parent;
+	}
+
+	setParent(parent: IProcedure): void{
+		this._parent = parent;
+	}
+
+
 	hasChildren():  boolean{
 		return this._hasChildren;
 	}
@@ -58,7 +81,7 @@ export abstract class Procedure implements IProcedure{
 			throw Error("This Procedure Type is not a container");
 		}
 		else{
-			throw Error(" No Children ");
+			return this._children;
 		}
 		
 	}	
@@ -72,8 +95,22 @@ export abstract class Procedure implements IProcedure{
 		}
 	}
 
+	addChildAtPosition(child: IProcedure, index: number): void{
+		this._children.splice(index, 0, child);
+	}
 
-
+	deleteChild(procedure: IProcedure): void{
+		this._children = this._children.filter(function(child: IProcedure){ 
+			if(child === procedure){
+				console.log("found!");
+				return false; 
+			}
+			else{
+				console.log("not found");
+				return true;
+			}
+		});
+	}
 
 	getLeftComponent(): IComponent{
 		return this._leftComponent; 

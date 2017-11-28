@@ -15,13 +15,7 @@ export class ProcedureFactory{
 			return new ActionProcedure(data);
 		}
 		else if(type == ProcedureTypes.IfElseControl){
-			return new IfElseControlProcedure(data);
-		}
-		else if(type == ProcedureTypes.IfControl){
-			return new IfElseControlProcedure(data);
-		}
-		else if(type == ProcedureTypes.ElseControl){
-			return new IfElseControlProcedure(data);
+			return new IfElseControlProcedure(ProcedureTypes.IfElseControl, data);
 		}
 		else if(type == ProcedureTypes.ForLoopControl){
 			return new ForLoopControlProcedure(data);
