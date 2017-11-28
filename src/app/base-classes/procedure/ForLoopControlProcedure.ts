@@ -7,6 +7,10 @@ export class ForLoopControlProcedure extends Procedure{
 	constructor(data ?: {variable: string, array_name: string}){
 		super(ProcedureTypes.ForLoopControl, true);
 
+		if(data == undefined){
+			data = {variable: undefined, array_name: undefined}
+		}
+
 		let left: IComponent = { expression: data.variable, 
 								 isAction: false, 
 								 module: undefined, 

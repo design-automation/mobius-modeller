@@ -74,22 +74,40 @@ export class ProcedureEditorComponent extends Viewer {
 		let to_procedure: IProcedure = $event.to.parent.model;
 		let moved_position: number = $event.to.index;
 
-		// case: parent changed
-		if(moved_procedure.hasParent()){
-			let parent_procedure: IProcedure = moved_procedure.getParent();
-			parent_procedure.deleteChild(moved_procedure);
+		let parent: IProcedure|IGraphNode = moved_procedure.getParent();
+
+		// case: no parent and parent added
+		// case: no parent and no parent
+		// case: parent and different parent
+		// case: parent and same parent
+		// case: parent and no parent
+		if( moved_procedure.getParent() === to_procedure ){
+			if(parent === undefined){
+				this._node.deleteProcedure(moved_procedure);
+				this._node.addProcedureAtPosition(moved_procedure, moved_position);
+			}
+			else{
+				to_procedure.deleteChild(moved_procedure);
+				to_procedure.addChildAtPosition(moved_procedure, moved_position);
+			}
 		}
 		else{
-			this._node.deleteProcedure(moved_procedure);
-			this._node.addProcedureAtPosition(moved_procedure, moved_position);
-		}
+			
+			if(parent === undefined){
+				this._node.deleteProcedure(moved_procedure);
+			}
+			else{
+				parent.deleteChild(moved_procedure);
+			}
 
-		if(to_procedure != undefined){
-			to_procedure.addChildAtPosition(moved_procedure, moved_position);
-		}
+			if(to_procedure === undefined){
+				this._node.addProcedureAtPosition(moved_procedure, moved_position)
+			}
+			else{
+				to_procedure.addChildAtPosition(moved_procedure, moved_position);
+			}
 
-		// set new parent 
-		// set new position		
+		}
 		moved_procedure.setParent(to_procedure);
 
 	}
@@ -140,14 +158,7 @@ export class ProcedureEditorComponent extends Viewer {
 			return treeItem;
 		}
 
-		this._tree = this._procedureArr.filter(function(prod){ 
-			if(prod.hasParent() == false){
-				return true;
-			}
-			else{
-				return false;
-			}
-		}).map(function(prod, index){
+		this._tree = this._procedureArr.map(function(prod, index){
 			return getTreeItem(prod, index);
 		})
 

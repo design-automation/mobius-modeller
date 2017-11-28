@@ -20,6 +20,11 @@ export class IfElseControlProcedure extends Procedure{
 		else{
 
 			if(title == ProcedureTypes.IfControl){
+
+				if(data == undefined){
+					data = {if_condition: undefined, el_condition: undefined}
+				}
+
 				let left: IComponent = { 
 									 expression: data.if_condition, 
 									 isAction: false, 
@@ -31,6 +36,7 @@ export class IfElseControlProcedure extends Procedure{
 				this.setLeftComponent(left)
 			}
 			else if(title == ProcedureTypes.ElseControl){
+				
 			}
 		}
 

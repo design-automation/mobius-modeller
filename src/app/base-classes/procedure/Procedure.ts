@@ -23,6 +23,16 @@ export abstract class Procedure implements IProcedure{
 		this._hasChildren = hasChildren;
 	}	
 
+	update(prodData: any, parent: IProcedure): void{
+		this._hasChildren = prodData._hasChildren;
+		this._disabled = prodData._disabled; 
+		this._leftComponent = prodData._leftComponent;
+		this._rightComponent = prodData._rightComponent;
+
+		this._parent = parent;
+		this._children = [];
+	}
+
 	getType(): ProcedureTypes{
 		return this._type; 
 	}
@@ -95,6 +105,15 @@ export abstract class Procedure implements IProcedure{
 		}
 	}
 
+	addChildFromData(child: IProcedure): void{
+		if( this._hasChildren ){
+			this._children.push(child);
+		}
+		else{
+			throw Error("Cannot add child to this procedure");
+		}
+	}
+
 	addChildAtPosition(child: IProcedure, index: number): void{
 		this._children.splice(index, 0, child);
 	}
@@ -102,11 +121,9 @@ export abstract class Procedure implements IProcedure{
 	deleteChild(procedure: IProcedure): void{
 		this._children = this._children.filter(function(child: IProcedure){ 
 			if(child === procedure){
-				console.log("found!");
 				return false; 
 			}
 			else{
-				console.log("not found");
 				return true;
 			}
 		});

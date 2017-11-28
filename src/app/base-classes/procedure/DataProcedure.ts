@@ -6,6 +6,11 @@ export class DataProcedure extends Procedure{
 
 	constructor(data ?: {result: string, value: string}){
 		super(ProcedureTypes.Data, false); 
+
+		if(data == undefined){
+			data = {result: undefined, value: undefined}
+		}
+
 		let left: IComponent = { expression: data.result, 
 								 isAction: false, 
 								 module: undefined, 

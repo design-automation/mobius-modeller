@@ -7,6 +7,9 @@ import {IFlowchart, Flowchart, FlowchartReader} from '../base-classes/flowchart/
 import {IGraphNode, GraphNode} from '../base-classes/node/NodeModule';
 import {ICodeGenerator, CodeFactory} from "../base-classes/code/CodeModule";
 
+import * as CircularJSON from 'circular-json';
+
+
 @Injectable()
 export class FlowchartService {
 
@@ -52,40 +55,45 @@ export class FlowchartService {
     this.sendMessage("Updated");
   }
 
-  //
-  //    sets the main scene
-  //
-  loadFile(url: string): void{
-
-    let file = "../assets/examples/test_scene.mob";
-    this.http.get(file).subscribe(data => {
-            
-            // Read the result field from the JSON response.
-            // todo: check validity of data
-            console.log(data);
-
-            // load required module
-            //this.modules.loadModules(data["module"]);
-
-            let jsonData: {language: string, flowchart: JSON, modules: JSON};
-
-            // load the required code generator
-            if (this.code_generator.getLanguage() != data["language"] && data["language"] !== undefined){
-              this.code_generator = CodeFactory.getCodeGenerator(data["language"])
-            }
-
-            this._flowchart = FlowchartReader.readFlowchartFromData(data["flowchart"])
-            console.log(this._flowchart);
-            this.update();
-
-      });
-
-    // change the module based on the module name
-    //this._flowchart = <IFlowchart>JSON.parse();//this._fc.dataToFlowchart(data, language);
-    
-    // tell subcribers to update 
+  
+  readTextFile(file: string){
+      
   }
 
+  loadFile(url: string): void{
+      let file = url || "../assets/examples/scene_nested_prod.mob";
+
+      let _this = this;
+
+      var rawFile = new XMLHttpRequest();
+      rawFile.open("GET", file, false);
+      rawFile.onreadystatechange = function ()
+      {
+          if(rawFile.readyState === 4)
+          {
+              if(rawFile.status === 200 || rawFile.status == 0)
+              {
+                  var allText = rawFile.responseText;
+
+                  let jsonData: {language: string, flowchart: JSON, modules: JSON};
+                  let data = CircularJSON.parse(allText);
+
+                  // load the required modules
+                 /* _this.modules.loadModules(data["module"]); */
+
+                  // load the required code generator
+                  if (_this.code_generator.getLanguage() != data["language"] && data["language"] !== undefined){
+                    _this.code_generator = CodeFactory.getCodeGenerator(data["language"])
+                  }
+
+                  // read the flowchart
+                  _this._flowchart = FlowchartReader.readFlowchartFromData(data["flowchart"])
+                  _this.update();
+              }
+          }
+      }
+      rawFile.send(null);
+  }
 
   //
   // gets the textual representation of the actual flowchart
@@ -197,7 +205,7 @@ export class FlowchartService {
     file["modules"] = [];
     file["flowchart"] = this._flowchart;
 
-    fileString = JSON.stringify(file);
+    fileString = CircularJSON.stringify(file);
 
     this.downloadContent({
         type: 'text/plain;charset=utf-8',

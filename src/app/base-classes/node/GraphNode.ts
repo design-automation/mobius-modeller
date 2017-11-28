@@ -1,6 +1,6 @@
 import {IdGenerator} from '../misc/GUID';
 
-import {IProcedure} from "../procedure/ProcedureModule";
+import {IProcedure, ProcedureFactory, ProcedureTypes} from "../procedure/ProcedureModule";
 import {InputPort, OutputPort} from "../port/PortModule";
 import {ICodeGenerator} from "../code/CodeModule";
 
@@ -96,6 +96,14 @@ export class GraphNode implements IGraphNode{
 
 			output.update(output_data);
 			this._outputs.push(output);
+		}
+
+		// add procedure
+		let procedureArr: IProcedure[] = nodeData["_procedure"];
+		console.log(procedureArr);
+		for( let prodIndex in procedureArr ){
+			let procedure: IProcedure = ProcedureFactory.getProcedureFromData(procedureArr[prodIndex], undefined);
+			this._procedure.push(procedure);
 		}
 
 	}
