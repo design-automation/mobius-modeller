@@ -100,7 +100,6 @@ export class GraphNode implements IGraphNode{
 
 		// add procedure
 		let procedureArr: IProcedure[] = nodeData["_procedure"];
-		console.log(procedureArr);
 		for( let prodIndex in procedureArr ){
 			let procedure: IProcedure = ProcedureFactory.getProcedureFromData(procedureArr[prodIndex], undefined);
 			this._procedure.push(procedure);

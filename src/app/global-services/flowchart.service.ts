@@ -61,7 +61,7 @@ export class FlowchartService {
   }
 
   loadFile(url: string): void{
-      let file = url || "../assets/examples/scene_nested_prod.mob";
+      let file = url || "../assets/examples/Scene1511943368602.mob";
 
       let _this = this;
 
@@ -148,6 +148,8 @@ export class FlowchartService {
 
   addEdge(outputAddress: number[], inputAddress: number[]):  void{
     this._flowchart.addEdge(outputAddress, inputAddress);
+    this._flowchart.getNodeByIndex(outputAddress[0]).getOutputByIndex(outputAddress[1]).connect();
+    this._flowchart.getNodeByIndex(inputAddress[0]).getInputByIndex(inputAddress[1]).connect();
     this.update();
   }
 

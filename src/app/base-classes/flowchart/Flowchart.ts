@@ -55,6 +55,8 @@ export class Flowchart implements IFlowchart{
 	addEdge(outputAddress: number[], inputAddress: number[]): number{
 
 		if(outputAddress.length !== 2 || inputAddress.length !== 2){
+			console.log("inputAddress", inputAddress);
+			console.log("outputAddress", outputAddress);
 			throw Error("Invalid arguments for edge");
 		}
 

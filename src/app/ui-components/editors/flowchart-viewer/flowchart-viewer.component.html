@@ -11,48 +11,74 @@
   	</mat-expansion-panel-header>
 	<div class='container' (wheel)="scale($event)">
 
-			<svg xmlns="http://www.w3.org/2000/svg" class="graph-container" id="graph-edges" [style.zoom]="zoom">
-				<circle cx="10" cy="10" r="2" fill="red"></circle>
-				<g *ngFor="let connection of conn">
-					<path d="connection.getPath()" stroke="black" fill="transparent"/>
+			<svg xmlns="http://www.w3.org/2000/svg" 
+				class="graph-container" 
+				id="graph-edges" 
+				[style.zoom]="zoom">
+
+				<g *ngFor="let edge of _edges">
+					<path [attr.d]="getEdgePath(edge)" 
+					  (click)="edgeClicked()"
+					  stroke="blue"
+					  stroke-width="3" fill="none" />
 				</g>
+				
+				<!-- dragging path -->
+				<g id="temporary-edge" [class.hidden]="!_linkMode" >
+					<path 
+					[attr.d]="edgeString(mouse_pos.start, mouse_pos.current)" stroke="blue"
+ 				 	stroke-width="5" fill="none" stroke-dasharray="5, 5"/>
+ 					<circle id="pointC" [attr.cx]="mouse_pos.current.x" [attr.cy]="mouse_pos.current.y" r="5" />
+ 				</g>
+
 			</svg>
  
-			<div class="graph-container" id="graph-nodes" ondragover="return false" [style.zoom]="zoom" >
+			<div class="graph-container" 
+				id="graph-nodes" ondragover="return false" [style.zoom]="zoom" >
 				
 				<!-- all nodes -->
 				<div class="node-container">
 
 					<!-- one node -->
-					<div  class="node" draggable=true 
-							*ngFor="let node of _nodes; let i = index" 
-							[style.width.px]="node.width"
+					<div  class="node" 
+							*ngFor="let node of _nodes; let node_index = index" 
 							[style.left.px]="node.position[0]" 
-							[style.top.px]="node.position[1]" 
-							(dragstart)="onDragStart($event, node)" 
-							(drag)="onDrag($event, node)" 
-							(dragend)="dragEnd($event, node)">
-						
+							[style.top.px]="node.position[1]">
+
 						<!--inputs-->
 						<div class="port-container input">
-							<div class="port" 
-								*ngFor="let port of node.getInputs()"  
-								(click)="link($event, port)"></div>
+							<div class="port" [class.connected]="port.isConnected()" 
+								*ngFor="let port of node.getInputs(); let pi=index"  
+								draggable=true
+								(dragstart)="portDragStart($event, port, [node_index, pi])" 
+								(drag)="portDragging($event, port)" 
+								(dragend)="portDragEnd($event, port)"
+								(drop)="portDrop($event, port, [node_index, pi])">
+							</div>
 						</div>
 					
 						<!-- node body -->
-						<div class="node-body" [class.selected]="isSelected(node)" 
-							(click)="clickNode($event, i)">
+						<div class="node-body" 
+							[class.selected]="isSelected(node)" 
+							(click)="clickNode($event, node_index)"
+							draggable=true  
+							(dragstart)="nodeDragStart($event, node)" 
+							(drag)="nodeDragging($event, node)" 
+							(dragend)="nodeDragEnd($event, node)">
 							{{node.getName()}}
 						</div>
 				
 						<!-- outputs -->
 						<div class="port-container output">
-							<div class="port" 
-								*ngFor="let port of node.getOutputs()"
-								(click)="link($event, port)"></div>
+							<div class="port" [class.connected]="port.isConnected()" 
+								*ngFor="let port of node.getOutputs(); let po=index"
+								draggable=true
+								(dragstart)="portDragStart($event, port, [node_index, po])" 
+								(drag)="portDragging($event, port)" 
+								(dragend)="portDragEnd($event, port)"
+								(drop)="portDrop($event, port, [node_index, po])">
+							</div>
 						</div>
-						
 				
 					</div>
 				

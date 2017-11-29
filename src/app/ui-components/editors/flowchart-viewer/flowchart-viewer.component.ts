@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, Injector } from '@angular/core';
 import { NgClass } from '@angular/common';
 
 import { IGraphNode, IEdge } from '../../../base-classes/node/NodeModule';
-import { InputPort } from '../../../base-classes/port/PortModule';
+import { InputPort, OutputPort } from '../../../base-classes/port/PortModule';
 
 import { Viewer } from '../../../base-classes/viz/Viewer';
 import { FlowchartService } from '../../../global-services/flowchart.service';
@@ -68,30 +68,7 @@ export class FlowchartViewerComponent extends Viewer{
     this.pan_init = undefined;
   }
 
-  onDragStart($event, node): void{
-    $event.dataTransfer.setDragImage( new Image(), 0, 0);
-    // todo : find more elegant solution
-    node.dragStart = {x: $event.pageX, y: $event.pageY}; 
-    this.pan_mode = false;
-  }
 
-  onDrag($event, node): void{
-    this.pan_mode = false;
-    let relX: number = $event.pageX - node.dragStart.x; 
-    let relY: number = $event.pageY - node.dragStart.y;
-    node.position[0] += relX/this.zoom; 
-    node.position[1] += relY/this.zoom; 
-    node.dragStart = {x: $event.pageX, y: $event.pageY}; 
-  }
-
-  dragEnd($event, node): void{
-    this.pan_mode = false;
-    let relX: number = $event.pageX - node.dragStart.x; 
-    let relY: number = $event.pageY - node.dragStart.y;
-    node.position[0] += relX; 
-    node.position[1] += relY; 
-
-  }
 
 
 
@@ -114,6 +91,8 @@ export class FlowchartViewerComponent extends Viewer{
           let max = inputs > outputs ? inputs : outputs; 
 
           let width = m*(max+1) + (max)*pw;
+
+          node["width"] = width;
     }) 
   }
 
@@ -123,28 +102,25 @@ export class FlowchartViewerComponent extends Viewer{
     this._edges = [];
   }
 
-  addNode($event): void{
-    $event.stopPropagation();
-    this.flowchartService.addNode();
-  }
-
-
-
-
-  updateInput(input_port: InputPort, event: any){
-    /*input_port.set(event.target.value);
-    console.log(input_port.getValue());
-*/  }
-
-  getData():string {
-  	return JSON.stringify(this.flowchartService.getChartData());
-  }
-
+  //
+  //
+  //
   isSelected(node: IGraphNode): boolean{
     return this.flowchartService.isSelected(node);
   }
 
+  //
+  // Add node and edges
+  //
+  addNode($event): void{
+    $event.stopPropagation();
+    this.flowchartService.addNode();
+    this.flowchartService.selectNode(this._nodes.length-1);
+  }
 
+  addEdge(outputPortAddress: number[], inputPortAddress: number[]): void{
+    this.flowchartService.addEdge(outputPortAddress, inputPortAddress);
+  }
 
 
   //
@@ -152,26 +128,157 @@ export class FlowchartViewerComponent extends Viewer{
   //  Events
   //
   //
-
-
   clickNode($event: Event, nodeIndex: number): void{
     // select the node
     this.flowchartService.selectNode(nodeIndex);
   }
 
+  //
+  //  node dragging
+  //
+  nodeDragStart($event, node): void{
+    $event.dataTransfer.setDragImage( new Image(), 0, 0);
+    // todo : find more elegant solution
+    node.dragStart = {x: $event.pageX, y: $event.pageY}; 
+    this.pan_mode = false;
+  }
 
+  nodeDragging($event, node): void{
+    this.pan_mode = false;
+    let relX: number = $event.pageX - node.dragStart.x; 
+    let relY: number = $event.pageY - node.dragStart.y;
+    node.position[0] += relX/this.zoom; 
+    node.position[1] += relY/this.zoom; 
+    node.dragStart = {x: $event.pageX, y: $event.pageY}; 
+  }
 
-  inputclick($event, input): void{
-    console.log($event, input);
+  nodeDragEnd($event, node): void{
+    this.pan_mode = false;
+    let relX: number = $event.pageX - node.dragStart.x; 
+    let relY: number = $event.pageY - node.dragStart.y;
+    node.position[0] += relX; 
+    node.position[1] += relY; 
+
   }
 
   //
-  //  links and connections
+  //  port dragging to link
   //
-  _startPort: any = undefined; 
-  link($event, port){
+  _startPort: InputPort|OutputPort;
+  _endPort: InputPort|OutputPort;
+  _linkMode: boolean = false;
+  mouse_pos = { 
+                start: {x: 0, y: 0}, 
+                current: {x: 0, y: 0}
+              }
+  portDragStart($event, port: InputPort|OutputPort, address: number[]){
+      $event.dataTransfer.setDragImage( new Image(), 0, 0);
+      this._startPort = port; 
+      this._startPort['address'] = address;
+      this._linkMode = true;
+
+      this.mouse_pos.start = {x: $event.pageX - (24+181), 
+                               y: $event.pageY - (64+41)};
+  }
+
+  portDragging($event, port: InputPort|OutputPort){
+      // todo: compute total offset of this div dynamically
+      // urgent!
+      //nodes.parentElement.parentElement.parentElement.parentElement.offsetLeft
+      this.mouse_pos.current = {x: $event.pageX - (24+181), 
+                               y: $event.pageY - (64+41)};
+      // draw dashed edge on canvas 
+  }
+
+  portDragEnd($event: Event, port: InputPort|OutputPort){
+      this._startPort = undefined; 
+      this._endPort = undefined;
+      this._linkMode = false;
+  }
+
+  portDrop($event, port: InputPort|OutputPort, address: number[]){
+      
+      this._endPort = port; 
+      this._endPort["address"] = address;
+
+      if(this._startPort !== undefined && this._endPort !== undefined){
 
 
+        let inputPort: number[]; 
+        let outputPort: number[];
+
+        if( this._startPort instanceof InputPort ){
+          inputPort = this._startPort["address"];
+        }
+
+        if( this._startPort instanceof OutputPort ){
+          outputPort = this._startPort["address"];
+        }
+
+        if( this._endPort instanceof InputPort ){
+          inputPort = this._endPort["address"];
+        }
+
+        if( this._endPort instanceof OutputPort ){
+          outputPort = this._startPort["address"];
+        }
+
+        if( inputPort !== undefined && outputPort !== undefined){
+            this.addEdge(outputPort, inputPort);
+        }
+        else{
+            alert("Invalid connection")
+        }
+
+        // clear the variables
+        this._startPort = undefined; 
+        this._endPort = undefined;
+      }
+  }
+
+
+  //
+  // Edge drawing functions
+  //
+  getEdgePath(edge: IEdge): string{
+
+    // todo: fix somewhere
+    let node_height: number = 60;
+
+    let output_node_pos: number[] = this._nodes[edge.output_address[0]].position;
+    let output_node_width: number = this._nodes[edge.output_address[0]]["width"];
+
+    let input_node_pos: number[] = this._nodes[edge.input_address[0]].position; 
+    let input_node_width: number = this._nodes[edge.input_address[0]]["width"];
+
+    let startPoint = { x: output_node_pos[0], y: output_node_pos[1] }
+    let endPoint = { x: input_node_pos[0], y: input_node_pos[1] }
+
+    startPoint.x = startPoint.x + output_node_width/2; 
+    startPoint.y = startPoint.y + node_height;
+
+    endPoint.x = endPoint.x + input_node_width/2; 
+    endPoint.y = endPoint.y;
+
+    return this.edgeString(startPoint, endPoint);
+  }
+
+  edgeString(startPoint: {x: number, y: number},  endPoint: {x: number, y: number}): string{
+    let strArr= [];
+    strArr.push("M");
+    strArr = strArr.concat([startPoint.x, startPoint.y]);
+    //strArr.push("q");
+    strArr.push("L");
+    //strArr = strArr.concat([ (startPoint.x + endPoint.x)/2 , (startPoint.y + endPoint.y)/2]);
+    strArr = strArr.concat([endPoint.x, endPoint.y]);
+
+    let final_path: string = strArr.join(" ");
+
+    return final_path; //"M 10 350 q 150 -300 300 0"
+  }
+
+  edgeClicked(): void{
+    alert("Edge clicked");
   }
 
 }
