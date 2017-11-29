@@ -17,7 +17,8 @@
 				[style.zoom]="zoom">
 
 				<g *ngFor="let edge of _edges">
-					<path [attr.d]="getEdgePath(edge)" 
+					<path 
+					  [attr.d]="getEdgePath(edge)" 
 					  (click)="edgeClicked()"
 					  stroke="blue"
 					  stroke-width="3" fill="none" />
@@ -47,8 +48,10 @@
 
 						<!--inputs-->
 						<div class="port-container input">
-							<div class="port" [class.connected]="port.isConnected()" 
+							<div class="port" 
+								[class.connected]="port.isConnected()" 
 								*ngFor="let port of node.getInputs(); let pi=index"  
+								id="n{{node_index}}pi{{pi}}"
 								draggable=true
 								(dragstart)="portDragStart($event, port, [node_index, pi])" 
 								(drag)="portDragging($event, port)" 
@@ -70,8 +73,10 @@
 				
 						<!-- outputs -->
 						<div class="port-container output">
-							<div class="port" [class.connected]="port.isConnected()" 
+							<div class="port"
+								[class.connected]="port.isConnected()" 
 								*ngFor="let port of node.getOutputs(); let po=index"
+								id="n{{node_index}}po{{po}}"
 								draggable=true
 								(dragstart)="portDragStart($event, port, [node_index, po])" 
 								(drag)="portDragging($event, port)" 

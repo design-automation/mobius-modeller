@@ -242,8 +242,27 @@ export class FlowchartViewerComponent extends Viewer{
   //
   getEdgePath(edge: IEdge): string{
 
+    let outputNodeEl: HTMLElement = 
+    document.getElementById("n" + edge.output_address[0] + "po" + edge.output_address[1]);
+    let inputNodeEl: HTMLElement = 
+    document.getElementById("n" + edge.input_address[0] + "pi" + edge.input_address[1]);
+
+    if(outputNodeEl == null || inputNodeEl == null){
+      console.log("returning");
+      return "";
+    }
+    else{
+      "not returning"
+    }
+
+    /*let outputPortOffset: number = 0//outputNodeEl.offsetLeft;
+    let inputPortOffset: number = 0//inputNodeEl.offsetLeft;
+
     // todo: fix somewhere
     let node_height: number = 60;
+    let port_container_height: number = 10; 
+    let port_width: number = 15; 
+    let margin: number = 4;
 
     let output_node_pos: number[] = this._nodes[edge.output_address[0]].position;
     let output_node_width: number = this._nodes[edge.output_address[0]]["width"];
@@ -254,17 +273,40 @@ export class FlowchartViewerComponent extends Viewer{
     let startPoint = { x: output_node_pos[0], y: output_node_pos[1] }
     let endPoint = { x: input_node_pos[0], y: input_node_pos[1] }
 
-    startPoint.x = startPoint.x + output_node_width/2; 
-    startPoint.y = startPoint.y + node_height;
+    // output
+    // pos_y = node_pos_y + node_height + port_container_height + port_container_height/2
+    // pos_x = node_pos_x + portCount*(port_width + margin)
+    startPoint.x = startPoint.x + outputPortOffset + port_width/2;
+    startPoint.y = startPoint.y + node_height + 3*port_container_height/2;
 
-    endPoint.x = endPoint.x + input_node_width/2; 
-    endPoint.y = endPoint.y;
+    // input
+    // pos_y = node_pos_y + port_container_height/2 
+    // pos_x = node_pos_x +  portCount*(port_width + margin)
+    endPoint.x = endPoint.x + inputPortOffset + port_width/2;
+    endPoint.y = endPoint.y + port_container_height/2;*/
 
-    return this.edgeString(startPoint, endPoint);
+
+    return "M 10 350 q 150 -300 300 0"//this.edgeString(startPoint, endPoint);
   }
 
   edgeString(startPoint: {x: number, y: number},  endPoint: {x: number, y: number}): string{
-    let strArr= [];
+    var x0 =startPoint.x
+    var y0 =startPoint.y
+    var x3 =endPoint.x;
+    var y3 =endPoint.y;
+    var x1,x2 =0;
+    var y1,y2 =0;
+    
+    var path="";
+  
+    x1=0.6*(x0+x3)/2;
+    x2=1.1*(x0+x3)/2;
+    
+    y1=0.6*(y0+y3)/2;
+    y2=1.1*(y0+y3)/2;
+    
+    return "M"+x0+" "+y0+" C"+x1+" "+y1+" "+x2+" "+y2+" "+x3+" "+y3;
+    /*let strArr= [];
     strArr.push("M");
     strArr = strArr.concat([startPoint.x, startPoint.y]);
     //strArr.push("q");
@@ -272,9 +314,9 @@ export class FlowchartViewerComponent extends Viewer{
     //strArr = strArr.concat([ (startPoint.x + endPoint.x)/2 , (startPoint.y + endPoint.y)/2]);
     strArr = strArr.concat([endPoint.x, endPoint.y]);
 
-    let final_path: string = strArr.join(" ");
+    let final_path: string = strArr.join(" ");*/
 
-    return final_path; //"M 10 350 q 150 -300 300 0"
+    //return final_path; //"M 10 350 q 150 -300 300 0"
   }
 
   edgeClicked(): void{
