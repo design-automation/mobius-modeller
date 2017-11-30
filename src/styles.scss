@@ -7,6 +7,11 @@ html{
 	width: 100%; 
 	padding: 0px;
 	margin: 0px;
+
+	font-family: sans-serif;
+	font-size: 12px;
+	line-height: 14px; 
+
 }
 
 body{
@@ -35,4 +40,23 @@ split-gutter{
 }
 
 // angular-tree-component
+
+
+.mat-expansion-panel:not([class*=mat-elevation-z]){
+	box-shadow: none;
+}
+.mat-expansion-panel-body{
+	margin: 0px !important;
+}
+
+.mat-expansion-panel-header{
+	padding: 0 10px !important;
+	height: 36px !important;
+}
+
+.mat-expansion-panel:not([class*=mat-elevation-z]){
+	border: 0px !important;
+	border-bottom: 1px solid gray !important;
+	box-shadow: none !important;
+}
 

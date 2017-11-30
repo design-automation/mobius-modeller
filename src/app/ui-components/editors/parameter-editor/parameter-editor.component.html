@@ -1,12 +1,11 @@
 <mat-expansion-panel class='viewer'  [class.hidden]="!isVisible">
   	<mat-expansion-panel-header>
 	    <mat-panel-title class='header'>
-	     	 <div class='header'>		
-	      			Node Designer
-					<div class='btn-group'>
-						<button (click)="addPort('input')">I</button>
-						<button (click)="addPort('output')">O</button>
-					</div>
+	     	 <div class='header'>Node Designer	
+					<!-- <div class='btn-group'>
+						<button (click)="addPort($event, 'input')">I</button>
+						<button (click)="addPort($event, 'output')">O</button>
+					</div> -->
 			</div>
 	    </mat-panel-title>
   	</mat-expansion-panel-header>
@@ -34,7 +33,7 @@
 					{{inp.getDefaultValue() || "undefined"}}
 				</span>
 			</div>
-			<span class='btn btn-small' (click)='deletePort("input", i)'>Delete</span>
+			<span class='btn btn-small' (click)='deletePort($event, "input", i)'>Delete</span>
 		</div>
 		
 		<h4>Outputs</h4>
@@ -51,7 +50,7 @@
 					{{ output.getDefaultValue() || "undefined"}}
 				</span>
 			</div>
-			<span class='btn btn-small' (click)='deletePort("output", o)'>Delete</span>
+			<span class='btn btn-small' (click)='deletePort($event, "output", o)'>Delete</span>
 		</div>
 	</div>
 </mat-expansion-panel>

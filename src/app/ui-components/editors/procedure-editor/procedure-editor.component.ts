@@ -7,6 +7,10 @@ import { Viewer } from '../../../base-classes/viz/Viewer';
 
 import { FlowchartService } from '../../../global-services/flowchart.service';
 
+import { ModuleboxComponent } from '../../controls/modulebox/modulebox.component';
+
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+
 @Component({
   selector: 'app-procedure-editor',
   templateUrl: './procedure-editor.component.html',
@@ -45,7 +49,7 @@ export class ProcedureEditorComponent extends Viewer {
 	  }
 	};
 
-	constructor(injector: Injector){  super(injector, "procedure-editor"); }
+	constructor(injector: Injector, public dialog: MatDialog){  super(injector, "procedure-editor"); }
 
 	reset():void{
 		this._procedureArr = [];
@@ -58,6 +62,10 @@ export class ProcedureEditorComponent extends Viewer {
 		this._procedureArr = this._node.getProcedure();
 		this.updateProcedureTree();
 		this.isVisible = true;
+	}
+
+	getImageForType(type: ProcedureTypes): string{
+		return this.getString(type)[0];
 	}
 
 	getString(type: ProcedureTypes): string{
@@ -190,7 +198,16 @@ export class ProcedureEditorComponent extends Viewer {
 			this._node.addProcedure(prod);
 		}
 		else if(type == ProcedureTypes.Action){
+		    /*let dialogRef = this.dialog.open(ModuleboxComponent, {
+			  height: '400px',
+			  width: '600px',
+			});
 
+			dialogRef.afterClosed().subscribe(result => {
+			  console.log(`Dialog result: ${result}`); // Pizza!
+			});
+
+			dialogRef.close('Pizza!');*/
 		}
 		else{
 			throw Error("Procedure Type invalid");

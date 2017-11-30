@@ -41,7 +41,9 @@ export class ParameterEditorComponent extends Viewer{
     //
     //
     //
-    addPort(type: string): void{
+    addPort(event, type: string): void{
+      event.stopPropagation();
+
       if(type == "input"){
         this._node.addInput();
       }
@@ -53,7 +55,8 @@ export class ParameterEditorComponent extends Viewer{
       }
     }
 
-    deletePort(type: string, portIndex: number): void{
+    deletePort(event, type: string, portIndex: number): void{
+      event.stopPropagation();
 
       if(type == "input"){
         this._node.deleteInput(portIndex);
@@ -64,8 +67,6 @@ export class ParameterEditorComponent extends Viewer{
       else{
         throw Error("Unknown port type");
       }
-
-
     } 
 
     updatePortName($event, port: InputPort|OutputPort): void{

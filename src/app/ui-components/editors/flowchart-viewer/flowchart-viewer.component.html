@@ -4,13 +4,14 @@
 	    <mat-panel-title class='header'>
 	      <div class='header'>Flowchart Viewer</div>
 	      <div class='btn-group' click-stop-propagation>
-			<button (click)="resetViewer()">R</button>
+			<!-- <button (click)="resetViewer()">R</button> -->
 			<button (click)="addNode($event)">+</button>
 		  </div>
 	    </mat-panel-title>
   	</mat-expansion-panel-header>
-	<div class='container' (wheel)="scale($event)">
-
+	<div class='container'>
+			
+			<!-- svg canvas to draw the edges -->
 			<svg xmlns="http://www.w3.org/2000/svg" 
 				class="graph-container" 
 				id="graph-edges" 
@@ -33,7 +34,8 @@
  				</g>
 
 			</svg>
- 
+
+			<!-- div container for the nodes -->
 			<div class="graph-container" 
 				id="graph-nodes" ondragover="return false" [style.zoom]="zoom" >
 				
@@ -58,6 +60,7 @@
 								(dragend)="portDragEnd($event, port)"
 								(drop)="portDrop($event, port, [node_index, pi])">
 							</div>
+							<div class="btn-sm input" (click)="addPort(node_index, 'in')">+</div>
 						</div>
 					
 						<!-- node body -->
@@ -68,7 +71,7 @@
 							(dragstart)="nodeDragStart($event, node)" 
 							(drag)="nodeDragging($event, node)" 
 							(dragend)="nodeDragEnd($event, node)">
-							{{node.getName()}}
+							<div class="node-name">{{node.getName()}}</div>
 						</div>
 				
 						<!-- outputs -->
@@ -83,6 +86,7 @@
 								(dragend)="portDragEnd($event, port)"
 								(drop)="portDrop($event, port, [node_index, po])">
 							</div>
+							<div class="btn-sm output" (click)="addPort(node_index, 'out')">+</div>
 						</div>
 				
 					</div>
@@ -90,7 +94,6 @@
 				</div>
 
 			</div>
-
 	</div>
 </mat-expansion-panel>
 

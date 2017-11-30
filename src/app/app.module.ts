@@ -28,6 +28,7 @@ import { CodeViewerComponent } from './ui-components/viewers/code-viewer/code-vi
 import { GeometryViewerComponent } from './ui-components/viewers/geometry-viewer/geometry-viewer.component';
 import { ModuleViewerComponent } from './ui-components/viewers/module-viewer/module-viewer.component';
 import { ParameterViewerComponent } from './ui-components/viewers/parameter-viewer/parameter-viewer.component';
+import { ModuleboxComponent } from './ui-components/controls/modulebox/modulebox.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,10 @@ import { ParameterViewerComponent } from './ui-components/viewers/parameter-view
     ProcedureEditorComponent,
     ParameterViewerComponent,
     ParameterEditorComponent,
+    ModuleboxComponent,
+  ],
+  entryComponents: [
+    ModuleboxComponent
   ],
   imports: [
     BrowserModule,

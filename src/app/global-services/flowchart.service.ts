@@ -5,10 +5,12 @@ import {Subject} from 'rxjs/Subject';
 
 import {IFlowchart, Flowchart, FlowchartReader} from '../base-classes/flowchart/FlowchartModule';
 import {IGraphNode, GraphNode} from '../base-classes/node/NodeModule';
-import {ICodeGenerator, CodeFactory} from "../base-classes/code/CodeModule";
+import {ICodeGenerator, CodeFactory, Module} from "../base-classes/code/CodeModule";
 
 import * as CircularJSON from 'circular-json';
 
+
+import * as ModuleSet from "../../assets/modules/AllModules";
 
 @Injectable()
 export class FlowchartService {
@@ -22,6 +24,7 @@ export class FlowchartService {
   private _flowchart: IFlowchart;
 
   private code_generator: ICodeGenerator = CodeFactory.getCodeGenerator("js");
+  private _moduleSet: Module[];
 
   private _selectedNode: number = 0;
   private _selectedPort: number = 0;
@@ -30,7 +33,7 @@ export class FlowchartService {
     return this._flowchart != undefined;
   }
 
-  constructor(private http: HttpClient) {  }
+  constructor(private http: HttpClient) { this.newFile() };
 
   // 
   // message handling between components
@@ -87,12 +90,33 @@ export class FlowchartService {
                   }
 
                   // read the flowchart
-                  _this._flowchart = FlowchartReader.readFlowchartFromData(data["flowchart"])
+                  _this._flowchart = FlowchartReader.readFlowchartFromData(data["flowchart"]);
                   _this.update();
               }
           }
       }
       rawFile.send(null);
+  }
+
+  loadModules(modules: Object[]): void{
+
+    this._moduleSet = [];
+    let moduleSet = this._moduleSet;
+
+    modules.map(function(module){
+        let modClass = ModuleSet[module["name"]];
+        if(modClass.version == module["version"] && modClass.author == module["author"]){
+          moduleSet.push(new modClass());
+        }
+        else{
+          throw Error("Module not compatible. Please check version / author");
+        }
+    })
+
+  }
+
+  getModules(): Module[]{
+    return this._moduleSet;
   }
 
   //
@@ -117,6 +141,9 @@ export class FlowchartService {
     this._selectedNode = 0;
     this._selectedPort = 0;
     this.update();
+
+    this.loadModules([{name: "Math", version: 1, author: "AKM"}]);
+
     return this._flowchart;
   }
 

@@ -4,7 +4,7 @@
 	      <div>Procedure</div>
 	      <div class='btn-group'>
 			<button *ngFor="let type of procedureTypes"
-			 (click)="addProcedure($event, type)">{{getString(type)}}</button>
+			 (click)="addProcedure($event, type)">{{getImageForType(type)}}</button>
 		  </div>
 	    </mat-panel-title>
   	</mat-expansion-panel-header>
@@ -61,5 +61,4 @@
 			  </ng-template>
 		</tree-root>
 	</div>
-	<button (click)="expandAll(tree)">Expand All</button>
 </mat-expansion-panel>

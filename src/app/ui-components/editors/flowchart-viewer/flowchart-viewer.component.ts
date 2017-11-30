@@ -133,6 +133,22 @@ export class FlowchartViewerComponent extends Viewer{
     this.flowchartService.selectNode(nodeIndex);
   }
 
+  addPort(nodeIndex: number, type: string): void{
+    // select the node
+    this.clickNode(null, nodeIndex);
+
+    // add port 
+    if(type == "in"){
+        this._nodes[nodeIndex].addInput();
+    }
+    else if(type == "out"){
+        this._nodes[nodeIndex].addOutput();
+    }  
+
+    this.flowchartService.update();
+  }
+
+
   //
   //  node dragging
   //
@@ -171,14 +187,58 @@ export class FlowchartViewerComponent extends Viewer{
                 start: {x: 0, y: 0}, 
                 current: {x: 0, y: 0}
               }
+
+  private getPortPosition(nodeIndex: number, portIndex: number, type: string): {x: number, y: number}{
+
+    let x: number;
+    let y: number;
+
+    let name: string = "n" + nodeIndex + type + portIndex;
+    let el = document.getElementById(name);
+
+    if(el == null){
+      return {x: 0, y: 0};
+    }
+
+    let node_pos: number[] = this._nodes[nodeIndex].position;
+
+    let port_container_height: number = 10; 
+    let node_height: number = 60; 
+    let port_width: number = 9.5;
+
+    if(type == "pi"){
+        x = node_pos[0] + port_width/2 + el.offsetLeft;
+        y = node_pos[1] + port_container_height/2;
+
+    } 
+    else if(type == "po"){
+        x = node_pos[0] + port_width/2 + el.offsetLeft;
+        y = node_pos[1] + 3*port_container_height/2 + node_height;
+    }
+    else{
+      throw Error("Unknown port type");
+    }
+
+    return {x: x, y: y}
+  }
+
   portDragStart($event, port: InputPort|OutputPort, address: number[]){
       $event.dataTransfer.setDragImage( new Image(), 0, 0);
       this._startPort = port; 
       this._startPort['address'] = address;
       this._linkMode = true;
 
-      this.mouse_pos.start = {x: $event.pageX - (24+181), 
-                               y: $event.pageY - (64+41)};
+      let type: string;
+      if(port instanceof InputPort){
+        type = "pi";
+      }
+      else if(port instanceof OutputPort){
+        type = "po";
+      }
+
+      this.mouse_pos.start = this.getPortPosition(address[0], address[1], type);
+                             /*{x: $event.pageX - (24+181), 
+                               y: $event.pageY - (64+41)};*/
   }
 
   portDragging($event, port: InputPort|OutputPort){
@@ -241,82 +301,71 @@ export class FlowchartViewerComponent extends Viewer{
   // Edge drawing functions
   //
   getEdgePath(edge: IEdge): string{
-
-    let outputNodeEl: HTMLElement = 
-    document.getElementById("n" + edge.output_address[0] + "po" + edge.output_address[1]);
-    let inputNodeEl: HTMLElement = 
-    document.getElementById("n" + edge.input_address[0] + "pi" + edge.input_address[1]);
-
-    if(outputNodeEl == null || inputNodeEl == null){
-      console.log("returning");
-      return "";
-    }
-    else{
-      "not returning"
-    }
-
-    /*let outputPortOffset: number = 0//outputNodeEl.offsetLeft;
-    let inputPortOffset: number = 0//inputNodeEl.offsetLeft;
-
-    // todo: fix somewhere
-    let node_height: number = 60;
-    let port_container_height: number = 10; 
-    let port_width: number = 15; 
-    let margin: number = 4;
-
-    let output_node_pos: number[] = this._nodes[edge.output_address[0]].position;
-    let output_node_width: number = this._nodes[edge.output_address[0]]["width"];
-
-    let input_node_pos: number[] = this._nodes[edge.input_address[0]].position; 
-    let input_node_width: number = this._nodes[edge.input_address[0]]["width"];
-
-    let startPoint = { x: output_node_pos[0], y: output_node_pos[1] }
-    let endPoint = { x: input_node_pos[0], y: input_node_pos[1] }
-
-    // output
-    // pos_y = node_pos_y + node_height + port_container_height + port_container_height/2
-    // pos_x = node_pos_x + portCount*(port_width + margin)
-    startPoint.x = startPoint.x + outputPortOffset + port_width/2;
-    startPoint.y = startPoint.y + node_height + 3*port_container_height/2;
-
-    // input
-    // pos_y = node_pos_y + port_container_height/2 
-    // pos_x = node_pos_x +  portCount*(port_width + margin)
-    endPoint.x = endPoint.x + inputPortOffset + port_width/2;
-    endPoint.y = endPoint.y + port_container_height/2;*/
-
-
-    return "M 10 350 q 150 -300 300 0"//this.edgeString(startPoint, endPoint);
+    return this.edgeString( this.getPortPosition(edge.output_address[0], edge.output_address[1], "po"), 
+                            this.getPortPosition(edge.input_address[0], edge.input_address[1], "pi") )
   }
 
   edgeString(startPoint: {x: number, y: number},  endPoint: {x: number, y: number}): string{
-    var x0 =startPoint.x
-    var y0 =startPoint.y
+
+
+    /*let pointA: {x: number, y:number} = startPoint; 
+    let pointB: {x: number, y:number} = endPoint; 
+
+    // AB Midpoint
+    let pointC: {x: number, y:number} = {x:  (startPoint.x + endPoint.x)/2, 
+                                          y:  (startPoint.y + endPoint.y)/2}
+
+    // AC Midpoint                            
+    let pointD: {x: number, y:number} = {x:  (startPoint.x + pointC.x)/2, 
+                                          y:  (startPoint.y + pointC.y)/2}
+    // slope of AC
+    // adjust this to the right
+
+    // CB Midpoint                                           
+    let pointE: {x: number, y:number} = {x:  (endPoint.x + pointC.x)/2, 
+                                          y:  (endPoint.y + pointC.y)/2}*/
+    // adjust this to the left
+
+    let deltaY: number= 15; 
+    if(y0 < y1){
+      // do nothing
+    }
+    else{
+      deltaY = -1*deltaY;
+    }
+
+    var x0 =startPoint.x;
+    var y0 =startPoint.y;
     var x3 =endPoint.x;
     var y3 =endPoint.y;
-    var x1,x2 =0;
-    var y1,y2 =0;
     
-    var path="";
+    var mx1=0.75*x0+0.25*x3;
+    var mx2=0.25*x0+0.75*x3;
+
+    var my1=0.75*y0+0.25*y3;
+    var my2=0.25*y0+0.75*y3;
+
+    var distance = 0.25* Math.sqrt(Math.pow((x3-x0),2)+Math.pow((y3-y0),2));
+    var pSlope =(x0-x3)/(y3-y0);
+    var multi = Math.sqrt(distance*distance/(1+(pSlope*pSlope)));
+    
+    var x1,y1,x2,y2=0;
+    
+    x1 =mx1+multi;
+    x2 =mx2-multi;
+    
+    if(y0==y3){
+      y1=y0+distance;
+      y2=y0-distance;
+    }
+    else{
+      y1 =my1+(pSlope*multi);
+      y2 =my2-(pSlope*multi);
+    }
   
-    x1=0.6*(x0+x3)/2;
-    x2=1.1*(x0+x3)/2;
+    var path="M"+x0+" "+y0+" C"+x1+" "+y1+" "+x2+" "+y2+" "+x3+" "+y3;
     
-    y1=0.6*(y0+y3)/2;
-    y2=1.1*(y0+y3)/2;
-    
-    return "M"+x0+" "+y0+" C"+x1+" "+y1+" "+x2+" "+y2+" "+x3+" "+y3;
-    /*let strArr= [];
-    strArr.push("M");
-    strArr = strArr.concat([startPoint.x, startPoint.y]);
-    //strArr.push("q");
-    strArr.push("L");
-    //strArr = strArr.concat([ (startPoint.x + endPoint.x)/2 , (startPoint.y + endPoint.y)/2]);
-    strArr = strArr.concat([endPoint.x, endPoint.y]);
-
-    let final_path: string = strArr.join(" ");*/
-
-    //return final_path; //"M 10 350 q 150 -300 300 0"
+    return path;
   }
 
   edgeClicked(): void{

@@ -3,13 +3,15 @@ $header-height: 30px;
 .viewer{
 
 	border: 1px solid gray;
-	margin: 10px; 
+
+	max-height: 450px; 
 	overflow: auto;
+	
 	padding: 0px;
 	margin: 0px;
 
 	.header{
-		background-color: #999696;
+		position: relative;
 		height: $header-height; 
 		font-size: 14px; 
 		font-weight: 600; 
@@ -17,7 +19,8 @@ $header-height: 30px;
 		padding: 0px 5px;
 
 		.btn-group{
-			float: right;
+			position: absolute;
+			right: 0px;
 			padding: 0px; 
 			margin: 0px;
 			height: $header-height; 
