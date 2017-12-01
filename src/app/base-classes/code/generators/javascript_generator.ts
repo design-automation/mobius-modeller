@@ -126,7 +126,7 @@ export class CodeGeneratorJS extends CodeGenerator{
 
 			// make function
 			fn_code += "function " + node.getName() + node.getVersion() + "( " + params.join(", ") + " ) { \n" ;
-			fn_code += initializations.join(";\n") + ";\n";
+			fn_code += ( initializations.length > 0 ? initializations.join(";\n") + ";\n" : "" );
 			
 			// add outputs 
 			let results :string[]= [], opInits :string[] = [];
@@ -138,7 +138,7 @@ export class CodeGeneratorJS extends CodeGenerator{
 			}
 			
 			// add initialization for outputs
-			fn_code += "\n" + opInits.join(";\n") + ";\n"; 
+			fn_code += ( opInits.length > 0 ? "\n" + opInits.join(";\n") + ";\n" : ""); 
 
 			// add procedure
 			for( let line=0; line <  node.getProcedure().length; line ++ ){
@@ -149,7 +149,7 @@ export class CodeGeneratorJS extends CodeGenerator{
 			fn_code += "\n" + "return " + " { " + results.join(", ") + " } " + ";";
 
 			// ending
-			fn_code += "\n }"
+			fn_code += "\n }\n"
 
 			return fn_code;
 		}

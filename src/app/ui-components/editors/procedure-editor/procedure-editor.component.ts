@@ -235,6 +235,8 @@ export class ProcedureEditorComponent extends Viewer {
 			throw Error("Invalid procedure update");
 		}
 
+		this.flowchartService.update();
+
 	}
 
 	// todo:
