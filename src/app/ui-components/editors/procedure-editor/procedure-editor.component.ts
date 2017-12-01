@@ -118,6 +118,9 @@ export class ProcedureEditorComponent extends Viewer {
 		}
 		moved_procedure.setParent(to_procedure);
 
+
+		this.flowchartService.update();
+
 	}
 
 	updateProcedureTree(){

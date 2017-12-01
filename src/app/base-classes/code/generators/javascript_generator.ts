@@ -165,14 +165,20 @@ export class CodeGeneratorJS extends CodeGenerator{
 			return code;
 		}
 
-		generateProcedureCode(procedure: IProcedure){
+		generateProcedureCode(procedure: IProcedure, prodFn ?: any){
 
 			// change based on type
 			let code: string; 
-			if(procedure.getType() == ProcedureTypes.Data){
-				code =  "\n" + procedure.getLeftComponent().expression + " = " + procedure.getRightComponent().expression + ";";
+			let prod_type = procedure.getType();
+			
+			if(prodFn == undefined){
+			 	prodFn = this.generateProcedureCode;
 			}
-			else if(procedure.getType() == ProcedureTypes.Action){
+
+			if(prod_type == ProcedureTypes.Data){
+				code =  procedure.getLeftComponent().expression + " = " + procedure.getRightComponent().expression + ";";
+			}
+			else if(prod_type == ProcedureTypes.Action){
 				let paramList :string[]= [];
 				let params  = procedure.getRightComponent().params;
 				for( let p=0; p < params.length; p++){
@@ -188,26 +194,36 @@ export class CodeGeneratorJS extends CodeGenerator{
 						+ " = " + right.module.trim()
 						+ "." + right.fn_name + "( " + paramList.join(",") + " );\n";
 			}
-			else if(procedure.getType() == ProcedureTypes.ForLoopControl){
-				code = "";
-				// todo
-				throw Error("Not Implemeented")
+			else if( procedure.hasChildren() ){
+				let codeArr = [];
+
+				// add statement
+				let statement: string = "";
+				if(prod_type == ProcedureTypes.IfElseControl){
+					statement = "// if-else";
+				}
+				else if(prod_type == ProcedureTypes.IfControl){
+					statement = "if (" + procedure.getLeftComponent().expression + "){"
+				}
+				else if(prod_type == ProcedureTypes.ElseControl){
+					statement = "else{";
+				}
+				else if(prod_type == ProcedureTypes.ForLoopControl){
+					statement = "for (" + procedure.getLeftComponent().expression + " in " + procedure.getRightComponent().expression + "){"
+				}
+				codeArr.push(statement);
+
+
+				// add children
+				procedure.getChildren().map(function(child){ 
+					codeArr.push(prodFn(child, prodFn));
+				})
+
+				// add ending
+				if (prod_type !== ProcedureTypes.IfElseControl) codeArr.push("}\n")
+				code = codeArr.join("\n");
 			}
-			else if(procedure.getType() == ProcedureTypes.IfElseControl){
-				code = "";
-				// todo
-				throw Error("Not Implemeented")
-			}
-			else if(procedure.getType() == ProcedureTypes.IfControl){
-				code = "";
-				// todo
-				throw Error("Not Implemeented")
-			}
-			else if(procedure.getType() == ProcedureTypes.ElseControl){
-				code = "";
-				// todo
-				throw Error("Not Implemeented")
-			}
+			
 
 			return code;
 		}
