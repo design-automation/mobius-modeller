@@ -68,7 +68,9 @@ export class CodeGeneratorJS extends CodeGenerator{
 		}
 
 
-
+		//
+		//
+		//
 		getFunctionCall(node: IGraphNode, params?: any): string{
 			let fn_call: string = "";
 			let param_values: string[] = [];
@@ -108,6 +110,7 @@ export class CodeGeneratorJS extends CodeGenerator{
 		}
 
 		getNodeCode(node: IGraphNode): string{
+			let nodeVars: string[] = [];
 			let fn_code :string = "";
 
 			// add initializations
@@ -116,10 +119,13 @@ export class CodeGeneratorJS extends CodeGenerator{
 			let initializations :string[] = [];
 			let inputs :InputPort[] = node.getInputs();
 			for(let i=0; i < inputs.length; i++ ){
+
 				let inp = inputs[i];
+				nodeVars.push(inp.getName());
 
 				if( inp.isConnected() == true ){
 					params.push(inp.getName());
+
 				}
 				
 				initializations.push( this.generateInputPortCode(inp) );
@@ -135,6 +141,8 @@ export class CodeGeneratorJS extends CodeGenerator{
 			let outputs : OutputPort[] = node.getOutputs();
 			for( let o=0; o < outputs.length; o++ ){
 				let oname = outputs[o].getName(); 
+				nodeVars.push(oname);
+
 				results.push( oname + " : " + oname);
 				opInits.push( this.generateOutputPortCode(outputs[o]) )
 			}
@@ -144,7 +152,8 @@ export class CodeGeneratorJS extends CodeGenerator{
 
 			// add procedure
 			for( let line=0; line <  node.getProcedure().length; line ++ ){
-				fn_code += "\n" +  this.generateProcedureCode(node.getProcedure()[line]); 
+				let procedure: IProcedure = node.getProcedure()[line];
+				fn_code += "\n" +  this.generateProcedureCode(procedure, nodeVars, undefined); 
 			}
 
 			// add return object
@@ -165,7 +174,7 @@ export class CodeGeneratorJS extends CodeGenerator{
 			return code;
 		}
 
-		generateProcedureCode(procedure: IProcedure, prodFn ?: any){
+		generateProcedureCode(procedure: IProcedure, nodeVars: string[]=[], prodFn ?: any){
 
 			// change based on type
 			let code: string; 
@@ -176,7 +185,16 @@ export class CodeGeneratorJS extends CodeGenerator{
 			}
 
 			if(prod_type == ProcedureTypes.Data){
-				code =  procedure.getLeftComponent().expression + " = " + procedure.getRightComponent().expression + ";";
+				let init: string;
+
+				if(nodeVars.indexOf( procedure.getLeftComponent().expression ) == -1){
+					init = "let ";
+				}
+				else{
+					init = "";
+				}
+
+				code =  init + procedure.getLeftComponent().expression + " = " + procedure.getRightComponent().expression + ";";
 			}
 			else if(prod_type == ProcedureTypes.Action){
 				let paramList :string[]= [];
@@ -190,7 +208,16 @@ export class CodeGeneratorJS extends CodeGenerator{
 				}
 
 				let right :IComponent = procedure.getRightComponent();
-				code = procedure.getLeftComponent().expression 
+
+				let init: string;
+				if(nodeVars.indexOf( procedure.getLeftComponent().expression ) == -1){
+					init = "let ";
+				}
+				else{
+					init = "";
+				}
+
+				code = init = procedure.getLeftComponent().expression 
 						+ " = " + right.module.trim()
 						+ "." + right.fn_name + "( " + paramList.join(",") + " );\n";
 			}
@@ -209,14 +236,14 @@ export class CodeGeneratorJS extends CodeGenerator{
 					statement = "else{";
 				}
 				else if(prod_type == ProcedureTypes.ForLoopControl){
-					statement = "for (" + procedure.getLeftComponent().expression + " in " + procedure.getRightComponent().expression + "){"
+					statement = "for ( let " + procedure.getLeftComponent().expression + " in " + procedure.getRightComponent().expression + "){"
 				}
 				codeArr.push(statement);
 
 
 				// add children
 				procedure.getChildren().map(function(child){ 
-					codeArr.push(prodFn(child, prodFn));
+					codeArr.push(prodFn(child, nodeVars, prodFn));
 				})
 
 				// add ending
@@ -240,18 +267,17 @@ export class CodeGeneratorJS extends CodeGenerator{
 		}
 
 		generateOutputPortCode(port: OutputPort): string{
-			if( port.isConnected() == true ) 
-				return "";
-
-			return "let " + port.getName() + " = " + port.getValue(); 
+			return "let " + port.getName() + " = " + port.getDefaultValue(); 
 		}
 
 		executeNode(node: IGraphNode, params: any): any{
 			//let gis = this._modules["gis"];
 
-			let result: any = eval("(function(){ \
+			let str: string = "(function(){ \
 						" + this.getNodeCode(node) + "\n" + this.getFunctionCall(node, params) + "\n" + "return " + node.getName() + ";" + "})(); \
-						");
+						";
+			console.log(str);
+			let result: any = eval(str);
 			return result;//result;// return result of the node
 		}
 

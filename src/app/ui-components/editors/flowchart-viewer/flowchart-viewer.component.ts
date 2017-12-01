@@ -372,5 +372,11 @@ export class FlowchartViewerComponent extends Viewer{
     alert("Edge clicked");
   }
 
+  //
+  //
+  //
+  executeFlowchart(): void{
+      this.flowchartService.execute();
+  }
 }
 

@@ -33,8 +33,6 @@ export class ParameterViewerComponent extends Viewer {
     updateInputName($event, input): void{
       let name: string = $event.srcElement.innerText;
       input.setName(name);
-
-
       // put a timeout on this update or something similar to solve jumpiness
       this.flowchartService.update();
     }
@@ -45,10 +43,12 @@ export class ParameterViewerComponent extends Viewer {
 
     updateComputedValue($event, input): void{
       let value: string = $event.srcElement.innerText;
-      input.setComputedValue(value);
+      if(value.trim().length > 0){
+        input.setComputedValue(value);
 
-      // put a timeout on this update or something similar to solve jumpiness
-      this.flowchartService.update();
+        // put a timeout on this update or something similar to solve jumpiness
+        this.flowchartService.update();
+      }
     }
 
   	//

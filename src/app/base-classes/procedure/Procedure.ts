@@ -62,8 +62,6 @@ export abstract class Procedure implements IProcedure{
 	}
 
 
-
-
 	hasParent(): boolean{
 		if(this._parent == undefined){
 			return false;

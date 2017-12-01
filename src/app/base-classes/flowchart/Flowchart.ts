@@ -184,8 +184,9 @@ export class Flowchart implements IFlowchart{
 		this.reset();
 
 		// sort nodes 
+		let all_nodes = this._nodes;
 		let sorted_nodes: IGraphNode[] = this.getNodeOrder().map(function(index){
-			return this._nodes[index];
+			return all_nodes[index];
 		});
 
 		// execute each node

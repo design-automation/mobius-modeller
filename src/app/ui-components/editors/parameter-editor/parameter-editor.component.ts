@@ -71,8 +71,12 @@ export class ParameterEditorComponent extends Viewer{
 
     updatePortName($event, port: InputPort|OutputPort): void{
       let name: string =  $event.srcElement.innerText; 
-      port.setName(name);
-      this.flowchartService.update();
+
+      if(name.trim().length > 0){
+        // put a timeout on this update or something similar to solve jumpiness
+        port.setName(name);
+        this.flowchartService.update();
+      }
     }
 
     updateInputType(type: PortTypes, input: InputPort){
@@ -81,10 +85,13 @@ export class ParameterEditorComponent extends Viewer{
 
     updateDefaultValue($event, port: InputPort|OutputPort): void{
       let value: string = $event.srcElement.innerText;
-      port.setDefaultValue(value)
 
-      // put a timeout on this update or something similar to solve jumpiness
-      this.flowchartService.update();
+      if(value.trim().length > 0){
+        port.setDefaultValue(value)
+        // put a timeout on this update or something similar to solve jumpiness
+        this.flowchartService.update();
+      }
+
     }
 
 

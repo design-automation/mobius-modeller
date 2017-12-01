@@ -40,7 +40,7 @@
 		<div class='input' *ngFor="let output of _outputs; let o=index">
 			<div class='row'>
 				<span class='label'>Name</span>
-				<span class='content' contenteditable="true" (blur)="updateOutputName($event, output)">
+				<span class='content' contenteditable="true" (blur)="updatePortName($event, output)">
 					{{ output.getName() || "undefined" }}
 				</span>
 			</div>
