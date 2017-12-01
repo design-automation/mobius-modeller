@@ -30,6 +30,8 @@ export interface IFlowchart{
 	getNodeByIndex(index: number): IGraphNode;
 	getEdgeByIndex(index: number): IEdge;
 
+	getNodeOrder(): number[];
+
 
 	//reset 
 	reset(): void;

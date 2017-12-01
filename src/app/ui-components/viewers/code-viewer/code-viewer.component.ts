@@ -3,6 +3,7 @@ import { AceEditorModule } from 'ng2-ace-editor';
 
 import { Viewer } from '../../../base-classes/viz/Viewer';
 
+import * as js_beautify from 'js-beautify';
 
 @Component({
   selector: 'app-code-viewer',
@@ -18,7 +19,7 @@ export class CodeViewerComponent extends Viewer {
 	}
 
 	update(): void{
-		this.code = this.flowchartService.getCode();
+		this.code = js_beautify.js_beautify(this.flowchartService.getCode());
 	}
 
 	reset(): void{

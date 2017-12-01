@@ -229,7 +229,7 @@ export class GraphNode implements IGraphNode{
 	//
 	//
 	//
-	isIndependent(): boolean{
+	/*isIndependent(): boolean{
 		if(this._dependencies.length > 0)
 			return false; 
 		return true;
@@ -259,7 +259,7 @@ export class GraphNode implements IGraphNode{
 	
 	rank(): number{ 
 		return this._dependencyNodes.length 
-	};
+	};*/
 
 
 	//

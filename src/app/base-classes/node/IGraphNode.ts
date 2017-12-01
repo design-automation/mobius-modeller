@@ -44,12 +44,11 @@ export interface IGraphNode{
 	hasError(): boolean; 
 
 	// ??
-	isIndependent(): boolean;
-	addDependency(node_port_input_idx: number[]): void;
+	/*addDependency(node_port_input_idx: number[]): void;
 	removeDependency(node_port_idx: number[]): void;
 	getDependencies(): number[][];
 	getDependencyNodes(): number[];
-	rank(): number;
+	rank(): number;*/
 
 
 	execute(code_generator: ICodeGenerator,  params ?:any): void;

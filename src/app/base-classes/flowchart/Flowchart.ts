@@ -104,6 +104,35 @@ export class Flowchart implements IFlowchart{
 		return this._edges[index];
 	}
 
+	//todo: provide a more efficient sort
+	getNodeOrder(): number[]{
+
+		let rankedNodeOrder: number[] = [];
+		let incoming = [];
+
+		this._nodes.map(function(node, index){
+			incoming[index] = {count: 0, id: index};
+		})
+
+		for(let c=0; c < this._edges.length; c++){
+			let edge: IEdge = this._edges[c];
+			let in_nodeIndex = edge.input_address[0]; 
+			let out_nodeIndex = edge.output_address[0];
+			incoming[in_nodeIndex].count++;
+			incoming[out_nodeIndex].count--;
+			console.log(incoming);
+		}
+
+		let an = this._nodes;
+		rankedNodeOrder = incoming.sort(function(a: any, b: any){
+			return a.count - b.count;
+		}).map(function(obj){ 
+			return obj.id;
+		});
+
+		return rankedNodeOrder;
+	}
+
 
 	//
 	//	clears all the cached results
@@ -118,7 +147,7 @@ export class Flowchart implements IFlowchart{
 	//
 	// todo: should this happen realtime?
 	//
-	private sortNodesByRank(nodes: IGraphNode[]): IGraphNode[]{
+	/*private sortNodesByRank(nodes: IGraphNode[]): IGraphNode[]{
 
 		let ranked: any[] = [];
 		let sorted: IGraphNode[] = [];
@@ -143,7 +172,7 @@ export class Flowchart implements IFlowchart{
 		}
 
 		return sorted;
-	}
+	}*/
 
 	//
 	//	executes the flowchart
@@ -155,7 +184,9 @@ export class Flowchart implements IFlowchart{
 		this.reset();
 
 		// sort nodes 
-		let sorted_nodes: IGraphNode[] = this.sortNodesByRank(this._nodes);
+		let sorted_nodes: IGraphNode[] = this.getNodeOrder().map(function(index){
+			return this._nodes[index];
+		});
 
 		// execute each node
 		// provide input to next 
