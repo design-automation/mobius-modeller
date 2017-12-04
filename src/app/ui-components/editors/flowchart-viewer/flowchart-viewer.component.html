@@ -41,13 +41,13 @@
 				id="graph-nodes" ondragover="return false" [style.zoom]="zoom" >
 				
 				<!-- all nodes -->
-				<div class="node-container">
+				<div class="node-container"  matTooltip="Tooltip!">
 
 					<!-- one node -->
 					<div  class="node" 
 							*ngFor="let node of _nodes; let node_index = index" 
 							[style.left.px]="node.position[0]" 
-							[style.top.px]="node.position[1]">
+							[style.top.px]="node.position[1]" >
 
 						<!--inputs-->
 						<div class="port-container input">

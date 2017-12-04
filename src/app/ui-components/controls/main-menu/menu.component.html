@@ -1,8 +1,10 @@
 <div class="menu-bar">
 	<div class='section'>
 		<ul class='menu'>
-			<li class='menu-item'>File</li>
-			<li class='menu-item'>View</li>
+			<li class='menu-item' [matMenuTriggerFor]="file_menu">
+				File
+			</li>
+			
 			<li class='menu-item'>Node</li>
 			<li class='menu-item'>Code</li>
 			<li class='menu-item'>Help</li>
@@ -12,3 +14,14 @@
 		<span id='branding'>Mobius v2.0</span>
 	</div>
 </div>
+
+<mat-menu class="menu" #file_menu="matMenu" yPosition="above" [overlapTrigger]="false">
+  <span mat-menu-item (click)="newfile()">New File</span>
+  <span mat-menu-item (click)="save()">Save File</span>
+  <span mat-menu-item (click)="openPicker()">
+  		<input #fileInput style="display: none;"
+  		type="file" (change)="loadFile()"/>
+  		Load File
+  </span>
+  <span mat-menu-item (click)="execute()">Run File</span>
+</mat-menu>

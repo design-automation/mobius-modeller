@@ -1,5 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 @import '~angular-tree-component/dist/angular-tree-component.css';
+/* @import '~https://fonts.googleapis.com/icon?family=Material+Icons';
+@import '~@angular/material/prebuilt-themes/indigo-pink.css'; */
 
 html{
 	position: relative;
@@ -24,6 +26,10 @@ body{
 
 .container{
 	height: 100%;
+	display: flex;
+	flex-direction: row; 
+	flex-wrap: wrap;
+	justify-content: space-between;
 }
 
 // overrides for plugins
@@ -60,3 +66,13 @@ split-gutter{
 	box-shadow: none !important;
 }
 
+
+.mat-menu-content{
+	background-color: transparent;
+	padding: 0px;
+}
+
+.mat-menu-item{
+	max-width: 200px;
+	background-color: #bbb;
+}

@@ -10,29 +10,31 @@
 		<app-geometry-viewer></app-geometry-viewer>
 		<app-code-viewer></app-code-viewer>
 	</div> -->
+	<!-- <div class="container">
+		<app-flowchart-viewer></app-flowchart-viewer>
+	   	<app-geometry-viewer></app-geometry-viewer>
+	   	<app-code-viewer></app-code-viewer>		
+	   	<app-parameter-viewer></app-parameter-viewer>
+		<app-parameter-editor></app-parameter-editor>
+		<app-procedure-editor></app-procedure-editor>
+	</div> -->
 
-	<div class="container">
-    	<split [gutterSize]="10" [visibleTransition]="true">
-       <split-area [visible]="true" [size]="20">
-       			<div class="output-viewer">
-       				<app-geometry-viewer></app-geometry-viewer>
-       				<!-- <app-flowchart-controls></app-flowchart-controls> -->
-       				<app-code-viewer></app-code-viewer>		
-       			</div>
-       </split-area>
 
-        <split-area [visible]="true" [size]="60">
-        	<app-parameter-viewer></app-parameter-viewer>
-			<app-flowchart-viewer></app-flowchart-viewer>
-        </split-area>
-
-        <split-area [visible]="true" [size]="40">
-			<app-parameter-editor></app-parameter-editor>
-			<app-procedure-editor></app-procedure-editor>
-			<!-- <app-module-viewer></app-module-viewer> -->
-        </split-area>
-    	</split>
-	</div>
-	
+    	<!-- <split [gutterSize]="10" [visibleTransition]="true">
+    	       <split-area [visible]="true" [size]="20">
+    	       			<div class="output-viewer">
+    	       				<app-flowchart-controls></app-flowchart-controls>
+    	       				
+    	       			</div>
+    	       </split-area>
+    	
+    	        <split-area [visible]="true" [size]="60">
+    	        	
+    	        </split-area>
+    	
+    	        <split-area [visible]="true" [size]="40">
+    							<app-module-viewer></app-module-viewer>
+    	        </split-area>
+    	</split> -->
 
 </div>
