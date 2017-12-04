@@ -1,11 +1,8 @@
-<mat-expansion-panel class='viewer'  [class.hidden]="!isVisible">
+<mat-expansion-panel class='viewer'  [class.hidden]="!isVisible"
+	[expanded]="true">
   	<mat-expansion-panel-header>
 	    <mat-panel-title class='header'>
-	      <div>Procedure</div>
-	      <div class='btn-group'>
-			<button *ngFor="let type of procedureTypes"
-			 (click)="addProcedure($event, type)">{{getImageForType(type)}}</button>
-		  </div>
+	     Procedure
 	    </mat-panel-title>
   	</mat-expansion-panel-header>
 	<div class='container'>
@@ -60,5 +57,10 @@
 
 			  </ng-template>
 		</tree-root>
+
+		<div class="btn-container">
+			<button *ngFor="let type of procedureTypes"
+			 (click)="addProcedure($event, type)">{{getImageForType(type)}}</button>
+		</div>
 	</div>
 </mat-expansion-panel>

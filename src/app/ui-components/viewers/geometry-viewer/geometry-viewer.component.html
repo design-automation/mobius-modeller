@@ -1,4 +1,4 @@
-<mat-expansion-panel class='viewer' [class.hidden]="!isVisible">
+<mat-expansion-panel class='viewer' [class.hidden]="false">
   	<mat-expansion-panel-header>
 	    <mat-panel-title class='header'>
 	      <div class='header'>Geometry Viewer</div>
@@ -7,7 +7,13 @@
 	<div class='container'>
 		<ul>
 	    	<li *ngFor="let node of _nodes">
-	    		{{  getGeometry(node) }}
+	    		<!-- {{  getGeometry(node) }} -->
+	    		{{node.getName()}}
+	    		<ul>
+	    			<li  *ngFor="let output of node.getOutputs()">
+	    				{{ output.getValue() }}
+	    			</li>
+	    		</ul>
 	   		</li>
 	  	</ul>
 		<div id="app-geometry-viewer"></div>

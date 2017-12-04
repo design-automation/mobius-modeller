@@ -16,6 +16,7 @@ export class CodeViewerComponent extends Viewer {
 
 	constructor(injector: Injector) { 
 		super(injector, "Code viewer", "Displays the code associated with flowchart");
+		this.panelOpenState = false;
 	}
 
 	update(): void{

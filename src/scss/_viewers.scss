@@ -2,14 +2,12 @@ $header-height: 30px;
 
 .viewer{
 
-	max-height: 450px; 
-	width: 450px;
+	height: auto;
+	width: 100%; 
 	overflow: auto;
 	
 	padding: 0px;
 	margin: 0px;
-
-	border: 1px solid gray !important;
 
 	.header{
 
@@ -25,7 +23,6 @@ $header-height: 30px;
 		padding: 10px;
 		letter-spacing: 1.5px;
 		height: $header-height;
-		
 
 		.btn-group{
 			height: $header-height; 
@@ -48,6 +45,7 @@ $header-height: 30px;
 
 	.container{
 		min-height: 300px;
+		
 	}
 
 	button{

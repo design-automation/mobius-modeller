@@ -5,8 +5,8 @@
 	      <div class='header'>Flowchart Viewer</div>
 	      <div class='btn-group' click-stop-propagation>
 			<!-- <button (click)="resetViewer()">R</button> -->
-			<button (click)="addNode($event)">+</button>
-			<button (click)="executeFlowchart($event)">></button>
+			<button id="addNode" (click)="addNode($event)"></button>
+			<button id="play" (click)="executeFlowchart($event)"></button>
 		  </div>
 	    </mat-panel-title>
   	</mat-expansion-panel-header>
@@ -41,7 +41,7 @@
 				id="graph-nodes" ondragover="return false" [style.zoom]="zoom" >
 				
 				<!-- all nodes -->
-				<div class="node-container"  matTooltip="Tooltip!">
+				<div class="node-container">
 
 					<!-- one node -->
 					<div  class="node" 
@@ -61,7 +61,7 @@
 								(dragend)="portDragEnd($event, port)"
 								(drop)="portDrop($event, port, [node_index, pi])">
 							</div>
-							<div class="btn-sm input" (click)="addPort(node_index, 'in')">+</div>
+							<div class="btn-sm input" (click)="addPort(node_index, 'in')"></div>
 						</div>
 					
 						<!-- node body -->
@@ -87,7 +87,7 @@
 								(dragend)="portDragEnd($event, port)"
 								(drop)="portDrop($event, port, [node_index, po])">
 							</div>
-							<div class="btn-sm output" (click)="addPort(node_index, 'out')">+</div>
+							<div class="btn-sm output" (click)="addPort(node_index, 'out')"></div>
 						</div>
 				
 					</div>

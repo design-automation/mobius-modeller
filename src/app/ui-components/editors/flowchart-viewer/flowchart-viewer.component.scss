@@ -7,11 +7,20 @@
 	position: relative;
 	overflow: hidden;
 
+	#addNode{
+		background: url('../../../../assets/img/plus.png');
+		background-size: cover;
+	}
+
+	#play{
+		background: url('../../../../assets/img/play.png');
+		background-size: cover;
+	}
 
 	.container{
 		position: relative;
 
-		height: 500px;
+		height: 100%;
 		overflow: hidden;
 
 		.wrapper{
@@ -127,6 +136,10 @@
 					font-size: 10px; 
 					line-height: 15px;
 					cursor: pointer;
+
+					background: url('../../../../assets/img/plus.png');
+					background-size: cover;
+
 
 					&.input{
 						top: -5px; 
