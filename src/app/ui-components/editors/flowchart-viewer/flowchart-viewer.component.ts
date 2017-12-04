@@ -378,6 +378,7 @@ export class FlowchartViewerComponent extends Viewer{
   //
   //
   executeFlowchart(): void{
+      $event.stopPropagation();
       this.flowchartService.execute();
   }
 }
