@@ -1,12 +1,12 @@
 @import '../scss/globals';
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
 
 #app-container{
 	margin: 0px;
 	padding: 0px;
 
 	.container{
-		height: 80%;
-		height: 850px;
+
 	}
 
 	-webkit-touch-callout: none;
