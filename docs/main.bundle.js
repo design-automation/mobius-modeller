@@ -2154,8 +2154,12 @@ var FlowchartService = /** @class */ (function () {
     };
     FlowchartService.prototype.addEdge = function (outputAddress, inputAddress) {
         this._flowchart.addEdge(outputAddress, inputAddress);
-        this._flowchart.getNodeByIndex(outputAddress[0]).getOutputByIndex(outputAddress[1]).connect();
-        this._flowchart.getNodeByIndex(inputAddress[0]).getInputByIndex(inputAddress[1]).connect();
+        var output = this._flowchart.getNodeByIndex(outputAddress[0]).getOutputByIndex(outputAddress[1]);
+        output.connect();
+        var input = this._flowchart.getNodeByIndex(inputAddress[0]).getInputByIndex(inputAddress[1]);
+        input.connect();
+        input.setComputedValue({ port: outputAddress });
+        this._flowchart.getNodeByIndex(inputAddress[0]).getInputByIndex(inputAddress[1]);
         this.update();
     };
     //
@@ -2290,7 +2294,7 @@ var ModuleService = /** @class */ (function () {
 /***/ "../../../../../src/app/ui-components/controls/flowchart-controls/flowchart-controls.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<mat-expansion-panel class='viewer' \r\n\t\t(opened)=\"panelOpenState = true\" \r\n\t\t(closed)=\"panelOpenState = false\"\r\n\t\t[expanded]=\"panelOpenState\">\r\n  \t<mat-expansion-panel-header>\r\n\t    <mat-panel-title class='header'>\r\n\t      <div class='header'>Flowchart Controls</div>\r\n\t    </mat-panel-title>\r\n  \t</mat-expansion-panel-header>\r\n\t<div class='container'>\r\n\t\t<button (click)=\"newfile()\">New File</button>\r\n\t\t<button type=\"submit\" (click)=\"loadFile()\">Load File</button>\r\n\t\t<button (click)=\"execute()\">Run Code</button>\r\n\t\t<button (click)=\"save()\">Save Flowchart</button>\r\n\t</div>\r\n</mat-expansion-panel>"
+module.exports = "<mat-expansion-panel class='viewer' \n\t\t(opened)=\"panelOpenState = true\" \n\t\t(closed)=\"panelOpenState = false\"\n\t\t[expanded]=\"panelOpenState\">\n  \t<mat-expansion-panel-header>\n\t    <mat-panel-title class='header'>\n\t      <div class='header'>Flowchart Controls</div>\n\t    </mat-panel-title>\n  \t</mat-expansion-panel-header>\n\t<div class='container'>\n\t\t<button (click)=\"newfile()\">New File</button>\n\t\t<button type=\"submit\" (click)=\"loadFile()\">Load File</button>\n\t\t<button (click)=\"execute()\">Run Code</button>\n\t\t<button (click)=\"save()\">Save Flowchart</button>\n\t</div>\n</mat-expansion-panel>"
 
 /***/ }),
 
@@ -2384,7 +2388,7 @@ var FlowchartControlsComponent = /** @class */ (function (_super) {
 /***/ "../../../../../src/app/ui-components/controls/main-menu/menu.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"menu-bar\">\r\n\t<div class='section'>\r\n\t\t<ul class='menu'>\r\n\t\t\t<li class='menu-item' [matMenuTriggerFor]=\"file_menu\">\r\n\t\t\t\tFile\r\n\t\t\t</li>\r\n\t\t\t\r\n\t\t\t<li class='menu-item'>Node</li>\r\n\t\t\t<li class='menu-item'>Code</li>\r\n\t\t\t<li class='menu-item'>Help</li>\r\n\t\t</ul>\r\n\t</div>\r\n\t<div class='section'>\r\n\t\t<span id='branding'>Mobius v2.0</span>\r\n\t</div>\r\n</div>\r\n\r\n<mat-menu class=\"menu\" #file_menu=\"matMenu\" yPosition=\"above\" [overlapTrigger]=\"false\">\r\n  <span mat-menu-item (click)=\"newfile()\">New File</span>\r\n  <span mat-menu-item (click)=\"save()\">Save File</span>\r\n  <span mat-menu-item (click)=\"openPicker()\">\r\n  \t\t<input #fileInput style=\"display: none;\"\r\n  \t\ttype=\"file\" (change)=\"loadFile()\"/>\r\n  \t\tLoad File\r\n  </span>\r\n  <span mat-menu-item (click)=\"execute()\">Run File</span>\r\n</mat-menu>"
+module.exports = "<div class=\"menu-bar\">\n\t<div class='section'>\n\t\t<ul class='menu'>\n\t\t\t<li class='menu-item' [matMenuTriggerFor]=\"file_menu\">\n\t\t\t\tFile\n\t\t\t</li>\n\t\t\t\n\t\t\t<li class='menu-item'>Node</li>\n\t\t\t<li class='menu-item'>Code</li>\n\t\t\t<li class='menu-item'>Help</li>\n\t\t</ul>\n\t</div>\n\t<div class='section'>\n\t\t<span id='branding'>Mobius v2.0</span>\n\t</div>\n</div>\n\n<mat-menu class=\"menu\" #file_menu=\"matMenu\" yPosition=\"above\" [overlapTrigger]=\"false\">\n  <span mat-menu-item (click)=\"newfile()\">New File</span>\n  <span mat-menu-item (click)=\"save()\">Save File</span>\n  <span mat-menu-item (click)=\"openPicker()\">\n  \t\t<input #fileInput style=\"display: none;\"\n  \t\ttype=\"file\" (change)=\"loadFile()\"/>\n  \t\tLoad File\n  </span>\n  <span mat-menu-item (click)=\"execute()\">Run File</span>\n</mat-menu>"
 
 /***/ }),
 
@@ -2482,7 +2486,7 @@ var MenuComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/ui-components/controls/modulebox/modulebox.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<p>\r\n  modulebox works!\r\n</p>\r\n"
+module.exports = "<p>\n  modulebox works!\n</p>\n"
 
 /***/ }),
 
@@ -2887,7 +2891,8 @@ var FlowchartViewerComponent = /** @class */ (function (_super) {
     //
     //
     //
-    FlowchartViewerComponent.prototype.executeFlowchart = function () {
+    FlowchartViewerComponent.prototype.executeFlowchart = function ($event) {
+        $event.stopPropagation();
         this.flowchartService.execute();
     };
     FlowchartViewerComponent = __decorate([
@@ -3214,7 +3219,8 @@ var ProcedureEditorComponent = /** @class */ (function (_super) {
                 children: [],
                 leftExpression: "undefined",
                 rightExpression: "undefined",
-                model: prod
+                model: prod,
+                isExpandedField: 'expanded'
             };
             //let dataObj = { id: Math.random() , name: data.getTitle(), type: procedure_type, model: data } ; 
             // ProcedureType.Data
@@ -3330,7 +3336,7 @@ var ProcedureEditorComponent = /** @class */ (function (_super) {
 /***/ "../../../../../src/app/ui-components/viewers/code-viewer/code-viewer.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<mat-expansion-panel class='viewer' \r\n\t\t(opened)=\"panelOpenState = true\" \r\n\t\t(closed)=\"panelOpenState = false\"\r\n\t\t[expanded]=\"panelOpenState\">\r\n  \t<mat-expansion-panel-header>\r\n\t    <mat-panel-title class='header'>\r\n\t      <div class='header'>Code Viewer</div>\r\n\t    </mat-panel-title>\r\n  \t</mat-expansion-panel-header>\r\n\t<div class='container'>\r\n\t\t<div ace-editor [(text)]=\"code\" style='min-height: 300px;'></div>\r\n\t</div>\r\n</mat-expansion-panel>"
+module.exports = "<mat-expansion-panel class='viewer' \n\t\t(opened)=\"panelOpenState = true\" \n\t\t(closed)=\"panelOpenState = false\"\n\t\t[expanded]=\"panelOpenState\">\n  \t<mat-expansion-panel-header>\n\t    <mat-panel-title class='header'>\n\t      <div class='header'>Code Viewer</div>\n\t    </mat-panel-title>\n  \t</mat-expansion-panel-header>\n\t<div class='container'>\n\t\t<div ace-editor [(text)]=\"code\" style='min-height: 300px;'></div>\n\t</div>\n</mat-expansion-panel>"
 
 /***/ }),
 
@@ -3526,7 +3532,7 @@ var GeometryViewerComponent = /** @class */ (function (_super) {
 /***/ "../../../../../src/app/ui-components/viewers/module-viewer/module-viewer.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<mat-expansion-panel class='viewer'>\r\n  \t<mat-expansion-panel-header>\r\n\t    <mat-panel-title class='header'>\r\n\t      <div class='header'>Modules</div>\r\n\t    </mat-panel-title>\r\n  \t</mat-expansion-panel-header>\r\n\t<div class='container'>\r\n\t\t<div *ngFor=\"let fn of functions\">\r\n\t\t\t<div class='function'>{{fn}}</div>\r\n\t\t</div>\r\n\t</div>\r\n</mat-expansion-panel>"
+module.exports = "<mat-expansion-panel class='viewer'>\n  \t<mat-expansion-panel-header>\n\t    <mat-panel-title class='header'>\n\t      <div class='header'>Modules</div>\n\t    </mat-panel-title>\n  \t</mat-expansion-panel-header>\n\t<div class='container'>\n\t\t<div *ngFor=\"let fn of functions\">\n\t\t\t<div class='function'>{{fn}}</div>\n\t\t</div>\n\t</div>\n</mat-expansion-panel>"
 
 /***/ }),
 
@@ -3594,7 +3600,7 @@ var ModuleViewerComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/ui-components/viewers/parameter-viewer/parameter-viewer.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<mat-expansion-panel class='viewer' [class.hidden]=\"false\">\r\n  \t<mat-expansion-panel-header>\r\n\t    <mat-panel-title class='header'>\r\n\t      <div class='header'>Parameter Viewer</div>\r\n\t    </mat-panel-title>\r\n  \t</mat-expansion-panel-header>\r\n\t<div class='container'>\r\n\t\t<div class='input' *ngFor=\"let inp of _inputs\">\r\n\t\t\t<div class='row'>\r\n\t\t\t\t<span class='label'>Name</span>\r\n\t\t\t\t<span class='content'>{{ inp.getName() }}</span>\r\n\t\t\t</div>\r\n\t\t\t<!-- todo: disable if port is connected -->\r\n\t\t\t<div class='row'>\r\n\t\t\t\t<span class='label'>Value</span>\r\n\t\t\t\t<span class='content' contenteditable=\"true\" \r\n\t\t\t\t\t(blur)=\"updateComputedValue($event, inp)\">\r\n\t\t\t\t\t\t{{ inp.getValue() || \"undefined\" }}\r\n\t\t\t\t</span>\r\n\t\t\t</div>\r\n\t\t\t<!-- ui options based on type -->\r\n\t\t\t<!-- todo: -->\r\n\t\t</div>\r\n\t</div>\r\n</mat-expansion-panel>"
+module.exports = "<mat-expansion-panel class='viewer' [class.hidden]=\"false\">\r\n  \t<mat-expansion-panel-header>\r\n\t    <mat-panel-title class='header'>\r\n\t      <div class='header'>Parameter Viewer</div>\r\n\t    </mat-panel-title>\r\n  \t</mat-expansion-panel-header>\r\n\t<div class='container'>\r\n\t\t<div class='input' *ngFor=\"let inp of _inputs\">\r\n\t\t\t<div class='row'>\r\n\t\t\t\t<span class='label'>Name</span>\r\n\t\t\t\t<span class='content'>{{ inp.getName() }}</span>\r\n\t\t\t</div>\r\n\t\t\t<div class='row'>\r\n\t\t\t\t<span class='label'>Connected</span>\r\n\t\t\t\t<span class='content'>{{ inp.isConnected() }}</span>\r\n\t\t\t</div>\r\n\t\t\t<!-- todo: disable if port is connected -->\r\n\t\t\t<div class='row'>\r\n\t\t\t\t<span class='label'>Value</span>\r\n\t\t\t\t<span class='content' contenteditable=\"!inp.isConnected()\" \r\n\t\t\t\t\t(blur)=\"updateComputedValue($event, inp)\">\r\n\t\t\t\t\t\t{{ getValue(inp) }}\r\n\t\t\t\t</span>\r\n\t\t\t</div>\r\n\t\t\t<!-- ui options based on type -->\r\n\t\t\t<!-- todo: -->\r\n\t\t</div>\r\n\t</div>\r\n</mat-expansion-panel>"
 
 /***/ }),
 
@@ -3676,6 +3682,16 @@ var ParameterViewerComponent = /** @class */ (function (_super) {
             input.setComputedValue(value);
             // put a timeout on this update or something similar to solve jumpiness
             this.flowchartService.update();
+        }
+    };
+    ParameterViewerComponent.prototype.getValue = function (port) {
+        if (port.isConnected()) {
+            var address = port.getValue().port;
+            var otp = this.flowchartService.getFlowchart().getNodeByIndex(address[0]).getOutputByIndex(address[1]);
+            return otp.getValue();
+        }
+        else {
+            return (port.getValue() || "undefined");
         }
     };
     //
