@@ -69,7 +69,10 @@ export class ParameterViewerComponent extends Viewer {
   	update(): void{
   		this._node = this.flowchartService.getSelectedNode();
       this._inputs = this._node.getInputs();
-      this.isVisible = true;
+      if(this._node != undefined)
+         this.isVisible = true;
+       else
+         this.isVisible = false;
   	}
 
 }
