@@ -10,12 +10,16 @@
 				<span class='label'>Name</span>
 				<span class='content'>{{ inp.getName() }}</span>
 			</div>
+			<div class='row'>
+				<span class='label'>Connected</span>
+				<span class='content'>{{ inp.isConnected() }}</span>
+			</div>
 			<!-- todo: disable if port is connected -->
 			<div class='row'>
 				<span class='label'>Value</span>
-				<span class='content' contenteditable="true" 
+				<span class='content' contenteditable="!inp.isConnected()" 
 					(blur)="updateComputedValue($event, inp)">
-						{{ inp.getValue() || "undefined" }}
+						{{ getValue(inp) }}
 				</span>
 			</div>
 			<!-- ui options based on type -->

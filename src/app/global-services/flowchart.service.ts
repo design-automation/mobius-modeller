@@ -167,8 +167,15 @@ export class FlowchartService {
 
   addEdge(outputAddress: number[], inputAddress: number[]):  void{
     this._flowchart.addEdge(outputAddress, inputAddress);
-    this._flowchart.getNodeByIndex(outputAddress[0]).getOutputByIndex(outputAddress[1]).connect();
-    this._flowchart.getNodeByIndex(inputAddress[0]).getInputByIndex(inputAddress[1]).connect();
+
+    let output = this._flowchart.getNodeByIndex(outputAddress[0]).getOutputByIndex(outputAddress[1])
+    output.connect();
+    let input = this._flowchart.getNodeByIndex(inputAddress[0]).getInputByIndex(inputAddress[1])
+    input.connect();
+
+    input.setComputedValue({port: outputAddress});
+
+    this._flowchart.getNodeByIndex(inputAddress[0]).getInputByIndex(inputAddress[1])
     this.update();
   }
 

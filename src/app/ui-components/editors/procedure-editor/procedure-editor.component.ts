@@ -135,7 +135,8 @@ export class ProcedureEditorComponent extends Viewer {
 				children: [], 
 				leftExpression: "undefined", 
 				rightExpression: "undefined",
-				model: prod
+				model: prod,
+				isExpandedField: 'expanded'
 			};
 
 			//let dataObj = { id: Math.random() , name: data.getTitle(), type: procedure_type, model: data } ; 

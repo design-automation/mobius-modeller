@@ -124,7 +124,6 @@ export class FlowchartViewerComponent extends Viewer{
     this.flowchartService.addEdge(outputPortAddress, inputPortAddress);
   }
 
-
   //
   //
   //  Events
@@ -377,7 +376,7 @@ export class FlowchartViewerComponent extends Viewer{
   //
   //
   //
-  executeFlowchart(): void{
+  executeFlowchart($event): void{
       $event.stopPropagation();
       this.flowchartService.execute();
   }
