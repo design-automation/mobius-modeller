@@ -1,5 +1,5 @@
 <div id="app-container">
-  
+ 
   <div class="header">
       <app-menu></app-menu>
   </div>
@@ -7,7 +7,7 @@
   <div class="container">
 
     <div class="subcontainer viewer-container" [class.expand]="isExpanded.viewer">
-        <div class="toggle-btn right" (click)="toggleViewer()"></div>
+        <!-- <div class="toggle-btn right" (click)="toggleViewer()"></div> -->
         <app-geometry-viewer class="view"></app-geometry-viewer>
         <app-code-viewer class="view"></app-code-viewer>
     </div>
@@ -18,7 +18,7 @@
     </div>
     
     <div class="subcontainer editor-container" [class.expand]="isExpanded.editor">
-        <div class="toggle-btn left" (click)="toggleEditor()"></div>
+        <!-- <div class="toggle-btn left" (click)="toggleEditor()"></div> -->
         <app-procedure-editor class="view"></app-procedure-editor>
         <app-parameter-editor class="view"></app-parameter-editor>
     </div>

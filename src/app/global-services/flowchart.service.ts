@@ -1,5 +1,4 @@
 import {Injectable, Input, Output} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Subject} from 'rxjs/Subject';
 
@@ -33,7 +32,7 @@ export class FlowchartService {
     return this._flowchart != undefined;
   }
 
-  constructor(private http: HttpClient) { this.newFile() };
+  constructor() { this.newFile() };
 
   // 
   // message handling between components

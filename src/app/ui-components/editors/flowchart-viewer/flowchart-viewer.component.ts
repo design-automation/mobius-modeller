@@ -8,6 +8,7 @@ import { Viewer } from '../../../base-classes/viz/Viewer';
 import { FlowchartService } from '../../../global-services/flowchart.service';
 
 import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatMenuModule} from '@angular/material/menu';
 
 @Component({
   selector: 'app-flowchart-viewer',

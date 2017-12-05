@@ -7,6 +7,11 @@
 	position: relative;
 	overflow: hidden;
 
+	height: 600px;
+
+	display: flex;
+	flex-direction: column;
+
 	#addNode{
 		background: url('../../../../assets/img/plus.png');
 		background-size: cover;

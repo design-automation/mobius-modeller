@@ -1,15 +1,19 @@
-<mat-expansion-panel class='viewer' 
+<!-- <mat-expansion-panel class='viewer' 
 		[expanded]="panelOpenState">
   	<mat-expansion-panel-header>
-	    <mat-panel-title class='header'>
-	      <div class='header'>Flowchart Viewer</div>
-	      <div class='btn-group' click-stop-propagation>
+	    <mat-panel-title class='header'> -->
+
+<div class="viewer">
+	  	<div class='header'>
+		  <div>Flowchart Viewer</div>
+		  <div class='btn-group' click-stop-propagation>
 			<!-- <button (click)="resetViewer()">R</button> -->
 			<button id="addNode" (click)="addNode($event)"></button>
 			<button id="play" (click)="executeFlowchart($event)"></button>
 		  </div>
-	    </mat-panel-title>
-  	</mat-expansion-panel-header>
+		</div>
+<!-- 	    </mat-panel-title>
+  	</mat-expansion-panel-header> -->
 	<div class='container'>
 			
 			<!-- svg canvas to draw the edges -->
@@ -73,6 +77,13 @@
 							(drag)="nodeDragging($event, node)" 
 							(dragend)="nodeDragEnd($event, node)">
 							<div class="node-name">{{node.getName()}}</div>
+							<div class="settings" [matMenuTriggerFor]="settingsMenu">More
+							<mat-menu #settingsMenu="matMenu">
+							  <button mat-menu-item>Shut down</button>
+							  <button mat-menu-item>Restart</button>
+							  <button mat-menu-item>Hibernate</button>
+							</mat-menu>
+							</div>
 						</div>
 				
 						<!-- outputs -->
@@ -96,5 +107,6 @@
 
 			</div>
 	</div>
-</mat-expansion-panel>
+</div>
+<!-- </mat-expansion-panel> -->
 
