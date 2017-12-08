@@ -6,11 +6,6 @@
 <div class="viewer">
 	  	<div class='header'>
 		  <div>Flowchart Viewer</div>
-		  <div class='btn-group' click-stop-propagation>
-			<!-- <button (click)="resetViewer()">R</button> -->
-			<button id="addNode" (click)="addNode($event)"></button>
-			<button id="play" (click)="executeFlowchart($event)"></button>
-		  </div>
 		</div>
 <!-- 	    </mat-panel-title>
   	</mat-expansion-panel-header> -->
@@ -104,7 +99,10 @@
 					</div>
 				
 				</div>
-
+				<div class="btn-group">
+	                <button class="btn" (click)="addNode($event)"><i class="fa fa-plus"></i></button>
+					<button class="btn" (click)="executeFlowchart($event)"><i class="fa fa-play-circle"></i></button>
+	           </div>
 			</div>
 	</div>
 </div>

@@ -24,56 +24,10 @@ body{
 	padding: 0px;
 	margin: 0px; 
 
-	background-color: #E3E3E3;
-
 	overflow: hidden;
-}
-
-
-
-// overrides for plugins
-// angular-split
-split-gutter{
-	min-height: 400px !important;
-	background-color: #AEA8A8 !important;
 }
 
 .hidden{
 	display: none !important;
 }
 
-// angular-tree-component
-.mat-expansion-panel{
-	overflow: hidden !important;
-}
-
-.mat-expansion-panel:not([class*=mat-elevation-z]){
-	box-shadow: none;
-}
-.mat-expansion-panel-body{
-	margin: 0px !important;
-}
-
-.mat-expansion-panel-header{
-	//padding: 0 10px !important;
-	height: 36px !important;
-	border-bottom: 1px solid gray;
-	border-top: 1px solid gray;
-}
-
-.mat-expansion-panel:not([class*=mat-elevation-z]){
-	border: 0px !important;
-	box-shadow: none !important;
-}
-
-
-.mat-menu-content{
-	background-color: transparent;
-	padding: 0px;
-	
-}
-
-.mat-menu-item{
-	max-width: 200px;
-	background-color: #bbb;
-}

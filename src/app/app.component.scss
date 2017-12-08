@@ -1,109 +1,74 @@
 @import '../scss/globals';
-@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
-
-$header-height: 45px;
 
 #app-container{
 
-	border: 1px solid red;
+	position: relative;
+	width: 100%; 
+	height: 100%;
 
 	margin: 0px;
 	padding: 0px;
 
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+
+	background-color: $background-color;
+
 	.header{
-		position: absolute;
-		top: 0px;
-		left: 0px; 
-
-		height: 45px;
-		width: 100%;
-
-		overflow: hidden;
-		background: #ADADAD;
+			
+			// refer to menu bar scss
+			
 	}
 
 	.container{
-		position: absolute;
-		top: 45px;
-		left: 0px; 
+
+		position: relative;
 
 		display: flex; 
-		flex-direction: row; 
-		justify-content: space-between;
+		flex-direction: column;
 
-		height: calc(100% - 45px);
-		width: 100%;
+		flex-grow: 1;
 
-		overflow: hidden;
+		padding: $default-padding;
 
-		.subcontainer{
+		.split-panel{
 			position: relative;
+			flex-grow: 1; 
 			height: 100%; 
-			border-right: 2px solid gray;
+		}
 
+		.viewport-wrapper{
+			display: flex;
+			flex-direction: column;
+			flex-grow: 1;
+		}
+		
+		.toggle-view-bar{
 			display: flex; 
-			flex-direction: column; 
-			justify-content: flex-start;
+			flex-direction: row; 
+			justify-content: center;
 
-			&.viewer-container{
-				flex-grow: 0.2;
+			height: 45px;
+			background-color: #E7E7E7;
+
+			.btn{
+				margin: 7.5px; 
+				height: 30px; 
+				width: 30px; 
+				font-size: 18px;
+				line-height: 30px;
+				text-align: center;
+				display: inline-block;
+				border: 1px solid gray;
+
+				&.active{
+					color: white; 
+					background-color: gray;
+				}	
 			}
-
-			&.flowchart-container{
-				flex-grow: 3;
-				justify-content: space-between;
-			}
-
-			&.editor-container{
-				flex-grow: 0;
-
-				.procedure-editor{
-					flex-grow: 2;
-				}
-
-				.parameter-editor{
-					flex-grow: 1;
-				}
-			}
-
-			&.expand{
-				flex-grow: 2; 
-			}
-
-			.view{
-
-
-			}
-
-			.toggle-btn{
-				position: absolute;
-				height: 100%;
-				width: 15px; 
-				background-color: gray;
-				z-index: 10;
-				cursor: pointer;
-
-				&.right{
-					right: 0px;
-					margin-right: -15px;
-				}
-
-				&.left{
-					left:  0px;
-					margin-left: -15px;
-				}
-			}
-
 		}
 	}
-
-	/* .container{
-		height: 100%;
-		display: flex;
-		flex-direction: row; 
-		flex-wrap: wrap;
-		justify-content: space-between;
-	} */
 
 }
 

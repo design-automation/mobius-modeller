@@ -1,47 +1,34 @@
 <div id="app-container">
- 
+
   <div class="header">
       <app-menu></app-menu>
   </div>
 
   <div class="container">
 
-    <div class="subcontainer viewer-container" [class.expand]="isExpanded.viewer">
-        <!-- <div class="toggle-btn right" (click)="toggleViewer()"></div> -->
-        <app-geometry-viewer class="view"></app-geometry-viewer>
-        <app-code-viewer class="view"></app-code-viewer>
-    </div>
+    <split class="split-panel" 
+        direction="horizontal" [gutterSize]="10">
+       <split-area class="viewport-wrapper" [size]="40">
+           <div class="viewport-container">
+             <app-geometry-viewer *ngIf="isVisible.geometry"></app-geometry-viewer>
+             <app-code-viewer  *ngIf="isVisible.code"></app-code-viewer>
+           </div>
+           <div class="toggle-view-bar">
+                <div class="btn active"><i class="fa fa-bug"></i></div>
+                <div class="btn"><i class="fa fa-industry"></i></div>
+           </div>
+       </split-area>
+       <split-area [size]="60">
+          <app-flowchart-viewer></app-flowchart-viewer>
+       </split-area>
+    </split>
 
-    <div class="subcontainer flowchart-container">
-        <app-flowchart-viewer class="view" style="flex-grow: 2"></app-flowchart-viewer>
-        <app-parameter-viewer class="view" style="flex-grow: 1"></app-parameter-viewer>
-    </div>
-    
-    <div class="subcontainer editor-container" [class.expand]="isExpanded.editor">
-        <!-- <div class="toggle-btn left" (click)="toggleEditor()"></div> -->
-        <app-procedure-editor class="view"></app-procedure-editor>
-        <app-parameter-editor class="view"></app-parameter-editor>
-    </div>
-    <!-- <app-flowchart-viewer></app-flowchart-viewer>
-    <app-procedure-editor></app-procedure-editor>
-    <app-parameter-editor></app-parameter-editor>
-    <app-parameter-viewer></app-parameter-viewer>
-     -->
   </div>
-		<!-- <split direction="horizontal" 
-                       disabled="false"
-                       [visibleTransition]="action.useTransition">
-                    <split-area [size]="10" order="1">
-                       <app-geometry-viewer></app-geometry-viewer>
-                       <app-code-viewer></app-code-viewer>
-                    </split-area>
-                    <split-area [size]="action.a2s" order="2">
-                       
-                       
-                    </split-area>
-                    <split-area [size]="10" order="3">
-                        
-                        
-                    </split-area>
-            </split> -->
+
+ <!--  <div class="split-example">
+   
+ </div> -->
 </div>
+
+
+

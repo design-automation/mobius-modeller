@@ -12,16 +12,6 @@
 	display: flex;
 	flex-direction: column;
 
-	#addNode{
-		background: url('../../../../assets/img/plus.png');
-		background-size: cover;
-	}
-
-	#play{
-		background: url('../../../../assets/img/play.png');
-		background-size: cover;
-	}
-
 	.container{
 		position: relative;
 
@@ -57,6 +47,31 @@
 		#graph-nodes{
 			background-color: transparent;
 			overflow: hidden;
+		}
+
+		.btn-group{
+			display: flex; 
+			flex-direction: row; 
+			justify-content: center;
+
+			height: 45px;
+			width: 100%;
+			background-color: #E7E7E7;
+
+			position: absolute;
+			bottom: 0px; 
+
+			.btn{
+				margin: 7.5px; 
+				height: 30px; 
+				width: 30px; 
+				font-size: 18px;
+				line-height: 30px;
+				text-align: center;
+				display: inline-block;
+				border: 1px solid gray;
+
+			}
 		}
 	}
 

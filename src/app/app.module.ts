@@ -11,9 +11,6 @@ import { AngularSplitModule } from 'angular-split';
 import { AceEditorModule } from 'ng2-ace-editor';
 import { TreeModule } from 'angular-tree-component';
 
-/*import {ResizeEvent} from 'angular-resizable-element';
-import { ClickStopPropogationDirective } from './click-stop-propogation.directive';*/
-
 import { FlowchartService } from './global-services/flowchart.service';
 import { ModuleService } from './global-services/module.service';
 
@@ -42,7 +39,7 @@ import { ModuleboxComponent } from './ui-components/controls/modulebox/modulebox
     ProcedureEditorComponent,
     ParameterViewerComponent,
     ParameterEditorComponent,
-    ModuleboxComponent,
+    ModuleboxComponent
   ],
   entryComponents: [
     ModuleboxComponent

@@ -19,9 +19,10 @@ $header-height: 30px;
 		font-weight: 600; 
 		line-height: $header-height;
 		text-transform: uppercase;
-		padding: 10px;
 		letter-spacing: 1.5px;
 		height: $header-height;
+
+		color: #ADADAD;
 
 		.btn-group{
 			height: $header-height; 
