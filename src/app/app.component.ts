@@ -8,34 +8,26 @@ import { Component } from '@angular/core';
 })
 export class AppComponent{
 
-    isExpanded = {
-      editor: false, 
-      viewer: false
-    }
-
     isVisible = {
       geometry : true,
       code: false
     }
 
-    action = {
-        a1s: 30,
-        a2s: 40,
-        a3s: 30,
-        a1v: true,
-        a2v: true,
-        a3v: false,
-        useTransition: true,
-    }
-
     constructor(){ }
 
-    toggleEditor(){
-      this.isExpanded.editor = !this.isExpanded.editor; 
-    }
+    toggle(viewer_name: string): void{
 
-    toggleViewer(){
-      this.isExpanded.viewer = !this.isExpanded.viewer; 
+        if(viewer_name == "geometry"){
+            this.isVisible.geometry = true; 
+            this.isVisible.code = false;
+        }
+        else if(viewer_name){
+            this.isVisible.geometry = false; 
+            this.isVisible.code = true;
+        }
+        else{
+          throw Error("Unknown Viewer")
+        }
     }
 
 }

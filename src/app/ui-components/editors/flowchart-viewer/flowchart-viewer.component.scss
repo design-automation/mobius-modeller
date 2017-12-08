@@ -24,7 +24,29 @@
 			background-color: blue;
 			z-index: 1;
 		}
-	
+		
+		.btn-group{
+			display: flex; 
+			flex-direction: row; 
+			justify-content: center;
+
+			height: 45px;
+			width: 100%;
+			background-color: #E7E7E7;
+
+			.btn{
+				margin: 7.5px; 
+				height: 30px; 
+				width: 30px; 
+				font-size: 18px;
+				line-height: 30px;
+				text-align: center;
+				display: inline-block;
+				border: 1px solid gray;
+
+			}
+		}
+
 	}
 
 	.graph-container{
@@ -49,30 +71,7 @@
 			overflow: hidden;
 		}
 
-		.btn-group{
-			display: flex; 
-			flex-direction: row; 
-			justify-content: center;
 
-			height: 45px;
-			width: 100%;
-			background-color: #E7E7E7;
-
-			position: absolute;
-			bottom: 0px; 
-
-			.btn{
-				margin: 7.5px; 
-				height: 30px; 
-				width: 30px; 
-				font-size: 18px;
-				line-height: 30px;
-				text-align: center;
-				display: inline-block;
-				border: 1px solid gray;
-
-			}
-		}
 	}
 
 

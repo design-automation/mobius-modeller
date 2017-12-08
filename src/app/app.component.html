@@ -7,15 +7,15 @@
   <div class="container">
 
     <split class="split-panel" 
-        direction="horizontal" [gutterSize]="10">
+        direction="horizontal" [gutterSize]="10" [height]="1000">
        <split-area class="viewport-wrapper" [size]="40">
+           <div class="toggle-view-bar">
+                <div class="btn" [class.active]="isVisible.geometry" (click)="toggle('geometry')"><i class="fa fa-industry"></i></div>
+                <div class="btn" [class.active]="isVisible.code"  (click)="toggle('code')"><i class="fa fa-bug"></i></div>
+           </div>
            <div class="viewport-container">
              <app-geometry-viewer *ngIf="isVisible.geometry"></app-geometry-viewer>
              <app-code-viewer  *ngIf="isVisible.code"></app-code-viewer>
-           </div>
-           <div class="toggle-view-bar">
-                <div class="btn active"><i class="fa fa-bug"></i></div>
-                <div class="btn"><i class="fa fa-industry"></i></div>
            </div>
        </split-area>
        <split-area [size]="60">

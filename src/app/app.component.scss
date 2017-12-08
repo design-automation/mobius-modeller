@@ -17,7 +17,7 @@
 
 	.header{
 			
-			// refer to menu bar scss
+		// refer to menu bar scss
 			
 	}
 
@@ -42,6 +42,8 @@
 			display: flex;
 			flex-direction: column;
 			flex-grow: 1;
+
+			position: relative;
 		}
 		
 		.toggle-view-bar{
@@ -50,6 +52,7 @@
 			justify-content: center;
 
 			height: 45px;
+			width: 100%;
 			background-color: #E7E7E7;
 
 			.btn{
@@ -61,6 +64,7 @@
 				text-align: center;
 				display: inline-block;
 				border: 1px solid gray;
+				cursor: pointer;
 
 				&.active{
 					color: white; 
