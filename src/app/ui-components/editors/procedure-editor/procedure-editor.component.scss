@@ -59,8 +59,21 @@
 		vertical-align: middle;
 		border-bottom: 1px dashed blue;
 	}
-
-
 		
+}
+
+
+.dialog{
+	position: absolute;
+	top: 100px;
+	left: 0px;
+	border: 1px solid black;
+	padding: 10px;
+	background-color: white;
+	z-index: 10;
+
+	.close{
+		cursor: pointer;
+	}
 }
 

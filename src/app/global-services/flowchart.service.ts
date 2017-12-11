@@ -133,7 +133,8 @@ export class FlowchartService {
     this._selectedPort = 0;
     this.update();
 
-    this.loadModules([{name: "Math", version: 1, author: "AKM"}]);
+    this.loadModules([{name: "SimpleMath", version: 1, author: "AKM"}, 
+                      {name: "ComplexMath", version: 1, author: "AKM"}]);
 
     return this._flowchart;
   }

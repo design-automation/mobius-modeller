@@ -3,19 +3,38 @@ import {IModule} from "./IModule";
 export class Module implements IModule{
 
 	private _lastUpdated: Date;
+	public _name: string;
 
-	getFunctions(): string[]{
-		return [];
-		/*let obj = this;
-		let props = [];
+	getName(): string{
+		return "";
+	}
 
-	    do {
-	        props = props.concat(Object.getOwnPropertyNames(obj));
-	    } while (obj = Object.getPrototypeOf(obj));
+	getFunctions(): {name: string, category: string, def: Function}[]{
 
-	    return props.sort().filter(function(e, i, arr) { 
-	       if (e!=arr[i+1] && typeof obj[e] == 'function') return true;
-	    });*/
+		let fn: {name: string, category: string, def: Function}[] = [];
+		let categories: string[];
+
+		categories = Object.keys(this);
+
+		for( let categoryIndex in categories ){
+
+			let category = categories[categoryIndex];
+
+			let fns = Object.keys(this[category]);
+
+			for(let f=0; f < fns.length; f++){
+
+				let obj = { name: fns[f], 
+							category: category,
+							def: this[category][fns[f]]
+						  }
+
+				fn.push(obj);
+			}
+
+		}
+
+		return fn;
 	};
 
 }

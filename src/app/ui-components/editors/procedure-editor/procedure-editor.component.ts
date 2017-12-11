@@ -23,6 +23,9 @@ export class ProcedureEditorComponent extends Viewer {
   	private _procedureArr: IProcedure[] = [];
   	private _node: IGraphNode;
 
+  	private _showToolbox: boolean = false;
+  	private _moduleList = [];
+
   	private procedureTypes: ProcedureTypes[] = [
   			ProcedureTypes.Data, 
   			ProcedureTypes.Action, 
@@ -49,7 +52,20 @@ export class ProcedureEditorComponent extends Viewer {
 	  }
 	};
 
-	constructor(injector: Injector, public dialog: MatDialog){  super(injector, "procedure-editor"); }
+	constructor(injector: Injector, public dialog: MatDialog){  
+		super(injector, "procedure-editor"); 
+		
+		this._moduleList = [];
+
+		let modules = this.flowchartService.getModules();
+		for(let mod=0; mod < modules.length; mod++){
+			let user_module = modules[mod];
+			this._moduleList = this._moduleList.concat(user_module.getFunctions());
+		}
+
+		console.log(this._moduleList);
+
+	}
 
 	reset():void{
 		this._procedureArr = [];
@@ -136,7 +152,7 @@ export class ProcedureEditorComponent extends Viewer {
 				leftExpression: "undefined", 
 				rightExpression: "undefined",
 				model: prod,
-				isExpandedField: 'expanded'
+
 			};
 
 			//let dataObj = { id: Math.random() , name: data.getTitle(), type: procedure_type, model: data } ; 
@@ -202,16 +218,10 @@ export class ProcedureEditorComponent extends Viewer {
 			this._node.addProcedure(prod);
 		}
 		else if(type == ProcedureTypes.Action){
-		    /*let dialogRef = this.dialog.open(ModuleboxComponent, {
-			  height: '400px',
-			  width: '600px',
-			});
+		    
+		    // todo: Add dialog
 
-			dialogRef.afterClosed().subscribe(result => {
-			  console.log(`Dialog result: ${result}`); // Pizza!
-			});
-
-			dialogRef.close('Pizza!');*/
+		    this._showToolbox = true;
 		}
 		else{
 			throw Error("Procedure Type invalid");

@@ -69,5 +69,19 @@
 
 		
 	</div>
+	
 
+
+
+</div>
+
+<div class="dialog" *ngIf="_showToolbox">
+	
+	<!-- <div class="toolbox">
+		<div *ngFor="let mod in _moduleList">
+			{{ mod }}
+		</div>
+	</div> -->
+
+	<div class="close" (click)="_showToolbox=false;">Close</div>
 </div>

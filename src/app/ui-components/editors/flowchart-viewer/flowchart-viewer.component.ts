@@ -398,6 +398,34 @@ export class FlowchartViewerComponent extends Viewer{
     }
   }
 
+  saveNode(node: IGraphNode): void{
+      let nav: any = navigator;
+      let myStorage = window.localStorage;
+
+      let property = "MOBIUS_NODES";
+      let storageString = myStorage.getItem(property);
+      let nodesStorage = JSON.parse( storageString == null ? JSON.stringify({n: []}) : storageString );
+
+      // add the node
+      // todo: check if overwrite
+      nodesStorage.n.push(node);
+
+      myStorage.setItem( property, JSON.stringify(nodesStorage) );
+
+      alert( JSON.parse(myStorage.getItem(property)).n.length + " nodes in the library" );
+
+      /*if (nav.storage && nav.storage.persist)
+        nav.storage.persist().then(granted => {
+          if (granted){
+
+            alert("Storage will not be cleared except by explicit user action");
+          }
+          else{
+            alert("Storage may be cleared by the UA under storage pressure.");
+          }
+        });*/
+  }
+
 
   //
   //

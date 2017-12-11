@@ -122,6 +122,8 @@
 	<span class='content' contenteditable="true" (blur)="updateNodeName($event, _selectedNode)">
 		{{ _selectedNode.getName() || "undefined" }}
 	</span>
+
+	<button style="float: right;" (click)="saveNode(_selectedNode)"><i class="fa fa-download"></i></button>
   </div>
   <app-parameter-viewer class="row"></app-parameter-viewer>
   <app-procedure-editor class="row"></app-procedure-editor>

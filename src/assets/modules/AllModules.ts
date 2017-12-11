@@ -1,1 +1,2 @@
-export {Math} from "./Math";
+export {SimpleMath} from "./SimpleMath";
+export {ComplexMath} from "./ComplexMath";
