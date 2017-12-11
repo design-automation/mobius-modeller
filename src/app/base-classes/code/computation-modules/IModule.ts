@@ -1,5 +1,5 @@
 export interface IModule{
 	getName(): string;
-	getFunctions(): {name: string, category: string, def: Function}[];
+	getFunctions(): {name: string, module: string, def: Function}[];
 }
 

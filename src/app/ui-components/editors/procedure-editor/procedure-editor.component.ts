@@ -60,7 +60,9 @@ export class ProcedureEditorComponent extends Viewer {
 		let modules = this.flowchartService.getModules();
 		for(let mod=0; mod < modules.length; mod++){
 			let user_module = modules[mod];
+			console.log(user_module, user_module.getFunctions());
 			this._moduleList = this._moduleList.concat(user_module.getFunctions());
+			console.log(this._moduleList);
 		}
 
 		console.log(this._moduleList);

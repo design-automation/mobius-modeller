@@ -6,12 +6,12 @@ export class ComplexMath extends Module{
 	static author: string = "AKM";
 	public static version: number = 1;
 
-	square(a: number): number{
+	public square(a: number): number{
 		return a*a;
 	}
 
 
-	cube(a: number): number{
+	public cube(a: number): number{
 		return a*a*a;
 	}
 

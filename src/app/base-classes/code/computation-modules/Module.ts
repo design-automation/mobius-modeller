@@ -9,29 +9,20 @@ export class Module implements IModule{
 		return "";
 	}
 
-	getFunctions(): {name: string, category: string, def: Function}[]{
+	getFunctions(): {name: string, module: string, def: Function}[]{
 
-		let fn: {name: string, category: string, def: Function}[] = [];
-		let categories: string[];
+		let fn: {name: string, module: string, def: Function}[] = [];
+		let module_name = this.getName();
+		console.log(this);
+		let fns = Object.keys(this);
 
-		categories = Object.keys(this);
+		for(let f=0; f < fns.length; f++){
 
-		for( let categoryIndex in categories ){
-
-			let category = categories[categoryIndex];
-
-			let fns = Object.keys(this[category]);
-
-			for(let f=0; f < fns.length; f++){
-
-				let obj = { name: fns[f], 
-							category: category,
-							def: this[category][fns[f]]
-						  }
-
-				fn.push(obj);
-			}
-
+			let obj = { name: fns[f], 
+						module: module_name,
+						def: this[fns[f]]
+					  }
+			fn.push(obj);
 		}
 
 		return fn;
