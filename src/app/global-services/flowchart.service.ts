@@ -28,11 +28,33 @@ export class FlowchartService {
   private _selectedNode: number = 0;
   private _selectedPort: number = 0;
 
+  private _savedNodes: IGraphNode[] = [];
+
   private check(){
     return this._flowchart != undefined;
   }
 
-  constructor() { this.newFile() };
+  constructor() { 
+    this.newFile() 
+    this.checkSavedNodes();
+  };
+
+  checkSavedNodes(): void{ 
+
+    this._savedNodes = [];
+    
+    let myStorage = window.localStorage;
+    let property = "MOBIUS_NODES";
+    let storageString = myStorage.getItem(property);
+    let nodesStorage = JSON.parse( storageString == null ? JSON.stringify({n: []}) : storageString );
+
+    let nodeData = nodesStorage.n; 
+
+    for(let n=0; n < nodeData.length; n++){
+        let n_data = nodeData[n];
+        this._savedNodes.push(n_data);
+    }
+  }
 
   // 
   // message handling between components
@@ -155,13 +177,72 @@ export class FlowchartService {
     return this._flowchart.getEdges();
   }
 
+  getSavedNodes(): any{
+    return this._savedNodes;
+  }
+
+  saveNode(node: IGraphNode): void{
+
+    // todo: check if overwrite
+    if( node.getType() !== undefined ){
+        console.log(this._savedNodes[node.getType()]);
+    }
+    else{
+      let nav: any = navigator;
+      let myStorage = window.localStorage;
+
+      let property = "MOBIUS_NODES";
+      let storageString = myStorage.getItem(property);
+      let nodesStorage = JSON.parse( storageString == null ? JSON.stringify({n: []}) : storageString );
+
+      // add the node
+      nodesStorage.n.push(node);
+      myStorage.setItem( property, JSON.stringify(nodesStorage) );
+      console.log( JSON.parse(myStorage.getItem(property)).n.length + " nodes in the library" );
+
+      /*if (nav.storage && nav.storage.persist)
+        nav.storage.persist().then(granted => {
+          if (granted){
+
+            alert("Storage will not be cleared except by explicit user action");
+          }
+          else{
+            alert("Storage may be cleared by the UA under storage pressure.");
+          }
+        });*/
+
+      this.checkSavedNodes();
+      this.update();
+    }
+
+
+  }
+
   //
   //    add node
   //
-  addNode(type ?: string): void{
-    let default_node_name: string = "hello" + (this._flowchart.getNodes().length + 1);
-    let node:IGraphNode = new GraphNode(default_node_name, type);
-    this._flowchart.addNode(node);
+  addNode(type?: number): void{
+    
+    let new_node: IGraphNode = undefined;
+    let n_data = undefined; 
+
+    if(type !== undefined){
+       n_data = this._savedNodes[type];
+    }
+
+    if( n_data == undefined ){
+      let default_node_name: string = "hello" + (this._flowchart.getNodes().length + 1);
+      new_node = new GraphNode(default_node_name, undefined);
+    }
+    else{
+      let default_node_name: string = n_data["_name"] + (this._flowchart.getNodes().length + 1);
+      new_node = new GraphNode(default_node_name, n_data["_id"]);
+      n_data["lib"] = true;
+      new_node.update(n_data);
+    }
+
+    this._flowchart.addNode(new_node);
+
     this.update();
   }
 

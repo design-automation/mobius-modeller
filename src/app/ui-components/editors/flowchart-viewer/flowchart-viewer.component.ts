@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, Injector } from '@angular/core';
 import { NgClass } from '@angular/common';
 
-import { IGraphNode, IEdge } from '../../../base-classes/node/NodeModule';
+import { IGraphNode, IEdge, GraphNode } from '../../../base-classes/node/NodeModule';
 import { InputPort, OutputPort } from '../../../base-classes/port/PortModule';
 
 import { Viewer } from '../../../base-classes/viz/Viewer';
@@ -30,10 +30,16 @@ export class FlowchartViewerComponent extends Viewer{
   _nodes: IGraphNode[] = [];
   _edges: IEdge[] = [];
 
+  _savedNodes: IGraphNode[] = [];
+
 
   showDialog: {status: boolean, position: number[]} = {status: false, position: [0,0]};
 
-  constructor(injector: Injector){  super(injector, "FlowchartViewer");  }
+  constructor(injector: Injector){  
+    super(injector, "FlowchartViewer");  
+
+    this._savedNodes = this.flowchartService.getSavedNodes();
+  }
 
   //
   //
@@ -75,9 +81,6 @@ export class FlowchartViewerComponent extends Viewer{
   }
 
 
-
-
-
   //
   //
   //  Data Related Functions
@@ -93,6 +96,7 @@ export class FlowchartViewerComponent extends Viewer{
   update(){
     this._nodes = this.flowchartService.getNodes();
     this._edges = this.flowchartService.getEdges();
+    this._savedNodes = this.flowchartService.getSavedNodes();
 
     let m = this._margin; 
     let pw = this._portWidth;
@@ -128,10 +132,16 @@ export class FlowchartViewerComponent extends Viewer{
   //
   // Add node and edges
   //
-  addNode($event): void{
+  addNode($event, type: number): void{
     $event.stopPropagation();
-    this.flowchartService.addNode();
-    this.flowchartService.selectNode(this._nodes.length-1);
+    if(type == undefined){
+      this.flowchartService.addNode();
+    }
+    else{
+      this.flowchartService.addNode(type);
+    }
+
+    this.update();
   }
 
   addEdge(outputPortAddress: number[], inputPortAddress: number[]): void{
@@ -399,31 +409,7 @@ export class FlowchartViewerComponent extends Viewer{
   }
 
   saveNode(node: IGraphNode): void{
-      let nav: any = navigator;
-      let myStorage = window.localStorage;
-
-      let property = "MOBIUS_NODES";
-      let storageString = myStorage.getItem(property);
-      let nodesStorage = JSON.parse( storageString == null ? JSON.stringify({n: []}) : storageString );
-
-      // add the node
-      // todo: check if overwrite
-      nodesStorage.n.push(node);
-
-      myStorage.setItem( property, JSON.stringify(nodesStorage) );
-
-      alert( JSON.parse(myStorage.getItem(property)).n.length + " nodes in the library" );
-
-      /*if (nav.storage && nav.storage.persist)
-        nav.storage.persist().then(granted => {
-          if (granted){
-
-            alert("Storage will not be cleared except by explicit user action");
-          }
-          else{
-            alert("Storage may be cleared by the UA under storage pressure.");
-          }
-        });*/
+    this.flowchartService.saveNode(node);
   }
 
 

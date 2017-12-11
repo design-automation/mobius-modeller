@@ -103,9 +103,13 @@
 				<div class="btn-group">
 	                <button class="btn" (click)="addNode($event)"><i class="fa fa-plus"></i></button>
 					<button class="btn" (click)="executeFlowchart($event)"><i class="fa fa-play-circle"></i></button>
+					<div style="height: 2px; width: 45px; background-color: gray;"></div>
+					<div class="btn"
+						*ngFor="let n of _savedNodes; let i=index"
+					    (click)="addNode($event, i)">
+						{{n._name}}
+					</div>
 	           	</div>
-
-				
 
 	           
 			</div>
