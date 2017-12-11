@@ -40,7 +40,7 @@
 
 		.viewport-wrapper{
 			display: flex;
-			flex-direction: column;
+			flex-direction: row;
 			flex-grow: 1;
 
 			position: relative;
@@ -48,12 +48,13 @@
 		
 		.toggle-view-bar{
 			display: flex; 
-			flex-direction: row; 
-			justify-content: center;
+			flex-direction: column; 
+			justify-content: start;
 
-			height: 45px;
-			width: 100%;
+			width: 45px;
 			background-color: #E7E7E7;
+			margin-right: 15px;
+			margin-top: 30px;
 
 			.btn{
 				margin: 7.5px; 

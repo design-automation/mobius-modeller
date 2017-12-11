@@ -26,9 +26,12 @@ export class FlowchartViewerComponent extends Viewer{
   _portWidth: number = 15; 
   _margin: number = 10; 
 
-  _selectedNode: number = 0;
+  _selectedNode: IGraphNode;
   _nodes: IGraphNode[] = [];
   _edges: IEdge[] = [];
+
+
+  showDialog: {status: boolean, position: number[]} = {status: false, position: [0,0]};
 
   constructor(injector: Injector){  super(injector, "FlowchartViewer");  }
 
@@ -80,6 +83,12 @@ export class FlowchartViewerComponent extends Viewer{
   //  Data Related Functions
   //
   //
+  updateEdges(): void{ 
+    for(let e=0; e< this._edges.length; e++){
+      let edge: IEdge = this._edges[e];
+      edge["path"] = this.getEdgePath(edge);
+    }
+  }
 
   update(){
     this._nodes = this.flowchartService.getNodes();
@@ -97,10 +106,14 @@ export class FlowchartViewerComponent extends Viewer{
 
           node["width"] = width;
     }) 
+
+    this.updateEdges();
+
+    this._selectedNode = this.flowchartService.getSelectedNode();
   }
 
   resetData(): void{
-    this._selectedNode = 0;
+    this._selectedNode = undefined;
     this._nodes = [];
     this._edges = [];
   }
@@ -168,6 +181,8 @@ export class FlowchartViewerComponent extends Viewer{
     node.position[0] += relX/this.zoom; 
     node.position[1] += relY/this.zoom; 
     node.dragStart = {x: $event.pageX, y: $event.pageY}; 
+
+    this.updateEdges();
   }
 
   nodeDragEnd($event, node): void{
@@ -177,6 +192,7 @@ export class FlowchartViewerComponent extends Viewer{
     node.position[0] += relX; 
     node.position[1] += relY; 
 
+    this.updateEdges();
   }
 
   //
@@ -190,39 +206,7 @@ export class FlowchartViewerComponent extends Viewer{
                 current: {x: 0, y: 0}
               }
 
-  private getPortPosition(nodeIndex: number, portIndex: number, type: string): {x: number, y: number}{
 
-    let x: number;
-    let y: number;
-
-    let name: string = "n" + nodeIndex + type + portIndex;
-    let el = document.getElementById(name);
-
-    if(el == null){
-      return {x: 0, y: 0};
-    }
-
-    let node_pos: number[] = this._nodes[nodeIndex].position;
-
-    let port_container_height: number = 10; 
-    let node_height: number = 60; 
-    let port_width: number = 9.5;
-
-    if(type == "pi"){
-        x = node_pos[0] + port_width/2 + el.offsetLeft;
-        y = node_pos[1] + port_container_height/2;
-
-    } 
-    else if(type == "po"){
-        x = node_pos[0] + port_width/2 + el.offsetLeft;
-        y = node_pos[1] + 3*port_container_height/2 + node_height;
-    }
-    else{
-      throw Error("Unknown port type");
-    }
-
-    return {x: x, y: y}
-  }
 
   portDragStart($event, port: InputPort|OutputPort, address: number[]){
       $event.dataTransfer.setDragImage( new Image(), 0, 0);
@@ -247,8 +231,8 @@ export class FlowchartViewerComponent extends Viewer{
       // todo: compute total offset of this div dynamically
       // urgent!
       //nodes.parentElement.parentElement.parentElement.parentElement.offsetLeft
-      this.mouse_pos.current = {x: $event.pageX - (24+181), 
-                               y: $event.pageY - (64+41)};
+      this.mouse_pos.current = {x: $event.layerX, 
+                               y: $event.layerY};
       // draw dashed edge on canvas 
   }
 
@@ -299,34 +283,64 @@ export class FlowchartViewerComponent extends Viewer{
   }
 
 
+  private getPortPosition(nodeIndex: number, portIndex: number, type: string): {x: number, y: number}{
+
+    let x: number;
+    let y: number;
+
+    let name: string = "n" + nodeIndex + type + portIndex;
+    let el = document.getElementById(name);
+
+    if(el == null){
+      return {x: 0, y: 0};
+    }
+
+    let node_pos: number[] = this._nodes[nodeIndex].position;
+
+    let port_container_height: number = 10; 
+    let node_height: number = 60; 
+    let port_width: number = 9.5;
+
+    if(type == "pi"){
+        x = node_pos[0] + port_width/2 + el.offsetLeft;
+        y = node_pos[1] + port_container_height/2;
+
+    } 
+    else if(type == "po"){
+        x = node_pos[0] + port_width/2 + el.offsetLeft;
+        y = node_pos[1] + 3*port_container_height/2 + node_height;
+    }
+    else{
+      throw Error("Unknown port type");
+    }
+
+    return {x: x, y: y}
+  }
+
   //
   // Edge drawing functions
   //
   getEdgePath(edge: IEdge): string{
-    return this.edgeString( this.getPortPosition(edge.output_address[0], edge.output_address[1], "po"), 
-                            this.getPortPosition(edge.input_address[0], edge.input_address[1], "pi") )
+
+    return this.edgeString( 
+          this.getPortPosition(edge.output_address[0], edge.output_address[1], "po"), 
+          this.getPortPosition(edge.input_address[0], edge.input_address[1], "pi") );
   }
 
-  edgeString(startPoint: {x: number, y: number},  endPoint: {x: number, y: number}): string{
 
+  //
+  //  todo: Balu
+  //
+  //
+  edgeString(output_port_position: {x: number, y: number},  input_port_position: {x: number, y: number}): string{
 
-    /*let pointA: {x: number, y:number} = startPoint; 
-    let pointB: {x: number, y:number} = endPoint; 
+    if(output_port_position == undefined || input_port_position == undefined)
+      return "";
 
-    // AB Midpoint
-    let pointC: {x: number, y:number} = {x:  (startPoint.x + endPoint.x)/2, 
-                                          y:  (startPoint.y + endPoint.y)/2}
-
-    // AC Midpoint                            
-    let pointD: {x: number, y:number} = {x:  (startPoint.x + pointC.x)/2, 
-                                          y:  (startPoint.y + pointC.y)/2}
-    // slope of AC
-    // adjust this to the right
-
-    // CB Midpoint                                           
-    let pointE: {x: number, y:number} = {x:  (endPoint.x + pointC.x)/2, 
-                                          y:  (endPoint.y + pointC.y)/2}*/
-    // adjust this to the left
+    // add margin to output port in downward direction
+    //output_port_position.y += 30; 
+    // add margin to input port in upward direction
+    //input_port_position.y -= 30;
 
     let deltaY: number= 15; 
     if(y0 < y1){
@@ -336,10 +350,10 @@ export class FlowchartViewerComponent extends Viewer{
       deltaY = -1*deltaY;
     }
 
-    var x0 =startPoint.x;
-    var y0 =startPoint.y;
-    var x3 =endPoint.x;
-    var y3 =endPoint.y;
+    var x0 =output_port_position.x;
+    var y0 =output_port_position.y;
+    var x3 =input_port_position.x;
+    var y3 =input_port_position.y;
     
     var mx1=0.75*x0+0.25*x3;
     var mx2=0.25*x0+0.75*x3;
@@ -347,9 +361,9 @@ export class FlowchartViewerComponent extends Viewer{
     var my1=0.75*y0+0.25*y3;
     var my2=0.25*y0+0.75*y3;
 
-    var distance = 0.25* Math.sqrt(Math.pow((x3-x0),2)+Math.pow((y3-y0),2));
+    var distance = 0.25*Math.round(Math.sqrt(Math.pow((x3-x0),2)+Math.pow((y3-y0),2)));
     var pSlope =(x0-x3)/(y3-y0);
-    var multi = Math.sqrt(distance*distance/(1+(pSlope*pSlope)));
+    var multi = Math.round(Math.sqrt(distance*distance/(1+(pSlope*pSlope))));
     
     var x1,y1,x2,y2=0;
     
@@ -373,6 +387,17 @@ export class FlowchartViewerComponent extends Viewer{
   edgeClicked(): void{
     alert("Edge clicked");
   }
+
+
+  updateNodeName($event, node): void{
+    let name: string =  $event.srcElement.innerText; 
+
+    if(name.trim().length > 0){
+      node.setName(name);
+      this.flowchartService.update();
+    }
+  }
+
 
   //
   //

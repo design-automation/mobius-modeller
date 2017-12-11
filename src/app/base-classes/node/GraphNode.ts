@@ -49,6 +49,10 @@ export class GraphNode implements IGraphNode{
 		return this._name; 
 	};
 
+	setName(name: string): void{
+		this._name = name; 
+	}
+
 	getId(): string { 
 		return this._id; 
 	};

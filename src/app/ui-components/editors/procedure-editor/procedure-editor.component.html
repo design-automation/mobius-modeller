@@ -4,11 +4,7 @@
 		
 		<div class="title">Procedure Editor</div>
 
-		<div class="buttons">
-			<button *ngFor="let type of procedureTypes"
-			 (click)="addProcedure($event, type)">{{getImageForType(type)}}</button>
-		</div>
-
+		
 	</div>
 
 	<div class="container">
@@ -63,6 +59,14 @@
 
 			  </ng-template>
 		</tree-root>
+
+		<div *ngIf='_tree==undefined || _tree.length == 0'> No procedure </div>
+
+		<div class="buttons">
+			<button *ngFor="let type of procedureTypes"
+			 (click)="addProcedure($event, type)">{{getImageForType(type)}}</button>
+		</div>
+
 		
 	</div>
 

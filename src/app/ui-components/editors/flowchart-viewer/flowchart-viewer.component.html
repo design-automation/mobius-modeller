@@ -17,14 +17,13 @@
 				id="graph-edges" 
 				[style.zoom]="zoom">
 
-				<g *ngFor="let edge of _edges">
-					<path 
-					  [attr.d]="getEdgePath(edge)" 
-					  (click)="edgeClicked()"
-					  stroke="blue"
-					  stroke-width="3" fill="none" />
-				</g>
-				
+				<g *ngFor="let edge of _edges" >
+									<path 
+									  [attr.d]="edge.path" 
+									  stroke="blue"
+									  stroke-width="3" fill="none" />
+								</g>
+												
 				<!-- dragging path -->
 				<g id="temporary-edge" [class.hidden]="!_linkMode" >
 					<path 
@@ -72,13 +71,14 @@
 							(drag)="nodeDragging($event, node)" 
 							(dragend)="nodeDragEnd($event, node)">
 							<div class="node-name">{{node.getName()}}</div>
-							<div class="settings" [matMenuTriggerFor]="settingsMenu">More
+							<span class="edit" (click)="showDialog.status=true">[Edit]</span>
+							<!-- <div class="settings" [matMenuTriggerFor]="settingsMenu">More
 							<mat-menu #settingsMenu="matMenu">
 							  <button mat-menu-item>Shut down</button>
 							  <button mat-menu-item>Restart</button>
 							  <button mat-menu-item>Hibernate</button>
-							</mat-menu>
-							</div>
+							</mat-menu> 
+							</div>-->
 						</div>
 				
 						<!-- outputs -->
@@ -103,10 +103,28 @@
 				<div class="btn-group">
 	                <button class="btn" (click)="addNode($event)"><i class="fa fa-plus"></i></button>
 					<button class="btn" (click)="executeFlowchart($event)"><i class="fa fa-play-circle"></i></button>
-	           </div>
+	           	</div>
+
+				
+
 	           
 			</div>
 	</div>
 </div>
 <!-- </mat-expansion-panel> -->
 
+
+
+<!-- Dialog for node editing -->
+<div class="dialog" *ngIf='showDialog.status==true'>
+  <div class="header row">
+  	<span class='label'>Editing Node: </span>
+	<span class='content' contenteditable="true" (blur)="updateNodeName($event, _selectedNode)">
+		{{ _selectedNode.getName() || "undefined" }}
+	</span>
+  </div>
+  <app-parameter-viewer class="row"></app-parameter-viewer>
+  <app-procedure-editor class="row"></app-procedure-editor>
+  <app-parameter-editor class="row"></app-parameter-editor>
+  <span class="close" (click)="showDialog.status=false">[Close]</span>
+</div>

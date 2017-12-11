@@ -3,6 +3,9 @@
 .viewer{
 	@extend .viewer;
 
+	max-height: 300px; 
+	overflow: auto;
+
 	.container{
 		position: relative;
 

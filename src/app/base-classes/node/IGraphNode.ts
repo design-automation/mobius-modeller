@@ -11,6 +11,8 @@ export interface IGraphNode{
 	getId(): string;
 	getVersion(): number; 
 
+	setName(name: string): void;
+
 	getType(): string; // id of another node - if undefined, means not derived from another
 	
 	overwrite(node: IGraphNode): number; 

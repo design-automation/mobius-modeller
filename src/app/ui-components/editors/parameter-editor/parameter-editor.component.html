@@ -37,7 +37,10 @@
 			<div class="controls">
 				<span class='btn btn-small' (click)='deletePort($event, "input", i)'>Delete</span>
 			</div>
+
+
 		</div>
+		<div *ngIf='_inputs.length == 0'>This node has no inputs</div>
 		
 		<h4 class="port-heading">Outputs</h4>
 		<div class='port output' *ngFor="let output of _outputs; let o=index">
@@ -59,6 +62,7 @@
 				<span class='btn btn-small' (click)='deletePort($event, "output", o)'>Delete</span>
 			</div>
 		</div>
+		<div *ngIf='_outputs.length == 0'>This node has no outputs</div>
 
 	</div>
 
