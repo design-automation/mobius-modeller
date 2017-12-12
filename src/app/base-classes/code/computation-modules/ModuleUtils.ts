@@ -27,13 +27,15 @@ export class ModuleUtils{
 	}
 
 	
-	static getParams(func: Function): string[]{
+	static getParams(func: Function): {type: string, value: any}[]{
 	 	let fnStr = func.toString().replace( /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg, '');
 		let result = fnStr.slice(fnStr.indexOf('(')+1, fnStr.indexOf(')')).match( /([^\s,]+)/g);
 		if(result === null)
 		 	result = [];
 
-		return result;
+		let final_result = result.map(function(r){ return {type: r, value: undefined} })
+
+		return final_result;
 	}
 
 	static getFunctions(mod: IModule): {name: string, module: string, def: Function}[]{

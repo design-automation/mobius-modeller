@@ -63,7 +63,8 @@
 								*ngFor="let p of prod.data.params; let i=index">
 								
 								<input class="tree-input"
-								 [(ngModel)]="prod.data.params[i]"
+								 placeholder={{prod.data.params[i].type}}
+								 [(ngModel)]="prod.data.params[i].value"
 								 #ctrl="ngModel" 
 								 required
 								 (ngModelChange)="updateProcedure($event, prod, 'right')">
