@@ -6,6 +6,11 @@ export class ActionProcedure extends Procedure{
 
 	constructor(data ?: {result: string, module: string, function: string, params: string[]}){
 		super(ProcedureTypes.Action, false); 
+
+		if(data == undefined){
+			data = {result: undefined, module: undefined, function: undefined, params: []} 
+		}
+
 		let left: IComponent = { expression: data.result, 
 								 isAction: false, 
 								 module: undefined, 

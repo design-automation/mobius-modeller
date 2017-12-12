@@ -101,7 +101,6 @@ export class FlowchartService {
 
         // read the flowchart
         _this._flowchart = FlowchartReader.readFlowchartFromData(data["flowchart"]);
-        console.log(_this._flowchart);
         _this.update();
         
       }

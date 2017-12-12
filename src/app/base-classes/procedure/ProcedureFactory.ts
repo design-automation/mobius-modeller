@@ -29,6 +29,7 @@ export class ProcedureFactory{
 	static getProcedureFromData(procedureData: any, parent: IProcedure): IProcedure{
 		
 		let procedure: IProcedure;
+
 		
 		if(procedureData["_type"] == ProcedureTypes.IfControl){
 			procedure = new IfElseControlProcedure( ProcedureTypes.IfControl)

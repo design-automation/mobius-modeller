@@ -75,6 +75,7 @@ export class GraphNode implements IGraphNode{
 		if(nodeData["lib"] == undefined){
 			this._id = nodeData["_id"];
 			this.position = nodeData["position"];
+			this._name = nodeData["_name"]
 			console.log("not from library")
 		}
 		else{

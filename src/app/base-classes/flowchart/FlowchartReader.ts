@@ -18,7 +18,6 @@ export abstract class FlowchartReader{
 	    for(let index in nodes){
 	      let n_data = nodes[index];
 	      let node: IGraphNode = new GraphNode(n_data["name"], n_data["type"]);
-
 	      node.update(n_data);
 
 	      fc.addNode(node);
