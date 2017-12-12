@@ -1,22 +1,21 @@
-import {Module} from '../../app/base-classes/code/CodeModule';
+import {IModule} from '../../app/base-classes/code/CodeModule';
 
-export class SimpleMath extends Module{
+export class SimpleMath implements IModule{
 
-	public static _name: string = "Math";
-	static author: string = "AKM";
-	public static version: number = 1;
+	private static _name: string = "SimpleMath";
+    private static _author: string = "AKM";
+	private static _version: number = 1;
 
-	add(a: number, b: number): number{
+	public static add(a: number, b: number): number{
 		return a+b;
 	}
 
 
-	subtract(a: number, b: number): number{
+	public static subtract(a: number, b: number): number{
 		return a-b;
 	}
 
-
-	multiply(a: number, b: number): number{
+	public static multiply(a: number, b: number): number{
 		return a*b;
 	}
 

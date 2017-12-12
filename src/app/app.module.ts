@@ -12,8 +12,8 @@ import { AceEditorModule } from 'ng2-ace-editor';
 import { TreeModule } from 'angular-tree-component';
 
 import { FlowchartService } from './global-services/flowchart.service';
-import { ModuleService } from './global-services/module.service';
-
+/*import { ModuleService } from './global-services/module.service';
+*/
 import { FlowchartControlsComponent } from './ui-components/controls/flowchart-controls/flowchart-controls.component';
 import { MenuComponent } from './ui-components/controls/main-menu/menu.component';
 
@@ -53,7 +53,7 @@ import { ModuleboxComponent } from './ui-components/controls/modulebox/modulebox
     TreeModule,
     CustomMaterialModule
   ],
-  providers: [FlowchartService, ModuleService],
+  providers: [FlowchartService/*, ModuleService*/],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

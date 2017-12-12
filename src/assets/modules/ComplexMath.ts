@@ -1,17 +1,16 @@
-import {Module} from '../../app/base-classes/code/CodeModule';
+import {IModule} from '../../app/base-classes/code/CodeModule';
 
-export class ComplexMath extends Module{
+export class ComplexMath implements IModule{
 
-	public static _name: string = "Math";
-	static author: string = "AKM";
-	public static version: number = 1;
+	private static _name: string = "ComplexMath";
+    private static _author: string = "AKM";
+	private static _version: number = 1;
 
-	public square(a: number): number{
+	public static square(a: number): number{
 		return a*a;
 	}
 
-
-	public cube(a: number): number{
+	public static cube(a: number): number{
 		return a*a*a;
 	}
 

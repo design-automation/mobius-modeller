@@ -1,4 +1,4 @@
-import { Module } from './computation-modules/Module'; 
+import { IModule } from './computation-modules/IModule'; 
 
 import { ICodeGenerator } from "./ICodeGenerator";
 
@@ -10,13 +10,13 @@ import { InputPort, OutputPort } from "../port/PortModule";
 export abstract class CodeGenerator implements ICodeGenerator{
 
 	private _language: string; 
-	private _modules: Module[];
+	private _modules: IModule[];
 
 	constructor(language: string){ 
 		this._language = language;
 	};
 
-	setModules(modules: Module[]){
+	setModules(modules: IModule[]){
 		this._modules = modules;
 	}
 

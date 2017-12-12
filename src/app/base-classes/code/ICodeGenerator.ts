@@ -7,13 +7,13 @@ import { IFlowchart } from "../flowchart/FlowchartModule";
 import { IGraphNode } from "../node/NodeModule";
 import { IProcedure } from "../procedure/ProcedureModule";
 import { InputPort, OutputPort } from "../port/PortModule";
-import { Module } from "./computation-modules/Module";
+import { IModule } from "./computation-modules/IModule";
 
 export interface ICodeGenerator{
 
 		// gets the language in which the code is generated
 		getLanguage(): string;
-		setModules(modules: Module[]): void;
+		setModules(modules: IModule[]): void;
 
 		// takes a flowchart and generates some code string 
 		getDisplayCode(flowchart: IFlowchart) :string;

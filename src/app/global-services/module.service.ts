@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Module } from '../base-classes/code/computation-modules/Module'
+import { IModule } from '../base-classes/code/computation-modules/IModule'
 import { gis_module } from '../geometry-modules/gis_module'
 
 @Injectable()

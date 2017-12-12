@@ -4,7 +4,7 @@ import {Subject} from 'rxjs/Subject';
 
 import {IFlowchart, Flowchart, FlowchartReader} from '../base-classes/flowchart/FlowchartModule';
 import {IGraphNode, GraphNode} from '../base-classes/node/NodeModule';
-import {ICodeGenerator, CodeFactory, Module} from "../base-classes/code/CodeModule";
+import {ICodeGenerator, CodeFactory, IModule, ModuleUtils} from "../base-classes/code/CodeModule";
 
 import * as CircularJSON from 'circular-json';
 
@@ -23,7 +23,7 @@ export class FlowchartService {
   private _flowchart: IFlowchart;
 
   private code_generator: ICodeGenerator = CodeFactory.getCodeGenerator("js");
-  private _moduleSet: Module[];
+  private _moduleSet: IModule[];
 
   private _selectedNode: number = 0;
   private _selectedPort: number = 0;
@@ -116,19 +116,27 @@ export class FlowchartService {
     this._moduleSet = [];
     let moduleSet = this._moduleSet;
 
-    modules.map(function(module){
-        let modClass = ModuleSet[module["name"]];
-        if(modClass.version == module["version"] && modClass.author == module["author"]){
-          moduleSet.push(new modClass());
+    modules.map(function(mod){
+
+        let name: string = ModuleUtils.getName(mod);
+        let version: string = ModuleUtils.getVersion(mod);
+        let author: string = ModuleUtils.getAuthor(mod);
+
+        // select the required module from the global module set - that has all the functions
+        let modClass = ModuleSet[name];
+
+        if( ModuleUtils.isCompatible(mod, modClass) ){
+            moduleSet.push(modClass);
         }
         else{
           throw Error("Module not compatible. Please check version / author");
         }
+
     })
 
   }
 
-  getModules(): Module[]{
+  getModules(): IModule[]{
     return this._moduleSet;
   }
 
@@ -155,8 +163,8 @@ export class FlowchartService {
     this._selectedPort = 0;
     this.update();
 
-    this.loadModules([{name: "SimpleMath", version: 1, author: "AKM"}, 
-                      {name: "ComplexMath", version: 1, author: "AKM"}]);
+    this.loadModules([{_name: "SimpleMath", _version: 1, _author: "AKM"}, 
+                      {_name: "ComplexMath", _version: 1, _author: "AKM"}]);
 
     return this._flowchart;
   }

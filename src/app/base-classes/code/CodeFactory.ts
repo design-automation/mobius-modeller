@@ -1,10 +1,10 @@
 import {ICodeGenerator} from './ICodeGenerator';
 import {CodeGeneratorJS} from './generators/javascript_generator';
-import {Module} from './computation-modules/Module'; 
+import {IModule} from './computation-modules/IModule'; 
 
 export class CodeFactory{
 
-	private _modules: Module[];
+	private _modules: IModule[];
 
 	static getCodeGenerator(language: string): ICodeGenerator{
 

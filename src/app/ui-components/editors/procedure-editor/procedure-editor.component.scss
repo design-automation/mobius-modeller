@@ -70,10 +70,24 @@
 	border: 1px solid black;
 	padding: 10px;
 	background-color: white;
-	z-index: 10;
+	z-index: 14;
+	font-size: 12px;
 
 	.close{
 		cursor: pointer;
+	}
+
+	.toolbox{
+		.fn_container{
+			.fn_name{
+				
+				cursor: pointer;
+				
+				&:hover{
+					background-color: gray;
+				}
+			}
+		}
 	}
 }
 
