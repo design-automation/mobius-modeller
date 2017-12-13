@@ -177,31 +177,33 @@ export class FlowchartViewerComponent extends Viewer{
   //
   //  node dragging
   //
+  dragStart = {x: 0, y: 0};
   nodeDragStart($event, node): void{
     $event.dataTransfer.setDragImage( new Image(), 0, 0);
     // todo : find more elegant solution
-    node.dragStart = {x: $event.pageX, y: $event.pageY}; 
+    this.dragStart = {x: $event.pageX, y: $event.pageY}; 
     this.pan_mode = false;
   }
 
   nodeDragging($event, node): void{
     this.pan_mode = false;
-    let relX: number = $event.pageX - node.dragStart.x; 
-    let relY: number = $event.pageY - node.dragStart.y;
+    let relX: number = $event.pageX - this.dragStart.x; 
+    let relY: number = $event.pageY - this.dragStart.y;
     node.position[0] += relX/this.zoom; 
     node.position[1] += relY/this.zoom; 
-    node.dragStart = {x: $event.pageX, y: $event.pageY}; 
-
+    
+    this.dragStart = {x: $event.pageX, y: $event.pageY}; 
     this.updateEdges();
   }
 
   nodeDragEnd($event, node): void{
     this.pan_mode = false;
-    let relX: number = $event.pageX - node.dragStart.x; 
-    let relY: number = $event.pageY - node.dragStart.y;
+    let relX: number = $event.pageX - this.dragStart.x; 
+    let relY: number = $event.pageY - this.dragStart.y;
     node.position[0] += relX; 
     node.position[1] += relY; 
 
+    this.dragStart = {x:  0, y: 0};
     this.updateEdges();
   }
 
@@ -215,8 +217,6 @@ export class FlowchartViewerComponent extends Viewer{
                 start: {x: 0, y: 0}, 
                 current: {x: 0, y: 0}
               }
-
-
 
   portDragStart($event, port: InputPort|OutputPort, address: number[]){
       $event.dataTransfer.setDragImage( new Image(), 0, 0);
@@ -232,21 +232,33 @@ export class FlowchartViewerComponent extends Viewer{
         type = "po";
       }
 
-      this.mouse_pos.start = this.getPortPosition(address[0], address[1], type);
-                             /*{x: $event.pageX - (24+181), 
-                               y: $event.pageY - (64+41)};*/
+      let port_position =  this.getPortPosition(address[0], address[1], type);
+
+      this.mouse_pos.start = {x: port_position.x, y: port_position.y };
+      this.mouse_pos.current = {x: port_position.x, y: port_position.y };
+      
+      this.dragStart = {x: $event.layerX, y: $event.layerY};
   }
 
   portDragging($event, port: InputPort|OutputPort){
       // todo: compute total offset of this div dynamically
       // urgent!
-      //nodes.parentElement.parentElement.parentElement.parentElement.offsetLeft
-      this.mouse_pos.current = {x: $event.layerX, 
-                               y: $event.layerY};
-      // draw dashed edge on canvas 
+      let relX: number = $event.layerX - this.dragStart.x; 
+      let relY: number = $event.layerY - this.dragStart.y;
+      this.mouse_pos.current.x += relX/this.zoom; 
+      this.mouse_pos.current.y += relY/this.zoom; 
+      
+      this.dragStart = {x: $event.layerX, y: $event.layerY}; 
   }
 
-  portDragEnd($event: Event, port: InputPort|OutputPort){
+  portDragEnd($event, port: InputPort|OutputPort){
+      let relX: number = $event.layerX - this.dragStart.x; 
+      let relY: number = $event.layerY - this.dragStart.y;
+      this.mouse_pos.current.x += relX/this.zoom; 
+      this.mouse_pos.current.y += relY/this.zoom; 
+      
+      this.dragStart = {x: 0, y: 0}; 
+
       this._startPort = undefined; 
       this._endPort = undefined;
       this._linkMode = false;

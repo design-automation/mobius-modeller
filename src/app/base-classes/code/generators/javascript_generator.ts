@@ -109,7 +109,7 @@ export class CodeGeneratorJS extends CodeGenerator{
 			return fn_def;
 		}
 
-		getNodeCode(node: IGraphNode): string{
+		getNodeCode(node: IGraphNode): string{ 	
 			let nodeVars: string[] = [];
 			let fn_code :string = "";
 
