@@ -27,7 +27,7 @@
 				<!-- dragging path -->
 				<g id="temporary-edge" [class.hidden]="!_linkMode" >
 					<path 
-					[attr.d]="edgeString(mouse_pos.current, mouse_pos.start)" stroke="blue"
+					[attr.d]="edgeString(mouse_pos.start, mouse_pos.current)" stroke="blue"
  				 	stroke-width="5" fill="none" stroke-dasharray="5, 5"/>
  					<circle id="pointC" [attr.cx]="mouse_pos.current.x" [attr.cy]="mouse_pos.current.y" r="5" />
  				</g>

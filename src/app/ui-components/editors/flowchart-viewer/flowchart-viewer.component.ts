@@ -363,19 +363,27 @@ export class FlowchartViewerComponent extends Viewer{
     //output_port_position.y += 30; 
     // add margin to input port in upward direction
     //input_port_position.y -= 30;
+    //
+    
+    let path: string;
+    let move: string = "M";
+    let line: string = " L";
+    let control: string = " Q";
 
-    let deltaY: number= 15; 
-    if(y0 < y1){
-      // do nothing
-    }
-    else{
-      deltaY = -1*deltaY;
-    }
+    // add the start point from output
+    let startPoint: string = output_port_position.x + " " + output_port_position.y;
+    let endPoint: string = input_port_position.x + " " + input_port_position.y;
 
-    var x0 =output_port_position.x;
-    var y0 =output_port_position.y;
-    var x3 =input_port_position.x;
-    var y3 =input_port_position.y;
+    // move downwards/upwards in straight line
+    let translate: number = 50; 
+    let shifted_startPoint: string = output_port_position.x + " " + (output_port_position.y + translate);
+    let shifted_endPoint: string = input_port_position.x + " " + (input_port_position.y - translate);
+
+    // compute curvy line
+    var x0 = output_port_position.x;
+    var y0 = output_port_position.y + translate;
+    var x3 =  input_port_position.x;
+    var y3 =  input_port_position.y - translate;
     
     var mx1=0.75*x0+0.25*x3;
     var mx2=0.25*x0+0.75*x3;
@@ -401,7 +409,13 @@ export class FlowchartViewerComponent extends Viewer{
       y2 =my2-(pSlope*multi);
     }
   
-    var path="M"+x0+" "+y0+" C"+x1+" "+y1+" "+x2+" "+y2+" "+x3+" "+y3;
+    //path="M"+x0+" "+y0+" C"+x1+" "+y1+" "+x2+" "+y2+" "+x3+" "+y3;*/
+
+    path = move + startPoint 
+          + line + shifted_startPoint 
+          + "C" + x1 + " " + y1 + " " + x2 + " " + y2 + " " + x3 + " " + y3
+          //+ line + shifted_endPoint 
+          + line + endPoint;
     
     return path;
   }
