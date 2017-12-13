@@ -1,12 +1,10 @@
 <div id="app-container">
 
-  <div class="header">
-      <app-menu></app-menu>
-  </div>
+  <app-menu></app-menu>
 
   <div class="container">
 
-    <split class="split-panel" 
+    <!-- <split class="split-panel" 
         direction="horizontal" [gutterSize]="10" [height]="1000">
        <split-area class="viewport-wrapper" [size]="40">
            <div class="toggle-view-bar">
@@ -19,16 +17,49 @@
            </div>
        </split-area>
        <split-area [size]="60">
-          <app-flowchart-viewer></app-flowchart-viewer>
+          
           
        </split-area>
+    </split> -->
+
+    <split direction="horizontal" 
+           disabled="true"
+           [useTransition]="action.useTransition"
+           (dragEnd)="action.a1s=$event.sizes[0]; action.a2s=$event.sizes[1]; action.a3s=$event.sizes[2];"
+           (transitionEnd)="log($event)">
+        <split-area [visible]="action.a1v" [size]="action.a1s" order="3">
+            
+            <mat-button-toggle-group #group="matButtonToggleGroup">
+              <mat-button-toggle value="1">
+                <mat-icon>3d_rotation</mat-icon>
+              </mat-button-toggle>
+              <mat-button-toggle value="2">
+                <mat-icon>code</mat-icon>
+              </mat-button-toggle>
+              <mat-button-toggle value="3" disabled>
+                <mat-icon>text_format</mat-icon>
+              </mat-button-toggle>
+              <mat-button-toggle value="4" disabled>
+                <mat-icon>info_outline</mat-icon>
+              </mat-button-toggle>
+            </mat-button-toggle-group>
+        
+            <app-geometry-viewer *ngIf="group.value == 1 || group.value == undefined"></app-geometry-viewer>
+            <app-code-viewer *ngIf="group.value == 2"></app-code-viewer>
+
+        </split-area>
+        <split-area [visible]="action.a2v" [size]="action.a2s" order="2">
+            
+        </split-area>
+        <split-area [visible]="action.a3v" [size]="action.a3s" order="1">
+            <app-flowchart-viewer></app-flowchart-viewer>
+            <button mat-button (click)="showEditor()">Show Editor</button>
+            <button mat-button (click)="hideEditor()">Hide Editor</button>
+        </split-area>
     </split>
 
   </div>
 
- <!--  <div class="split-example">
-   
- </div> -->
 </div>
 
 

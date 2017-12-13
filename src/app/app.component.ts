@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { LayoutService } from './global-services/layout.service';
 /*import { gs_json as gs } from "gs-json"; */
 
 @Component({
@@ -8,12 +9,14 @@ import { Component } from '@angular/core';
 })
 export class AppComponent{
 
+    action; 
+
     isVisible = {
       geometry : true,
       code: false
     }
 
-    constructor(){ }
+    constructor(private layoutService: LayoutService){ this.action = layoutService.getAssets(); }
 
     toggle(viewer_name: string): void{
 
@@ -28,6 +31,19 @@ export class AppComponent{
         else{
           throw Error("Unknown Viewer")
         }
+    }
+
+    showEditor(){ 
+        this.layoutService.showEditor();
+    }
+
+    hideEditor(){
+        this.layoutService.hideEditor();
+    }
+
+
+    log($event){
+      console.log($event);
     }
 
 }
