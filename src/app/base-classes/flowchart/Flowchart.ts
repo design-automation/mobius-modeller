@@ -120,7 +120,6 @@ export class Flowchart implements IFlowchart{
 			let out_nodeIndex = edge.output_address[0];
 			incoming[in_nodeIndex].count++;
 			incoming[out_nodeIndex].count--;
-			console.log(incoming);
 		}
 
 		let an = this._nodes;
@@ -174,6 +173,25 @@ export class Flowchart implements IFlowchart{
 		return sorted;
 	}*/
 
+	updateDependentInputs(node: IGraphNode, originalRank: number): void{
+
+		let selectedEdges: IEdge[] = this.getEdges().filter(function(edge){
+			return edge.output_address[0] == originalRank;
+		});
+
+		for( let e=0;  e < selectedEdges.length; e++ ){
+
+			let edge: IEdge = selectedEdges[e];
+			let inputNode: IGraphNode = this.getNodeByIndex(edge.input_address[0]);
+
+			// set computed value of port
+			// should this be from within the node?
+			let outputPort = node.getOutputByIndex(edge.output_address[1]);
+			let inputPort = inputNode.getInputByIndex(edge.input_address[1]);
+			inputPort.setComputedValue(outputPort.getValue());
+		}
+	}
+
 	//
 	//	executes the flowchart
 	//
@@ -184,26 +202,26 @@ export class Flowchart implements IFlowchart{
 		this.reset();
 
 		// sort nodes 
-		let all_nodes = this._nodes;
-		let sorted_nodes: IGraphNode[] = this.getNodeOrder().map(function(index){
-			return all_nodes[index];
-		});
+		let all_nodes = this.getNodes();
+		let sortOrder: number[] = this.getNodeOrder();
 
 		// execute each node
 		// provide input to next 
 		let timeStarted	:number = (new Date()).getTime();
-		for( let nc=0; nc < sorted_nodes.length; nc++ ){
+		for( let nc=0; nc < sortOrder.length; nc++ ){
 
-			let node = sorted_nodes[nc]
+			let originalRank = sortOrder[nc];
+			let node = all_nodes[originalRank];
 
 			// check status of the node; don't rerun
 			if( node.hasExecuted() == true ){
-				console.log("is this needed?");
 				continue;
 			}
 
 			node.execute(code_generator);
 			console.log(node.getName(), node.getResult());
+
+			this.updateDependentInputs(node, originalRank); 
 
 			//todo: print time taken
 		}

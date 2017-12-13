@@ -128,7 +128,10 @@ export class CodeGeneratorJS extends CodeGenerator{
 
 				}
 				
-				initializations.push( this.generateInputPortCode(inp) );
+				let input_port_code: string = this.generateInputPortCode(inp);
+				if(input_port_code !== ""){
+					initializations.push( input_port_code );
+				}
 
 			}
 

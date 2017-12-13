@@ -274,7 +274,12 @@ export class GraphNode implements IGraphNode{
 	//
 	//
 	//
-	execute(code_generator: ICodeGenerator, params ?:any ): void{
+	execute(code_generator: ICodeGenerator): void{
+
+		let params: any[] = [];
+		console.log(params);
+		this.getInputs().map(function(i){ params[i.getName()] = i.getValue(); })
+		console.log(params);
 
 		// use code generator to execute code
 		let result: any  = code_generator.executeNode(this, params);
@@ -298,5 +303,6 @@ export class GraphNode implements IGraphNode{
 
 		return final_values;
 	}
+
 
 }

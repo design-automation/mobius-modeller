@@ -172,7 +172,7 @@ export class FlowchartService {
   //  returns the flowchart
   //
   getFlowchart(): IFlowchart{
-    console.warn("Flowchart shouldnot be modified outside of this service");
+    //console.warn("Flowchart shouldnot be modified outside of this service");
     return this._flowchart; 
   }
 
