@@ -3,7 +3,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatMenuModule, MatExpansionModule, 
 	MatButtonModule, MatCheckboxModule, MatTooltipModule, 
 	MatDialogModule, MatToolbarModule, MatIconModule, 
-	MatButtonToggleModule} from '@angular/material';
+	MatButtonToggleModule, MatTabsModule, MatInputModule} from '@angular/material';
 
 
 /*
@@ -14,10 +14,10 @@ import {MatMenuModule, MatExpansionModule,
   imports: [BrowserAnimationsModule, MatExpansionModule, 
   			MatMenuModule, MatButtonModule, MatCheckboxModule, 
   			MatTooltipModule, MatDialogModule, MatToolbarModule, MatIconModule, 
-  			MatButtonToggleModule],
+  			MatButtonToggleModule, MatTabsModule, MatInputModule],
   exports: [BrowserAnimationsModule, MatExpansionModule,  
   			MatMenuModule, MatButtonModule, MatCheckboxModule, 
   			MatTooltipModule, MatDialogModule, MatToolbarModule, MatIconModule,
-  			MatButtonToggleModule]
+  			MatButtonToggleModule, MatTabsModule, MatInputModule]
 })
 export class CustomMaterialModule { }

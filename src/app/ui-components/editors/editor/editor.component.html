@@ -1,0 +1,28 @@
+<div class="editor" *ngIf="_selectedNode !== undefined">
+
+	<button mat-button color="primary" (click)="close()">Close Editor</button>
+
+	<form class="node-header">
+	  <mat-form-field class="full-width">
+	    <input  matInput placeholder="Node Name" value="{{_selectedNode.getName()}}"
+	    (change)="updateNodeName($event, _selectedNode)">
+	  </mat-form-field>
+	</form>
+
+	<mat-tab-group class="tabs">
+
+	  <mat-tab class="tab-container" label="Parameters">
+	  		<app-parameter-viewer class="row"></app-parameter-viewer>
+	  </mat-tab>
+
+	  <mat-tab class="tab-container" label="Input/Output">
+			<app-parameter-editor class="row"></app-parameter-editor>
+	  </mat-tab>
+
+	  <mat-tab class="tab-container" label="Procedure">
+	  		<app-procedure-editor class="row"></app-procedure-editor>
+	  </mat-tab>
+	</mat-tab-group>
+
+	
+</div>

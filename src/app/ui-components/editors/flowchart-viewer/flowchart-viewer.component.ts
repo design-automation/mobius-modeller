@@ -6,6 +6,7 @@ import { InputPort, OutputPort } from '../../../base-classes/port/PortModule';
 
 import { Viewer } from '../../../base-classes/viz/Viewer';
 import { FlowchartService } from '../../../global-services/flowchart.service';
+import { LayoutService } from '../../../global-services/layout.service';
 
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatMenuModule} from '@angular/material/menu';
@@ -35,10 +36,20 @@ export class FlowchartViewerComponent extends Viewer{
 
   showDialog: {status: boolean, position: number[]} = {status: false, position: [0,0]};
 
-  constructor(injector: Injector){  
+  constructor(injector: Injector, private layoutService: LayoutService){  
     super(injector, "FlowchartViewer");  
 
     this._savedNodes = this.flowchartService.getSavedNodes();
+  }
+
+  editNode(): void{
+    this.layoutService.showEditor();
+  }
+
+  deleteNode(node_index: number): void{
+    this._selectedNode = undefined; 
+    this.layoutService.hideEditor();
+    this.flowchartService.deleteNode(node_index);
   }
 
   //

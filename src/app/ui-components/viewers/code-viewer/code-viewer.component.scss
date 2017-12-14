@@ -3,6 +3,11 @@
 .viewer{
 	@extend .viewer;
 
-	min-width: 450px; 
-	min-height: 600px;
+	position: absolute; 
+	height: 100%; 
+	width: 100%; 
+	
+	.ace-editor{
+		height: 100%;
+	}
 }

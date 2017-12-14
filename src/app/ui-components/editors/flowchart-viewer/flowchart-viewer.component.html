@@ -4,11 +4,6 @@
 	    <mat-panel-title class='header'> -->
 
 <div class="viewer">
-	  	<div class='header'>
-		  <div>Flowchart Viewer</div>
-		</div>
-<!-- 	    </mat-panel-title>
-  	</mat-expansion-panel-header> -->
 	<div class='container'>
 			
 			<!-- svg canvas to draw the edges -->
@@ -42,58 +37,74 @@
 				<div class="node-container">
 
 					<!-- one node -->
-					<div  class="node" 
+					<div  class="node"
 							*ngFor="let node of _nodes; let node_index = index" 
 							[style.left.px]="node.position[0]" 
 							[style.top.px]="node.position[1]" >
 
-						<!--inputs-->
-						<div class="port-container input">
-							<div class="port" 
-								[class.connected]="port.isConnected()" 
-								*ngFor="let port of node.getInputs(); let pi=index"  
-								id="n{{node_index}}pi{{pi}}"
-								draggable=true
-								(dragstart)="portDragStart($event, port, [node_index, pi])" 
-								(drag)="portDragging($event, port)" 
-								(dragend)="portDragEnd($event, port)"
-								(drop)="portDrop($event, port, [node_index, pi])">
+						<div class="btn-container" *ngIf="isSelected(node)" >
+							<div class="btn-group port-btns">
+								<div class="action-button" (click)="editNode()">Edit</div>
+								<div class="action-button" (click)="deleteNode(node_index)">Delete</div>
 							</div>
-							<div class="btn-sm input" (click)="addPort(node_index, 'in')"></div>
+							<div class="btn-group node-btns">
+								<div class="action-button" (click)="addPort(node_index, 'in')">
+									<span> inp+ </span>
+								</div>
+								<div class="action-button" (click)="addPort(node_index, 'out')">
+									<span> out+ </span>
+								</div>
+							</div>
 						</div>
+
+						<div class="node-wrapper">
+							<!--inputs-->
+							<div class="port-container input">
+								<div class="port" 
+									[class.connected]="port.isConnected()" 
+									*ngFor="let port of node.getInputs(); let pi=index"  
+									id="n{{node_index}}pi{{pi}}"
+									draggable=true
+									(dragstart)="portDragStart($event, port, [node_index, pi])" 
+									(drag)="portDragging($event, port)" 
+									(dragend)="portDragEnd($event, port)"
+									(drop)="portDrop($event, port, [node_index, pi])">
+								</div>
+								<!--  -->
+							</div>
+						
+							<!-- node body -->
+							<div class="node-body" 
+								[class.selected]="isSelected(node)" 
+								(click)="clickNode($event, node_index)"
+								draggable=true  
+								(dragstart)="nodeDragStart($event, node)" 
+								(drag)="nodeDragging($event, node)" 
+								(dragend)="nodeDragEnd($event, node)">
+								<div class="node-name">{{node.getName()}}</div>
+								<!-- <div class="settings" [matMenuTriggerFor]="settingsMenu">More
+								<mat-menu #settingsMenu="matMenu">
+								  <button mat-menu-item>Shut down</button>
+								  <button mat-menu-item>Restart</button>
+								  <button mat-menu-item>Hibernate</button>
+								</mat-menu> 
+								</div>-->
+							</div>
 					
-						<!-- node body -->
-						<div class="node-body" 
-							[class.selected]="isSelected(node)" 
-							(click)="clickNode($event, node_index)"
-							draggable=true  
-							(dragstart)="nodeDragStart($event, node)" 
-							(drag)="nodeDragging($event, node)" 
-							(dragend)="nodeDragEnd($event, node)">
-							<div class="node-name">{{node.getName()}}</div>
-							<span class="edit" (click)="showDialog.status=true">[Edit]</span>
-							<!-- <div class="settings" [matMenuTriggerFor]="settingsMenu">More
-							<mat-menu #settingsMenu="matMenu">
-							  <button mat-menu-item>Shut down</button>
-							  <button mat-menu-item>Restart</button>
-							  <button mat-menu-item>Hibernate</button>
-							</mat-menu> 
-							</div>-->
-						</div>
-				
-						<!-- outputs -->
-						<div class="port-container output">
-							<div class="port"
-								[class.connected]="port.isConnected()" 
-								*ngFor="let port of node.getOutputs(); let po=index"
-								id="n{{node_index}}po{{po}}"
-								draggable=true
-								(dragstart)="portDragStart($event, port, [node_index, po])" 
-								(drag)="portDragging($event, port)" 
-								(dragend)="portDragEnd($event, port)"
-								(drop)="portDrop($event, port, [node_index, po])">
+							<!-- outputs -->
+							<div class="port-container output">
+								<div class="port"
+									[class.connected]="port.isConnected()" 
+									*ngFor="let port of node.getOutputs(); let po=index"
+									id="n{{node_index}}po{{po}}"
+									draggable=true
+									(dragstart)="portDragStart($event, port, [node_index, po])" 
+									(drag)="portDragging($event, port)" 
+									(dragend)="portDragEnd($event, port)"
+									(drop)="portDrop($event, port, [node_index, po])">
+								</div>
+								<!-- <div class="btn-sm output" ></div> -->
 							</div>
-							<div class="btn-sm output" (click)="addPort(node_index, 'out')"></div>
 						</div>
 				
 					</div>
@@ -119,18 +130,3 @@
 
 
 
-<!-- Dialog for node editing -->
-<div class="dialog" *ngIf='showDialog.status==true'>
-  <div class="header row">
-  	<span class='label'>Editing Node: </span>
-	<span class='content' contenteditable="true" (blur)="updateNodeName($event, _selectedNode)">
-		{{ _selectedNode.getName() || "undefined" }}
-	</span>
-
-	<button style="float: right;" (click)="saveNode(_selectedNode)"><i class="fa fa-download"></i></button>
-  </div>
-  <app-parameter-viewer class="row"></app-parameter-viewer>
-  <app-procedure-editor class="row"></app-procedure-editor>
-  <app-parameter-editor class="row"></app-parameter-editor>
-  <span class="close" (click)="showDialog.status=false">[Close]</span>
-</div>

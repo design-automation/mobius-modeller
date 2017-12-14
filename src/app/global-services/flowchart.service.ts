@@ -267,6 +267,19 @@ export class FlowchartService {
     this.update();
   }
 
+
+  deleteNode(node_index: number): void{
+      this._selectedNode = undefined;
+      this.update();
+      // this._flowchart.deleteNode(node_index);
+      // this.update();
+  }
+ 
+
+  deleteEdge(): void{
+
+  }
+
   //
   //  select node
   //
@@ -282,6 +295,10 @@ export class FlowchartService {
   }
 
   getSelectedNode(): IGraphNode{
+
+    if(this._selectedNode == undefined)
+      return undefined;
+
     return this._flowchart.getNodeByIndex(this._selectedNode);
   }
 
@@ -355,6 +372,7 @@ export class FlowchartService {
           document.body.removeChild(link);
       }
   }
- 
+
+
 
 }
