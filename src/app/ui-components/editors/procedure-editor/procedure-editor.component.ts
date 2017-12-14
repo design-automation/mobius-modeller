@@ -80,7 +80,23 @@ export class ProcedureEditorComponent extends Viewer {
 	}
 
 	getImageForType(type: ProcedureTypes): string{
-		return this.getString(type)[0];
+
+		let value:string = "";
+
+		if(type == ProcedureTypes.Data){
+			value = "assignment"
+		}
+		else if(type == ProcedureTypes.Action){
+			value = "function"
+		}
+		else if(type == ProcedureTypes.IfElseControl){
+			value = "if-else"
+		}
+		else if(type == ProcedureTypes.ForLoopControl){
+			value = "for-loop"	
+		}
+
+		return value;
 	}
 
 	getString(type: ProcedureTypes): string{
@@ -104,7 +120,7 @@ export class ProcedureEditorComponent extends Viewer {
 		// case: parent and different parent
 		// case: parent and same parent
 		// case: parent and no parent
-		if( moved_procedure.getParent() === to_procedure ){
+		else if( moved_procedure.getParent() === to_procedure ){
 			if(parent === undefined){
 				this._node.deleteProcedure(moved_procedure);
 				this._node.addProcedureAtPosition(moved_procedure, moved_position);

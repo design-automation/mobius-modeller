@@ -17,6 +17,7 @@
 							{{ inp.getName() || "undefined" }}
 						</span>
 					</div>
+
 					<div class='row'>
 						<span class='label'>Type</span>
 						<span class='content'>
@@ -25,13 +26,16 @@
 								            </select>
 						</span>
 					</div>
+
 					<div class='row'>
 						<span class='label'>Default</span>
 						<span class='content' contenteditable="true" (blur)="updateDefaultValue($event, inp)">
 							{{inp.getDefaultValue() || "undefined"}}
 						</span>
 					</div>
+
 				</div>
+				
 				<div class="controls">
 					<span class='btn btn-small' (click)='deletePort($event, "input", i)'>Delete</span>
 				</div>
@@ -42,7 +46,7 @@
 		<div class="section">
 			
 			<h4 class="port-heading">Outputs</h4>
-			
+
 			<div class="default" 
 			*ngIf='_outputs.length == 0'>This node has no outputs</div>
 

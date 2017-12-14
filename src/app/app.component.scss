@@ -34,6 +34,12 @@
 
 			.split-area{
 				overflow: hidden;
+
+				.view-wrapper{
+					position: absolute;
+					height: 100%;
+					width: 100%; 
+				}
 			}
 		}
 

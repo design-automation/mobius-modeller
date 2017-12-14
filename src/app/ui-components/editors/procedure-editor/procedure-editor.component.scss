@@ -3,67 +3,124 @@
 .viewer{
 	@extend .viewer;
 
-	max-height: 300px; 
-	overflow: auto;
-
 	.container{
 		position: relative;
 
-		.procedure{
+		padding: 15px; 
 
-			padding: 4px; 
-			width: 100%;
+		display: flex; 
+		flex-direction: column;
 
-			[contenteditable="true"]:active,
-			[contenteditable="true"]:focus{
-			border:none;
-			outline:none;
-			}
+		overflow: hidden;
 
-			[contenteditable="true"]{
-				color: blue;
+		.tree{
+			margin-top: 20px; 
+			min-height: 150px;
+			height: 100%;
+			width: 100%; 
+			overflow-x: hidden;
+			max-height: 600px;
+
+			input.tree-input{
+				width: auto;
+				display: inline-block;
 				border-bottom: 1px dashed blue;
+				text-align: center;
 			}
 
-
-			&.disabled{
-				background-color: red;
+			.param-container{
+				display: inline-block;
 			}
 
+			.procedure-item{
+				margin: 3px; 
+				padding: 3px;
+
+				font-size: 14px; 
+				line-height: 18px;
+				
+				width: 100%;
+
+				cursor: move;
+
+				&:hover{
+					background-color: #ddd;
+				}
+			}
+		}
+	
+
+		.btn-group{
+			margin: 15px 0px;
+			text-align: center;
 		}
 
-		.btn-container{
-			position: absolute;
-			bottom: 0px; 
-			left: 30%;
+		.toolbox{
+			font-size: 12px;
+			background-color: #ccc;
+		}
+	}
 
-			button{
-				height: 30px; 
-				width: 30px;
-			}
+	
+
+/* 	.container{
+	position: relative;
+
+	.procedure{
+
+		padding: 4px; 
+		width: 100%;
+
+		[contenteditable="true"]:active,
+		[contenteditable="true"]:focus{
+		border:none;
+		outline:none;
+		}
+
+		[contenteditable="true"]{
+			color: blue;
+			border-bottom: 1px dashed blue;
+		}
+
+
+		&.disabled{
+			background-color: red;
 		}
 
 	}
 
-	input.tree-input{
-		background-color: transparent;
-		width: auto;
-		border: 0px; 
-		height: 18px; 
-		font-size: 14px;
-		padding: 5px; 
-		display: inline;
-		font-family: sans-serif;
-		line-height: 18px;
-		text-align: center;
-		vertical-align: middle;
-		border-bottom: 1px dashed blue;
+	.btn-container{
+		position: absolute;
+		bottom: 0px; 
+		left: 30%;
+
+		button{
+			height: 30px; 
+			width: 30px;
+		}
 	}
+
+}
+
+input.tree-input{
+	background-color: transparent;
+	width: auto;
+	border: 0px; 
+	height: 18px; 
+	font-size: 14px;
+	padding: 5px; 
+	display: inline;
+	font-family: sans-serif;
+	line-height: 18px;
+	text-align: center;
+	vertical-align: middle;
+	border-bottom: 1px dashed blue;
+} */
 		
 }
 
 
-.dialog{
+/* .dialog{
 	position: absolute;
 	top: 100px;
 	left: 0px;
@@ -90,4 +147,4 @@
 		}
 	}
 }
-
+ */

@@ -4,9 +4,9 @@ import { Injectable } from '@angular/core';
 export class LayoutService {
 
 	private action = {
-	    a1s: 25,
-	    a2s: 50,
-	    a3s: 25,
+	    a1s: 30,
+	    a2s: 40,
+	    a3s: 30,
 	    a1v: true,
 	    a2v: false,
 	    a3v: true,
