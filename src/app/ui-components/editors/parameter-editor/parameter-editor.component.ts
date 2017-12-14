@@ -94,6 +94,21 @@ export class ParameterEditorComponent extends Viewer{
 
     }
 
+    getTypeName(type: PortTypes): string{
+      if(type == PortTypes.ColorPicker){
+        return "Color";
+      }
+      if(type == PortTypes.Default){
+        return "Simple Input";
+      }
+      if(type == PortTypes.Dropdown){
+        return "Dropdown";
+      }
+      if(type == PortTypes.FilePicker){
+        return "File";
+      }
+    }
+
 
 
   	//

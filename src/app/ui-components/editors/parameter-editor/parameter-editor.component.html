@@ -1,59 +1,73 @@
 <div class="viewer">
+
 	<div class="container">
-		<h4 class="port-heading">Inputs</h4>
-		<div class='port input' *ngFor="let inp of _inputs; let i=index">
-			
-			<div class="content">
-				<div class='row'>
-					<span class='label'>Name</span>
-					<span class='content' contenteditable="true" (blur)="updatePortName($event, inp)">
-						{{ inp.getName() || "undefined" }}
-					</span>
-				</div>
-				<div class='row'>
-					<span class='label'>Type</span>
-					<span class='content'>
-						<select (change)="updateInputType($event.target.value, inp)">
-							         	    <option *ngFor="let x of portOpts" [value]="x" [selected]="inp.getType() == x">{{x}}</option>
-							            </select>
-					</span>
-				</div>
-				<div class='row'>
-					<span class='label'>Default</span>
-					<span class='content' contenteditable="true" (blur)="updateDefaultValue($event, inp)">
-						{{inp.getDefaultValue() || "undefined"}}
-					</span>
-				</div>
-			</div>
-			<div class="controls">
-				<span class='btn btn-small' (click)='deletePort($event, "input", i)'>Delete</span>
-			</div>
 
+		<div class="section">
+
+			<h4 class="port-heading">Inputs</h4>
+
+			<div class="default" *ngIf='_inputs.length == 0'>This node has no inputs</div>
+
+			<div class='port input' *ngFor="let inp of _inputs; let i=index">
+				
+				<div class="content">
+					<div class='row'>
+						<span class='label'>Name</span>
+						<span class='content' contenteditable="true" (blur)="updatePortName($event, inp)">
+							{{ inp.getName() || "undefined" }}
+						</span>
+					</div>
+					<div class='row'>
+						<span class='label'>Type</span>
+						<span class='content'>
+							<select (change)="updateInputType($event.target.value, inp)">
+								         	    <option *ngFor="let x of portOpts" [value]="x" [selected]="inp.getType() == x">{{getTypeName(x)}}</option>
+								            </select>
+						</span>
+					</div>
+					<div class='row'>
+						<span class='label'>Default</span>
+						<span class='content' contenteditable="true" (blur)="updateDefaultValue($event, inp)">
+							{{inp.getDefaultValue() || "undefined"}}
+						</span>
+					</div>
+				</div>
+				<div class="controls">
+					<span class='btn btn-small' (click)='deletePort($event, "input", i)'>Delete</span>
+				</div>
+			</div>
 
 		</div>
-		<div *ngIf='_inputs.length == 0'>This node has no inputs</div>
 		
-		<h4 class="port-heading">Outputs</h4>
-		<div class='port output' *ngFor="let output of _outputs; let o=index">
-			<div class="content">
-				<div class='row'>
-					<span class='label'>Name</span>
-					<span class='content' contenteditable="true" (blur)="updatePortName($event, output)">
-						{{ output.getName() || "undefined" }}
-					</span>
+		<div class="section">
+			
+			<h4 class="port-heading">Outputs</h4>
+			
+			<div class="default" 
+			*ngIf='_outputs.length == 0'>This node has no outputs</div>
+
+
+			<div class='port output' *ngFor="let output of _outputs; let o=index">
+				<div class="content">
+					<div class='row'>
+						<span class='label'>Name</span>
+						<span class='content' contenteditable="true" (blur)="updatePortName($event, output)">
+							{{ output.getName() || "undefined" }}
+						</span>
+					</div>
+					<!-- <div class='row'>
+						<span class='label'>Default</span>
+						<span class='content' contenteditable="true" (blur)="updateDefaultValue($event, output)">
+							{{ output.getDefaultValue() || "undefined"}}
+						</span>
+					</div> -->
 				</div>
-				<div class='row'>
-					<span class='label'>Default</span>
-					<span class='content' contenteditable="true" (blur)="updateDefaultValue($event, output)">
-						{{ output.getDefaultValue() || "undefined"}}
-					</span>
+				<div class="controls">
+					<span class='btn btn-small' (click)='deletePort($event, "output", o)'>Delete</span>
 				</div>
 			</div>
-			<div class="controls">
-				<span class='btn btn-small' (click)='deletePort($event, "output", o)'>Delete</span>
-			</div>
+			
 		</div>
-		<div *ngIf='_outputs.length == 0'>This node has no outputs</div>
 
 	</div>
 

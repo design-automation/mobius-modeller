@@ -1,27 +1,41 @@
 <div class="viewer">
+
+	<div class="default" *ngIf='_inputs == undefined || _inputs.length == 0'>
+		This node has no inputs
+	</div>
 	
 	<div class="container">
-		<div class='input' *ngFor="let inp of _inputs">
-			<div class='row'>
-				<span class='label'>Name</span>
-				<span class='content'>{{ inp.getName() }}</span>
+
+		<div class='paramater-container' *ngFor="let inp of _inputs">
+
+			<div class="info">
+				<div class='param'>
+					<span class='label'>Name</span>
+					<span class='content'>{{ inp.getName() }}</span>
+				</div>
+
+				<div class='param'>
+					<span class='label'>Connected</span>
+					<span class='content'>{{ inp.isConnected() }}</span>
+				</div>
 			</div>
-			<div class='row'>
-				<span class='label'>Connected</span>
-				<span class='content'>{{ inp.isConnected() }}</span>
+	
+
+			<div class="value">
+				<form  class='content'>
+					<mat-form-field>
+				    <input  matInput 
+				    placeholder="Value" value="{{ getValue(inp) }}"
+				    (change)="updateComputedValue($event, inp)"/>
+					</mat-form-field>
+				</form>
 			</div>
+			
 			<!-- todo: disable if port is connected -->
-			<div class='row'>
-				<span class='label'>Value</span>
-				<span class='content' contenteditable="!inp.isConnected()" 
-					(blur)="updateComputedValue($event, inp)">
-						{{ getValue(inp) }}
-				</span>
-			</div>
 			<!-- ui options based on type -->
 			<!-- todo: -->
 		</div>
-		<div *ngIf='_inputs == undefined || _inputs.length == 0'> No Inputs </div>
+
 	</div>
 
 </div>
