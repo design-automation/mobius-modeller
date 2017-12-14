@@ -120,7 +120,7 @@ export class ProcedureEditorComponent extends Viewer {
 		// case: parent and different parent
 		// case: parent and same parent
 		// case: parent and no parent
-		else if( moved_procedure.getParent() === to_procedure ){
+		if( moved_procedure.getParent() === to_procedure ){
 			if(parent === undefined){
 				this._node.deleteProcedure(moved_procedure);
 				this._node.addProcedureAtPosition(moved_procedure, moved_position);
