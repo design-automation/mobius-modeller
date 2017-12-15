@@ -59,8 +59,8 @@
 									<div class="action-button" (click)="addPort(node_index, 'out')">
 										<mat-icon>add_to_queue</mat-icon>
 									</div>
-								</div>
-								<div class="btn-group port-btns">
+								<!-- </div> -->
+								<!-- <div class="btn-group port-btns"> -->
 									<div class="action-button" (click)="editNode()">
 										<mat-icon>edit</mat-icon>
 									</div>
@@ -140,10 +140,16 @@
 			
 			<split-area [visible]="showLibrary===true" [size]="10" order="2">
 				<div class="library">
-					<div class="lib-node"							*ngFor="let n of _savedNodes; let i=index"
-				    	(click)="addNode($event, i)">
-						{{n._name}}
+					
+					<h3>Saved Nodes</h3>
+					
+					<div class="lib-node-container">
+						<div class="lib-node"							*ngFor="let n of _savedNodes; let i=index"
+					    	(click)="addNode($event, i)">
+							{{n._name}}
+						</div>
 					</div>
+
 				</div>
 			</split-area>
 

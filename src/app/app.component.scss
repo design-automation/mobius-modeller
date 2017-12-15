@@ -12,6 +12,22 @@
 	display: flex; 
 	flex-direction: column;
 
+	-webkit-touch-callout: none;
+	-webkit-user-select: none; /* Webkit */
+	-moz-user-select: none;    /* Firefox */
+	-ms-user-select: none;     /* IE 10  */
+
+	/* Currently not supported in Opera but will be soon */
+	-o-user-select: none;
+	user-select: none;  
+
+	#setting{
+		position: absolute;
+		left: 30px; 
+		bottom: 30px;
+	}
+
+
 	.container{
 		position: relative;
 		flex-grow: 1;
@@ -19,7 +35,6 @@
 		display: flex;
 		flex-direction: column; 
 
-		border-top: 1px solid gray;
 		background-color: #D8D8D8;
 
 		.wrapper{

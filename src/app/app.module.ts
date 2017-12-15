@@ -31,6 +31,7 @@ import { ModuleboxComponent } from './ui-components/controls/modulebox/modulebox
 import { EditorComponent } from './ui-components/editors/editor/editor.component';
 import { ViewerContainerComponent } from './ui-components/viewers/viewer-container/viewer-container.component';
 import { TextViewerComponent } from './ui-components/viewers/text-viewer/text-viewer.component';
+import { HelpViewerComponent } from './ui-components/viewers/help-viewer/help-viewer.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { TextViewerComponent } from './ui-components/viewers/text-viewer/text-vi
     ModuleboxComponent,
     EditorComponent,
     ViewerContainerComponent,
-    TextViewerComponent
+    TextViewerComponent,
+    HelpViewerComponent
   ],
   entryComponents: [
     ModuleboxComponent

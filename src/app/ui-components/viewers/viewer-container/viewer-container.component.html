@@ -15,9 +15,13 @@
 		<mat-button-toggle value="4" disabled>
 		  <mat-icon>info_outline</mat-icon>
 		</mat-button-toggle>
+		<mat-button-toggle value="5">
+		  <mat-icon>help_outline</mat-icon>
+		</mat-button-toggle>
 	</mat-button-toggle-group>
 
-	<app-text-viewer *ngIf="group.value == 0 || group.value == undefined"></app-text-viewer>
+	<app-text-viewer *ngIf="group.value == 0"></app-text-viewer>
 	<app-geometry-viewer *ngIf="group.value == 1 "></app-geometry-viewer>
 	<app-code-viewer *ngIf="group.value == 2"></app-code-viewer>
+	<app-help-viewer *ngIf="group.value == 5 || group.value == undefined"></app-help-viewer>
 </div>
