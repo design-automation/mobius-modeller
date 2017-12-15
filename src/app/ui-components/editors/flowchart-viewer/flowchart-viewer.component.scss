@@ -13,6 +13,8 @@
 	display: flex;
 	flex-direction: column;
 
+	background: url('../../../../assets/img/fw-ng.png');
+
 	.container{
 		position: relative;
 
@@ -25,16 +27,36 @@
 			background-color: blue;
 			z-index: 1;
 		}
+
+		.library{
+			background-color: #f7f7f7;
+			height: 100%;
+
+			display: flex; 
+			flex-direction: row; 
+			flex-wrap: wrap;
+
+			.lib-node{
+				display: inline-block;
+				border: 2px solid gray; 
+				font-size: 12px; 
+				line-height: 14px; 
+				border-radius: 4px;
+				padding: 5px; 
+				margin: 5px; 
+				height: auto;
+			}
+		}
 		
-		.btn-group{
+		/* .btn-group{
 			display: flex; 
 			flex-direction: column; 
 			justify-content: start;
-
+		
 			height: 100%;
 			width: 45px;
 			background-color: #E7E7E7;
-
+		
 			.btn{
 				margin: 7.5px; 
 				height: 30px; 
@@ -44,9 +66,9 @@
 				text-align: center;
 				display: inline-block;
 				border: 1px solid gray;
-
+		
 			}
-		}
+		} */
 
 	}
 
@@ -242,5 +264,25 @@
 		}
 	}
 	
+
+	#addNode{
+		position: absolute;
+		right: 30px; 
+		bottom: 30px;
+	}
+
+	#execute{
+		position: absolute;
+		top: 15px; 
+		left: 50%;
+		width: 150px; 
+		margin-left: -75px;
+	}
+
+	#libToggle{
+		position: absolute;
+		bottom: 30px; 
+		left: 30px;
+	}
 }
 
