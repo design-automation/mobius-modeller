@@ -5,7 +5,6 @@ import { IGraphNode, IEdge } from "../../node/NodeModule";
 import { IProcedure, ProcedureTypes, IComponent } from "../../procedure/ProcedureModule";
 import { InputPort, OutputPort } from "../../port/PortModule";
 
-
 import * as ts from "typescript";
 
 export class CodeGeneratorJS extends CodeGenerator{

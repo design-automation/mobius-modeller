@@ -45,7 +45,7 @@ export class FlowchartViewerComponent extends Viewer{
   }
 
   editNode(): void{
-    this.layoutService.showEditor();
+    this.layoutService.toggleEditor();
   }
 
   deleteNode(node_index: number): void{

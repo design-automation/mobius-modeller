@@ -31,4 +31,8 @@ export class LayoutService {
   		this.action.a2v = false;
   	}
 
+    toggleEditor(){ 
+       this.action.a2v = !this.action.a2v;
+    }
+
 }

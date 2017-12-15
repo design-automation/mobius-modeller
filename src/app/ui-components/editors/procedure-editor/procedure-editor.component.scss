@@ -52,12 +52,16 @@
 
 		.btn-group{
 			margin: 15px 0px;
-			text-align: center;
+			display: flex; 
+			flex-direction: row; 
+			justify-content: space-between;
 		}
 
 		.toolbox{
-			font-size: 12px;
-			background-color: #ccc;
+
+			.fn_name{
+				font-size: 12px;
+			}
 		}
 	}
 

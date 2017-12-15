@@ -30,13 +30,21 @@ export class GeometryViewerComponent extends Viewer implements OnInit{
 
 	ngOnInit(){
 		var scene = this.scene;
-		var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
 		var renderer = new THREE.WebGLRenderer();
-		renderer.setSize( 300, 300 );
-		document.getElementById("app-geometry-viewer").appendChild( renderer.domElement );
+		let container = document.getElementById("app-geometry-viewer");
+		container.appendChild( renderer.domElement );
+		let width: number = container.offsetWidth; 
+		let height: number = container.offsetHeight;
+		renderer.setSize( width, height );
 
+		var camera = new THREE.PerspectiveCamera( 75, width/height, 0.1, 1000 );
 		camera.position.z = 5;
+
+		let cube = new THREE.Mesh( new THREE.CubeGeometry( 10, 10, 10 ), new THREE.MeshNormalMaterial() );
+		cube.position.y = 150;
+
+		scene.add(cube);
 
 		function animate() {
 			requestAnimationFrame( animate );
