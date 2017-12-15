@@ -83,28 +83,39 @@
 
 			.btn-container{
 			   position: absolute;
+			   right: -45px;
 
 			   display: flex; 
-			   flex-direction: row; 
+			   flex-direction: column; 
 			   justify-content: space-between;
 
-			   width: 100%; 
-			   height: 110px; 
+				width: 45px;
+				height: 110px;
 
 			   .btn-group{
 			   		position: relative;
 			   		display: flex; 
 			   		flex-direction: column;
-			   	    width: 50%;
-					height: 100%; 
+			   	    
+					background: none;
 
 					.action-button{
 						position: relative;
-						width: 100%; 
-						height: 50%;
-						border: 1px solid gray;
-						margin: 3px;
-						background-color: #bbb;
+						width: 25px;
+						height: 24px;
+						cursor: pointer;
+						font-size: 9px;
+						text-align: center;
+
+						.material-icons{
+							font-size: 18px;
+							line-height: 24px;
+						}
+
+						&:hover{
+							background-color: gray;
+							color: black;
+						}
 					}
 			   }
 			}

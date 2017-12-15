@@ -1,16 +1,5 @@
 <div class="viewer">
 	<div class="container">
-		<ul>
-	    	<li *ngFor="let node of _nodes">
-	    		<!-- {{  getGeometry(node) }} -->
-	    		{{node.getName()}}
-	    		<ul>
-	    			<li  *ngFor="let output of node.getOutputs()">
-	    				{{ output.getValue() }}
-	    			</li>
-	    		</ul>
-	   		</li>
-	  	</ul>
 		<div id="app-geometry-viewer"></div>
 	</div>
 </div>

@@ -42,7 +42,7 @@ export class ParameterViewerComponent extends Viewer {
     }
 
     updateComputedValue($event, input): void{
-      let value: string = $event.srcElement.innerText;
+      let value: string = $event.srcElement.value;
       if(value.trim().length > 0){
         input.setComputedValue(value);
 

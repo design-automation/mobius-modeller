@@ -24,7 +24,7 @@
 			<div class="value">
 				<form  class='content'>
 					<mat-form-field>
-				    <input  matInput 
+				    <input  matInput [disabled]="inp.isConnected()" 
 				    placeholder="Value" value="{{ getValue(inp) }}"
 				    (change)="updateComputedValue($event, inp)"/>
 					</mat-form-field>

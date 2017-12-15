@@ -30,6 +30,7 @@ import { ParameterViewerComponent } from './ui-components/viewers/parameter-view
 import { ModuleboxComponent } from './ui-components/controls/modulebox/modulebox.component';
 import { EditorComponent } from './ui-components/editors/editor/editor.component';
 import { ViewerContainerComponent } from './ui-components/viewers/viewer-container/viewer-container.component';
+import { TextViewerComponent } from './ui-components/viewers/text-viewer/text-viewer.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { ViewerContainerComponent } from './ui-components/viewers/viewer-contain
     ParameterEditorComponent,
     ModuleboxComponent,
     EditorComponent,
-    ViewerContainerComponent
+    ViewerContainerComponent,
+    TextViewerComponent
   ],
   entryComponents: [
     ModuleboxComponent

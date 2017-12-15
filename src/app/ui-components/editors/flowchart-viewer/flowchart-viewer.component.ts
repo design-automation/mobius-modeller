@@ -331,17 +331,19 @@ export class FlowchartViewerComponent extends Viewer{
     let node_pos: number[] = this._nodes[nodeIndex].position;
 
     let port_container_height: number = 10; 
-    let node_height: number = 60; 
+    let margin: number = 20;
+    let node_height: number = 110; 
     let port_width: number = 9.5;
+    let buffer: number = 3; 
 
     if(type == "pi"){
-        x = node_pos[0] + port_width/2 + el.offsetLeft;
-        y = node_pos[1] + port_container_height/2;
+        x = node_pos[0] + port_width/2 + el.offsetLeft + margin + buffer;
+        y = node_pos[1] + port_container_height/2 + margin + buffer;
 
     } 
     else if(type == "po"){
-        x = node_pos[0] + port_width/2 + el.offsetLeft;
-        y = node_pos[1] + 3*port_container_height/2 + node_height;
+        x = node_pos[0] + port_width/2 + el.offsetLeft + margin + buffer;
+        y = node_pos[1] + 3*port_container_height/2 + node_height - margin - buffer;
     }
     else{
       throw Error("Unknown port type");

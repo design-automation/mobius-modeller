@@ -43,16 +43,20 @@
 							[style.top.px]="node.position[1]" >
 
 						<div class="btn-container" *ngIf="isSelected(node)" >
-							<div class="btn-group port-btns">
-								<div class="action-button" (click)="editNode()">Edit</div>
-								<div class="action-button" (click)="deleteNode(node_index)">Delete</div>
-							</div>
 							<div class="btn-group node-btns">
 								<div class="action-button" (click)="addPort(node_index, 'in')">
-									<span> inp+ </span>
+									<mat-icon>input</mat-icon>
 								</div>
 								<div class="action-button" (click)="addPort(node_index, 'out')">
-									<span> out+ </span>
+									<mat-icon>add_to_queue</mat-icon>
+								</div>
+							</div>
+							<div class="btn-group port-btns">
+								<div class="action-button" (click)="editNode()">
+									<mat-icon>edit</mat-icon>
+								</div>
+								<div class="action-button" (click)="deleteNode(node_index)">
+									<mat-icon>delete</mat-icon>
 								</div>
 							</div>
 						</div>
