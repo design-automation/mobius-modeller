@@ -11,9 +11,9 @@ import { InputPort } from '../../../base-classes/port/PortModule';
 })
 export class ParameterViewerComponent extends Viewer {
 
-	  private _node: IGraphNode;
-	  private _inputs: InputPort[];
-    private isVisible: boolean = false;
+	  _node: IGraphNode;
+	  _inputs: InputPort[];
+    isVisible: boolean = false;
 
   	constructor(injector: Injector){  super(injector, "parameter-viewer"); }
 

@@ -14,14 +14,14 @@ import { FlowchartService } from '../../../global-services/flowchart.service';
 })
 export class ParameterEditorComponent extends Viewer{
 
-    private isVisible: boolean = false;
+    isVisible: boolean = false;
 
-    private _node: IGraphNode;
-    private _inputs: InputPort[];
-    private _outputs: OutputPort[];
+    _node: IGraphNode;
+    _inputs: InputPort[];
+    _outputs: OutputPort[];
 
     // shift to iport
-    private portOpts: PortTypes[] = [
+    portOpts: PortTypes[] = [
         PortTypes.Default, 
         PortTypes.Input, 
         PortTypes.ColorPicker, 

@@ -33,6 +33,8 @@ export class FlowchartViewerComponent extends Viewer{
 
   _savedNodes: IGraphNode[] = [];
 
+  showLibrary: boolean = false;
+
 
   showDialog: {status: boolean, position: number[]} = {status: false, position: [0,0]};
 

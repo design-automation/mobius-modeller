@@ -19,23 +19,23 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 })
 export class ProcedureEditorComponent extends Viewer {
 
-	private isVisible: boolean = false;
+	isVisible: boolean = false;
 
-  	private _procedureArr: IProcedure[] = [];
-  	private _node: IGraphNode;
+  	_procedureArr: IProcedure[] = [];
+  	_node: IGraphNode;
 
-  	private _showToolbox: boolean = false;
-  	private _moduleList = [];
+  	_showToolbox: boolean = false;
+  	_moduleList = [];
 
-  	private procedureTypes: ProcedureTypes[] = [
+  	procedureTypes: ProcedureTypes[] = [
   			ProcedureTypes.Data, 
   			ProcedureTypes.Action, 
   			ProcedureTypes.ForLoopControl, 
   			ProcedureTypes.IfElseControl
   	];
 
-  	private _tree = [];
-	private _tree_options = {
+  	_tree = [];
+	_tree_options = {
 	  allowDrag: function(element){
 	  	if(element.data.name == ProcedureTypes.IfControl || element.data.name == ProcedureTypes.ElseControl){
 	  		return false;

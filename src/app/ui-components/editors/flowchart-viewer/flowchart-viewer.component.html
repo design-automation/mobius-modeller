@@ -126,7 +126,7 @@
 				</div>
 			
 		        <!-- buttons -->
-	           	<button id="addNode" mat-fab color="primary" (click)="addNode($event)">
+	           	<button id="addNode" mat-fab color="primary" (click)="addNode($event, undefined)">
 	           		<mat-icon>add</mat-icon>
 	           	</button>
 
@@ -144,7 +144,8 @@
 					<h3>Saved Nodes</h3>
 					
 					<div class="lib-node-container">
-						<div class="lib-node"							*ngFor="let n of _savedNodes; let i=index"
+						<div class="lib-node"							
+							*ngFor="let n of _savedNodes; let i=index"
 					    	(click)="addNode($event, i)">
 							{{n._name}}
 						</div>

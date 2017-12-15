@@ -11,7 +11,7 @@ import { IGraphNode } from '../../../base-classes/node/NodeModule';
 })
 export class EditorComponent extends Viewer{
  
-  private _selectedNode: IGraphNode; 
+  _selectedNode: IGraphNode; 
 
   constructor(injector: Injector, private layoutService: LayoutService){  
     super(injector, "FlowchartViewer");  
