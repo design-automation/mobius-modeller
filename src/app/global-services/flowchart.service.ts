@@ -254,18 +254,15 @@ export class FlowchartService {
     let n_data = undefined; 
 
     if(type !== undefined){
-       n_data = this._savedNodes[type];
-    }
-
-    if( n_data == undefined ){
-      let default_node_name: string = "hello" + (this._flowchart.getNodes().length + 1);
-      new_node = new GraphNode(default_node_name, undefined);
-    }
-    else{
+      n_data = this._savedNodes[type];
       let default_node_name: string = n_data["_name"] + (this._flowchart.getNodes().length + 1);
       new_node = new GraphNode(default_node_name, n_data["_id"]);
       n_data["lib"] = true;
       new_node.update(n_data);
+    }
+    else{
+      let default_node_name: string = "hello" + (this._flowchart.getNodes().length + 1);
+      new_node = new GraphNode(default_node_name, undefined);
     }
 
     this._flowchart.addNode(new_node);

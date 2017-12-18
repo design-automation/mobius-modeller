@@ -148,6 +148,15 @@ export class FlowchartViewerComponent extends Viewer{
     return this.flowchartService.isSelected(node);
   }
 
+  isSaved(node: IGraphNode): boolean{
+    if(node.getType() === undefined){
+      return false;
+    }
+    else{
+      return true;
+    }
+  }
+
   //
   // Add node and edges
   //

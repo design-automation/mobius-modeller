@@ -135,14 +135,19 @@
 					position: relative;
 					height: 60px;
 					width: 100%;
-					border: 3px solid black;
+					border: 1px dashed #616161;
 					border-radius: 10px;
 					background-color: white;
 					text-align: center;
 					cursor: move;
 
 					&.selected{
-						background-color: #A4EAA4;
+						border-width: 5px;
+					}
+
+					&.library{
+						border-color: #12D812;
+						border-style: solid;
 					}
 
 					.node-name{

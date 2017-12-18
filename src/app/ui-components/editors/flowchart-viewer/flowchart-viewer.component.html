@@ -92,6 +92,7 @@
 								<!-- node body -->
 								<div class="node-body" 
 									[class.selected]="isSelected(node)" 
+									[class.library]="node.getType() !== undefined"
 									(click)="clickNode($event, node_index)"
 									draggable=true  
 									(dragstart)="nodeDragStart($event, node)" 

@@ -36,7 +36,7 @@ export class GraphNode implements IGraphNode{
 	constructor(name: string, type?: string){
 		this._id = IdGenerator.getId();
 		this._name = name;
-		this._type == type;
+		this._type = type;
 	}
 
 	//	
@@ -76,11 +76,10 @@ export class GraphNode implements IGraphNode{
 			this._id = nodeData["_id"];
 			this.position = nodeData["position"];
 			this._name = nodeData["_name"]
-			console.log("not from library")
 		}
 		else{
+			// creating from library
 			this.position = [0,0];
-			console.log("from library", nodeData["position"]);
 		}
 
 		// map direct properties
