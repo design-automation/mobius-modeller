@@ -12,6 +12,7 @@ import { IGraphNode } from '../../../base-classes/node/NodeModule';
 export class EditorComponent extends Viewer{
  
   _selectedNode: IGraphNode; 
+  isVisible: boolean = false;
 
   constructor(injector: Injector, private layoutService: LayoutService){  
     super(injector, "FlowchartViewer");  
@@ -19,6 +20,13 @@ export class EditorComponent extends Viewer{
 
   update(){
     this._selectedNode = this.flowchartService.getSelectedNode();
+
+    if(this._selectedNode == undefined){
+      this.isVisible = false;
+    }
+    else{
+      this.isVisible = true;
+    }
   }
 
 

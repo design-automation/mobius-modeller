@@ -107,6 +107,7 @@ export class FlowchartViewerComponent extends Viewer{
   }
 
   update(){
+
     this._nodes = this.flowchartService.getNodes();
     this._edges = this.flowchartService.getEdges();
     this._savedNodes = this.flowchartService.getSavedNodes();
@@ -139,6 +140,10 @@ export class FlowchartViewerComponent extends Viewer{
   //
   //
   isSelected(node: IGraphNode): boolean{
+    if(node == undefined){
+      return false;
+    }
+
     return this.flowchartService.isSelected(node);
   }
 

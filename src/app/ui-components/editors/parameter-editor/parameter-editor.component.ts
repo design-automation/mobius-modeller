@@ -35,6 +35,7 @@ export class ParameterEditorComponent extends Viewer{
       this._node = undefined;
       this._inputs = undefined;
       this._outputs = undefined;
+      this.isVisible = false;
     }
 
 
@@ -118,9 +119,13 @@ export class ParameterEditorComponent extends Viewer{
   	update(): void{
   		this._node = this.flowchartService.getSelectedNode();
       if( this._node !== undefined ){
+         this.isVisible = true;
   		   this._inputs = this._node.getInputs();
          this._outputs = this._node.getOutputs();
          this.isVisible = true;
+      }
+      else{
+        this.isVisible = false;
       }
   	}
 

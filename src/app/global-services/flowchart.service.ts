@@ -254,25 +254,24 @@ export class FlowchartService {
   }
 
   addEdge(outputAddress: number[], inputAddress: number[]):  void{
-    this._flowchart.addEdge(outputAddress, inputAddress);
+      this._flowchart.addEdge(outputAddress, inputAddress);
 
-    let output = this._flowchart.getNodeByIndex(outputAddress[0]).getOutputByIndex(outputAddress[1])
-    output.connect();
-    let input = this._flowchart.getNodeByIndex(inputAddress[0]).getInputByIndex(inputAddress[1])
-    input.connect();
+      let output = this._flowchart.getNodeByIndex(outputAddress[0]).getOutputByIndex(outputAddress[1])
+      output.connect();
+      let input = this._flowchart.getNodeByIndex(inputAddress[0]).getInputByIndex(inputAddress[1])
+      input.connect();
 
-    input.setComputedValue({port: outputAddress});
+      input.setComputedValue({port: outputAddress});
 
-    this._flowchart.getNodeByIndex(inputAddress[0]).getInputByIndex(inputAddress[1])
-    this.update();
+      this._flowchart.getNodeByIndex(inputAddress[0]).getInputByIndex(inputAddress[1])
+      this.update();
   }
 
 
   deleteNode(node_index: number): void{
       this._selectedNode = undefined;
+      this._flowchart.deleteNode(node_index);
       this.update();
-      // this._flowchart.deleteNode(node_index);
-      // this.update();
   }
  
 
@@ -311,6 +310,9 @@ export class FlowchartService {
   //  
   //
   isSelected(node: IGraphNode): boolean{
+    if(this._selectedNode == undefined){
+      return false; 
+    }
     return this._flowchart.getNodeByIndex(this._selectedNode).getId() == node.getId();
   }
 

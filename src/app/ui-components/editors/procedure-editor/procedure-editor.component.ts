@@ -74,9 +74,14 @@ export class ProcedureEditorComponent extends Viewer {
 
 	update(){
 		this._node = this.flowchartService.getSelectedNode();
-		this._procedureArr = this._node.getProcedure();
-		this.updateProcedureTree();
-		this.isVisible = true;
+		if(this._node !== undefined){
+			this._procedureArr = this._node.getProcedure();
+			this.updateProcedureTree();
+			this.isVisible = true;
+		}
+		else{
+			this.isVisible = false;
+		}
 	}
 
 	getImageForType(type: ProcedureTypes): string{
