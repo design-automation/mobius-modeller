@@ -109,7 +109,7 @@
 											 [(ngModel)]="prod.data.params[i].value"
 											 #ctrl="ngModel" 
 											 required
-											 (ngModelChange)="updateProcedure($event, prod, 'right')">
+											 (change)="updateProcedure($event, prod, 'right')">
 
 											<span *ngIf='i<prod.data.params.length-1'>,</span>
 											<!-- <input class="tree-input" [(ngModel)]="p" 
