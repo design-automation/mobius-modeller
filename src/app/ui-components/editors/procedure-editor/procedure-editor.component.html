@@ -121,12 +121,14 @@
 										
 									</div>
 								</div>
-							
-							    <!-- <div class='btn-group'>
-							    					    <button (click)="deleteProcedure(prod)">Delete</button>
-							    					    <button (click)="disableProcedure(prod, $event)">Disable</button>
-							    					    <button (click)="go($event)">Copy</button>
-							    					</div> -->
+
+							    <div class='btn-group'  *ngIf="prod.data.name != 'Else' && prod.data.name != 'If'">
+		    					    <button mat-button (click)="deleteProcedure(prod.data.model)">
+		    					    	<mat-icon>delete</mat-icon>
+		    					    </button>
+		    					    <!-- <button (click)="disableProcedure(prod, $event)">Disable</button>
+		    					    <button (click)="go($event)">Copy</button> -->
+		    					</div>
 
 						  </ng-template>
 					</tree-root>     

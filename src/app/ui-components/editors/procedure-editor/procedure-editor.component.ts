@@ -288,8 +288,14 @@ export class ProcedureEditorComponent extends Viewer {
 	}
 
 	deleteProcedure(prod: IProcedure): void{
-		// remove child from parent, if any
+
+		let parent: IProcedure = prod.getParent();
+		if( parent ){
+			parent.deleteChild(prod);
+		}
+
 		this._node.deleteProcedure(prod);
+
 		this.flowchartService.update();
 	}
 
