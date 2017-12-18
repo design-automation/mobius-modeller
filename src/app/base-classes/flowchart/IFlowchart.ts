@@ -10,6 +10,8 @@
 //
 import {IGraphNode, IEdge} from '../node/NodeModule';
 import {ICodeGenerator}  from '../code/CodeModule';
+import {IModule} from "../code/CodeModule";
+
 
 export interface IFlowchart{
 
@@ -37,7 +39,7 @@ export interface IFlowchart{
 	reset(): void;
 
 	// output related
-	execute(code_generator: ICodeGenerator): boolean;
+	execute(code_generator: ICodeGenerator, moduleSet: IModule[]): boolean;
 	
 
 	// read / write

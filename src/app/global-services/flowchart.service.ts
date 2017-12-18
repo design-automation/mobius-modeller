@@ -24,6 +24,7 @@ export class FlowchartService {
 
   private code_generator: ICodeGenerator = CodeFactory.getCodeGenerator("js");
   private _moduleSet: IModule[];
+  private _moduleMap: IModule[];
 
   private _selectedNode: number = 0;
   private _selectedPort: number = 0;
@@ -113,7 +114,9 @@ export class FlowchartService {
   loadModules(modules: Object[]): void{
 
     this._moduleSet = [];
+    this._moduleMap = [];
     let moduleSet = this._moduleSet;
+    let moduleMap = this._moduleMap;
 
     modules.map(function(mod){
 
@@ -126,6 +129,7 @@ export class FlowchartService {
 
         if( ModuleUtils.isCompatible(mod, modClass) ){
             moduleSet.push(modClass);
+            moduleMap[name] = modClass;
         }
         else{
           throw Error("Module not compatible. Please check version / author");
@@ -188,7 +192,11 @@ export class FlowchartService {
     return this._savedNodes;
   }
 
-  saveNode(node: IGraphNode): void{
+  saveNode(node: IGraphNode|number): void{
+
+    if( typeof node == "number"){
+      node = this._flowchart.getNodeByIndex(node);
+    }
 
     // todo: check if overwrite
     if( node.getType() !== undefined ){
@@ -224,6 +232,18 @@ export class FlowchartService {
 
 
   }
+
+  clearLibrary(): void{
+    let nav: any = navigator;
+    let myStorage = window.localStorage;
+
+    let property = "MOBIUS_NODES";
+    let storageString = myStorage.removeItem(property);
+
+    this.checkSavedNodes();
+    this.update();
+  }
+
 
   //
   //    add node
@@ -321,7 +341,7 @@ export class FlowchartService {
   //  run this flowchart
   //
   execute(): any{
-      this._flowchart.execute(this.code_generator);
+      this._flowchart.execute(this.code_generator, this._moduleMap);
       this.update();
   }
 

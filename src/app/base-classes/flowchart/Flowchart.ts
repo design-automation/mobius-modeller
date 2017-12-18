@@ -7,7 +7,7 @@
 
 import {IFlowchart} from './IFlowchart';
 import {IGraphNode, IEdge} from '../node/NodeModule';
-import {ICodeGenerator} from '../code/CodeModule';
+import {ICodeGenerator, IModule} from '../code/CodeModule';
 
 
 export class Flowchart implements IFlowchart{
@@ -195,7 +195,7 @@ export class Flowchart implements IFlowchart{
 	//
 	//	executes the flowchart
 	//
-	execute(code_generator: ICodeGenerator) :any{
+	execute(code_generator: ICodeGenerator, modules: IModule[]) :any{
 
 		// set all nodes to status not executed
 		// future: cache results and set status based on changes
@@ -218,7 +218,7 @@ export class Flowchart implements IFlowchart{
 				continue;
 			}
 
-			node.execute(code_generator);
+			node.execute(code_generator, modules);
 			console.log(node.getName(), node.getResult());
 
 			this.updateDependentInputs(node, originalRank); 

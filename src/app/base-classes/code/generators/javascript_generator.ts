@@ -1,5 +1,6 @@
 import { CodeGenerator } from '../CodeGenerator';
-
+import { IModule } from "../CodeModule";
+ 
 import { IFlowchart } from "../../flowchart/FlowchartModule";
 import { IGraphNode, IEdge } from "../../node/NodeModule";
 import { IProcedure, ProcedureTypes, IComponent } from "../../procedure/ProcedureModule";
@@ -220,7 +221,9 @@ export class CodeGeneratorJS extends CodeGenerator{
 				}
 
 				code = init = procedure.getLeftComponent().expression 
-						+ " = " + right.module.trim()
+						+ " = " 
+						+ "Modules."
+						+ right.module.trim()
 						+ "." + right.fn_name + "( " + paramList.join(",") + " );\n";
 			}
 			else if( procedure.hasChildren() ){
@@ -272,14 +275,22 @@ export class CodeGeneratorJS extends CodeGenerator{
 			return "let " + port.getName() + " = " + port.getDefaultValue(); 
 		}
 
-		executeNode(node: IGraphNode, params: any): any{
+		executeNode(node: IGraphNode, params: any, Modules: IModule[]): any{
 			//let gis = this._modules["gis"];
+			//
 
 			let str: string = "(function(){ \
 						" + this.getNodeCode(node) + "\n" + this.getFunctionCall(node, params) + "\n" + "return " + node.getName() + ";" + "})(); \
 						";
-			console.log(str);
-			let result: any = eval(str);
+			let result: any;
+
+			try{
+				result = eval(str);
+			}
+			catch(ex){
+				alert("Oops.. Error executing flowchart");
+				throw Error("Error executing");
+			}
 			return result;//result;// return result of the node
 		}
 

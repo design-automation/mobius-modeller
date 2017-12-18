@@ -36,7 +36,7 @@ export interface ICodeGenerator{
 
 
 		// takes a node and executes the code
-		executeNode(node: IGraphNode, params: any): any;
+		executeNode(node: IGraphNode, params: any, Modules: IModule): any;
 
 
 };

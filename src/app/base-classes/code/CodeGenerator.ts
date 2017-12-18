@@ -29,7 +29,7 @@ export abstract class CodeGenerator implements ICodeGenerator{
 		throw Error("Not implemented");
 	};
 
-	executeNode(node: IGraphNode, params: any): any{
+	executeNode(node: IGraphNode, params: any, Modules: IModule[]): any{
 		throw Error("Not implemented");
 	};
 

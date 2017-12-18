@@ -2,7 +2,7 @@ import {IdGenerator} from '../misc/GUID';
 
 import {IProcedure, ProcedureFactory, ProcedureTypes} from "../procedure/ProcedureModule";
 import {InputPort, OutputPort} from "../port/PortModule";
-import {ICodeGenerator} from "../code/CodeModule";
+import {ICodeGenerator, IModule} from "../code/CodeModule";
 
 import {IGraphNode} from './IGraphNode';
 
@@ -274,15 +274,13 @@ export class GraphNode implements IGraphNode{
 	//
 	//
 	//
-	execute(code_generator: ICodeGenerator): void{
+	execute(code_generator: ICodeGenerator, modules: IModule[]): void{
 
 		let params: any[] = [];
-		console.log(params);
 		this.getInputs().map(function(i){ params[i.getName()] = i.getValue(); })
-		console.log(params);
 
 		// use code generator to execute code
-		let result: any  = code_generator.executeNode(this, params);
+		let result: any  = code_generator.executeNode(this, params, modules);
 
 		// add results to this node
 		for( let n=0;  n < this._outputs.length; n++ ){

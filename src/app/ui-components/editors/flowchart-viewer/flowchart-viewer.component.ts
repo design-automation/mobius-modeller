@@ -31,8 +31,6 @@ export class FlowchartViewerComponent extends Viewer{
   _nodes: IGraphNode[] = [];
   _edges: IEdge[] = [];
 
-  _savedNodes: IGraphNode[] = [];
-
   showLibrary: boolean = false;
 
 
@@ -40,8 +38,12 @@ export class FlowchartViewerComponent extends Viewer{
 
   constructor(injector: Injector, private layoutService: LayoutService){  
     super(injector, "FlowchartViewer");  
+  }
 
-    this._savedNodes = this.flowchartService.getSavedNodes();
+  reset(){ 
+    this._selectedNode = undefined;
+    this._nodes = [];
+    this._edges = [];
   }
 
   editNode(): void{
@@ -110,7 +112,6 @@ export class FlowchartViewerComponent extends Viewer{
 
     this._nodes = this.flowchartService.getNodes();
     this._edges = this.flowchartService.getEdges();
-    this._savedNodes = this.flowchartService.getSavedNodes();
 
     let m = this._margin; 
     let pw = this._portWidth;

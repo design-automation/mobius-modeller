@@ -67,6 +67,9 @@
 									<div class="action-button" (click)="deleteNode(node_index)">
 										<mat-icon>delete</mat-icon>
 									</div>
+									<div class="action-button" (click)="saveNode(node_index)">
+										<mat-icon>file_download</mat-icon>
+									</div>
 								</div>
 							</div>
 
@@ -139,19 +142,7 @@
             </split-area>
 			
 			<split-area [visible]="showLibrary===true" [size]="10" order="2">
-				<div class="library">
-					
-					<h3>Saved Nodes</h3>
-					
-					<div class="lib-node-container">
-						<div class="lib-node"							
-							*ngFor="let n of _savedNodes; let i=index"
-					    	(click)="addNode($event, i)">
-							{{n._name}}
-						</div>
-					</div>
-
-				</div>
+					<app-node-library></app-node-library>
 			</split-area>
 
 		</split>
