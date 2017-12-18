@@ -10,6 +10,7 @@ import * as CircularJSON from 'circular-json';
 
 
 import * as ModuleSet from "../../assets/modules/AllModules";
+/*import * as ModuleSet from "gs-modelling";*/
 
 @Injectable()
 export class FlowchartService {
@@ -36,7 +37,7 @@ export class FlowchartService {
   }
 
   constructor() { 
-    this.newFile() 
+    this.newFile();
     this.checkSavedNodes();
   };
 
@@ -118,6 +119,15 @@ export class FlowchartService {
     let moduleSet = this._moduleSet;
     let moduleMap = this._moduleMap;
 
+    /*let mod: IModule = { name: "gs-modeling", version: "0.1", author: "AKM"};
+    for(let prop in ModuleSet){
+      mod[prop] = ModuleSet[prop];
+    }
+
+    moduleSet.push(mod);
+    moduleMap["gs-modeling"] = mod;
+
+    */
     modules.map(function(mod){
 
         let name: string = ModuleUtils.getName(mod);
@@ -128,6 +138,11 @@ export class FlowchartService {
         let modClass = ModuleSet[name];
 
         if( ModuleUtils.isCompatible(mod, modClass) ){
+
+            if(modClass.isInstance == true){
+              modClass = modClass.getInstance();
+            }
+
             moduleSet.push(modClass);
             moduleMap[name] = modClass;
         }
@@ -167,7 +182,9 @@ export class FlowchartService {
     this.update();
 
     this.loadModules([{_name: "SimpleMath", _version: 1, _author: "AKM"}, 
-                      {_name: "ComplexMath", _version: 1, _author: "AKM"}]);
+                      {_name: "ComplexMath", _version: 1, _author: "AKM"},
+                      {_name: "GS_Modeling", _version: 0.1, _author: "Patrick"}]);
+    //this.loadModules([{_name: "gs-modeling", _version: 0.1, _author: "AKM"}]);                 
 
     return this._flowchart;
   }
