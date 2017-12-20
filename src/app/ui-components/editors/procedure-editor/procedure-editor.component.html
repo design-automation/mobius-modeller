@@ -105,7 +105,6 @@
 											*ngFor="let p of prod.data.params; let i=index">
 											
 											<input matInput class="tree-input" 
-											 placeholder={{prod.data.params[i].type}}
 											 [(ngModel)]="prod.data.params[i].value"
 											 #ctrl="ngModel" 
 											 required

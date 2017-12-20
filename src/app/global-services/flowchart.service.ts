@@ -134,23 +134,17 @@ export class FlowchartService {
         let author: string = ModuleUtils.getAuthor(mod);
 
         // select the required module from the global module set - that has all the functions
-        let modClass = ModuleUtils.getModuleFromSet(ModuleSet, name);
-
-        //if( ModuleUtils.isCompatible(mod, modClass) ){
+        let modClass = ModuleSet[name]; //ModuleUtils.getModuleFromSet(ModuleSet, name);
+        if( ModuleUtils.isCompatible(mod, modClass) ){
             moduleSet.push(modClass);
             moduleMap[name] = modClass;
-        //}
-        //else{
-          //console.log(mod, modClass);
-          //throw Error("Module not compatible. Please check version / author");
-        //}
+        }
+        else{
+            throw Error("Module not compatible. Please check version / author");
+        }
 
     })
 
-  }
-
-  getAllModules(){
-    return ModuleSet;
   }
 
   getModules(): IModule[]{
@@ -180,19 +174,10 @@ export class FlowchartService {
     this._selectedPort = 0;
     this.update();
 
-    this.loadModules([{_name: "SimpleMath"}, 
-                      {_name: "ComplexMath"},
-                      {_name: "model"},
-                      {_name: "object"},
-                      {_name: "plane"},
-                      {_name: "ray"},
-                      {_name: "point"},
-                      {_name: "pline"},
-                      {_name: "pcurve"},
-                      {_name: "pmesh"},
-                      {_name: "topo"},
-                      {_name: "attrib"},
-                      {_name: "group"}]);
+    this.loadModules([{_name: "SimpleMath", _version: 0.1, _author: "Patrick"}, 
+                      {_name: "ComplexMath", _version: 0.1, _author: "Patrick"},
+                      {_name: "Model", _version: 0.1, _author: "Patrick"},
+                      {_name: "Pline", _version: 0.1, _author: "Patrick"}]);
 
     return this._flowchart;
   }

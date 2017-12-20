@@ -218,6 +218,7 @@ export class ProcedureEditorComponent extends Viewer {
 	//
 	//
 	addActionProcedure(fn: {name: string, params: string[], module: string}){
+		console.log("params", fn);
 		let prod_data :  {result: string, module: string, function: any, params: string[]} = 
 			{result: "__", module: fn.module, function: fn.name, params: fn.params};
 		let prod:IProcedure = ProcedureFactory.getProcedure( ProcedureTypes.Action, prod_data);

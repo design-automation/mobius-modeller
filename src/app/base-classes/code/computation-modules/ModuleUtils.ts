@@ -11,7 +11,7 @@ export class ModuleUtils{
 		};
 
 		for (let prop in fn_list){
-			obj[prop] = fn_list;
+			obj[prop] = fn_list[prop];
 		}
 
 		return obj;
@@ -32,6 +32,7 @@ export class ModuleUtils{
 					}
 
 					if(prop == name && typeof(submod) == "object"){
+						console.log(submod);
 						imod = this.createModule(prop, submod);
 					}
 
@@ -78,7 +79,7 @@ export class ModuleUtils{
 		 	result = [];
 		}
 
-		let final_result = result.map(function(r){ return {type: r, value: undefined} })
+		let final_result = result.map(function(r){ return {type: r, value: r} })
 
 		return final_result;
 	}
@@ -93,11 +94,15 @@ export class ModuleUtils{
 				});
 
 		for(let f=0; f < fns.length; f++){
-			if( mod.hasOwnProperty(fns[f]) ){
-				let obj = { name: fns[f], 
+			let function_name = fns[f];
+			// todo: why!?
+			let func = mod[function_name];
+
+			if( mod.hasOwnProperty( function_name )){
+				let obj = { name: function_name, 
 							module: module_name,
-							params: this.getParams( mod[fns[f]]),
-							def: mod[fns[f]],
+							params: this.getParams( func ),
+							def: func
 						  }
 				fn.push(obj);
 			}
