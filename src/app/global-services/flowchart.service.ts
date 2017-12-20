@@ -177,6 +177,7 @@ export class FlowchartService {
     this.loadModules([{_name: "SimpleMath", _version: 0.1, _author: "Patrick"}, 
                       {_name: "ComplexMath", _version: 0.1, _author: "Patrick"},
                       {_name: "Model", _version: 0.1, _author: "Patrick"},
+                      {_name: "Point", _version: 0.1, _author: "Patrick"},
                       {_name: "Pline", _version: 0.1, _author: "Patrick"}]);
 
     return this._flowchart;
