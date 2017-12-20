@@ -2,6 +2,50 @@ import {IModule} from "./IModule";
 
 export class ModuleUtils{
 
+	static createModule(name: string, fn_list: any){
+
+		let obj: IModule  =  {
+			_name: name, 
+			_version: 0.1, 
+			_author: "Patrick" 
+		};
+
+		for (let prop in fn_list){
+			obj[prop] = fn_list;
+		}
+
+		return obj;
+
+	}
+
+	static getModuleFromSet(ModuleSet, name: string){
+		let imod;
+		for(let key in ModuleSet){
+			let mod = ModuleSet[key];
+
+			if( key !== name){
+				for(let prop in mod){
+					let submod = mod[prop]; ;
+
+					if(typeof(submod) == "function"){
+						break;
+					}
+
+					if(prop == name && typeof(submod) == "object"){
+						imod = this.createModule(prop, submod);
+					}
+
+				}
+
+			}
+			else{
+				imod = this.createModule(key, mod);
+			}
+		}
+
+		return imod;
+	}
+
 	static getName(mod: IModule): string{
 		return mod["_name"];
 	}
@@ -30,8 +74,9 @@ export class ModuleUtils{
 	static getParams(func: Function): {type: string, value: any}[]{
 	 	let fnStr = func.toString().replace( /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg, '');
 		let result = fnStr.slice(fnStr.indexOf('(')+1, fnStr.indexOf(')')).match( /([^\s,]+)/g);
-		if(result === null)
+		if(result === null){
 		 	result = [];
+		}
 
 		let final_result = result.map(function(r){ return {type: r, value: undefined} })
 

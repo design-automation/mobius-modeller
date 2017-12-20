@@ -7,9 +7,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HelpViewerComponent implements OnInit {
 
+  _moduleList;
   constructor() { }
 
   ngOnInit() {
+
+
   }
 
 }
