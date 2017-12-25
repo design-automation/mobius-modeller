@@ -1,4 +1,4 @@
-import {ModuleUtils, IModule} from "../../../src/app/base-classes/code/CodeModule";
+import {ModuleUtils, IModule} from "../../app/base-classes/code/CodeModule";
 
 import * as sm from "./SimpleMath";
 import * as cm from "./ComplexMath";
@@ -25,4 +25,4 @@ let ComplexMath:IModule = ModuleUtils.createModule("ComplexMath", "0.1", "AKM", 
 let gs_modeling_set:IModule = ModuleUtils.createModule("gs_modeling", "0.1", "Patrick", gs_modelling);*/
 
 
-export {SimpleMath, ComplexMath, Model, Point, Pline};
+export {SimpleMath, ComplexMath, Model, Pline, Point};
