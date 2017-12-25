@@ -25,4 +25,4 @@ let ComplexMath:IModule = ModuleUtils.createModule("ComplexMath", "0.1", "AKM", 
 let gs_modeling_set:IModule = ModuleUtils.createModule("gs_modeling", "0.1", "Patrick", gs_modelling);*/
 
 
-export {SimpleMath, ComplexMath, Model, Pline};
+export {SimpleMath, ComplexMath, Model, Pline, Point};
