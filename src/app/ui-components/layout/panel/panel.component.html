@@ -1,0 +1,27 @@
+<div class="header">
+	<div class="title">{{heading}}</div>
+	<div class="data"></div>
+	<div class="btn-group">
+		<button (click)="maximize()" *ngIf="panel_id !== 'bottom' && panel_id !== 'main'">
+			<span matTooltip="Expand">
+				<mat-icon>aspect_ratio</mat-icon>
+			</span>
+		</button>
+		<!-- <button (click)="minimize()">
+			<span matTooltip="Minimize">
+				<mat-icon>remove</mat-icon>
+			</span>
+		</button>
+		<button (click)="restore()">
+			<span matTooltip="Restore">
+				<mat-icon>open_in_new</mat-icon>
+			</span>
+		</button> -->
+	</div>
+</div>
+
+
+<app-viewer-container *ngIf='heading == "Viewer"'></app-viewer-container>        
+<app-flowchart-viewer *ngIf='heading == "Flowchart"'></app-flowchart-viewer>
+<app-editor  *ngIf='heading == "Procedure Editor"'></app-editor>
+<app-parameter-viewer  *ngIf='heading == "param"'></app-parameter-viewer>

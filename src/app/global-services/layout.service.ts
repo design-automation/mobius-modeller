@@ -1,38 +1,75 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
+import {Subject} from 'rxjs/Subject';
+import {EViewer} from '../ui-components/viewers/EViewer';
 
 @Injectable()
 export class LayoutService {
 
-	private action = {
-	    a1s: 60,
-	    a2s: 40,
-	    a3s: 30,
-	    a1v: true,
-	    a2v: false,
-	    a3v: true,
-	    useTransition: true,
+	private layout = {
+      useTransition: true,
+      gutter: 7,
+      size: {
+        main: 70, 
+        side: 30, 
+        top: 33, 
+        middle: 33, 
+        bottom: 33
+      },
+      content: {
+        main: EViewer.Viewer, 
+        side: {
+          top: EViewer.Flowchart, 
+          middle: EViewer.Editor,
+          bottom: EViewer.Parameter
+        }
+      }
 	}
 
   	constructor() { }
 
-  	getAssets(){
-  		return this.action;
-  	}
-
-  	setAssets(obj){
-  		this.action = obj;
-  	}
-
-  	showEditor(){
-  		this.action.a2v = true;
-  	}
-
-  	hideEditor(){
-  		this.action.a2v = false;
-  	}
-
-    toggleEditor(){ 
-       this.action.a2v = !this.action.a2v;
+    // handing subscriptions
+    private subject = new Subject<any>();
+    sendMessage(message: string) {
+        this.subject.next({ text: message });
+    }
+   
+    clearMessage() {
+        this.subject.next();
     }
 
+    getMessage(): Observable<any> {
+        return this.subject.asObservable();
+    }
+
+
+    // other functionality
+
+  	getAssets(){
+  		return this.layout;
+  	}
+
+  	maximize(panel_id: string): void{
+
+        // get the panel_id passed and the corresponding component
+        // interchange values
+        let max_item = this.layout.content.side[panel_id];
+
+        if(max_item){
+           let current_main = this.layout.content.main;
+           this.layout.content.main = max_item; 
+           this.layout.content.side[panel_id] = current_main;
+        }
+
+        this.sendMessage("Layout Changed");
+
+    }
+
+    minimize(panel_id: string): void{
+        this.layout.size.top = 0;
+    }
+
+    restore(panel_id: string): void{
+
+    }
 }

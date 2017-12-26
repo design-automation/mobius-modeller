@@ -9,23 +9,41 @@
   <div class="container">
 
     <div class="wrapper">
+
       <split  direction="horizontal" 
-              [gutterSize]="7" 
-              [useTransition]="true"
-              (dragEnd)="action.a1s=$event.sizes[0]; 
-              action.a2s=$event.sizes[1]; 
-              action.a3s=$event.sizes[2];">
-          
-            <split-area [visible]="action.a1v" [size]="action.a1s" order="1">
-                <app-viewer-container></app-viewer-container>        
+              [gutterSize]="layout.gutter" 
+              [useTransition]="layout.useTransition">
+
+
+            <!-- main pane -->
+            <split-area 
+              [size]="layout.size.main" order="1">
+              <app-panel panel_id="main"></app-panel>
             </split-area>
 
-            <split-area [visible]="action.a3v" [size]="action.a2s" order="2">
-                <app-flowchart-viewer class="view-wrapper"></app-flowchart-viewer>
-            </split-area>
+            <!-- secondary split pane -->
+            <split-area 
+              [size]="layout.size.side"  order="2">
 
-            <split-area [visible]="action.a2v" [size]="action.a3s" order="3">
-                <app-editor></app-editor> 
+                <split  direction="vertical" 
+                        [gutterSize]="layout.gutter" 
+                        [useTransition]="layout.useTransition">
+
+                    <split-area [size]="layout.size.top" order="1">
+                      <app-panel panel_id="top"></app-panel>
+                    </split-area>
+
+                    <split-area [size]="layout.size.middle" order="2">
+                      <app-panel panel_id="middle"></app-panel>
+                    </split-area>
+
+                    <!-- fixed -->
+                    <split-area [size]="layout.size.bottom" order="3">
+                      <app-panel panel_id="bottom"></app-panel>
+                    </split-area>
+
+                </split>
+
             </split-area>
             
       </split>
