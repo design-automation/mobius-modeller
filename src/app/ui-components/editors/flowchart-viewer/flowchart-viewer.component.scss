@@ -130,12 +130,10 @@
 
 				.node-body{
 					position: relative;
-					height: 60px;
+					min-height: 30px;
 					width: 100%;
-					border: 1px dashed #616161;
-					border-radius: 10px;
+					border: 1px solid #616161;
 					background-color: white;
-					text-align: center;
 					cursor: move;
 
 					&.selected{
@@ -149,48 +147,93 @@
 
 					.node-name{
 						font-family: sans-serif; 
-						font-size: 14px; 
-						line-height: 60px;
+						font-size: 14px;
+						border-bottom: 1px solid #616161; 
+						text-align: center;
+
+						&.selected{
+							background-color: red;
+							color: white;
+						}
 					}
 
-					.edit{
-						cursor: pointer;
-						color: blue;
-						font-size: 12px;
+					.port-container{
+
+						display: flex; 
+						flex-direction: column;
+
+						margin-top: 10px; 
+						margin-bottom: 10px;
+
+						.divider{
+							height: 2px; 
+							width: 100%; 
+							background-color: gray;
+						}
+
+						.port{
+							display: flex; 
+							flex-direction: row;
+							margin: 5px 0px;
+
+							.port-grip{
+								width: $port-size; 
+								height: $port-size; 
+								border-radius: 50%;
+								background-color: gray;
+								cursor: pointer;
+							}
+
+							.port-name{
+								margin: 0px 5px; 
+							}
+
+							&.input{
+								justify-content: flex-start;
+								margin-left: -$port-size/2;
+							}
+
+							&.output{
+								justify-content: flex-end;
+								margin-right: -$port-size/2;
+							}
+						}
+						
+
 					}
 	
 					
 				}
 
-				.port-container{
+				/* .port-container{
 					display: flex; 
 					flex-direction: row; 
 					justify-content: space-around;
-
+				
 					position: relative;
 					height: 10px;
 					width: 100%;
 					z-index: 1;
-
+				
 					margin-top: -2px;
 					
 					&.input{
-
+				
 						.port{
 							border-top-right-radius: 15px;
 							border-top-left-radius: 15px;
 						}
 					}
-
+				
 					&.output{
-
+				
 						.port{
 							border-bottom-right-radius: 15px;
 							border-bottom-left-radius: 15px;
 						}
-
+				
 					}
-
+				
 					.port{
 						height: 7.5px;
 						width: 15px;
@@ -201,17 +244,17 @@
 						margin: 0px 2px;
 						
 						z-index: 3;
-
+				
 						&:hover{
 							background-color: orange;
 							cursor: pointer;
 						}
-
+				
 						&.connected{
 							background-color: green;
 						}
 					}
-
+				
 					.btn-sm{
 						position: absolute; 
 						right: -15px;
@@ -222,22 +265,22 @@
 						font-size: 10px; 
 						line-height: 15px;
 						cursor: pointer;
-
+				
 						background: url('../../../../assets/img/plus.png');
 						background-size: cover;
-
-
+				
+				
 						&.input{
 							top: -5px; 
 						}
-
+				
 						&.output{
 							bottom: 0px; 
 							left: -15px;
 						}
 					}
-
-				}
+				
+				} */
 			}
 
 

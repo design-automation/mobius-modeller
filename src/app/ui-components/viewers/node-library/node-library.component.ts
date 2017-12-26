@@ -24,7 +24,6 @@ export class NodeLibraryComponent extends Viewer{
 
 	update(){ 
 		this._savedNodes = this.flowchartService.getSavedNodes();
-		console.log("updating");
 	}
 
 	addNode($event, type: number): void{
