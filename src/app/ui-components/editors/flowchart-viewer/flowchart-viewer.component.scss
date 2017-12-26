@@ -80,58 +80,54 @@
 			z-index: 3;
 			margin: 0px;
 
-			.btn-container{
-			   position: absolute;
-			   right: -15px;
+				.btn-container{
+				   position: absolute;
+				   right: -30px;
 
-			   display: flex; 
-			   flex-direction: column; 
-			   justify-content: space-between;
+				   display: flex; 
+				   flex-direction: column; 
+				   justify-content: space-between;
 
-				height: 60px + 20px + 20px;
+					height: 60px + 20px + 20px;
 
-			   .btn-group{
-			   		position: relative;
-			   		display: flex; 
-			   		flex-direction: column;
-			   		justify-content: center;
-			   	    
-					background: none;
-					
-					.action-button{
-						position: relative;
-						width: 25px;
-						height: 24px;
-						cursor: pointer;
-						font-size: 9px;
-						text-align: center;
+				   .btn-group{
+				   		position: relative;
+				   		display: flex; 
+				   		flex-direction: column;
+				   		justify-content: center;
+				   	    
+						background: none;
+						
+						.action-button{
+							position: relative;
+							width: 25px;
+							height: 24px;
+							cursor: pointer;
+							font-size: 9px;
+							text-align: center;
 
-						.material-icons{
-							font-size: 18px;
-							line-height: 24px;
-							color: gray;
+							.material-icons{
+								font-size: 18px;
+								line-height: 24px;
+								color: gray;
+							}
+
+							&:hover{
+								background-color: gray;
+								color: white;
+							}
 						}
-
-						&:hover{
-							background-color: gray;
-							color: white;
-						}
-					}
-			   }
-			}
-
-			.node-wrapper{
-				position: relative;
-				margin: 20px; 
-				min-width: 70px;
-				display: flex; 
-				flex-direction: column;
-				justify-content: center;
+				   }
+				}
 
 				.node-body{
+					display: flex; 
+					flex-direction: column;
+					justify-content: center;
+
 					position: relative;
 					min-height: 30px;
-					width: 100%;
+					min-width: 70px;
 					border: 1px solid #616161;
 					background-color: white;
 					cursor: move;
@@ -182,6 +178,10 @@
 								border-radius: 50%;
 								background-color: gray;
 								cursor: pointer;
+
+								&:hover{
+									background-color: red;
+								}
 							}
 
 							.port-name{
@@ -201,8 +201,6 @@
 						
 
 					}
-	
-					
 				}
 
 				/* .port-container{
@@ -281,8 +279,6 @@
 					}
 				
 				} */
-			}
-
 
 			&:active{
 				cursor: none;

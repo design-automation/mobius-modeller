@@ -47,7 +47,7 @@
 					<g id="temporary-edge" [class.hidden]="!_linkMode" >
 						<path 
 						[attr.d]="edgeString(mouse_pos.start, mouse_pos.current)" stroke="blue"
-	 				 	stroke-width="5" fill="none" stroke-dasharray="5, 5"/>
+							 				 	stroke-width="5" fill="none" stroke-dasharray="5, 5"/>
 	 					<circle id="pointC" [attr.cx]="mouse_pos.current.x" [attr.cy]="mouse_pos.current.y" r="5" />
 	 				</g>
 
@@ -85,83 +85,65 @@
 								</div>
 							</div>
 
-							<div class="node-wrapper">
-
-								<!--inputs-->
-								<!-- <div class="port-container input">
-									<div class="port" 
-										[class.connected]="port.isConnected()" 
-										*ngFor="let port of node.getInputs(); let pi=index"  
-										id="n{{node_index}}pi{{pi}}"
-										draggable=true
-										(dragstart)="portDragStart($event, port, [node_index, pi])" 
-										(drag)="portDragging($event, port)" 
-										(dragend)="portDragEnd($event, port)"
-										(drop)="portDrop($event, port, [node_index, pi])">
-									</div>
-									
-								</div> -->
 							
-								<!-- node body -->
-								<div class="node-body" 
-									[class.library]="node.getType() !== undefined"
-									(click)="clickNode($event, node_index)"
-									draggable=true  
-									(dragstart)="nodeDragStart($event, node)" 
-									(drag)="nodeDragging($event, node)" 
-									(dragend)="nodeDragEnd($event, node)">
+							<!-- node body -->
+							<div class="node-body" 
+								[class.library]="node.getType() !== undefined"
+								(click)="clickNode($event, node_index)"
+								draggable=true  
+								(dragstart)="nodeDragStart($event, node)" 
+								(drag)="nodeDragging($event, node)" 
+								(dragend)="nodeDragEnd($event, node)">
+								
+								<div class="node-name" 
+										[class.selected]="isSelected(node)" >
+										{{node.getName()}}
+								</div>
+								
+								<!--inputs -->
+								<div class="port-container">
 									
-									<div class="node-name" 
-											[class.selected]="isSelected(node)" >
-											{{node.getName()}}
-									</div>
-									
-									<!--inputs -->
-									<div class="port-container">
+									<div class="port input" 
+										*ngFor="let port of node.getInputs(); let pi=index"  
+										id="n{{node_index}}pi{{pi}}">
 										
-										<div class="port input" 
-											*ngFor="let port of node.getInputs(); let pi=index"  
-											id="n{{node_index}}pi{{pi}}">
-											
-											<div class="port-grip" 
-												draggable=true
-												[class.connected]="port.isConnected()" 
-												(dragstart)="portDragStart($event, port, [node_index, pi])" 
-												(drag)="portDragging($event, port)" 
-												(dragend)="portDragEnd($event, port)"
-												(drop)="portDrop($event, port, [node_index, pi])">
-											</div>
-
-											<span class="port-name">{{ port.getName() }}</span>
+										<div class="port-grip" 
+											draggable=true
+											[class.connected]="port.isConnected()" 
+											(dragstart)="portDragStart($event, port, [node_index, pi])" 
+											(drag)="portDragging($event, port)" 
+											(dragend)="portDragEnd($event, port)"
+											(drop)="portDrop($event, port, [node_index, pi])">
 										</div>
 
+										<span class="port-name">{{ port.getName() }}</span>
 									</div>
-
-									<!-- outputs -->
-									<div class="port-container">
-										<div class="port output"
-											*ngFor="let port of node.getOutputs(); let po=index"
-											id="n{{node_index}}po{{po}}">
-
-											<span class="port-name">{{port.getName()}}</span>
-
-											<div class="port-grip" 
-												draggable=true
-												[class.connected]="port.isConnected()" 
-												(dragstart)="portDragStart($event, port, [node_index, po])" 
-												(drag)="portDragging($event, port)" 
-												(dragend)="portDragEnd($event, port)"
-												(drop)="portDrop($event, port, [node_index, po])">
-											</div>
-
-										</div>
-									</div> 
 
 								</div>
+
+								<!-- outputs -->
+								<div class="port-container">
+									<div class="port output"
+										*ngFor="let port of node.getOutputs(); let po=index"
+										id="n{{node_index}}po{{po}}">
+
+										<span class="port-name">{{port.getName()}}</span>
+
+										<div class="port-grip" 
+											draggable=true
+											[class.connected]="port.isConnected()" 
+											(dragstart)="portDragStart($event, port, [node_index, po])" 
+											(drag)="portDragging($event, port)" 
+											(dragend)="portDragEnd($event, port)"
+											(drop)="portDrop($event, port, [node_index, po])">
+										</div>
+
+									</div>
+								</div> 
+
+							</div>
 						
 								
-							</div>
-					
 						</div>
 					
 					</div>

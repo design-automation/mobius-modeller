@@ -76,17 +76,17 @@ export class FlowchartViewerComponent extends Viewer{
 
   startPan($event): void{
     this.pan_mode = true;
-    this.pan_init = [$event.layerX, $event.layerY];
+    this.pan_init = [$event.clientX, $event.clientY];
   }
 
   panning($event): void{
     if (this.pan_mode == true){
-        let relX = $event.layerX - this.pan_init[0];
-        let relY = $event.layerY - this.pan_init[1];
+        let relX = $event.clientX - this.pan_init[0];
+        let relY = $event.clientY - this.pan_init[1];
         let factor: number = 1; 
         this.left += relX; 
         this.top += relY;
-        this.pan_init = [$event.layerX, $event.layerY];
+        this.pan_init = [$event.clientX, $event.clientY];
     }
   }
 
@@ -207,6 +207,7 @@ export class FlowchartViewerComponent extends Viewer{
   //
   dragStart = {x: 0, y: 0};
   nodeDragStart($event, node): void{
+    console.log("node drag start");
     $event.dataTransfer.setDragImage( new Image(), 0, 0);
     // todo : find more elegant solution
     this.dragStart = {x: $event.pageX, y: $event.pageY}; 
@@ -225,6 +226,7 @@ export class FlowchartViewerComponent extends Viewer{
   }
 
   nodeDragEnd($event, node): void{
+    console.log("node drag end", this._linkMode);
     this.pan_mode = false;
     let relX: number = $event.pageX - this.dragStart.x; 
     let relY: number = $event.pageY - this.dragStart.y;
@@ -247,6 +249,9 @@ export class FlowchartViewerComponent extends Viewer{
               }
 
   portDragStart($event, port: InputPort|OutputPort, address: number[]){
+
+      $event.stopPropagation();
+
       $event.dataTransfer.setDragImage( new Image(), 0, 0);
       this._startPort = port; 
       this._startPort['address'] = address;
@@ -260,28 +265,37 @@ export class FlowchartViewerComponent extends Viewer{
         type = "po";
       }
 
+      console.log("port drag start");
+
       let port_position =  this.getPortPosition(address[0], address[1], type);
 
       this.mouse_pos.start = {x: port_position.x, y: port_position.y };
       this.mouse_pos.current = {x: port_position.x, y: port_position.y };
       
-      this.dragStart = {x: $event.layerX, y: $event.layerY};
+      this.dragStart = {x: $event.clientX, y: $event.clientY};
   }
 
   portDragging($event, port: InputPort|OutputPort){
+
+      $event.stopPropagation();
+
       // todo: compute total offset of this div dynamically
       // urgent!
-      let relX: number = $event.layerX - this.dragStart.x; 
-      let relY: number = $event.layerY - this.dragStart.y;
+      let relX: number = $event.clientX - this.dragStart.x; 
+      let relY: number = $event.clientY - this.dragStart.y;
+
       this.mouse_pos.current.x += relX/this.zoom; 
       this.mouse_pos.current.y += relY/this.zoom; 
-      
-      this.dragStart = {x: $event.layerX, y: $event.layerY}; 
+
+      this.dragStart = {x: $event.clientX, y: $event.clientY}; 
   }
 
   portDragEnd($event, port: InputPort|OutputPort){
-      let relX: number = $event.layerX - this.dragStart.x; 
-      let relY: number = $event.layerY - this.dragStart.y;
+
+      $event.stopPropagation();
+
+      let relX: number = $event.clientX - this.dragStart.x; 
+      let relY: number = $event.clientY - this.dragStart.y;
       this.mouse_pos.current.x += relX/this.zoom; 
       this.mouse_pos.current.y += relY/this.zoom; 
       
@@ -337,34 +351,36 @@ export class FlowchartViewerComponent extends Viewer{
 
     let x: number;
     let y: number;
+    let port_size: number = 15;
 
     let name: string = "n" + nodeIndex + type + portIndex;
-    let el = document.getElementById(name);
+    let el: any = document.getElementById(name);
 
     if(el == null){
       return {x: 0, y: 0};
     }
 
     let node_pos: number[] = this._nodes[nodeIndex].position;
+    console.log(node_pos);
 
-    let port_container_height: number = 10; 
-    let margin: number = 20;
-    let node_height: number = 110; 
-    let port_width: number = 9.5;
-    let buffer: number = 3; 
+    let port_pos_x = el.offsetLeft;
+    let port_pos_y = el.offsetTop;
+    let node_width = el.offsetParent.offsetWidth;
+
 
     if(type == "pi"){
-        x = node_pos[0] + port_width/2 + el.offsetLeft + margin + buffer;
-        y = node_pos[1] + port_container_height/2 + margin + buffer;
-
+      x = node_pos[0];
+      y = node_pos[1] + port_pos_y + port_size/2;
     } 
     else if(type == "po"){
-        x = node_pos[0] + port_width/2 + el.offsetLeft + margin + buffer;
-        y = node_pos[1] + 3*port_container_height/2 + node_height - margin - buffer;
+      x = node_pos[0] + node_width;
+      y = node_pos[1] + port_pos_y + port_size/2;
     }
     else{
       throw Error("Unknown port type");
     }
+
+    console.log(node_pos);
 
     return {x: x, y: y}
   }
@@ -373,6 +389,8 @@ export class FlowchartViewerComponent extends Viewer{
   // Edge drawing functions
   //
   getEdgePath(edge: IEdge): string{
+
+    console.log("get edge path");
 
     return this.edgeString( 
           this.getPortPosition(edge.output_address[0], edge.output_address[1], "po"), 
@@ -405,15 +423,15 @@ export class FlowchartViewerComponent extends Viewer{
     let endPoint: string = input_port_position.x + " " + input_port_position.y;
 
     // move downwards/upwards in straight line
-    let translate: number = 50; 
-    let shifted_startPoint: string = output_port_position.x + " " + (output_port_position.y + translate);
-    let shifted_endPoint: string = input_port_position.x + " " + (input_port_position.y - translate);
+    let translate: number = 10; 
+    let shifted_startPoint: string = output_port_position.x  + translate + " " + (output_port_position.y);
+    let shifted_endPoint: string = input_port_position.x - translate + " " + (input_port_position.y );
 
     // compute curvy line
-    var x0 = output_port_position.x;
-    var y0 = output_port_position.y + translate;
-    var x3 =  input_port_position.x;
-    var y3 =  input_port_position.y - translate;
+    var x0 = output_port_position.x + translate;
+    var y0 = output_port_position.y ;
+    var x3 =  input_port_position.x - translate;
+    var y3 =  input_port_position.y ;
     
     var mx1=0.75*x0+0.25*x3;
     var mx2=0.25*x0+0.75*x3;
