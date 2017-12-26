@@ -77,4 +77,14 @@ export class ParameterViewerComponent extends Viewer {
       }
   	}
 
+    
+
+    //
+    //
+    //
+    executeFlowchart($event): void{
+        $event.stopPropagation();
+        this.flowchartService.execute();
+    }
+
 }

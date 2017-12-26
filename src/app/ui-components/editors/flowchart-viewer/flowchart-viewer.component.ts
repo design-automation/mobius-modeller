@@ -47,12 +47,12 @@ export class FlowchartViewerComponent extends Viewer{
   }
 
   editNode(): void{
-    this.layoutService.toggleEditor();
+    //this.layoutService.toggleEditor();
   }
 
   deleteNode(node_index: number): void{
     this._selectedNode = undefined; 
-    this.layoutService.hideEditor();
+    //this.layoutService.hideEditor();
     this.flowchartService.deleteNode(node_index);
   }
 
@@ -468,13 +468,5 @@ export class FlowchartViewerComponent extends Viewer{
     this.flowchartService.saveNode(node);
   }
 
-
-  //
-  //
-  //
-  executeFlowchart($event): void{
-      $event.stopPropagation();
-      this.flowchartService.execute();
-  }
 }
 

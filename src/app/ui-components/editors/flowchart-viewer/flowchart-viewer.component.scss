@@ -20,35 +20,32 @@
 		height: 100%;
 		overflow: hidden;
 
-		.wrapper{
-			position: absolute;
-			cursor: move;
-			background-color: blue;
-			z-index: 1;
+		.disabled{
+			color: gray;
+			&:hover{
+				color: gray !important;
+			}
 		}
 
-		
-		/* .btn-group{
-			display: flex; 
-			flex-direction: column; 
-			justify-content: start;
-		
-			height: 100%;
-			width: 45px;
-			background-color: #E7E7E7;
-		
-			.btn{
-				margin: 7.5px; 
-				height: 30px; 
-				width: 30px; 
-				font-size: 18px;
-				line-height: 30px;
-				text-align: center;
-				display: inline-block;
-				border: 1px solid gray;
-		
+		.sidebar{
+			background-color: #C5C5C5;
+			color: black;
+
+			section{
+				padding: 10px;
+				border-bottom: 1px solid gray;
+
+				div{
+					cursor: pointer;
+
+					&:hover{
+						color: white;
+					}
+				}
+
+
 			}
-		} */
+		}
 
 	}
 
@@ -250,25 +247,5 @@
 		}
 	}
 	
-
-	#addNode{
-		position: absolute;
-		right: 30px; 
-		bottom: 30px;
-	}
-
-	#execute{
-		position: absolute;
-		top: 15px; 
-		left: 50%;
-		width: 150px; 
-		margin-left: -75px;
-	}
-
-	#libToggle{
-		position: absolute;
-		bottom: 30px; 
-		left: 30px;
-	}
 }
 

@@ -7,13 +7,28 @@
 	
 	<div class='container'>
 
-		<split  direction="vertical" 
+		<split  direction="horizontal" 
               [gutterSize]="7" 
               [useTransition]="true">
+	
+			<split-area class="sidebar flowchart" [visible]="true" [size]="30" order="1">
+				
+				<section>
+					<div (click)="addNode($event, undefined)">New Empty Node</div>
+					<div class="disabled">New Subnet</div>
+				</section>
+				
+				<section>
+					<div>Save Node</div>
+				</section>
 
-            <split-area [visible]="true" [size]="90" 
-            	order="1" 
-            	style="position: relative;">
+				<section>
+					<app-node-library></app-node-library>
+				</section>
+
+			</split-area>
+
+            <split-area [visible]="true" [size]="70"  style="position: relative;">
 
                 <!-- svg canvas to draw the edges -->
 				<svg xmlns="http://www.w3.org/2000/svg" 
@@ -129,22 +144,8 @@
 					</div>
 				</div>
 			
-		        <!-- buttons -->
-	           	<button id="addNode" mat-fab color="primary" (click)="addNode($event, undefined)">
-	           		<mat-icon>add</mat-icon>
-	           	</button>
-
-				<button id="libToggle" mat-mini-fab color="secondary" (click)="showLibrary = !showLibrary">
-	           		<mat-icon>my_library_books</mat-icon>
-	           	</button>
-
-	           	<button id="execute" mat-raised-button color="accent" (click)="executeFlowchart($event)">Execute Flowchart</button>  
-
             </split-area>
-			
-			<split-area [visible]="showLibrary===true" [size]="10" order="2">
-					<app-node-library></app-node-library>
-			</split-area>
+
 
 		</split>
 
