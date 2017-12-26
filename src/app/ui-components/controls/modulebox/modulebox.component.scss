@@ -1,0 +1,17 @@
+.toolbox{
+
+	background-color: #949494;
+	height: 100%;
+
+	.fn_name{
+		height: auto;
+		font-size: 12px;
+		line-height: 14px;
+		color: white; 
+		cursor: pointer;
+
+		&:hover{
+			color: black;
+		}
+	}
+}

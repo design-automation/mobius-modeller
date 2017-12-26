@@ -2,11 +2,11 @@
 	<div class="title">{{heading}}</div>
 	<div class="data"></div>
 	<div class="btn-group">
-		<button (click)="maximize()" *ngIf="panel_id !== 'bottom' && panel_id !== 'main'">
+		<div (click)="maximize()" *ngIf="panel_id !== 'bottom' && panel_id !== 'main'">
 			<span matTooltip="Expand">
 				<mat-icon>aspect_ratio</mat-icon>
 			</span>
-		</button>
+		</div>
 		<!-- <button (click)="minimize()">
 			<span matTooltip="Minimize">
 				<mat-icon>remove</mat-icon>
@@ -24,4 +24,5 @@
 <app-viewer-container *ngIf='heading == "Viewer"'></app-viewer-container>        
 <app-flowchart-viewer *ngIf='heading == "Flowchart"'></app-flowchart-viewer>
 <app-editor  *ngIf='heading == "Procedure Editor"'></app-editor>
-<app-parameter-viewer  *ngIf='heading == "param"'></app-parameter-viewer>
+<app-parameter-viewer  *ngIf='heading == "Parameter Viewer"'></app-parameter-viewer>
+

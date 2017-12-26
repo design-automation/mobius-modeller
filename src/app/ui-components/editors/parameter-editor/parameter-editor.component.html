@@ -1,81 +1,93 @@
 <div class="viewer">
 
 	<div class="container">
-
+		
+		<!-- default -->
 		<div class="default" *ngIf="!isVisible">No node selected</div>
 
-		<div *ngIf="isVisible">
+		<!-- main -->
+		<div class="container" *ngIf="isVisible">
+			<mat-accordion multi="true" [displayMode]="flat">
 
-			<div class="section">
-
-				<h4 class="port-heading">Inputs</h4>
-
-				<div class="default" *ngIf='_inputs.length == 0'>This node has no inputs</div>
-
-				<div class='port input' *ngFor="let inp of _inputs; let i=index">
+				<!-- inputs -->
+				<mat-expansion-panel [disabled]="_inputs.length == 0" [expanded]="true">
 					
-					<div class="content">
-						<div class='row'>
-							<span class='label'>Name</span>
-							<span class='content' contenteditable="true" (blur)="updatePortName($event, inp)">
-								{{ inp.getName() || "undefined" }}
-							</span>
+					<mat-expansion-panel-header>
+						<mat-panel-title>
+						  Inputs 
+						</mat-panel-title>
+						<mat-panel-description>
+						  <!-- This is a summary of the content -->
+						</mat-panel-description>
+					</mat-expansion-panel-header>
+
+					<div class='port input' *ngFor="let inp of _inputs; let i=index">
+						
+						<div class="content">
+							<div class='row'>
+								<span class='label'>Name</span>
+								<span class='content' contenteditable="true" (blur)="updatePortName($event, inp)">
+									{{ inp.getName() || "undefined" }}
+								</span>
+							</div>
+
+							<div class='row'>
+								<span class='label'>Type</span>
+								<span class='content'>
+									<select (change)="updateInputType($event.target.value, inp)">
+										         	    <option *ngFor="let x of portOpts" [value]="x" [selected]="inp.getType() == x">{{getTypeName(x)}}</option>
+										            </select>
+								</span>
+							</div>
+
+							<div class='row'>
+								<span class='label'>Default</span>
+								<span class='content' contenteditable="true" (blur)="updateDefaultValue($event, inp)">
+									{{inp.getDefaultValue() || "undefined"}}
+								</span>
+							</div>
+
 						</div>
-
-						<div class='row'>
-							<span class='label'>Type</span>
-							<span class='content'>
-								<select (change)="updateInputType($event.target.value, inp)">
-									         	    <option *ngFor="let x of portOpts" [value]="x" [selected]="inp.getType() == x">{{getTypeName(x)}}</option>
-									            </select>
-							</span>
+						
+						<div class="controls">
+							<span class='btn btn-small' (click)='deletePort($event, "input", i)'>Delete</span>
 						</div>
+					</div>
+				</mat-expansion-panel>
 
-						<div class='row'>
-							<span class='label'>Default</span>
-							<span class='content' contenteditable="true" (blur)="updateDefaultValue($event, inp)">
-								{{inp.getDefaultValue() || "undefined"}}
-							</span>
+				<!-- outputs -->
+				<mat-expansion-panel  [disabled]="_outputs.length == 0" [expanded]="true">
+					<mat-expansion-panel-header>
+						<mat-panel-title>
+						  Outputs 
+						</mat-panel-title>
+						<mat-panel-description>
+						  <!-- This is a summary of the content -->
+						</mat-panel-description>
+					</mat-expansion-panel-header>
+
+					<div class='port output' *ngFor="let output of _outputs; let o=index">
+						<div class="content">
+							<div class='row'>
+								<span class='label'>Name</span>
+								<span class='content' contenteditable="true" (blur)="updatePortName($event, output)">
+									{{ output.getName() || "undefined" }}
+								</span>
+							</div>
+							<!-- <div class='row'>
+								<span class='label'>Default</span>
+								<span class='content' contenteditable="true" (blur)="updateDefaultValue($event, output)">
+									{{ output.getDefaultValue() || "undefined"}}
+								</span>
+							</div> -->
 						</div>
-
-					</div>
-					
-					<div class="controls">
-						<span class='btn btn-small' (click)='deletePort($event, "input", i)'>Delete</span>
-					</div>
-				</div>
-
-			</div>
-			
-			<div class="section">
-				
-				<h4 class="port-heading">Outputs</h4>
-
-				<div class="default" 
-				*ngIf='_outputs.length == 0'>This node has no outputs</div>
-
-
-				<div class='port output' *ngFor="let output of _outputs; let o=index">
-					<div class="content">
-						<div class='row'>
-							<span class='label'>Name</span>
-							<span class='content' contenteditable="true" (blur)="updatePortName($event, output)">
-								{{ output.getName() || "undefined" }}
-							</span>
+						<div class="controls">
+							<span class='btn btn-small' (click)='deletePort($event, "output", o)'>Delete</span>
 						</div>
-						<!-- <div class='row'>
-							<span class='label'>Default</span>
-							<span class='content' contenteditable="true" (blur)="updateDefaultValue($event, output)">
-								{{ output.getDefaultValue() || "undefined"}}
-							</span>
-						</div> -->
 					</div>
-					<div class="controls">
-						<span class='btn btn-small' (click)='deletePort($event, "output", o)'>Delete</span>
-					</div>
-				</div>
-				
-			</div>
+				</mat-expansion-panel>
+
+			</mat-accordion>
 
 		</div>
 

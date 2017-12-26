@@ -7,7 +7,6 @@ import {Viewer} from '../../../base-classes/viz/Viewer';
 
 import {FlowchartService} from '../../../global-services/flowchart.service';
 
-import {ModuleboxComponent} from '../../controls/modulebox/modulebox.component';
 import {ModuleUtils} from "../../../base-classes/code/CodeModule";
 
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
@@ -25,11 +24,9 @@ export class ProcedureEditorComponent extends Viewer {
   	_node: IGraphNode;
 
   	_showToolbox: boolean = false;
-  	_moduleList = [];
 
   	procedureTypes: ProcedureTypes[] = [
   			ProcedureTypes.Data, 
-  			ProcedureTypes.Action, 
   			ProcedureTypes.ForLoopControl, 
   			ProcedureTypes.IfElseControl
   	];
@@ -55,15 +52,6 @@ export class ProcedureEditorComponent extends Viewer {
 
 	constructor(injector: Injector, public dialog: MatDialog){  
 		super(injector, "procedure-editor"); 
-		
-		this._moduleList = [];
-
-		let modules = this.flowchartService.getModules();
-		for(let mod=0; mod < modules.length; mod++){
-			let user_module = modules[mod];
-			this._moduleList = this._moduleList.concat(ModuleUtils.getFunctions(user_module));
-		}
-
 	}
 
 	reset():void{
@@ -213,18 +201,6 @@ export class ProcedureEditorComponent extends Viewer {
 
 	}
 
-
-	//
-	//
-	//
-	addActionProcedure(fn: {name: string, params: string[], module: string}){
-		console.log("params", fn);
-		let prod_data :  {result: string, module: string, function: any, params: string[]} = 
-			{result: "__", module: fn.module, function: fn.name, params: fn.params};
-		let prod:IProcedure = ProcedureFactory.getProcedure( ProcedureTypes.Action, prod_data);
-		this._node.addProcedure(prod);
-		this.flowchartService.update();
-	}
 
 
 	addProcedure($event, type: ProcedureTypes): void{

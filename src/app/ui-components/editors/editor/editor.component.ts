@@ -12,10 +12,12 @@ import { IGraphNode } from '../../../base-classes/node/NodeModule';
 export class EditorComponent extends Viewer{
  
   _selectedNode: IGraphNode; 
+  _moduleList = [];
+
   isVisible: boolean = false;
 
   constructor(injector: Injector, private layoutService: LayoutService){  
-    super(injector, "FlowchartViewer");  
+    super(injector, "Editor");  
   }
 
   update(){
@@ -38,14 +40,5 @@ export class EditorComponent extends Viewer{
       this.flowchartService.update();
     }
   }
-
-  saveNode(node: IGraphNode): void{
-    this.flowchartService.saveNode(node);
-  }
-
-  close(): void{
-    this.layoutService.hideEditor();
-  }
-
 
 }
