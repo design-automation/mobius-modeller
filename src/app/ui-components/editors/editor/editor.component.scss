@@ -1,12 +1,12 @@
 .editor{
-	padding: 15px; 
 	background-color: mintcream;
 
 	display: flex; 
 	flex-direction: column;
 
 	height: 100%;
-	overflow: auto;
+	width: 100%;
+	overflow: hidden;
 
 	.node-header{
 		padding: 15px 0px 15px 0px;

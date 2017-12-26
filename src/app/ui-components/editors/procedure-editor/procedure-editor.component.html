@@ -1,5 +1,5 @@
 <div class="viewer">
-	<mat-accordion  [displayMode]="flat">
+	<mat-accordion>
 		<mat-expansion-panel [expanded]="true">
 					<mat-expansion-panel-header>
 						<mat-panel-title>
@@ -26,19 +26,19 @@
 								<!-- template for data -->
 								<div *ngIf="prod.data.name == 'Data'"> 
 									<div class='procedure-item'>
-										<input matInput class="tree-input" 
+										<input width=50 matInput class="tree-input" 
 										[(ngModel)]="prod.data.leftExpression" #ctrl="ngModel" required
 										(change)="updateProcedure($event, prod, 'left')">
 
-										<!-- <input class="tree-input" [(ngModel)]="prod.data.leftExpression" #ctrl="ngModel" required
+										<!-- <input width=50 class="tree-input" [(ngModel)]="prod.data.leftExpression" #ctrl="ngModel" required
 										(change)="updateProcedure($event, prod, 'left')"> -->
 										=
 										
-										<input  matInput class="tree-input" 
+										<input width=50  matInput class="tree-input" 
 										[(ngModel)]="prod.data.rightExpression" #ctrl="ngModel" required
 										(change)="updateProcedure($event, prod, 'right')">
 
-										<!-- <input class="tree-input" [(ngModel)]="prod.data.rightExpression" #ctrl="ngModel" required
+										<!-- <input width=50 class="tree-input" [(ngModel)]="prod.data.rightExpression" #ctrl="ngModel" required
 										(change)="updateProcedure($event, prod, 'right')"> -->
 									</div>
 								</div>
@@ -51,18 +51,10 @@
 
 								<div *ngIf="prod.data.name == 'If'">
 									<div class='procedure-item'>
-									 If ( <input matInput class="tree-input"  [(ngModel)]="prod.data.leftExpression" #ctrl="ngModel" required
+									 If ( <input width=50 matInput class="tree-input"  [(ngModel)]="prod.data.leftExpression" #ctrl="ngModel" required
 										(change)="updateProcedure($event, prod, 'left')"> )
 									</div>
 								</div>
-
-
-								<!-- <div *ngIf="prod.data.name == 'If'">
-									<div class='procedure-item'>
-									 If ( <input class="tree-input" [(ngModel)]="prod.data.leftExpression" #ctrl="ngModel" required
-										(change)="updateProcedure($event, prod, 'left')"> )
-									</div>
-								</div> -->
 
 								<div *ngIf="prod.data.name == 'Else'">
 									<div class='procedure-item'>
@@ -73,27 +65,17 @@
 								<div *ngIf="prod.data.name == 'For Loop'">
 									<div class='procedure-item'>
 									 for (  
-									  <input matInput class="tree-input"  [(ngModel)]="prod.data.leftExpression" #ctrl="ngModel" required (change)="updateProcedure($event, prod, 'left')">
+									  <input width=50 matInput class="tree-input"  [(ngModel)]="prod.data.leftExpression" #ctrl="ngModel" required (change)="updateProcedure($event, prod, 'left')">
 									 in  
-									  <input matInput class="tree-input" [(ngModel)]="prod.data.rightExpression" #ctrl="ngModel" required (change)="updateProcedure($event, prod, 'right')"> 
+									  <input width=50 matInput class="tree-input" [(ngModel)]="prod.data.rightExpression" #ctrl="ngModel" required (change)="updateProcedure($event, prod, 'right')"> 
 									  )
 									</div>
 								</div>
 
-								<!-- <div *ngIf="prod.data.name == 'For Loop'">
-									<div class='procedure-item'>
-									 for (  
-									  <input class="tree-input" [(ngModel)]="prod.data.leftExpression" #ctrl="ngModel" required (change)="updateProcedure($event, prod, 'left')">
-									 in  
-									  <input class="tree-input" [(ngModel)]="prod.data.rightExpression" #ctrl="ngModel" required (change)="updateProcedure($event, prod, 'right')"> 
-									  )
-									</div>
-								</div> -->
-
 								<div *ngIf="prod.data.name == 'Action'">
 									<div class='procedure-item'>
 										
-										<input matInput class="tree-input" [(ngModel)]="prod.data.leftExpression" #ctrl="ngModel" required
+										<input width=50 matInput class="tree-input" [(ngModel)]="prod.data.leftExpression" #ctrl="ngModel" required
 										(change)="updateProcedure($event, prod, 'left')">
 										
 										= {{prod.data.rightExpression}} ( 
@@ -101,14 +83,14 @@
 										<div class="param-container" 
 											*ngFor="let p of prod.data.params; let i=index">
 											
-											<input matInput class="tree-input" 
+											<input width=50 matInput class="tree-input" 
 											 [(ngModel)]="prod.data.params[i].value"
 											 #ctrl="ngModel" 
 											 required
 											 (change)="updateProcedure($event, prod, 'right')">
 
 											<span *ngIf='i<prod.data.params.length-1'>,</span>
-											<!-- <input class="tree-input" [(ngModel)]="p" 
+											<!-- <input width=50 class="tree-input" [(ngModel)]="p" 
 											 placeholder="Input something here" 
 											 #ctrl="ngModel" required 
 											 (change)="updateProcedure($event, prod, 'right')"> --> 

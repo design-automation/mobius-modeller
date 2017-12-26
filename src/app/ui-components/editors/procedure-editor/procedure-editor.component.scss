@@ -19,11 +19,12 @@
 			height: 100%;
 			width: 100%; 
 			overflow-x: hidden;
+		}
 
+		.tree-node-wrapper{
 			input.tree-input{
 				width: auto;
 				display: inline-block;
-				border-bottom: 1px dashed blue;
 				text-align: center;
 			}
 
@@ -35,26 +36,28 @@
 				margin: 3px; 
 				padding: 3px;
 
-				font-size: 14px; 
-				line-height: 18px;
+				font-size: 12px; 
+				line-height: 14px;
 				
 				width: 100%;
+				border: 1px solid lightgrey;
 
 				cursor: move;
+
+				.btn-group{
+					display: none;
+					margin: 5px 0px;
+					display: flex; 
+					flex-direction: row; 
+					justify-content: space-between;
+				}
 
 				&:hover{
 					background-color: #ddd;
 				}
 			}
 		}
-	
 
-		.btn-group{
-			margin: 15px 0px;
-			display: flex; 
-			flex-direction: row; 
-			justify-content: space-between;
-		}
 
 		.toolbox{
 

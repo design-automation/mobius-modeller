@@ -10,9 +10,9 @@ import {EViewer} from '../../viewers/EViewer';
 })
 export class PanelComponent implements OnInit{
 
-  private layout;
-  private _subscription: Subscription;
-  private heading: string;
+  layout;
+  _subscription: Subscription;
+  heading: string;
 
   @Input() panel_id: string;
 

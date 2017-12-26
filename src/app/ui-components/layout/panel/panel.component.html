@@ -2,21 +2,21 @@
 	<div class="title">{{heading}}</div>
 	<div class="data"></div>
 	<div class="btn-group">
-		<div (click)="maximize()" *ngIf="panel_id !== 'bottom' && panel_id !== 'main'">
+		<div (click)="maximize()">
 			<span matTooltip="Expand">
-				<mat-icon>aspect_ratio</mat-icon>
+				<mat-icon [class.disabled]="panel_id == 'bottom' || panel_id == 'main'" >aspect_ratio</mat-icon>
 			</span>
 		</div>
-		<!-- <button (click)="minimize()">
+		<div (click)="minimize()">
 			<span matTooltip="Minimize">
-				<mat-icon>remove</mat-icon>
+				<mat-icon  [class.disabled]="true" >remove</mat-icon>
 			</span>
-		</button>
-		<button (click)="restore()">
+		</div>
+		<div (click)="restore()">
 			<span matTooltip="Restore">
-				<mat-icon>open_in_new</mat-icon>
+				<mat-icon  [class.disabled]="true">open_in_new</mat-icon>
 			</span>
-		</button> -->
+		</div>
 	</div>
 </div>
 

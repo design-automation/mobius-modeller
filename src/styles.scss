@@ -2,6 +2,7 @@
 @import '~angular-tree-component/dist/angular-tree-component.css';
 @import "../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css";
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons'); 
+@import '~scss/globals';
 
 html{
 	position: relative;
@@ -49,4 +50,31 @@ split-area{
 	padding: 0px; 
 	height: 30px !important;
 	padding: 0 10px; 
+}
+
+.mat-expansion-panel-header{
+	height: 30px !important;
+	padding: 0px $default-side-padding !important;
+	background-color: #888686 !important;
+	
+
+	&:hover{
+		background-color: #888686 !important;
+	}
+}
+
+.mat-expansion-panel-body{
+	padding: 0px !important;
+}
+
+.mat-expansion-panel{
+	box-shadow: none !important; 
+}
+
+.node-content-wrapper{
+	background-color: lightgrey !important;
+	width: 100%;
+	padding: 0px;
+	border-radius: 0px;
+	transition: none;
 }

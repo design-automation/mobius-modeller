@@ -51,6 +51,10 @@ export class LayoutService {
 
   	maximize(panel_id: string): void{
 
+        if(panel_id == "main" || panel_id == "bottom"){
+          return;
+        }
+
         // get the panel_id passed and the corresponding component
         // interchange values
         let max_item = this.layout.content.side[panel_id];
@@ -66,10 +70,10 @@ export class LayoutService {
     }
 
     minimize(panel_id: string): void{
-        this.layout.size.top = 0;
+      alert("To be implemented");
     }
 
     restore(panel_id: string): void{
-
+      alert("To be implemented");
     }
 }
