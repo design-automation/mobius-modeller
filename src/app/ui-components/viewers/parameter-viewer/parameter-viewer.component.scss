@@ -5,15 +5,16 @@
 
 	display: flex; 
 	flex-direction: column;
-
+	background-color: white; 
 
 	.container{
 		display: flex; 
-		flex-direction: column; 
+		flex-direction: column;
+
 
 		.paramater-container{
 			display: flex; 
-			flex-direction: row; 
+			flex-direction: column; 
 			justify-content: space-between;
 
 
@@ -22,9 +23,9 @@
 
 			padding: 5px 0px 0px 0px;
 			margin: 15px; 
-			background-color: #E1DDCE;
-			border-top: 1px dashed gray;
-			border-bottom: 1px dashed gray;
+			background-color: $color3;
+			border-top: 1px dashed $color1;
+			border-bottom: 1px dashed $color1;
 
 			.param{
 				display: flex; 
@@ -75,6 +76,11 @@
 	}
 } */
 	
+}
 
+#execute{
+	background-color:$color5;
+	color: white;
+	align-self: flex-end;
 
 }
