@@ -74,7 +74,6 @@
 
 								<div *ngIf="prod.data.name == 'Action'">
 									<div class='procedure-item'>
-										
 										<input width=50 matInput class="tree-input" [(ngModel)]="prod.data.leftExpression" #ctrl="ngModel" required
 										(change)="updateProcedure($event, prod, 'left')">
 										
