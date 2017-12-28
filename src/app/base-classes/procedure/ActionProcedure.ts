@@ -4,7 +4,7 @@ import {IComponent} from "./IComponent";
 
 export class ActionProcedure extends Procedure{
 
-	constructor(data ?: {result: string, module: string, function: string, params: [{type: string, value: string}] }){
+	constructor(data ?: {result: string, module: string, function: string, params: any }){
 		super(ProcedureTypes.Action, false); 
 
 		if(data == undefined){
