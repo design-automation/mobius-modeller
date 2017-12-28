@@ -1,47 +1,65 @@
 @import '~scss/globals';
 
 .viewer{
-	@extend .viewer;
-
 	display: flex; 
-	flex-direction: column;
-	background-color: white; 
-
+	flex-direction: row;
+	background-color: white;
+	justify-content: space-between;
 	.container{
+		width:100%;
 		display: flex; 
 		flex-direction: column;
+		justify-content: space-between;
+
 
 
 		.paramater-container{
 			display: flex; 
-			flex-direction: column; 
-			justify-content: space-between;
+			flex-direction: row; 
+			justify-content: space-equally;
 
 
 			font-size: 14px;
 			line-height: 18px;
 
-			padding: 5px 0px 0px 0px;
-			margin: 15px; 
+			/*padding: 5px 0px 0px 0px;
+			margin: 15px; */
+			.info{
 			background-color: $color3;
-			border-top: 1px dashed $color1;
-			border-bottom: 1px dashed $color1;
+			width: 20%;
+			padding: 0 $default-side-padding;
+			color: $color1;
+			}
+			/*border-top: 1px dashed $color1;
+			border-bottom: 1px dashed $color1;*/
 
 			.param{
 				display: flex; 
-				flex-direction: row; 
+				flex-direction: column; 
 				margin: 5px 0px;
-
 				.label{
 					width: 80px; 
 					text-transform: uppercase; 
 					font-size: 10px; 
-					color: #222; 
+					color: $color2; 
 				}
 
 				.content{
 					flex-grow: 1;
 					font-size: 12px;
+				}
+			}
+
+			.connection{
+					border-bottom: 1px solid $color2;
+					padding: 0 0 $default-side-padding 0;
+					margin: 0;
+			}
+
+			.value{
+				padding: $default-side-padding;
+				.content{
+					color:$color1;
 				}
 			}		
 	
@@ -82,5 +100,6 @@
 	background-color:$color5;
 	color: white;
 	align-self: flex-end;
+	flex-grow: 1;
 
 }

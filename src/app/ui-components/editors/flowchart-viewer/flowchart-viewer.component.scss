@@ -12,7 +12,7 @@
 
 	display: flex;
 	flex-direction: column;
-	background-image: repeating-linear-gradient(0deg,transparent,transparent 70px,$color2 70px,$color2 71px),repeating-linear-gradient(-90deg,transparent,transparent 70px,$color2 70px,$color2 71px);
+	background-image: repeating-linear-gradient(0deg,transparent,transparent 70px,$color3 70px,$color3 71px),repeating-linear-gradient(-90deg,transparent,transparent 70px,$color3 70px,$color3 71px);
 	background-size: 71px 71px;
 	background-color: white;
 
@@ -23,19 +23,19 @@
 		overflow: hidden;
 
 		.disabled{
-			color: $color2;
+				color: $color2;
 			&:hover{
 				color: $color2 !important;
 			}
 		}
 
 		.sidebar{
-			background-color: $color1;
-			color: white;
+			background-color: $color3;
+			color: $color1;
 
 			section{
 				padding: 10px;
-				border-bottom: 1px solid $color2;
+				border-bottom: 1px solid $color3;
 
 				div{
 					cursor: pointer;
@@ -81,6 +81,7 @@
 			position: absolute;
 			z-index: 3;
 			margin: 0px;
+			color: $color1;
 
 				.btn-container{
 				   position: absolute;
@@ -115,7 +116,9 @@
 							}
 
 							&:hover{
-								background-color: $color4;
+								.mat-icon{
+									color: $color4;
+								}
 								color: white;
 							}
 						}
