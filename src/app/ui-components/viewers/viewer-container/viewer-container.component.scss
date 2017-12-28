@@ -1,7 +1,18 @@
+@import '~scss/globals';
+
 .viewer-toggle{
 	flex-direction: row; 
 	width: 100%;
-	background-color: white;
+	background-color: $color1;
+	mat-icon{
+		color:$color2;
+	}
+}
+
+.viewer-toggle-btn:hover{
+	mat-icon{
+		color:$color4;
+	}
 }
 
 .viewer-container{

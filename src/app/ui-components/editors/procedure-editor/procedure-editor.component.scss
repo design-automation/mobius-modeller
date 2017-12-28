@@ -12,6 +12,7 @@
 		flex-direction: column;
 
 		overflow: hidden;
+		background-color: white;
 
 		.tree{
 			margin-top: 20px; 
@@ -30,6 +31,7 @@
 
 			.param-container{
 				display: inline-block;
+				background-color: $color3;
 			}
 
 			.procedure-item{
@@ -40,8 +42,8 @@
 				line-height: 14px;
 				
 				width: 100%;
-				border: 1px solid lightgrey;
-
+				border: 1px solid $color2;
+				background-color: $color2;
 				cursor: move;
 
 				.btn-group{
@@ -53,7 +55,7 @@
 				}
 
 				&:hover{
-					background-color: #ddd;
+					background-color: $color4;
 				}
 			}
 		}
@@ -63,7 +65,7 @@
 
 			max-height: 600px;
 			overflow: auto;
-
+			background-color:$color1;
 			.fn_name{
 				font-size: 12px;
 			}
