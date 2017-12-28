@@ -1,10 +1,10 @@
 <div class="viewer">
 
-	<div class="default" *ngIf='_inputs == undefined || _inputs.length == 0'>
-		This node has no inputs
-	</div>
-	
 	<div class="container">
+
+		<div class="default" *ngIf='_inputs == undefined || _inputs.length == 0'>
+			This node has no inputs
+		</div>
 
 		<div class='paramater-container' *ngFor="let inp of _inputs">
 
@@ -14,7 +14,7 @@
 					<span class='content'>{{ inp.getName() }}</span>
 				</div>
 
-				<div class='param'>
+				<div class='param connection'>
 					<span class='label'>Connected</span>
 					<span class='content'>{{ inp.isConnected() }}</span>
 				</div>
@@ -36,9 +36,7 @@
 			<!-- ui options based on type -->
 			<!-- todo: -->
 		</div>
-
-
-		<button id="execute" mat-raised-button color="accent" (click)="executeFlowchart($event)">Execute Flowchart</button>  
 	</div>
 
+	<button id="execute" mat-raised-button color="accent" (click)="executeFlowchart($event)">Execute Flowchart</button>  
 </div>

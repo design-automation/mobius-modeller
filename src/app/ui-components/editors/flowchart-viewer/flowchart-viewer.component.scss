@@ -12,8 +12,9 @@
 
 	display: flex;
 	flex-direction: column;
-	background-image: repeating-linear-gradient(0deg,transparent,transparent 70px,#CCC 70px,#CCC 71px),repeating-linear-gradient(-90deg,transparent,transparent 70px,#CCC 70px,#CCC 71px);
+	background-image: repeating-linear-gradient(0deg,transparent,transparent 70px,$color3 70px,$color3 71px),repeating-linear-gradient(-90deg,transparent,transparent 70px,$color3 70px,$color3 71px);
 	background-size: 71px 71px;
+	background-color: white;
 
 	.container{
 		position: relative;
@@ -22,25 +23,25 @@
 		overflow: hidden;
 
 		.disabled{
-			color: gray;
+				color: $color2;
 			&:hover{
-				color: gray !important;
+				color: $color2 !important;
 			}
 		}
 
 		.sidebar{
-			background-color: #C5C5C5;
-			color: black;
+			background-color: $color3;
+			color: $color1;
 
 			section{
 				padding: 10px;
-				border-bottom: 1px solid gray;
+				border-bottom: 1px solid $color3;
 
 				div{
 					cursor: pointer;
 
 					&:hover{
-						color: white;
+						color: $color4;
 					}
 				}
 
@@ -80,6 +81,7 @@
 			position: absolute;
 			z-index: 3;
 			margin: 0px;
+			color: $color1;
 
 				.btn-container{
 				   position: absolute;
@@ -110,11 +112,13 @@
 							.material-icons{
 								font-size: 18px;
 								line-height: 24px;
-								color: gray;
+								color: $color2;
 							}
 
 							&:hover{
-								background-color: gray;
+								.mat-icon{
+									color: $color4;
+								}
 								color: white;
 							}
 						}
@@ -129,7 +133,7 @@
 					position: relative;
 					min-height: 30px;
 					min-width: 70px;
-					border: 1px solid #616161;
+					border: 1px solid $color1;
 					background-color: white;
 					cursor: move;
 
@@ -138,18 +142,19 @@
 					}
 
 					&.library{
-						border-color: #12D812;
+						border-color: $color1;
 						border-style: solid;
 					}
 
 					.node-name{
 						font-family: sans-serif; 
 						font-size: 14px;
-						border-bottom: 1px solid #616161; 
+						border-bottom: 1px solid $color1; 
 						text-align: center;
+						background-color: $color2;
 
 						&.selected{
-							background-color: red;
+							background-color: $color5;
 							color: white;
 						}
 					}
@@ -165,7 +170,7 @@
 						.divider{
 							height: 2px; 
 							width: 100%; 
-							background-color: gray;
+							background-color: $color2;
 						}
 
 						.port{
@@ -177,11 +182,11 @@
 								width: $port-size; 
 								height: $port-size; 
 								border-radius: 50%;
-								background-color: gray;
+								background-color: $color2;
 								cursor: pointer;
 
 								&:hover{
-									background-color: red;
+									background-color: $color4;
 								}
 							}
 
