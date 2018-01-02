@@ -58,12 +58,12 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
   //  checks if the flowchart service has a flowchart and calls update function for the viewer
   //
   notify(): void{
-    this.updateViewer();
+    //this.updateViewer();
   }
 
 
   ngOnInit() {
-   this.updateViewer();
+   //this.updateViewer();
   }
 
   updateViewer(){ 
@@ -79,9 +79,8 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
     this.renderer.setPixelRatio( window.devicePixelRatio );
     this.renderer.setSize( this.width, this.height );
       
-    this.container.appendChild( this.renderer.domElement );
+    //this.container.appendChild( this.renderer.domElement );
 
-    var self=this;
     // window.addEventListener( 'resize', function() {
     //   self.width=self.container.clientWidth;
     //   self.height=self.container.clientHeight;
@@ -91,13 +90,13 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
     //   self.renderer.setSize( self.width, self.height );
     //   self.render();
     // }, false );
-
+    let self = this;
     this.camera = new THREE.PerspectiveCamera( 60, this.width / this.height, 1, 1000 );
     this.camera.position.z = 10;
     this.camera.updateMatrixWorld();
     this.camera.lookAt(this.scene.position);
 
-    self.light = new THREE.DirectionalLight( 0xffffff,0.5);
+    this.light = new THREE.DirectionalLight( 0xffffff,0.5);
     this.controls=new OrbitControls(this.camera, this.renderer.domElement);
     this.controls.enabled = true;
     this.controls.addEventListener( 'change',  function() {
@@ -120,7 +119,7 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
   }
 
 
-  pushGSGeometry(){
+  pushGSGeometry(): THREE.Geometry{
     var geom=new THREE.Geometry();
     var material = new THREE.MeshPhongMaterial( { color: 0xffffff,side:THREE.DoubleSide} );
     for (const p of this.model.getGeom().getPoints()) {
