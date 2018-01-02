@@ -39,21 +39,20 @@ export class ParameterEditorComponent extends Viewer{
     }
 
 
-    //
-    //
-    //
-    addPort(event, type: string): void{
-      event.stopPropagation();
+    addPort(nodeIndex: number, type: string): void{
 
-      if(type == "input"){
-        this._node.addInput();
+      // add port 
+      if(type == "in"){
+          this._node.addInput();
       }
-      else if(type == "output"){
-        this._node.addOutput();
+      else if(type == "out"){
+          this._node.addOutput();
       }
       else{
         throw Error("Unknown Port Type");
-      }
+      }  
+
+      this.flowchartService.update();
     }
 
     deletePort(event, type: string, portIndex: number): void{

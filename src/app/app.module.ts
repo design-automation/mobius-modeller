@@ -35,6 +35,9 @@ import { HelpViewerComponent } from './ui-components/viewers/help-viewer/help-vi
 import { NodeLibraryComponent } from './ui-components/viewers/node-library/node-library.component';
 import { PanelComponent } from './ui-components/layout/panel/panel.component';
 
+
+import {CallbackPipe} from './pipes/callback.pipe';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -53,7 +56,8 @@ import { PanelComponent } from './ui-components/layout/panel/panel.component';
     TextViewerComponent,
     HelpViewerComponent,
     NodeLibraryComponent,
-    PanelComponent
+    PanelComponent, 
+    CallbackPipe
   ],
   entryComponents: [
     ModuleboxComponent

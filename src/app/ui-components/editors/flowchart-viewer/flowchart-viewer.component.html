@@ -67,14 +67,14 @@
 								[style.top.px]="node.position[1]" >
 
 							<div class="btn-container" *ngIf="isSelected(node)" >
-								<div class="btn-group node-btns">
+								<!-- <div class="btn-group node-btns">
 									<div class="action-button" (click)="addPort(node_index, 'in')">
 										<mat-icon>input</mat-icon>
 									</div>
 									<div class="action-button" (click)="addPort(node_index, 'out')">
 										<mat-icon>add_to_queue</mat-icon>
 									</div>
-								</div>
+								</div> -->
 								<div class="btn-group port-btns">
 									<div class="action-button" (click)="deleteNode(node_index)">
 										<mat-icon>delete</mat-icon>

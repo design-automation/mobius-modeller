@@ -274,6 +274,8 @@ export class FlowchartService {
     else{
       let default_node_name: string = "hello" + (this._flowchart.getNodes().length + 1);
       new_node = new GraphNode(default_node_name, undefined);
+      new_node.addInput(); 
+      new_node.addOutput();
     }
 
     this._flowchart.addNode(new_node);

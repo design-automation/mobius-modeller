@@ -186,20 +186,20 @@ export class FlowchartViewerComponent extends Viewer{
     this.flowchartService.selectNode(nodeIndex);
   }
 
-  addPort(nodeIndex: number, type: string): void{
-    // select the node
-    this.clickNode(null, nodeIndex);
+  // addPort(nodeIndex: number, type: string): void{
+  //   // select the node
+  //   this.clickNode(null, nodeIndex);
 
-    // add port 
-    if(type == "in"){
-        this._nodes[nodeIndex].addInput();
-    }
-    else if(type == "out"){
-        this._nodes[nodeIndex].addOutput();
-    }  
+  //   // add port 
+  //   if(type == "in"){
+  //       this._nodes[nodeIndex].addInput();
+  //   }
+  //   else if(type == "out"){
+  //       this._nodes[nodeIndex].addOutput();
+  //   }  
 
-    this.flowchartService.update();
-  }
+  //   this.flowchartService.update();
+  // }
 
 
   //

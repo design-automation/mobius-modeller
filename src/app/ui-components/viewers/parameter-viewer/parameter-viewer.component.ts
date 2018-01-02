@@ -25,21 +25,25 @@ export class ParameterViewerComponent extends Viewer {
       this._inputs = [];
     }
 
-  	addInput(): void{
-      	this._node.addInput();
-  		this.flowchartService.update();
-	  }
-
-    updateInputName($event, input): void{
-      let name: string = $event.srcElement.innerText;
-      input.setName(name);
-      // put a timeout on this update or something similar to solve jumpiness
-      this.flowchartService.update();
+    filterInput(input: InputPort){
+        return !input.isConnected();
     }
 
-    updateInputType( type:string ){
-      alert(type);
-    }
+  	// addInput(): void{
+   //    	this._node.addInput();
+  	// 	  this.flowchartService.update();
+	  // }
+
+    // updateInputName($event, input): void{
+    //   let name: string = $event.srcElement.innerText;
+    //   input.setName(name);
+    //   // put a timeout on this update or something similar to solve jumpiness
+    //   this.flowchartService.update();
+    // }
+
+    // updateInputType( type:string ){
+    //   alert(type);
+    // }
 
     updateComputedValue($event, input): void{
       let value: string = $event.srcElement.value;

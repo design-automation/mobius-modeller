@@ -5,9 +5,9 @@
 		<div class="default" *ngIf='_inputs == undefined || _inputs.length == 0'>
 			This node has no inputs
 		</div>
-
-		<div class='paramater-container' *ngFor="let inp of _inputs">
-
+ 
+		<div class='paramater-container' *ngFor="let inp of _inputs | callback: filterInput" >
+			
 			<div class="info">
 				<div class='param'>
 					<span class='label'>Name</span>
@@ -24,18 +24,19 @@
 			<div class="value">
 				<form  class='content'>
 					<mat-form-field>
-				    <input  matInput [disabled]="inp.isConnected()" 
+				    <input  matInput 
 				    placeholder="Value" value="{{ getValue(inp) }}"
 				    (change)="updateComputedValue($event, inp)"/>
 					</mat-form-field>
 				</form>
 			</div>
 
-			
+		</div>
+
+
 			<!-- todo: disable if port is connected -->
 			<!-- ui options based on type -->
 			<!-- todo: -->
-		</div>
 	</div>
 
 	<button id="execute" mat-raised-button color="accent" (click)="executeFlowchart($event)">Execute Flowchart</button>  

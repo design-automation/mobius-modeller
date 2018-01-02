@@ -25,12 +25,6 @@ export class ProcedureEditorComponent extends Viewer {
 
   	_showToolbox: boolean = false;
 
-  	procedureTypes: ProcedureTypes[] = [
-  			ProcedureTypes.Data, 
-  			ProcedureTypes.ForLoopControl, 
-  			ProcedureTypes.IfElseControl
-  	];
-
   	_tree = [];
 	_tree_options = {
 	  allowDrag: function(element){
@@ -49,6 +43,11 @@ export class ProcedureEditorComponent extends Viewer {
 	    	|| parent.data.name == this.getString(ProcedureTypes.ForLoopControl));*/
 	  }
 	};
+
+	
+	getString(type: ProcedureTypes): string{
+		return type.toString()
+	}
 
 	constructor(injector: Injector, public dialog: MatDialog){  
 		super(injector, "procedure-editor"); 
@@ -70,30 +69,6 @@ export class ProcedureEditorComponent extends Viewer {
 		else{
 			this.isVisible = false;
 		}
-	}
-
-	getImageForType(type: ProcedureTypes): string{
-
-		let value:string = "";
-
-		if(type == ProcedureTypes.Data){
-			value = "assignment"
-		}
-		else if(type == ProcedureTypes.Action){
-			value = "function"
-		}
-		else if(type == ProcedureTypes.IfElseControl){
-			value = "if-else"
-		}
-		else if(type == ProcedureTypes.ForLoopControl){
-			value = "for-loop"	
-		}
-
-		return value;
-	}
-
-	getString(type: ProcedureTypes): string{
-		return type.toString()
 	}
 
 
@@ -199,39 +174,6 @@ export class ProcedureEditorComponent extends Viewer {
 			return getTreeItem(prod, index);
 		})
 
-	}
-
-
-
-	addProcedure($event, type: ProcedureTypes): void{
-
-		$event.stopPropagation();
-
-		if( type == ProcedureTypes.Data){
-			let default_variable_name: string = "var" + this._procedureArr.length;
-			let prod_data: {result: string, value: string} = {result: default_variable_name, value: "undefined"};
-			let prod:IProcedure = ProcedureFactory.getProcedure( ProcedureTypes.Data, prod_data );
-			this._node.addProcedure(prod);
-		}
-		else if (type == ProcedureTypes.IfElseControl){
-			let prod_data : {if_condition: string, el_condition: string} = {if_condition: "undefined", el_condition: "undefined"};
-			let prod:IProcedure = ProcedureFactory.getProcedure( ProcedureTypes.IfElseControl, prod_data);
-			this._node.addProcedure(prod);
-		}
-		else if(type == ProcedureTypes.ForLoopControl){
-			let prod_data :  {variable: string, array_name: string} = {variable: "i", array_name: "[]"};
-			let prod:IProcedure = ProcedureFactory.getProcedure( ProcedureTypes.ForLoopControl, prod_data);
-			this._node.addProcedure(prod);
-		}
-		else if(type == ProcedureTypes.Action){
-		    // todo: Add dialog
-		    this._showToolbox = true;
-		}
-		else{
-			throw Error("Procedure Type invalid");
-		}
-
-		this.flowchartService.update();
 	}
 
 
