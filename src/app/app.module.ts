@@ -38,6 +38,8 @@ import { PanelComponent } from './ui-components/layout/panel/panel.component';
 
 import {CallbackPipe} from './pipes/callback.pipe';
 
+import {GSViewer} from './gs-viewer/gs-viewer.module';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -69,7 +71,8 @@ import {CallbackPipe} from './pipes/callback.pipe';
     AceEditorModule,
     AngularSplitModule, 
     TreeModule,
-    CustomMaterialModule
+    CustomMaterialModule,
+    GSViewer
   ],
   providers: [FlowchartService, LayoutService],
   bootstrap: [AppComponent]
