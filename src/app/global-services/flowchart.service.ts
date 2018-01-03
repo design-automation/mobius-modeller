@@ -320,13 +320,8 @@ export class FlowchartService {
       this.update();
   }
 
-
-  deleteNode(node_index: number): void{
-      this._selectedNode = 0;
-      this._selectedPort = 0;
-
-
-      let splicedEdges = [];
+  disconnectEdgesWithNode(node_index: number): number[]{
+      let splicedEdges: number[] = [];
       let edges = this.getEdges();
       for(let e=0; e < edges.length; e++){
         let edge = edges[e];
@@ -343,8 +338,42 @@ export class FlowchartService {
             splicedEdges.push(e);
         }
       }
+      return splicedEdges;
+  }
 
-      this.deleteEdges(splicedEdges);
+  disconnectEdgesWithPortIndex(portIndex: number, type: string): number[]{
+      let node_index = this._selectedNode;
+      let splicedEdges: number[] = [];
+      let edges = this.getEdges();
+      
+      for(let e=0; e < edges.length; e++){
+        let edge = edges[e];
+
+        // if type == "input"
+        if( type == "input" && edge.input_address[0] == node_index && edge.input_address[1] == portIndex ){
+            let port = this._flowchart.getNodeByIndex(edge.output_address[0]).getOutputByIndex(edge.output_address[1]);
+            port.disconnect();
+            port.setComputedValue(undefined);
+            splicedEdges.push(e);
+        }
+        else if( type == "output" && edge.output_address[0] == node_index && edge.output_address[1] == portIndex ){
+            let port = this._flowchart.getNodeByIndex(edge.input_address[0]).getInputByIndex(edge.input_address[1]);
+            port.disconnect();
+            port.setComputedValue(undefined);
+            splicedEdges.push(e);
+        }
+      }
+
+      return splicedEdges;
+  }
+
+
+  deleteNode(node_index: number): void{
+      this._selectedNode = 0;
+      this._selectedPort = 0;
+
+
+      this.deleteEdges(this.disconnectEdgesWithNode(node_index));
 
       this._flowchart.deleteNode(node_index);
 
@@ -356,6 +385,7 @@ export class FlowchartService {
 
   deleteEdges(edgeArr: number[]): void{
     this._flowchart.deleteEdges(edgeArr);
+    this.update();
   }
  
 
