@@ -106,4 +106,8 @@
 	color: white;
 	align-self: flex-end;
 	flex-grow: 1;
+	&:hover{
+		background-color: $color4;
+		color:$color5;
+	}
 }

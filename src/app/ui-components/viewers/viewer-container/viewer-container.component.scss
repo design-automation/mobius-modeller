@@ -7,6 +7,12 @@
 	mat-icon{
 		color:$color2;
 	}
+	.mat-button-toggle-disabled{
+		background-color:$color1;
+		mat-icon{
+			color:$color5 !important;
+		}
+	}
 }
 
 .viewer-toggle-btn:hover{
@@ -20,8 +26,8 @@
 	height: 100%;
 
 	padding: 0px;
-	margin: 0px;
+	margin: 0px !important;
 
-	overflow: hidden;
+	overflow: hidden !important;
 
 }
