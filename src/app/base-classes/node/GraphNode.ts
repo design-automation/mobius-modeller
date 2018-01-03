@@ -22,7 +22,7 @@ export class GraphNode implements IGraphNode{
 
 	private _hasExecuted: boolean = false;
 	private _isDisabled: boolean = false; 
-	private _hasError: boolean = false;
+	public _hasError: boolean = false;
 
 
 	private _position: any;
@@ -230,8 +230,8 @@ export class GraphNode implements IGraphNode{
 		return (this._hasExecuted == false); 
 	}
 
-	hasError(): boolean{
-		return this._hasError; 
+	hasError(): void{
+		this._hasError = true; 
 	}
 
 	//

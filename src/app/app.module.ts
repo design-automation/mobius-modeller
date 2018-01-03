@@ -36,9 +36,9 @@ import { NodeLibraryComponent } from './ui-components/viewers/node-library/node-
 import { PanelComponent } from './ui-components/layout/panel/panel.component';
 
 
-import {CallbackPipe} from './pipes/callback.pipe';
-
-import {GSViewer} from './gs-viewer/gs-viewer.module';
+import { GSViewer } from './gs-viewer/gs-viewer.module';
+import { ConsoleComponent } from './ui-components/console/console.component';
+import { ConsoleService } from './global-services/console.service';
 
 @NgModule({
   declarations: [
@@ -58,8 +58,8 @@ import {GSViewer} from './gs-viewer/gs-viewer.module';
     TextViewerComponent,
     HelpViewerComponent,
     NodeLibraryComponent,
-    PanelComponent, 
-    CallbackPipe
+    PanelComponent,
+    ConsoleComponent
   ],
   entryComponents: [
     ModuleboxComponent
@@ -74,7 +74,7 @@ import {GSViewer} from './gs-viewer/gs-viewer.module';
     CustomMaterialModule,
     GSViewer
   ],
-  providers: [FlowchartService, LayoutService],
+  providers: [FlowchartService, LayoutService, ConsoleService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

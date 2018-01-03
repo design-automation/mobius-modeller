@@ -25,10 +25,6 @@ export class ParameterViewerComponent extends Viewer {
       this._inputs = [];
     }
 
-    filterInput(input: InputPort){
-        return !input.isConnected();
-    }
-
   	// addInput(): void{
    //    	this._node.addInput();
   	// 	  this.flowchartService.update();
@@ -73,7 +69,9 @@ export class ParameterViewerComponent extends Viewer {
   	update(): void{
   		this._node = this.flowchartService.getSelectedNode();
       if(this._node != undefined){
-         this._inputs = this._node.getInputs();
+         this._inputs = this._node.getInputs().filter(function(inp: InputPort){
+           return !inp.isConnected();
+         });
          this.isVisible = true;
       }
       else{

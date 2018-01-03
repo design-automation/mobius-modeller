@@ -299,6 +299,7 @@ export class CodeGeneratorJS extends CodeGenerator{
 			}
 			catch(ex){
 				alert("Oops.. Error executing flowchart");
+				node.hasError();
 				throw Error(ex);
 			}
 			return result;//result;// return result of the node

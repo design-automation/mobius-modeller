@@ -16,6 +16,8 @@
 						<tree-root #tree [nodes]='_tree' [options]='_tree_options'  (moveNode)="onMoveNode($event)">
 						  
 						  <ng-template #treeNodeTemplate let-prod let-index="index" class="tree-node-wrapper">
+							
+								<div class="seg1">
 
 								<!-- template for data -->
 								<div *ngIf="prod.data.name == 'Data'"> 
@@ -93,12 +95,18 @@
 									</div>
 								</div>
 
-							    <div class='btn-group'  *ngIf="prod.data.name != 'Else' && prod.data.name != 'If'">
+								</div>
+
+								<div class="seg2">
+
+							    <div *ngIf="prod.data.name != 'Else' && prod.data.name != 'If'">
 		    					    <button mat-button (click)="deleteProcedure(prod.data.model)">
 		    					    	<mat-icon>delete</mat-icon>
 		    					    </button>
 		    					    <!-- <button (click)="disableProcedure(prod, $event)">Disable</button>
 		    					    <button (click)="go($event)">Copy</button> -->
+		    					</div>
+
 		    					</div>
 
 						  </ng-template>

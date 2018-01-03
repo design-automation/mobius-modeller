@@ -9,6 +9,8 @@ import {ICodeGenerator, CodeFactory, IModule, ModuleUtils} from "../base-classes
 import * as CircularJSON from 'circular-json';
 
 import * as ModuleSet from "../../assets/modules/AllModules";
+
+import {ConsoleService} from "./console.service";
 /*import * as ModuleSet from "gs-modelling";*/
 
 @Injectable()
@@ -35,7 +37,7 @@ export class FlowchartService {
     return this._flowchart != undefined;
   }
 
-  constructor() { 
+  constructor(private consoleService: ConsoleService) { 
     this.newFile();
     this.checkSavedNodes();
   };
@@ -180,6 +182,9 @@ export class FlowchartService {
                       {_name: "Point", _version: 0.1, _author: "Patrick"},
                       {_name: "Pline", _version: 0.1, _author: "Patrick"}]);
 
+    // print message to console
+    this.consoleService.addMessage("New file created.");
+
     return this._flowchart;
   }
 
@@ -237,6 +242,9 @@ export class FlowchartService {
           }
         });*/
 
+      // print message to console
+      this.consoleService.addMessage("Node Saved.");
+
       this.checkSavedNodes();
       this.update();
     }
@@ -250,6 +258,9 @@ export class FlowchartService {
 
     let property = "MOBIUS_NODES";
     let storageString = myStorage.removeItem(property);
+
+    // print message to console
+    this.consoleService.addMessage("Node Library was cleared");
 
     this.checkSavedNodes();
     this.update();
@@ -280,6 +291,9 @@ export class FlowchartService {
 
     this._flowchart.addNode(new_node);
 
+    // print message to console
+    this.consoleService.addMessage("New Node was added");
+
     this.update();
   }
 
@@ -293,7 +307,11 @@ export class FlowchartService {
 
       input.setComputedValue({port: outputAddress});
 
-      this._flowchart.getNodeByIndex(inputAddress[0]).getInputByIndex(inputAddress[1])
+      this._flowchart.getNodeByIndex(inputAddress[0]).getInputByIndex(inputAddress[1]);
+
+      // print message to console
+      this.consoleService.addMessage("New Edge was added");
+
       this.update();
   }
 
@@ -301,6 +319,10 @@ export class FlowchartService {
   deleteNode(node_index: number): void{
       this._selectedNode = undefined;
       this._flowchart.deleteNode(node_index);
+
+      // print message to console
+      this.consoleService.addMessage("Node was deleted");
+
       this.update();
   }
  
@@ -352,6 +374,10 @@ export class FlowchartService {
   //
   execute(): any{
       this._flowchart.execute(this.code_generator, this._moduleMap);
+
+      // print message to console
+      this.consoleService.addMessage("Flowchart was executed");
+
       this.update();
   }
 
@@ -377,6 +403,10 @@ export class FlowchartService {
         filename: 'Scene' + (new Date()).getTime() + ".mob",
         content: fileString
     });
+
+    // print message to console
+    this.consoleService.addMessage("File saved successfully");
+
   }
 
   downloadContent(options) {

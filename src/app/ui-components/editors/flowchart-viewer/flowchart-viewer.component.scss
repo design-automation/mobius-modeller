@@ -146,6 +146,10 @@
 						border-style: solid;
 					}
 
+					&.error{
+						background-color: red;
+					}
+
 					.node-name{
 						font-family: sans-serif; 
 						font-size: 14px;

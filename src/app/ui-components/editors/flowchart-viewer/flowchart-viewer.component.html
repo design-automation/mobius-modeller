@@ -89,6 +89,7 @@
 							<!-- node body -->
 							<div class="node-body" 
 								[class.library]="node.getType() !== undefined"
+								[class.error]="node._hasError"
 								(click)="clickNode($event, node_index)"
 								draggable=true  
 								(dragstart)="nodeDragStart($event, node)" 
