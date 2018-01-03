@@ -26,6 +26,7 @@ export interface IFlowchart{
 	addEdge(outputAddress: number[], inputAddress: number[]): number;
 	deleteNode(nodeIndex: number): number;
 	deleteEdge(edgeIndex: number): number;
+	deleteEdges(edgeIndexArr: number[]): void;
 
 	getNodes(): IGraphNode[];
 	getEdges(): IEdge[];

@@ -8,24 +8,16 @@ export class InputPort extends Port{
 	// input
 	// color
 	// file
-	private _inputType: InputPortTypes = InputPortTypes.Default;
-
 	constructor(name: string, type?: {name: InputPortTypes, value: any}){ 
 		super(name);
 
 		if(type !== undefined){
-			this._inputType = type.name;
+			this._type = type.name;
 			this.setDefaultValue(type.value);
 		}
-	}
-
-	getType(): InputPortTypes{
-		return this._inputType;
-	}
-
-	setType(type: InputPortTypes): void{
-		super.setType(type);
-		this._inputType = type;
+		else{
+			this._type = InputPortTypes.Default;
+		}
 	}
 
 }

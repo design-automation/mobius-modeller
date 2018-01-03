@@ -199,6 +199,8 @@ export class CodeGeneratorJS extends CodeGenerator{
 
 				if(nodeVars.indexOf( procedure.getLeftComponent().expression ) == -1){
 					init = "let ";
+					nodeVars.push( procedure.getLeftComponent().expression );
+					console.log(nodeVars);
 				}
 				else{
 					init = "";
@@ -224,13 +226,15 @@ export class CodeGeneratorJS extends CodeGenerator{
 				let init: string;
 				if(nodeVars.indexOf( procedure.getLeftComponent().expression ) == -1){
 					init = "let ";
+					nodeVars.push( procedure.getLeftComponent().expression );
+					console.log(nodeVars);
 				}
 				else{
 					init = "";
 				}
 
 
-				code = init = procedure.getLeftComponent().expression 
+				code = init + procedure.getLeftComponent().expression 
 						+ " = " 
 						+ "Modules."
 						+ right.module.trim()

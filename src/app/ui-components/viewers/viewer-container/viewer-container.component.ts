@@ -10,19 +10,28 @@ import { Viewer } from '../../../base-classes/viz/Viewer';
 export class ViewerContainerComponent extends Viewer implements OnInit {
 
   	group = {value: 4};
+  	_lock: boolean;
 
 	constructor(injector: Injector){ 
 		super(injector, "Viewer Container", "Contains all the viewers");  
 	}
 
 	update() {
-		let port = this.flowchartService.getSelectedPort(); 
-		if(port == undefined){
-			this.group.value = 4; 
+
+		if(this._lock == false){
+			let port = this.flowchartService.getSelectedPort(); 
+			if(port == undefined){
+				this.group.value = 4; 
+			}
+			else{
+				this.group.value  = this.flowchartService.getSelectedPort().getType(); 
+			}
 		}
-		else{
-			this.group.value  = this.flowchartService.getSelectedPort().getType(); 
-		}
+
+	}
+
+	lock(){
+		this._lock = !this._lock;
 	}
 
   	ngOnInit() {

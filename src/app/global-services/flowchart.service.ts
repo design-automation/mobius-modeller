@@ -298,6 +298,11 @@ export class FlowchartService {
   }
 
   addEdge(outputAddress: number[], inputAddress: number[]):  void{
+
+      if(outputAddress[0] == inputAddress[0]){
+        return;
+      }
+
       this._flowchart.addEdge(outputAddress, inputAddress);
 
       let output = this._flowchart.getNodeByIndex(outputAddress[0]).getOutputByIndex(outputAddress[1])
@@ -339,9 +344,7 @@ export class FlowchartService {
         }
       }
 
-      for(let s=0; s < splicedEdges.length; s++){
-        this.deleteEdge(s);
-      }
+      this.deleteEdges(splicedEdges);
 
       this._flowchart.deleteNode(node_index);
 
@@ -349,6 +352,10 @@ export class FlowchartService {
       this.consoleService.addMessage("Node was deleted");
 
       this.update();
+  }
+
+  deleteEdges(edgeArr: number[]): void{
+    this._flowchart.deleteEdges(edgeArr);
   }
  
 

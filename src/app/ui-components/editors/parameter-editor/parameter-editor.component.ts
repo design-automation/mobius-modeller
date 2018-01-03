@@ -84,8 +84,8 @@ export class ParameterEditorComponent extends Viewer{
       }
     }
 
-    updateType(type: InputPortTypes|OutputPortTypes, port: InputPort|OutputPort){
-      port.setType(type);
+    updateType(type: InputPortTypes|OutputPortTypes, port: InputPort|OutputPort): void{
+        port.setType(type);
     }
 
     updateDefaultValue($event, port: InputPort|OutputPort): void{

@@ -3,27 +3,15 @@ import {OutputPortTypes} from "./OutputPortTypes";
 
 export class OutputPort extends Port{
 
-	private _viewer: OutputPortTypes;
-
 	constructor(name: string, type?: OutputPortTypes){
 		super(name);
 
 		if(type !== undefined){
-			this._viewer = type;
+			this._type = type;
 		}
 		else{
-			this._viewer = OutputPortTypes.Console;
+			this._type = OutputPortTypes.Console;
 		}
-	}
-
-	getType(): OutputPortTypes{
-		return this._viewer;
-
-	}
-
-	setType(type: OutputPortTypes): void{
-		super.setType(type);
-		this._viewer = type;
 	}
 
 }

@@ -7,7 +7,7 @@ import {OutputPortTypes} from './OutputPortTypes';
 export abstract class Port implements IPort{
 
 	private _id: string;
-	private _type: InputPortTypes|OutputPortTypes;
+	protected _type: InputPortTypes|OutputPortTypes;
 
 	private _selected: boolean = false;
 	private _disabled: boolean = false;
@@ -30,7 +30,7 @@ export abstract class Port implements IPort{
 	}
 
 	getType(): InputPortTypes|OutputPortTypes{
-		return undefined;
+		return this._type;
 	}
 
 	setType(type: InputPortTypes|OutputPortTypes): void{
