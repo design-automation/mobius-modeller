@@ -37,11 +37,12 @@
     "ng2-ace-editor": "^0.3.4",
     "rxjs": "^5.5.2",
     "three": "^0.88.0",
+    "three-orbitcontrols-ts": "^0.1.2",
     "typescript-compiler": "^1.4.1",
     "zone.js": "^0.8.14"
   },
   "devDependencies": {
-    "@angular/cli": "^1.5.4",
+    "@angular/cli": "^1.6.3",
     "@angular/compiler-cli": "^5.1.2",
     "@angular/language-service": "^5.0.0",
     "@types/jasmine": "^2.8.2",
