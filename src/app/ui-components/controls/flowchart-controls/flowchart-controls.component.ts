@@ -26,6 +26,7 @@ export class FlowchartControlsComponent extends Viewer implements OnInit{
     this.flowchartService.execute();
   }
 
+
   loadFile(url ?:string): void{
     this.flowchartService.loadFile(url);
   }

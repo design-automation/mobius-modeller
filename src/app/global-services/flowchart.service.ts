@@ -105,10 +105,13 @@ export class FlowchartService {
         // read the flowchart
         _this._flowchart = FlowchartReader.readFlowchartFromData(data["flowchart"]);
         _this.update();
+
+        this.consoleService.addMessage("File loaded successfully");
         
       }
       catch(err){
-        alert("Error loading file");
+        this.consoleService.addMessage("Error loading file: " + err);
+        this.newFile();
       }
 
   }

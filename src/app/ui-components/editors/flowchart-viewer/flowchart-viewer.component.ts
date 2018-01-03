@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Injector } from '@angular/core';
+import { Component, OnInit, OnDestroy, Injector, ViewChild, ElementRef } from '@angular/core';
 import { NgClass } from '@angular/common';
 
 import { IGraphNode, IEdge, GraphNode } from '../../../base-classes/node/NodeModule';
@@ -495,6 +495,38 @@ export class FlowchartViewerComponent extends Viewer{
 
   saveNode(node: IGraphNode): void{
     this.flowchartService.saveNode(node);
+  }
+
+
+
+  //
+  //
+  
+  @ViewChild('fileInput') fileInput: ElementRef;
+  openPicker(): void{
+    let el: HTMLElement = this.fileInput.nativeElement as HTMLElement;
+    el.click();
+  }
+
+  loadFile(url ?:string): void{
+    let file = this.fileInput.nativeElement.files[0];
+    if (file) {
+        var reader = new FileReader();
+        reader.readAsText(file, "UTF-8");
+        let fs = this.flowchartService;
+        reader.onload = function (evt) {
+          let fileString: string = evt.target["result"];
+          fs.loadFile(fileString);
+        }
+        reader.onerror = function (evt) {
+            console.log("Error reading file");
+        }
+    }
+    this.flowchartService.loadFile(url);
+  }
+
+  save(): void{
+    this.flowchartService.saveFile();
   }
 
 }
