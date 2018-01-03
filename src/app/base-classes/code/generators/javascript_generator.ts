@@ -200,7 +200,6 @@ export class CodeGeneratorJS extends CodeGenerator{
 				if(nodeVars.indexOf( procedure.getLeftComponent().expression ) == -1){
 					init = "let ";
 					nodeVars.push( procedure.getLeftComponent().expression );
-					console.log(nodeVars);
 				}
 				else{
 					init = "";
@@ -227,7 +226,6 @@ export class CodeGeneratorJS extends CodeGenerator{
 				if(nodeVars.indexOf( procedure.getLeftComponent().expression ) == -1){
 					init = "let ";
 					nodeVars.push( procedure.getLeftComponent().expression );
-					console.log(nodeVars);
 				}
 				else{
 					init = "";
@@ -290,7 +288,6 @@ export class CodeGeneratorJS extends CodeGenerator{
 		}
 
 		executeNode(node: IGraphNode, params: any, Modules: IModule[]): any{
-			console.log(params);
 			//let gis = this._modules["gis"];
 			let str: string = "(function(){ \
 						" + this.getNodeCode(node) + "\n" + this.getFunctionCall(node, [], true) + "\n" + "return " + node.getName() + ";" + "})(); \
@@ -298,14 +295,13 @@ export class CodeGeneratorJS extends CodeGenerator{
 			let result: any;
 
 			try{
-				console.log(str);
 				result = eval(str);
 			}
 			catch(ex){
-				alert("Oops.. Error executing flowchart");
 				node.hasError();
 				throw Error(ex);
 			}
+			
 			return result;//result;// return result of the node
 		}
 

@@ -414,10 +414,15 @@ export class FlowchartService {
   //  run this flowchart
   //
   execute(): any{
-      this._flowchart.execute(this.code_generator, this._moduleMap);
 
-      // print message to console
-      this.consoleService.addMessage("Flowchart was executed");
+      try{
+        this._flowchart.execute(this.code_generator, this._moduleMap);
+        this.consoleService.addMessage("Flowchart was executed");
+      }
+      catch(ex){
+        this.consoleService.addMessage("There was an error executing");
+        this.consoleService.addMessage(ex);
+      }
 
       this.update();
   }

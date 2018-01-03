@@ -39,6 +39,9 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
   
   constructor(injector: Injector, myElement: ElementRef) { 
     super(injector);
+
+    this.myElement = myElement;
+
     this.scene=new THREE.Scene();
     this.dataService.addScene(this.scene);
     this.renderer = new THREE.WebGLRenderer( {antialias: true} );
@@ -51,35 +54,36 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
     this.mouse=new THREE.Vector2();
     this.raycaster = new THREE.Raycaster();
     this.selecting=[];
-    this.myElement = myElement;
+
   }
 
   //
   //  checks if the flowchart service has a flowchart and calls update function for the viewer
   //
   notify(): void{
-    //this.updateViewer();
+   this.updateViewer();
   }
 
 
   ngOnInit() {
-   //this.updateViewer();
+    this.updateViewer();
   }
 
   updateViewer(){ 
+    this.container= this.myElement.nativeElement.children[0];
 
     this.boxes = this.dataService.getGsModel();
     this.model= new gs.Model(this.boxes);
 
     this.scene.background = new THREE.Color( 0xcccccc );
-    this.container= this.myElement.nativeElement.children[0];//document.getElementById( 'container' );
+    
     this.width=this.container.clientWidth || 600;
     this.height=this.container.clientHeight;    
 
     this.renderer.setPixelRatio( window.devicePixelRatio );
     this.renderer.setSize( this.width, this.height );
       
-    //this.container.appendChild( this.renderer.domElement );
+    this.container.appendChild( this.renderer.domElement );
 
     // window.addEventListener( 'resize', function() {
     //   self.width=self.container.clientWidth;
