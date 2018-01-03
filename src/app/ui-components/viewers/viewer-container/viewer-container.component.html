@@ -1,28 +1,28 @@
 <div class="viewer-container">             
-	<mat-button-toggle-group class="viewer-toggle" #group="matButtonToggleGroup">
-		<mat-button-toggle value="1" class="viewer-toggle-btn" matTooltip="3D Viewer">
+	<mat-button-toggle-group class="viewer-toggle" [(ngModel)]="group.value" >
+		<mat-button-toggle value="0" class="viewer-toggle-btn" matTooltip="3D Viewer">
 		  <mat-icon>3d_rotation</mat-icon>
 		</mat-button-toggle>
-		<mat-button-toggle value="2" class="viewer-toggle-btn" matTooltip="Code Viewer">
+		<mat-button-toggle value="1" class="viewer-toggle-btn" matTooltip="Code Viewer">
 		  <mat-icon>code</mat-icon>
 		</mat-button-toggle>
-		<mat-button-toggle value="0" class="viewer-toggle-btn" matTooltip="Text Viewer">
+		<mat-button-toggle value="2" class="viewer-toggle-btn" matTooltip="Text Viewer">
 		  <mat-icon>description</mat-icon>
 		</mat-button-toggle>
 		<!-- <mat-button-toggle value="3" disabled class="viewer-toggle-btn" matTooltip="??">
 		  <mat-icon>text_format</mat-icon>
 		</mat-button-toggle> -->
-		<mat-button-toggle value="4" class="viewer-toggle-btn" matTooltip="Console">
+		<mat-button-toggle value="3" class="viewer-toggle-btn" matTooltip="Console">
 		  <mat-icon>info_outline</mat-icon>
 		</mat-button-toggle>
-		<mat-button-toggle checked="true" value="5" class="viewer-toggle-btn" matTooltip="Help" >
+		<mat-button-toggle value="4" class="viewer-toggle-btn" matTooltip="Help" >
 		  <mat-icon>help_outline</mat-icon>
 		</mat-button-toggle>
 	</mat-button-toggle-group>
 
-	<app-text-viewer *ngIf="group.value == 0"></app-text-viewer>
-	<app-geometry-viewer *ngIf="group.value == 1 "></app-geometry-viewer>
-	<app-code-viewer *ngIf="group.value == 2"></app-code-viewer>
-	<app-console *ngIf="group.value == 4"></app-console>
-	<app-help-viewer *ngIf="group.value == 5 || group.value == undefined"></app-help-viewer>
+	<app-geometry-viewer *ngIf="group.value == 0"></app-geometry-viewer>
+	<app-code-viewer *ngIf="group.value == 1"></app-code-viewer>
+	<app-text-viewer *ngIf="group.value == 2"></app-text-viewer>
+	<app-console *ngIf="group.value == 3"></app-console>
+	<app-help-viewer *ngIf="group.value == 4"></app-help-viewer>
 </div>

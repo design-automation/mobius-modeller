@@ -66,7 +66,7 @@
 								[style.left.px]="node.position[0]" 
 								[style.top.px]="node.position[1]" >
 
-							<div class="btn-container" *ngIf="isSelected(node)" >
+							<div class="btn-container" *ngIf="node_index == _selectedNodeIndex" >
 								<!-- <div class="btn-group node-btns">
 									<div class="action-button" (click)="addPort(node_index, 'in')">
 										<mat-icon>input</mat-icon>
@@ -97,7 +97,7 @@
 								(dragend)="nodeDragEnd($event, node)">
 								
 								<div class="node-name" 
-										[class.selected]="isSelected(node)" >
+										[class.selected]="node_index == _selectedNodeIndex" >
 										{{node.getName()}}
 								</div>
 								
@@ -125,14 +125,16 @@
 								<!-- outputs -->
 								<div class="port-container">
 									<div class="port output"
-										*ngFor="let port of node.getOutputs(); let po=index"
+										*ngFor="let port of node.getOutputs(); let po=index;"
 										id="n{{node_index}}po{{po}}">
 
 										<span class="port-name">{{port.getName()}}</span>
 
 										<div class="port-grip" 
 											draggable=true
+											[class.selected]="isPortSelected(node_index, po)"
 											[class.connected]="port.isConnected()" 
+											(click)="clickPort($event, node_index, po)"
 											(dragstart)="portDragStart($event, port, [node_index, po])" 
 											(drag)="portDragging($event, port)" 
 											(dragend)="portDragEnd($event, port)"

@@ -1,11 +1,12 @@
-import {PortTypes} from "./PortTypes";
+import {InputPortTypes} from "./InputPortTypes";
+import {OutputPortTypes} from "./OutputPortTypes";
 
 export interface IPort{
 
 	getId(): string;
-	getType(): PortTypes;
+	getType(): InputPortTypes|OutputPortTypes;
 
-	setType(type: PortTypes): void;
+	setType(type: InputPortTypes|OutputPortTypes): void;
 
 
 	isSelected(): boolean;

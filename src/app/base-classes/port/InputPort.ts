@@ -1,5 +1,5 @@
 import {Port} from "./Port";
-import {PortTypes} from "./PortTypes";
+import {InputPortTypes} from "./InputPortTypes";
 
 export class InputPort extends Port{
 	
@@ -8,9 +8,9 @@ export class InputPort extends Port{
 	// input
 	// color
 	// file
-	private _inputType: PortTypes = PortTypes.Default;
+	private _inputType: InputPortTypes = InputPortTypes.Default;
 
-	constructor(name: string, type?: {name: PortTypes, value: any}){ 
+	constructor(name: string, type?: {name: InputPortTypes, value: any}){ 
 		super(name);
 
 		if(type !== undefined){
@@ -19,8 +19,13 @@ export class InputPort extends Port{
 		}
 	}
 
-	getType(): PortTypes{
+	getType(): InputPortTypes{
 		return this._inputType;
+	}
+
+	setType(type: InputPortTypes): void{
+		super.setType(type);
+		this._inputType = type;
 	}
 
 }

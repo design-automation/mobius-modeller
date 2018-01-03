@@ -28,6 +28,8 @@ export class FlowchartViewerComponent extends Viewer{
   _margin: number = 10; 
 
   _selectedNode: IGraphNode;
+  _selectedNodeIndex: number;
+  _selectedPortIndex: number;
   _nodes: IGraphNode[] = [];
   _edges: IEdge[] = [];
 
@@ -42,6 +44,8 @@ export class FlowchartViewerComponent extends Viewer{
 
   reset(){ 
     this._selectedNode = undefined;
+    this._selectedNodeIndex = undefined;
+    this._selectedPortIndex = undefined;
     this._nodes = [];
     this._edges = [];
   }
@@ -129,6 +133,8 @@ export class FlowchartViewerComponent extends Viewer{
     this.updateEdges();
 
     this._selectedNode = this.flowchartService.getSelectedNode();
+    this._selectedNodeIndex = this.flowchartService.getSelectedNodeIndex();
+    this._selectedPortIndex = this.flowchartService.getSelectedPortIndex();
   }
 
   resetData(): void{
@@ -146,6 +152,10 @@ export class FlowchartViewerComponent extends Viewer{
     }
 
     return this.flowchartService.isSelected(node);
+  }
+
+  isPortSelected(nodeIndex:number, portIndex: number){
+    return (nodeIndex == this._selectedNodeIndex && portIndex == this._selectedPortIndex)
   }
 
   isSaved(node: IGraphNode): boolean{
@@ -184,6 +194,12 @@ export class FlowchartViewerComponent extends Viewer{
   clickNode($event: Event, nodeIndex: number): void{
     // select the node
     this.flowchartService.selectNode(nodeIndex);
+  }
+
+  clickPort($event: Event, nodeIndex: number, portIndex: number): void{
+    // select the node
+    $event.stopPropagation();
+    this.flowchartService.selectNode(nodeIndex, portIndex);
   }
 
   // addPort(nodeIndex: number, type: string): void{
@@ -361,7 +377,6 @@ export class FlowchartViewerComponent extends Viewer{
     }
 
     let node_pos: number[] = this._nodes[nodeIndex].position;
-    console.log(node_pos);
 
     let port_pos_x = el.offsetLeft;
     let port_pos_y = el.offsetTop;
@@ -380,8 +395,6 @@ export class FlowchartViewerComponent extends Viewer{
       throw Error("Unknown port type");
     }
 
-    console.log(node_pos);
-
     return {x: x, y: y}
   }
 
@@ -389,8 +402,6 @@ export class FlowchartViewerComponent extends Viewer{
   // Edge drawing functions
   //
   getEdgePath(edge: IEdge): string{
-
-    console.log("get edge path");
 
     return this.edgeString( 
           this.getPortPosition(edge.output_address[0], edge.output_address[1], "po"), 

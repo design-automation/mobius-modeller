@@ -317,7 +317,32 @@ export class FlowchartService {
 
 
   deleteNode(node_index: number): void{
-      this._selectedNode = undefined;
+      this._selectedNode = 0;
+      this._selectedPort = 0;
+
+
+      let splicedEdges = [];
+      let edges = this.getEdges();
+      for(let e=0; e < edges.length; e++){
+        let edge = edges[e];
+        if( edge.output_address[0] == node_index){
+            let port = this._flowchart.getNodeByIndex(edge.input_address[0]).getInputByIndex(edge.input_address[1]);
+            port.disconnect();
+            port.setComputedValue(undefined);
+            splicedEdges.push(e);
+        }
+        else if(edge.input_address[0] == node_index){
+            let port = this._flowchart.getNodeByIndex(edge.output_address[0]).getOutputByIndex(edge.output_address[1]);
+            port.disconnect();
+            port.setComputedValue(undefined);
+            splicedEdges.push(e);
+        }
+      }
+
+      for(let s=0; s < splicedEdges.length; s++){
+        this.deleteEdge(s);
+      }
+
       this._flowchart.deleteNode(node_index);
 
       // print message to console
@@ -327,21 +352,19 @@ export class FlowchartService {
   }
  
 
-  deleteEdge(): void{
+  deleteEdge(edgeIndex: number): void{
+    this._flowchart.deleteEdge(edgeIndex);
 
+    // print message to console
+    this.consoleService.addMessage("Edge was deleted");
   }
 
   //
   //  select node
   //
-  selectNode(nodeIndex: number): void{
+  selectNode(nodeIndex: number, portIndex ?:number): void{
     this._selectedNode = nodeIndex;
-    this._selectedPort = undefined;
-    this.update();
-  }
-
-  selectPort(outputportIndex: number):void{
-    this._selectedPort = outputportIndex; 
+    this._selectedPort = portIndex || 0;
     this.update();
   }
 
@@ -353,9 +376,20 @@ export class FlowchartService {
     return this._flowchart.getNodeByIndex(this._selectedNode);
   }
 
+  getSelectedNodeIndex(): number{
+    return this._selectedNode;
+  }
+
   getSelectedPort(): any{
+
+    if(this._selectedNode == undefined)
+      return undefined;
     // todo: where is this used?
     return this.getSelectedNode().getOutputByIndex(this._selectedPort);
+  }
+
+  getSelectedPortIndex(): number{
+    return this._selectedPort;
   }
 
   //

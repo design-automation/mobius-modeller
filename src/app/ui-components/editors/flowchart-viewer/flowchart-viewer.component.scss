@@ -189,6 +189,10 @@
 								background-color: $color2;
 								cursor: pointer;
 
+								&.selected{
+									border: 2px solid black;
+								}
+
 								&:hover{
 									background-color: $color4;
 								}

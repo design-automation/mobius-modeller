@@ -36,8 +36,8 @@
 							<div class='row'>
 								<span class='label'>Type</span>
 								<span class='content'>
-									<select (change)="updateInputType($event.target.value, inp)">
-										         	    <option *ngFor="let x of portOpts" [value]="x" [selected]="inp.getType() == x">{{getTypeName(x)}}</option>
+									<select (change)="updateType($event.target.value, inp)">
+										         	    <option *ngFor="let x of inputPortOpts" [value]="x" [selected]="inp.getType() == x">{{getInputTypeName(x)}}</option>
 										            </select>
 								</span>
 							</div>
@@ -76,6 +76,14 @@
 								<span class='label'>Name</span>
 								<span class='content' contenteditable="true" (blur)="updatePortName($event, output)">
 									{{ output.getName() || "undefined" }}
+								</span>
+							</div>
+							<div class='row'>
+								<span class='label'>Type</span>
+								<span class='content'>
+									<select (change)="updateType($event.target.value, output)">
+						         	    <option *ngFor="let x of outputPortOpts" [value]="x" [selected]="output.getType() == x">{{getOutputTypeName(x)}}</option>
+						            </select>
 								</span>
 							</div>
 							<!-- <div class='row'>
