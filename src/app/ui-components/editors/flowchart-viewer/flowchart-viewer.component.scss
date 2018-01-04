@@ -1,11 +1,14 @@
 @import '~scss/globals';
 
+split-area{
+	overflow: auto !important;
+}
+
 .viewer{
 
 	@extend .viewer;
 
 	position: relative;
-	overflow: hidden;
 
 	height: 100%; 
 	width: 100%;
@@ -15,6 +18,11 @@
 	background-image: repeating-linear-gradient(0deg,transparent,transparent 70px,$color3 70px,$color3 71px),repeating-linear-gradient(-90deg,transparent,transparent 70px,$color3 70px,$color3 71px);
 	background-size: 71px 71px;
 	background-color: white;
+
+	box-sizing: border-box;
+	height: 100%;
+	width: 100%;
+	padding-bottom: $header-height;
 
 	.container{
 		position: relative;

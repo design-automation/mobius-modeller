@@ -1,10 +1,14 @@
-<div class="node" *ngFor="let n of _savedNodes; let i=index"
-	(click)="addNode($event, i)">
-	{{n._name}}
+
+<div class="disabled">Save Library</div>
+<div class="disabled">Load Library</div>
+
+<div (click)="clearLibrary()">
+	Clear Library
 </div>
 
 <br><br><br>
 
-<div (click)="clearLibrary()">
-	Clear Library
+<div class="node" *ngFor="let n of _savedNodes; let i=index"
+	(click)="addNode($event, i)">
+	{{n._name}}
 </div>

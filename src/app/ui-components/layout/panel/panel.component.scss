@@ -4,12 +4,13 @@
 	display: flex; 
 	flex-direction: row; 
 	justify-content: space-between;
+	
 	border-bottom: 1px solid $color2;
 	background-color: $color1;
 	color: white; 
 	font-weight: bold;
-	height: 30px; 
-	line-height: 30px; 
+	height: $header-height; 
+	line-height: $header-height; 
 	font-size: 14px; 
 	padding: 0px $default-side-padding;
 

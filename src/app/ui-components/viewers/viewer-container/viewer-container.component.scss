@@ -1,11 +1,18 @@
 @import '~scss/globals';
 
 .viewer-toggle{
-	flex-direction: row; 
+	display: flex;
+	flex-flow: row wrap;
 	width: 100%;
 	background-color: $color1;
 	mat-icon{
 		color:$color2;
+	}
+	.mat-button-toggle-disabled{
+		background-color:$color1;
+		mat-icon{
+			color:$color5 !important;
+		}
 	}
 }
 
@@ -20,8 +27,8 @@
 	height: 100%;
 
 	padding: 0px;
-	margin: 0px;
+	margin: 0px !important;
 
-	overflow: hidden;
+	overflow: hidden !important;
 
 }

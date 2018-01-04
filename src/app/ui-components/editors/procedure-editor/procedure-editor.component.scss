@@ -1,8 +1,9 @@
 @import '~scss/globals';
 
+
+/*
 .viewer{
 	@extend .viewer;
-
 	.container{
 		position: relative;
 
@@ -11,15 +12,11 @@
 		display: flex; 
 		flex-direction: column;
 
-		overflow: hidden;
-		background-color: white;
-
 		.tree{
 			margin-top: 20px; 
 			min-height: 150px;
 			height: 100%;
 			width: 100%; 
-			overflow-x: hidden;
 		}
 
 		.tree-node-wrapper{
@@ -29,11 +26,11 @@
 				text-align: center;
 			}
 
-			.param-container{
+			/*.param-container{
 				display: inline-block;
 				background-color: $color3;
-			}
-
+			}*/
+/*
 			.procedure-item{
 				margin: 3px; 
 				padding: 3px;
@@ -53,24 +50,18 @@
 					flex-direction: row; 
 					justify-content: space-between;
 				}
-
-				&:hover{
-					background-color: $color4;
-				}
 			}
-		}
+		}*/
 
 
-		.toolbox{
-
+		/*.toolbox{
 			max-height: 600px;
-			overflow: auto;
 			background-color:$color1;
 			.fn_name{
 				font-size: 12px;
 			}
 		}
-	}
+	}*/
 
 	
 
@@ -126,8 +117,8 @@ input.tree-input{
 	text-align: center;
 	vertical-align: middle;
 	border-bottom: 1px dashed blue;
-} */
-		
+} 	
+
 }
 
 
@@ -159,3 +150,4 @@ input.tree-input{
 	}
 }
  */
+

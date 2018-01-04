@@ -1,73 +1,74 @@
 @import '~scss/globals';
+$execute-height: 36px;
 
 .viewer{
 	display: flex; 
-	flex-direction: row;
-	flex-wrap:wrap;
-	background-color: white;
+	flex-direction: column;
+	flex-wrap: no-wrap;
 	justify-content: space-between;
-	height: 70%;
-	width: 99%;
+
+	background-color: white;
+
+	box-sizing: border-box;
+	height: 100%;
+	width: 100%;
+	padding-bottom: $header-height;
 
 	.container{
-		height:100%;
-		flex-grow:20;
-		flex-shrink:0;
 		display: flex; 
 		flex-direction: column;
-		direction: rtl;
 		overflow:auto;
-		flex-basis: auto;
+		box-sizing: border-box;
+		height: auto;
+		padding-bottom: $execute-height;
 		.paramater-container{
 			flex-grow:1;
 			flex-shrink:0;
-			direction:ltr;
+			height: auto;
 			display: flex; 
 			flex-direction: row; 
 			justify-content: space-equally;
 			font-size: 14px;
 			line-height: 18px;
-
+			border-bottom: 1px solid $color2;
+			width: 100%;
 			/*padding: 5px 0px 0px 0px;
 			margin: 15px; */
 			.info{
-			background-color: $color3;
+			background-color: white;
 			padding: 0 $default-side-padding;
 			color: $color1;
 			width:20%;
-			}
-			/*border-top: 1px dashed $color1;
-			border-bottom: 1px dashed $color1;*/
+				.param{
+					display: flex; 
+					flex-direction: column; 
+					margin: 5px 0px;
+					.label{
+						width: 80px; 
+						text-transform: uppercase; 
+						font-size: 10px; 
+						color: $color2; 
+					}
 
-			.param{
-				display: flex; 
-				flex-direction: column; 
-				margin: 5px 0px;
-				.label{
-					width: 80px; 
-					text-transform: uppercase; 
-					font-size: 10px; 
-					color: $color2; 
-				}
-
-				.content{
-					font-size: 12px;
+					.content{
+						font-size: 12px;
+					}
 				}
 			}
-
-			.connection{
-					border-bottom: 1px solid $color2;
+			/*.connection{
+					//border-bottom: 1px solid $color2;
 					padding: 0 0 $default-side-padding 0;
 					margin: 0;
-			}
-
+			}*/
 			.value{
 				padding: $default-side-padding;
 				.content{
 					color:$color1;
 				}
-			}		
-	
+			}
+			//border-bottom: 1px solid $color2;
+			/*border-top: 1px dashed $color1;
+			border-bottom: 1px dashed $color1;*/
 		}
 	}
 
@@ -100,10 +101,23 @@
 } */
 	
 }
+//.buttoncontainer{
+	//display: flex;
+	//flex-direction: reverse-row;
+	//justify-content: flex-end;
+	//height: $execute-height;
+//}
 
 #execute{
+	width: 100%;
 	background-color:$color5;
 	color: white;
+	height: $execute-height;
 	align-self: flex-end;
-	flex-grow: 1;
+	flex-shrink:0;
+	//flex-grow: 1;
+	&:hover{
+		background-color: $color4;
+		color:$color5;
+	}
 }

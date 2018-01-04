@@ -1,5 +1,9 @@
 @import '~scss/globals';
 
+.default{
+	text-align: center;
+}
+
 .editor{
 	background-color: white;
 
@@ -8,9 +12,9 @@
 
 	height: 100%;
 	width: 100%;
-	overflow: hidden;
+	//overflow: hidden;
 
-	.node-header{
+	/*.node-header{
 		padding: 15px 0px 15px 0px;
 		font-size: 18px; 
 		line-height: 24px;
@@ -31,6 +35,14 @@
 
 	.full-width{
 		width: 100%;
-	}
+	}*/
 
+}
+
+.editor-container{
+	box-sizing: border-box;
+	height: 100%;
+	width: 100%;
+	padding-bottom: $header-height;
+	overflow: auto;
 }
