@@ -51,7 +51,7 @@ export class LayoutService {
 
   	maximize(panel_id: string): void{
 
-        if(panel_id == "main" || panel_id == "bottom"){
+        if(panel_id == "main"){
           return;
         }
 

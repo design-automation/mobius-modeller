@@ -6,6 +6,13 @@
 				{{ output.getValue() }}
 			</li>
 		</ul>
+
+	</div>
+
+	<div>
+		Selected Port: 
+		<br>
+		{{ getPortContent() }}
 	</div>
 
 	<div class="default" *ngIf="_selectedNode === undefined">

@@ -10,7 +10,7 @@ import { Viewer } from '../../../base-classes/viz/Viewer';
 export class ViewerContainerComponent extends Viewer implements OnInit {
 
   	group = {value: 4};
-  	_lock: boolean;
+  	_lock: boolean = false;
 
 	constructor(injector: Injector){ 
 		super(injector, "Viewer Container", "Contains all the viewers");  

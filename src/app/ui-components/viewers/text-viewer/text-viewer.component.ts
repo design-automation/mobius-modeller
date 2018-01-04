@@ -2,6 +2,7 @@ import { Component, Injector, OnInit } from '@angular/core';
 
 import { Viewer } from '../../../base-classes/viz/Viewer';
 import { IGraphNode } from '../../../base-classes/node/NodeModule';
+import { IPort } from '../../../base-classes/port/PortModule';
 
 @Component({
   selector: 'app-text-viewer',
@@ -11,6 +12,7 @@ import { IGraphNode } from '../../../base-classes/node/NodeModule';
 export class TextViewerComponent extends Viewer implements OnInit {
 
 	_selectedNode: IGraphNode;
+	_selectedPort: IPort;
 
 	constructor(injector: Injector){ 
 		super(injector, "Text Viewer", "Displayed geometry with each node;");  
@@ -20,7 +22,23 @@ export class TextViewerComponent extends Viewer implements OnInit {
 		this.update();
 	}
 
+	getPortContent(): string{
+
+		let value = this._selectedPort.getValue();
+		if(typeof(value) == "object"){
+			value = JSON.stringify(value);
+		}
+
+		return value;
+	}
+
 	update() :void{
-		this._selectedNode = this.flowchartService.getSelectedNode();	
+		try{
+			this._selectedNode = this.flowchartService.getSelectedNode();	
+			this._selectedPort = this.flowchartService.getSelectedPort();
+		}
+		catch(ex){
+
+		}
 	}
 }

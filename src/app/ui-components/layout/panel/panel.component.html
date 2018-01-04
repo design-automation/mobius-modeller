@@ -4,10 +4,10 @@
 	<div class="btn-group">
 		<div (click)="maximize()">
 			<span matTooltip="Expand">
-				<mat-icon [class.disabled]="panel_id == 'bottom' || panel_id == 'main'" >aspect_ratio</mat-icon>
+				<mat-icon [class.disabled]="panel_id == 'main'">aspect_ratio</mat-icon>
 			</span>
 		</div>
-		<div (click)="minimize()">
+		<!-- <div (click)="minimize()">
 			<span matTooltip="Minimize">
 				<mat-icon  [class.disabled]="true" >remove</mat-icon>
 			</span>
@@ -16,7 +16,7 @@
 			<span matTooltip="Restore">
 				<mat-icon  [class.disabled]="true">open_in_new</mat-icon>
 			</span>
-		</div>
+		</div> -->
 	</div>
 </div>
 

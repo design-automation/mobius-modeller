@@ -57,17 +57,8 @@ export class SettingComponent implements OnInit {
 
   changegrid(){
     this.gridVisible = !this.gridVisible;
-    console.log(this.scene.children[1].children[0].children[0].geometry);
-    var max=0;
-    for(var i=0;i<this.scene.children[1].children.length;i++){
-      var axisX=this.scene.children[1].children[i].children[0].geometry.boundingSphere.center.x;
-      var axisY=this.scene.children[1].children[i].children[0].geometry.boundingSphere.center.y;
-      var axis=this.scene.children[1].children[i].children[0].geometry.boundingSphere.radius;
-      var calcuate=Math.max(Math.abs(axisX+axis),Math.abs(axisX-axis),Math.abs(axisY+axis),Math.abs(axisY-axis));
-      max=Math.ceil(Math.max(calcuate,max));
-    }
     if(this.gridVisible){
-      var gridhelper=new THREE.GridHelper( max, max );
+      var gridhelper=new THREE.GridHelper( 500, 500 );
       gridhelper.name="GridHelper";
       this.scene.add( gridhelper);
     }
@@ -78,16 +69,8 @@ export class SettingComponent implements OnInit {
 
   changeaxis(){
     this.axisVisible = !this.axisVisible;
-    var max=0;
-    for(var i=0;i<this.scene.children[1].children.length;i++){
-      var axisX=this.scene.children[1].children[i].children[0].geometry.boundingSphere.center.x;
-      var axisY=this.scene.children[1].children[i].children[0].geometry.boundingSphere.center.y;
-      var axis=this.scene.children[1].children[i].children[0].geometry.boundingSphere.radius;
-      var calcuate=Math.max(Math.abs(axisX+axis),Math.abs(axisX-axis),Math.abs(axisY+axis),Math.abs(axisY-axis));
-      max=Math.ceil(Math.max(calcuate,max));
-    }
     if(this.axisVisible){
-      var axishelper = new THREE.AxisHelper( max );
+      var axishelper = new THREE.AxisHelper( 1000 );
       axishelper.name="AxisHelper";
       this.scene.add( axishelper);
     }else{
