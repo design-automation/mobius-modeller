@@ -194,7 +194,8 @@ split-area{
 								width: $port-size; 
 								height: $port-size; 
 								border-radius: 50%;
-								background-color: $color2;
+								background-color: $color3;
+								border: 1px solid $color1;
 								cursor: pointer;
 
 								&.selected{
