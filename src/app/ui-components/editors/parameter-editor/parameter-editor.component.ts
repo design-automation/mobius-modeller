@@ -1,11 +1,10 @@
 import { Component, Injector } from '@angular/core';
 
 import { IGraphNode } from '../../../base-classes/node/NodeModule';
-import { InputPort, OutputPort, PortTypes } from '../../../base-classes/port/PortModule';
+import { InputPort, OutputPort, InputPortTypes, OutputPortTypes } from '../../../base-classes/port/PortModule';
 
 import { Viewer } from '../../../base-classes/viz/Viewer';
 import { FlowchartService } from '../../../global-services/flowchart.service';
-
 
 @Component({
   selector: 'app-parameter-editor',
@@ -21,12 +20,19 @@ export class ParameterEditorComponent extends Viewer{
     _outputs: OutputPort[];
 
     // shift to iport
-    portOpts: PortTypes[] = [
-        PortTypes.Default, 
-        PortTypes.Input, 
-        PortTypes.ColorPicker, 
-        PortTypes.FilePicker, 
-        PortTypes.Dropdown
+    inputPortOpts: InputPortTypes[] = [
+        InputPortTypes.Default, 
+        InputPortTypes.Input, 
+        InputPortTypes.ColorPicker, 
+        InputPortTypes.FilePicker, 
+        InputPortTypes.Dropdown
+    ]; 
+
+    outputPortOpts: OutputPortTypes[] = [
+        OutputPortTypes.Three, 
+        OutputPortTypes.Text, 
+        OutputPortTypes.Code, 
+        OutputPortTypes.Console 
     ]; 
 
 	  constructor(injector: Injector){  super(injector, "parameter-editor"); }
@@ -37,7 +43,6 @@ export class ParameterEditorComponent extends Viewer{
       this._outputs = undefined;
       this.isVisible = false;
     }
-
 
     addPort(nodeIndex: number, type: string): void{
 
@@ -58,6 +63,9 @@ export class ParameterEditorComponent extends Viewer{
     deletePort(event, type: string, portIndex: number): void{
       event.stopPropagation();
 
+      let edgesArr: number[] = this.flowchartService.disconnectEdgesWithPortIndex(portIndex, type); 
+      this.flowchartService.deleteEdges(edgesArr);
+
       if(type == "input"){
         this._node.deleteInput(portIndex);
       }
@@ -67,6 +75,9 @@ export class ParameterEditorComponent extends Viewer{
       else{
         throw Error("Unknown port type");
       }
+      
+      this.flowchartService.update();
+
     } 
 
     updatePortName($event, port: InputPort|OutputPort): void{
@@ -79,8 +90,8 @@ export class ParameterEditorComponent extends Viewer{
       }
     }
 
-    updateInputType(type: PortTypes, input: InputPort){
-      input.setType(type);
+    updateType(type: InputPortTypes|OutputPortTypes, port: InputPort|OutputPort): void{
+        port.setType(type);
     }
 
     updateDefaultValue($event, port: InputPort|OutputPort): void{
@@ -94,22 +105,41 @@ export class ParameterEditorComponent extends Viewer{
 
     }
 
-    getTypeName(type: PortTypes): string{
-      if(type == PortTypes.ColorPicker){
+    getInputTypeName(type: InputPortTypes): string{
+      if(type == InputPortTypes.ColorPicker){
         return "Color";
       }
-      if(type == PortTypes.Default){
+      else if(type == InputPortTypes.Default){
         return "Simple Input";
       }
-      if(type == PortTypes.Dropdown){
+      else if(type == InputPortTypes.Dropdown){
         return "Dropdown";
       }
-      if(type == PortTypes.FilePicker){
+      else if(type == InputPortTypes.FilePicker){
         return "File";
+      }
+      else{
+        return "Not Identifiable"
       }
     }
 
-
+    getOutputTypeName(type: OutputPortTypes): string{
+      if(type == OutputPortTypes.Three){
+        return "Geometry";
+      }
+      else if(type == OutputPortTypes.Text){
+        return "Text Viewer";
+      }
+      else if(type == OutputPortTypes.Code){
+        return "Code Viewer";
+      }
+      else if(type == OutputPortTypes.Console){
+        return "Console";
+      }
+      else{
+        return "Not Identifiable"
+      }
+    }
 
   	//
   	//	this update runs when there is a message from other viewers that something changed; 

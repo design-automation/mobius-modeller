@@ -1,0 +1,89 @@
+#container {
+  position: relative;
+  height:100%;
+  width: 100%;
+  margin:0px;
+  overflow: hidden;
+  color: white;
+}
+
+#rotating{
+  width: 30px;
+  height: 25px;
+  font-size:15px;
+  right:0px; 
+  text-align:center;
+  position: absolute;
+  top: 0px;
+  background-color:transparent;
+  border:0;
+}
+
+#paning{
+  width: 30px;
+  height: 25px;
+  font-size:15px;
+  right:0px; 
+  text-align:center;
+  position: absolute;
+  top: 25px;
+  background-color:transparent;
+  border:0;
+}
+
+#zooming{
+  width: 30px;
+  height: 25px;
+  font-size:15px;
+  right:0px; 
+  text-align:center;
+  position: absolute;
+  margin-top: 50px;
+  background-color:transparent;
+  border:0;
+}
+
+#zoomingfit{
+  width: 30px;
+  height: 25px;
+  font-size:15px;
+  right:0px; 
+  text-align:center;
+  position: absolute;
+  margin-top: 75px;
+  background-color:transparent;
+  border:0;
+}
+
+#selecting{
+  width: 30px;
+  height: 25px;
+  font-size:15px;
+  right:0px; 
+  text-align:center;
+  position: absolute;
+  margin-top: 120px;
+  background-color:transparent;
+  border:0;
+}
+
+#setting{
+  width: 30px;
+  height: 25px;
+  font-size:15px;
+  right:0px; 
+  text-align:center;
+  position: absolute;
+  margin-top: 145px;
+  background-color:transparent;
+  border:0;
+}
+
+
+.selected{
+  color: grey;
+
+}
+.visible{
+  color: grey;
+}

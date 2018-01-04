@@ -1,14 +1,17 @@
 import {Port} from "./Port";
-import {PortTypes} from "./PortTypes";
+import {OutputPortTypes} from "./OutputPortTypes";
 
 export class OutputPort extends Port{
 
-	constructor(name: string){
+	constructor(name: string, type?: OutputPortTypes){
 		super(name);
-	}
 
-	getType(): PortTypes{
-		return PortTypes.Output;
+		if(type !== undefined){
+			this._type = type;
+		}
+		else{
+			this._type = OutputPortTypes.Console;
+		}
 	}
 
 }

@@ -84,6 +84,12 @@ export class Flowchart implements IFlowchart{
 		return this._edges.length;
 	}
 
+	deleteEdges(edgeArr: number[]): void{
+		this._edges = this._edges.filter(function(edge, index){
+			return ( edgeArr.indexOf(index) == -1 );
+		})
+	}
+
 	getNodes(): IGraphNode[]{ 
 		return this._nodes;
 	}

@@ -1,4 +1,4 @@
-export enum PortTypes{
+export enum InputPortTypes{
     Default, 
     Input, 
     ColorPicker, 

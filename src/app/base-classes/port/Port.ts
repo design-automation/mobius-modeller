@@ -1,11 +1,13 @@
 import {IdGenerator} from '../misc/GUID';
 import {IPort} from './IPort';
-import {PortTypes} from './PortTypes';
+import {InputPortTypes} from './InputPortTypes';
+import {OutputPortTypes} from './OutputPortTypes';
+
 
 export abstract class Port implements IPort{
 
 	private _id: string;
-	private _type: PortTypes;
+	protected _type: InputPortTypes|OutputPortTypes;
 
 	private _selected: boolean = false;
 	private _disabled: boolean = false;
@@ -27,11 +29,11 @@ export abstract class Port implements IPort{
 		return this._id;
 	}
 
-	getType(): PortTypes{
-		return PortTypes.Default;
+	getType(): InputPortTypes|OutputPortTypes{
+		return this._type;
 	}
 
-	setType(type: PortTypes): void{
+	setType(type: InputPortTypes|OutputPortTypes): void{
 		this._type = type;
 	}
 

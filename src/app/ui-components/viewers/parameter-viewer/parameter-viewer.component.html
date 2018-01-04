@@ -6,17 +6,12 @@
 			This node has no inputs
 		</div>
  
-		<div class='paramater-container' *ngFor="let inp of _inputs | callback: filterInput" >
+		<div class='paramater-container' *ngFor="let inp of _inputs" >
 			
 			<div class="info">
 				<div class='param'>
 					<span class='label'>Name</span>
 					<span class='content'>{{ inp.getName() }}</span>
-				</div>
-
-				<div class='param connection'>
-					<span class='label'>Connected</span>
-					<span class='content'>{{ inp.isConnected() }}</span>
 				</div>
 			</div>
 

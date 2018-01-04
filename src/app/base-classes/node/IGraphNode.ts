@@ -43,7 +43,7 @@ export interface IGraphNode{
 	enable(): void
 	hasExecuted(): boolean;
 	reset(): void;
-	hasError(): boolean; 
+	hasError(): void; 
 
 	// ??
 	/*addDependency(node_port_input_idx: number[]): void;

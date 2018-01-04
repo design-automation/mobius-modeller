@@ -9,6 +9,8 @@ import {ICodeGenerator, CodeFactory, IModule, ModuleUtils} from "../base-classes
 import * as CircularJSON from 'circular-json';
 
 import * as ModuleSet from "../../assets/modules/AllModules";
+
+import {ConsoleService} from "./console.service";
 /*import * as ModuleSet from "gs-modelling";*/
 
 @Injectable()
@@ -35,7 +37,7 @@ export class FlowchartService {
     return this._flowchart != undefined;
   }
 
-  constructor() { 
+  constructor(private consoleService: ConsoleService) { 
     this.newFile();
     this.checkSavedNodes();
   };
@@ -103,10 +105,13 @@ export class FlowchartService {
         // read the flowchart
         _this._flowchart = FlowchartReader.readFlowchartFromData(data["flowchart"]);
         _this.update();
+
+        this.consoleService.addMessage("File loaded successfully");
         
       }
       catch(err){
-        alert("Error loading file");
+        this.consoleService.addMessage("Error loading file: " + err);
+        this.newFile();
       }
 
   }
@@ -180,6 +185,9 @@ export class FlowchartService {
                       {_name: "Point", _version: 0.1, _author: "Patrick"},
                       {_name: "Pline", _version: 0.1, _author: "Patrick"}]);
 
+    // print message to console
+    this.consoleService.addMessage("New file created.");
+
     return this._flowchart;
   }
 
@@ -237,6 +245,9 @@ export class FlowchartService {
           }
         });*/
 
+      // print message to console
+      this.consoleService.addMessage("Node Saved.");
+
       this.checkSavedNodes();
       this.update();
     }
@@ -250,6 +261,9 @@ export class FlowchartService {
 
     let property = "MOBIUS_NODES";
     let storageString = myStorage.removeItem(property);
+
+    // print message to console
+    this.consoleService.addMessage("Node Library was cleared");
 
     this.checkSavedNodes();
     this.update();
@@ -280,10 +294,18 @@ export class FlowchartService {
 
     this._flowchart.addNode(new_node);
 
+    // print message to console
+    this.consoleService.addMessage("New Node was added");
+
     this.update();
   }
 
   addEdge(outputAddress: number[], inputAddress: number[]):  void{
+
+      if(outputAddress[0] == inputAddress[0]){
+        return;
+      }
+
       this._flowchart.addEdge(outputAddress, inputAddress);
 
       let output = this._flowchart.getNodeByIndex(outputAddress[0]).getOutputByIndex(outputAddress[1])
@@ -293,33 +315,96 @@ export class FlowchartService {
 
       input.setComputedValue({port: outputAddress});
 
-      this._flowchart.getNodeByIndex(inputAddress[0]).getInputByIndex(inputAddress[1])
+      this._flowchart.getNodeByIndex(inputAddress[0]).getInputByIndex(inputAddress[1]);
+
+      // print message to console
+      this.consoleService.addMessage("New Edge was added");
+
       this.update();
+  }
+
+  disconnectEdgesWithNode(node_index: number): number[]{
+      let splicedEdges: number[] = [];
+      let edges = this.getEdges();
+      for(let e=0; e < edges.length; e++){
+        let edge = edges[e];
+        if( edge.output_address[0] == node_index){
+            let port = this._flowchart.getNodeByIndex(edge.input_address[0]).getInputByIndex(edge.input_address[1]);
+            port.disconnect();
+            port.setComputedValue(undefined);
+            splicedEdges.push(e);
+        }
+        else if(edge.input_address[0] == node_index){
+            let port = this._flowchart.getNodeByIndex(edge.output_address[0]).getOutputByIndex(edge.output_address[1]);
+            port.disconnect();
+            port.setComputedValue(undefined);
+            splicedEdges.push(e);
+        }
+      }
+      return splicedEdges;
+  }
+
+  disconnectEdgesWithPortIndex(portIndex: number, type: string): number[]{
+      let node_index = this._selectedNode;
+      let splicedEdges: number[] = [];
+      let edges = this.getEdges();
+      
+      for(let e=0; e < edges.length; e++){
+        let edge = edges[e];
+
+        // if type == "input"
+        if( type == "input" && edge.input_address[0] == node_index && edge.input_address[1] == portIndex ){
+            let port = this._flowchart.getNodeByIndex(edge.output_address[0]).getOutputByIndex(edge.output_address[1]);
+            port.disconnect();
+            port.setComputedValue(undefined);
+            splicedEdges.push(e);
+        }
+        else if( type == "output" && edge.output_address[0] == node_index && edge.output_address[1] == portIndex ){
+            let port = this._flowchart.getNodeByIndex(edge.input_address[0]).getInputByIndex(edge.input_address[1]);
+            port.disconnect();
+            port.setComputedValue(undefined);
+            splicedEdges.push(e);
+        }
+      }
+
+      return splicedEdges;
   }
 
 
   deleteNode(node_index: number): void{
-      this._selectedNode = undefined;
+      this._selectedNode = 0;
+      this._selectedPort = 0;
+
+
+      this.deleteEdges(this.disconnectEdgesWithNode(node_index));
+
       this._flowchart.deleteNode(node_index);
+
+      // print message to console
+      this.consoleService.addMessage("Node was deleted");
+
       this.update();
+  }
+
+  deleteEdges(edgeArr: number[]): void{
+    this._flowchart.deleteEdges(edgeArr);
+    this.update();
   }
  
 
-  deleteEdge(): void{
+  deleteEdge(edgeIndex: number): void{
+    this._flowchart.deleteEdge(edgeIndex);
 
+    // print message to console
+    this.consoleService.addMessage("Edge was deleted");
   }
 
   //
   //  select node
   //
-  selectNode(nodeIndex: number): void{
+  selectNode(nodeIndex: number, portIndex ?:number): void{
     this._selectedNode = nodeIndex;
-    this._selectedPort = undefined;
-    this.update();
-  }
-
-  selectPort(outputportIndex: number):void{
-    this._selectedPort = outputportIndex; 
+    this._selectedPort = portIndex || 0;
     this.update();
   }
 
@@ -331,9 +416,20 @@ export class FlowchartService {
     return this._flowchart.getNodeByIndex(this._selectedNode);
   }
 
+  getSelectedNodeIndex(): number{
+    return this._selectedNode;
+  }
+
   getSelectedPort(): any{
+
+    if(this._selectedNode == undefined)
+      return undefined;
     // todo: where is this used?
     return this.getSelectedNode().getOutputByIndex(this._selectedPort);
+  }
+
+  getSelectedPortIndex(): number{
+    return this._selectedPort;
   }
 
   //
@@ -351,7 +447,16 @@ export class FlowchartService {
   //  run this flowchart
   //
   execute(): any{
-      this._flowchart.execute(this.code_generator, this._moduleMap);
+
+      try{
+        this._flowchart.execute(this.code_generator, this._moduleMap);
+        this.consoleService.addMessage("Flowchart was executed");
+      }
+      catch(ex){
+        this.consoleService.addMessage("There was an error executing");
+        this.consoleService.addMessage(ex);
+      }
+
       this.update();
   }
 
@@ -377,6 +482,10 @@ export class FlowchartService {
         filename: 'Scene' + (new Date()).getTime() + ".mob",
         content: fileString
     });
+
+    // print message to console
+    this.consoleService.addMessage("File saved successfully");
+
   }
 
   downloadContent(options) {

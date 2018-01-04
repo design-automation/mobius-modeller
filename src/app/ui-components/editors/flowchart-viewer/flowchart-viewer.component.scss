@@ -154,6 +154,10 @@ split-area{
 						border-style: solid;
 					}
 
+					&.error{
+						background-color: red;
+					}
+
 					.node-name{
 						font-family: sans-serif; 
 						font-size: 14px;
@@ -192,6 +196,10 @@ split-area{
 								border-radius: 50%;
 								background-color: $color2;
 								cursor: pointer;
+
+								&.selected{
+									border: 2px solid black;
+								}
 
 								&:hover{
 									background-color: $color4;
