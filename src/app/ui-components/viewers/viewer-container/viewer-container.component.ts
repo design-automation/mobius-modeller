@@ -38,7 +38,6 @@ export class ViewerContainerComponent extends Viewer implements OnInit {
   	}
 
   	changed(): void{
-  		console.log("viewer was changed");
   		this.flowchartService.update();
   	}
 

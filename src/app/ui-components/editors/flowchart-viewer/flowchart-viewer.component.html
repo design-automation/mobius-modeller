@@ -14,8 +14,11 @@
 			<split-area class="sidebar flowchart" [visible]="true" [size]="30" order="1">
 				
 				<section>
-					<div class="disabled">Save Flowchart</div>
-					<div class="disabled">Load Flowchart</div>
+					<div (click)="save()">Save Flowchart</div>
+					<div (click)="openPicker()">Load Flowchart
+						<input #fileInput style="display: none;"
+				  		type="file" (change)="loadFile()"/>
+					</div>
 				</section>
 
 				<section>
@@ -26,13 +29,6 @@
 				<!--<section>
 					<div>Save Node</div>
 				</section>-->
-
-				<section>
-					<div (click)="save()">Save File</div>
-					<div (click)="openPicker()">Load File
-					<input #fileInput style="display: none;"
-				  		type="file" (change)="loadFile()"/></div>
-				</section>
 
 				<section>
 					<app-node-library></app-node-library>

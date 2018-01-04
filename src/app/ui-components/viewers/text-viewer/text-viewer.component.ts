@@ -17,6 +17,7 @@ export class TextViewerComponent extends Viewer implements OnInit {
 	}
 
 	ngOnInit() {
+		this.update();
 	}
 
 	update() :void{

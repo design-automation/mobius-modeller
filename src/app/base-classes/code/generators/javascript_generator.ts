@@ -184,6 +184,25 @@ export class CodeGeneratorJS extends CodeGenerator{
 			return code;
 		}
 
+		existsInNodeVars(nodeVars: string[], name: string): boolean{
+
+			let var_name: string = name;
+
+			// check if name might be an array index
+			let reg = new RegExp(/(\w*)(\[\w*\])/g)
+			let result = reg.exec(name);
+
+			if(result){
+				var_name = result[1];
+				console.log(var_name, nodeVars);
+			}
+			else{
+				// do nothing
+			}
+
+			return (nodeVars.indexOf( var_name ) > -1);
+		}
+
 		generateProcedureCode(procedure: IProcedure, nodeVars: string[]=[], prodFn ?: any){
 
 			// change based on type
@@ -197,7 +216,7 @@ export class CodeGeneratorJS extends CodeGenerator{
 			if(prod_type == ProcedureTypes.Data){
 				let init: string;
 
-				if(nodeVars.indexOf( procedure.getLeftComponent().expression ) == -1){
+				if( this.existsInNodeVars(nodeVars, procedure.getLeftComponent().expression) == false){
 					init = "let ";
 					nodeVars.push( procedure.getLeftComponent().expression );
 				}

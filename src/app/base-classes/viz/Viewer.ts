@@ -32,6 +32,10 @@ export abstract class Viewer implements OnInit, OnDestroy, IViewer{
 		});
   	}
 
+  	ngDoCheck(){
+  		
+  	}
+
   	//
   	//	checks if the flowchart service has a flowchart and calls update function for the viewer
   	//

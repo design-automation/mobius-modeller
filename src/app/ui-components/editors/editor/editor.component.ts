@@ -31,6 +31,10 @@ export class EditorComponent extends Viewer{
     }
   }
 
+  reset(){
+    
+  }
+
 
   updateNodeName($event, node): void{
     let name: string =  $event.srcElement.value;

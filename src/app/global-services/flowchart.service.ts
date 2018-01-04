@@ -28,8 +28,8 @@ export class FlowchartService {
   private _moduleSet: IModule[];
   private _moduleMap: IModule[];
 
-  private _selectedNode: number = 0;
-  private _selectedPort: number = 0;
+  private _selectedNode: number;
+  private _selectedPort: number;
 
   private _savedNodes: IGraphNode[] = [];
 
@@ -181,7 +181,7 @@ export class FlowchartService {
 
     this.loadModules([/*{_name: "SimpleMath", _version: 0.1, _author: "Patrick"}, 
                       {_name: "ComplexMath", _version: 0.1, _author: "Patrick"},*/
-                      {_name: "Test", _version: 0.1, _author: "Patrick"},
+                      {_name: "Examples", _version: 0.1, _author: "Patrick"},
                       {_name: "Model", _version: 0.1, _author: "Patrick"},
                       {_name: "Point", _version: 0.1, _author: "Patrick"},
                       {_name: "Pline", _version: 0.1, _author: "Patrick"}]);
@@ -423,8 +423,9 @@ export class FlowchartService {
 
   getSelectedPort(): any{
 
-    if(this._selectedNode == undefined)
+    if(this._selectedNode == undefined){
       return undefined;
+    }
     // todo: where is this used?
     return this.getSelectedNode().getOutputByIndex(this._selectedPort);
   }

@@ -23,13 +23,19 @@ export class GeometryViewerComponent extends Viewer implements OnInit{
 	}
 
 	ngOnInit(){
-      this.gs_dummy_data = gs.genModelTorus();
+    this.update();
 	}	
 
 	update() :void{
-      this._port = this.flowchartService.getSelectedPort();
-      this.gs_dummy_data = this._port.getValue();
-      console.log(this.gs_dummy_data);  
+
+      try{
+        this._port = this.flowchartService.getSelectedPort();
+        this.gs_dummy_data = this._port.getValue();
+      }
+      catch(ex){
+        this.gs_dummy_data = undefined;
+      }
+
 	}
 
 }

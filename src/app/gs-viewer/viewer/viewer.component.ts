@@ -59,34 +59,11 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
     //while(this.scene.children.length > 0){ 
         //this.scene.remove(this.scene.children[0]); 
     //}
-    //this.updateViewer();
+    this.updateViewer();
 
   }
-
 
   ngOnInit() {
-    this.updateViewer();
-  }
-
-  updateViewer(){ 
-    this.model= this.dataService.getGsModel(); 
-    if(this.model == undefined){
-      return;
-    }
-    const scene_data: gs.IThreeScene = gs.genThreeModel(this.model);
-    let loader = new THREE.ObjectLoader();
-    let object = loader.parse( scene_data );
-    for(var i =0;i<object.children.length;i++){
-      if(object.children[i].children!==undefined){
-        for(var j=0;j<object.children[i].children.length;j++){
-          if(object.children[i].children[j].type==="Mesh"){
-            object.children[i].children[j]["geometry"].computeVertexNormals();
-          }
-        }
-      }
-    }
-    
-    this.scene.add( object );
 
     this.scene.background = new THREE.Color( 0xcccccc );
     this.container= this.myElement.nativeElement.children[0];//document.getElementById( 'container' );
@@ -127,7 +104,35 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
     } );
     self.light.target.position.set( 0, 0, 0 );
     this.scene.add( self.light );
+
+    this.render();
+
+
+    this.updateViewer();
+  }
+
+  updateViewer(){ 
+    this.model= this.dataService.getGsModel(); 
+    if(this.model == undefined){
+      return;
+    }
+    const scene_data: gs.IThreeScene = gs.genThreeModel(this.model);
+    let loader = new THREE.ObjectLoader();
+    let object = loader.parse( scene_data );
+    for(var i =0;i<object.children.length;i++){
+      if(object.children[i].children!==undefined){
+        for(var j=0;j<object.children[i].children.length;j++){
+          if(object.children[i].children[j].type==="Mesh"){
+            object.children[i].children[j]["geometry"].computeVertexNormals();
+          }
+        }
+      }
+    }
+    
+    this.scene.add( object );
+
     this.geometry=this.pushGSGeometry();
+
     /*for ( var i = 0; i < 50; i ++ ) {
       var material = new THREE.MeshPhongMaterial( { color: 0xffffff,side:THREE.DoubleSide} );
       var mesh = new THREE.Mesh( this.geometry, material );
@@ -138,7 +143,7 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
       mesh.matrixAutoUpdate = false;
       this.scene.add( mesh );
     }*/
-    this.render();
+    
   }
 
 
@@ -168,7 +173,6 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
   }
 
   onDocumentMouseDown(event){
-    console.log(this.scene.children);
     var scenechildren=[];
     for(var i=0;i<this.scene.children.length;i++){
       if(this.scene.children[i].name!="GridHelper"||this.scene.children[i].name!="AxisHelper"){
