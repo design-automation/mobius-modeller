@@ -60,10 +60,15 @@ export class ModuleUtils{
 	}
 
 	static isValid(mod: IModule): boolean{
+		if(mod == undefined)
+			return undefined;
 		return !!(this.getName(mod) && this.getVersion(mod) && this.getAuthor(mod));
 	}
 
 	static isCompatible(mod1: IModule, mod2: IModule): boolean{
+		if(mod1 == undefined || mod2 == undefined)
+			return false;
+		
 		let _nameCheck: boolean = this.getName(mod1)  == this.getName(mod2);
 		let _versionCheck: boolean = this.getVersion(mod1)  == this.getVersion(mod2);
 		let _authorCheck: boolean = this.getAuthor(mod1)  == this.getAuthor(mod2);

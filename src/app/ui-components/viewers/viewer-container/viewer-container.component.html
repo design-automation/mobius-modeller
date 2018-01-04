@@ -1,5 +1,5 @@
 <div class="viewer-container">             
-	<mat-button-toggle-group class="viewer-toggle" [(ngModel)]="group.value" >
+	<mat-button-toggle-group class="viewer-toggle" [(ngModel)]="group.value" (change)="changed()">
 		<mat-button-toggle value="0" class="viewer-toggle-btn" matTooltip="3D Viewer">
 		  <mat-icon>3d_rotation</mat-icon>
 		</mat-button-toggle>

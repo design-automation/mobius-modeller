@@ -1,14 +1,81 @@
 <div id="toolwindow">
   <div id="toolbar">
-  	<button id="point"  [class.visible]="Visible === 'pan'" (click)="pan(Visible)"><i class="fa fa-dot-circle-o"></i></button>
-  	<button id="vertice"  [class.visible]="Visible === 'pan'" (click)="pan(Visible)">V</button>
-  	<button id="edge"  [class.visible]="Visible === 'pan'" (click)="pan(Visible)">E</button>
-  	<button id="wire"  [class.visible]="Visible === 'pan'" (click)="pan(Visible)">W</button>
-  	<button id="face"  [class.visible]="Visible === 'pan'" (click)="pan(Visible)">F</button>
-  	<button id="object"  [class.visible]="Visible === 'pan'" (click)="pan(Visible)"><i class="fa fa-map"></i></button>
-  	<input id="selected" type="checkbox" (click)="changegrid()"> <label id="selectedname" value="selected">Show selected only</label>
+    <button id="point" [class.visible]="Visible === 'point'" (click)="point(Visible)"><i class="fa fa-dot-circle-o"></i></button>
+    <button id="vertice" [class.visible]="Visible === 'vertice'" (click)="vertice(Visible)">V</button>
+    <button id="edge" [class.visible]="Visible === 'edge'" (click)="edge(Visible)">E</button>
+    <button id="wire" [class.visible]="Visible === 'wire'" (click)="wire(Visible)">W</button>
+    <button id="face" [class.visible]="Visible === 'face'" (click)="face(Visible)">F</button>
+    <button id="object" [class.visible]="Visible === 'object'" (click)="object(Visible)"><i class="fa fa-map"></i></button>
+    <input id="selected" type="checkbox" (click)="changeselected()">
+    <label id="selectedname" value="selected">Show selected only</label>
   </div>
   <div id="toolview">
-  	Toolview
+    <div *ngIf="Visible === 'point'">
+      <table border="1" cellspacing="0" cellpadding="0" id="table" name="table" bordercolor="#d0d0d0">
+        <tr>
+          <td name="Number" align=center width="40%" align=center>Object Number</td>
+          <td width="20%" align=center>X</td>
+          <td width="20%" align=center>Y</td>
+          <td width="20%" align=center>Z</td>
+        </tr>
+      </table>
+      <table border="1" cellspacing="0" cellpadding="0" id="tablename" name="table" bordercolor="#d0d0d0" *ngFor="let datascale of attribute; let i = index ">
+        <tr>
+          <button id="numberbutton">{{i}}</button>
+          <td width="20%" align=center>{{datascale.x}}</td>
+          <td width="20%" align=center>{{datascale.y}}</td>
+          <td width="20%" align=center>{{datascale.z}}</td>
+        </tr>
+      </table>
+    </div>
+    <div *ngIf="Visible === 'vertice'">
+      <table border="1" cellspacing="0" cellpadding="0" id="table" name="table" bordercolor="#d0d0d0">
+        <tr>
+          <td name="Number" align=center width="50%" align=center>Point Number</td>
+          <td width="50%" align=center>Vertice Number</td>
+        </tr>
+      </table>
+      <table border="1" cellspacing="0" cellpadding="0" id="tablename" name="table" bordercolor="#d0d0d0" *ngFor="let datascale of attribute; let i = index ">
+        <tr>
+          <button id="numberbutton">{{i}}</button>
+          <td width="50%" align=center>{{datascale}}</td>
+        </tr>
+      </table>
+    </div>
+    <div *ngIf="Visible === 'face'">
+      <table border="1" cellspacing="0" cellpadding="0" id="table" name="table" bordercolor="#d0d0d0">
+        <tr>
+          <td name="Number" align=center width="40%" align=center>Object Number</td>
+          <td width="20%" align=center>Point1</td>
+          <td width="20%" align=center>Point2</td>
+          <td width="20%" align=center>Point3</td>
+        </tr>
+      </table>
+      <table border="1" cellspacing="0" cellpadding="0" id="tablename" name="table" bordercolor="#d0d0d0" *ngFor="let datascale of attribute; let i = index ">
+        <tr>
+          <button id="numberbutton">{{i}}</button>
+          <td width="20%" align=center>{{datascale.x}}</td>
+          <td width="20%" align=center>{{datascale.y}}</td>
+          <td width="20%" align=center>{{datascale.z}}</td>
+        </tr>
+      </table>
+    </div>
+    <div *ngIf="Visible === 'object'">
+      <table border="1" cellspacing="0" cellpadding="0" id="table" name="table" bordercolor="#d0d0d0">
+        <tr>
+          <td name="Number" align=center width="40%" align=center>Object Number</td>
+          <td width="20%" align=center>X</td>
+          <td width="20%" align=center>Y</td>
+          <td width="20%" align=center>Z</td>
+        </tr>
+      </table>
+      <table border="1" cellspacing="0" cellpadding="0" id="tablename" name="table" bordercolor="#d0d0d0" *ngFor="let datascale of attribute ">
+        <tr>
+          <button  id="numberbutton"  [class.selectid]="datascale.original==selectdata"  (click)=Onselect(datascale.original)>{{ datascale.original}}</button>
+          <td width="20%" align=center>{{datascale.axisX}}</td>
+          <td width="20%" align=center>{{datascale.axisY}}</td>
+          <td width="20%" align=center>{{datascale.axisZ}}</td>
+        </tr>
+      </table>
+    </div>
   </div>
-</div>

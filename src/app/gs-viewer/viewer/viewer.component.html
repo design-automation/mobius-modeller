@@ -3,7 +3,7 @@
   <button id="paning"  [class.visible]="Visible === 'pan'" (click)="pan(Visible)"><i class="fa fa-hand-paper-o"></i></button>
   <button id="zooming"  [class.visible]="Visible === 'zoom'" (click)="zoom(Visible)"><i class="fa fa-search"></i></button>
   <button id="zoomingfit"  [class.visible]="Visible === 'zoomfit'" (click)="zoomfit(Visible)"><i class="fa fa-arrows-alt"></i></button>
-  <button id="selecting" [class.visible]="selectingVisible" (click)= "selectingVisible =!selectingVisible"><i class="fa fa-mouse-pointer"></i></button>
+  <button id="selecting" [class.visible]="Visible === 'select'" (click)= "select(Visible)"><i class="fa fa-mouse-pointer"></i></button>
   <button id="setting" [class.selected]="settingVisible" (click)= "settingVisible =!settingVisible">
       <i class="fa fa-cog"></i></button>
   <app-setting *ngIf="settingVisible == true"></app-setting>

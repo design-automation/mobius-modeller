@@ -22,6 +22,7 @@ export class DataService {
   lightness:number;
   scenechange:any;
   INTERSECTEDColor:any;
+  selecting:any = [];
 
   constructor() { 
     this._alight=[];
@@ -76,10 +77,10 @@ export class DataService {
   }
 
   addAmbientLight() {
-    this._hueValue=0;
+    this._hueValue=160;
     this._saturationValue=0;
-    this._lightnessValue=0.7;
-    var light = new THREE.AmbientLight( 0xffffff);
+    this._lightnessValue=0.47;
+    var light = new THREE.HemisphereLight( 0xffffff,0.5);
     this._data.add( light );
     this._alight.push(light);
     var alight=this._alight;
@@ -128,5 +129,18 @@ export class DataService {
   }
   getINTERSECTEDColor():any{
     return this.INTERSECTEDColor
+  }
+  addselecting(selecting){
+    if(selecting[selecting.length-1]==undefined){
+      this.selecting=[];
+    }
+    this.sendMessage();
+  }
+  pushselecting(selecting){
+    this.selecting.push(selecting);
+    this.sendMessage();
+  }
+  getselecting(){
+    return this.selecting;
   }
 }

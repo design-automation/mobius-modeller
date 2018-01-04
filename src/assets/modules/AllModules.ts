@@ -3,9 +3,11 @@ import {ModuleUtils, IModule} from "../../app/base-classes/code/CodeModule";
 import * as sm from "./SimpleMath";
 import * as cm from "./ComplexMath";
 import * as GSS from "gs-modelling";
+import * as tm from "./TestModule";
 
-let SimpleMath: IModule = ModuleUtils.createModule("SimpleMath", sm);
-let ComplexMath: IModule = ModuleUtils.createModule("ComplexMath", cm);
+/*let SimpleMath: IModule = ModuleUtils.createModule("SimpleMath", sm);
+let ComplexMath: IModule = ModuleUtils.createModule("ComplexMath", cm);*/
+let Test: IModule = ModuleUtils.createModule("Test", tm);
 let Model: IModule = ModuleUtils.createModule("Model", GSS.model);
 //let _ibj: IModule = ModuleUtils.createModule("Object", GSS.object);
 let Plane: IModule = ModuleUtils.createModule("Plane", GSS.plane);
@@ -25,4 +27,4 @@ let ComplexMath:IModule = ModuleUtils.createModule("ComplexMath", "0.1", "AKM", 
 let gs_modeling_set:IModule = ModuleUtils.createModule("gs_modeling", "0.1", "Patrick", gs_modelling);*/
 
 
-export {SimpleMath, ComplexMath, Model, Pline, Point};
+export {Test, Model, Pline, Point};

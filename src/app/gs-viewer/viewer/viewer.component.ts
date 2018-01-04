@@ -35,33 +35,32 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
   canvas:any;
 
   myElement;
-  selectingVisible;
   
   constructor(injector: Injector, myElement: ElementRef) { 
     super(injector);
-
-    this.myElement = myElement;
-
     this.scene=new THREE.Scene();
     this.dataService.addScene(this.scene);
     this.renderer = new THREE.WebGLRenderer( {antialias: true} );
     this.dataService.addRender(this.renderer);
     this.dataService.addAmbientLight();
     
-    
     this.geometry = new THREE.Geometry();
     this.dataService.addGeom(this.geometry);
     this.mouse=new THREE.Vector2();
     this.raycaster = new THREE.Raycaster();
     this.selecting=[];
-
+    this.myElement = myElement;
   }
 
   //
   //  checks if the flowchart service has a flowchart and calls update function for the viewer
   //
   notify(): void{
-   this.updateViewer();
+    //while(this.scene.children.length > 0){ 
+        //this.scene.remove(this.scene.children[0]); 
+    //}
+    //this.updateViewer();
+
   }
 
 
@@ -70,13 +69,27 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
   }
 
   updateViewer(){ 
-    this.container= this.myElement.nativeElement.children[0];
-
-    this.boxes = this.dataService.getGsModel();
-    this.model= new gs.Model(this.boxes);
+    this.model= this.dataService.getGsModel(); 
+    if(this.model == undefined){
+      return;
+    }
+    const scene_data: gs.IThreeScene = gs.genThreeModel(this.model);
+    let loader = new THREE.ObjectLoader();
+    let object = loader.parse( scene_data );
+    for(var i =0;i<object.children.length;i++){
+      if(object.children[i].children!==undefined){
+        for(var j=0;j<object.children[i].children.length;j++){
+          if(object.children[i].children[j].type==="Mesh"){
+            object.children[i].children[j]["geometry"].computeVertexNormals();
+          }
+        }
+      }
+    }
+    
+    this.scene.add( object );
 
     this.scene.background = new THREE.Color( 0xcccccc );
-    
+    this.container= this.myElement.nativeElement.children[0];//document.getElementById( 'container' );
     this.width=this.container.clientWidth || 600;
     this.height=this.container.clientHeight;    
 
@@ -85,6 +98,7 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
       
     this.container.appendChild( this.renderer.domElement );
 
+    var self=this;
     // window.addEventListener( 'resize', function() {
     //   self.width=self.container.clientWidth;
     //   self.height=self.container.clientHeight;
@@ -94,21 +108,27 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
     //   self.renderer.setSize( self.width, self.height );
     //   self.render();
     // }, false );
-    let self = this;
-    this.camera = new THREE.PerspectiveCamera( 60, this.width / this.height, 1, 1000 );
+
+    this.camera = new THREE.PerspectiveCamera( 50, this.width / this.height, 0.01, 1000 );
     this.camera.position.z = 10;
     this.camera.updateMatrixWorld();
     this.camera.lookAt(this.scene.position);
 
-    this.light = new THREE.DirectionalLight( 0xffffff,0.5);
+    self.light = new THREE.DirectionalLight( 0xffffff,0.5);
+    self.light.castShadow = false; 
+    //self.light.position.set(10,10,10);
+    //self.light.target.position.set( 0, 0, 0 );
     this.controls=new OrbitControls(this.camera, this.renderer.domElement);
-    this.controls.enabled = true;
+    this.controls.mouseButtons={ORBIT:THREE.MOUSE.LEFT};
+
+    self.light.position.copy( self.camera.position );
     this.controls.addEventListener( 'change',  function() {
       self.light.position.copy( self.camera.position );
     } );
+    self.light.target.position.set( 0, 0, 0 );
     this.scene.add( self.light );
     this.geometry=this.pushGSGeometry();
-    for ( var i = 0; i < 50; i ++ ) {
+    /*for ( var i = 0; i < 50; i ++ ) {
       var material = new THREE.MeshPhongMaterial( { color: 0xffffff,side:THREE.DoubleSide} );
       var mesh = new THREE.Mesh( this.geometry, material );
       mesh.position.x = ( Math.random() - 0.5 ) * 50;
@@ -117,13 +137,12 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
       mesh.updateMatrix();
       mesh.matrixAutoUpdate = false;
       this.scene.add( mesh );
-    }
-
+    }*/
     this.render();
   }
 
 
-  pushGSGeometry(): THREE.Geometry{
+  pushGSGeometry(){
     var geom=new THREE.Geometry();
     var material = new THREE.MeshPhongMaterial( { color: 0xffffff,side:THREE.DoubleSide} );
     for (const p of this.model.getGeom().getPoints()) {
@@ -144,15 +163,24 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
   onDocumentMouseMove(event) {
     event.preventDefault();
     this.mouse=new THREE.Vector2();
-    this.mouse.x = ( event.offsetX / this.container.clientWidth ) * 2 - 1;
-    this.mouse.y =-( event.offsetY / this.container.clientHeight ) * 2 + 1;
+    this.mouse.x = ( event.offsetX / this.width) * 2 - 1;
+    this.mouse.y =-( event.clientY / this.height ) * 2 + 1;
   }
 
   onDocumentMouseDown(event){
+    console.log(this.scene.children);
+    var scenechildren=[];
+    for(var i=0;i<this.scene.children.length;i++){
+      if(this.scene.children[i].name!="GridHelper"||this.scene.children[i].name!="AxisHelper"){
+        scenechildren.push(this.scene.children[i]);
+        console.log();
+      }
+    }
     this.INTERSECTEDcolor=this.dataService.getINTERSECTEDColor();
+    this.selecting=this.dataService.selecting;
     var INTERSECTED;
     this.raycaster.setFromCamera(this.mouse,this.camera);
-      var intersects = this.raycaster.intersectObjects(this.scene.children);
+      var intersects = this.raycaster.intersectObjects(this.scene.children[1].children);
       if ( intersects.length > 0 ) {
         if ( INTERSECTED!= intersects[ 0 ].object ) {
           if ( INTERSECTED ) INTERSECTED.material.color.setHex( INTERSECTED.currentHex );
@@ -182,13 +210,14 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
         this.selecting=[];
       }
 
+      this.dataService.addselecting(this.selecting);
   }
 
   render():void {
     let self = this;
     (function render(){
       self.raycaster.setFromCamera(self.mouse,self.camera);
-      var intersects = self.raycaster.intersectObjects(self.scene.children);
+      var intersects = self.raycaster.intersectObjects(self.scene.children[1].children);
       if ( intersects.length > 0 ) {
         if ( self.INTERSECTED != intersects[ 0 ].object ) {
           if ( self.INTERSECTED ) self.INTERSECTED.material.color.setHex( self.INTERSECTED.currentHex );
@@ -213,42 +242,41 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
   }
 
   zoom(Visible){
-    /*document.body.style.cursor = "crosshair";
+    document.body.style.cursor = "crosshair";
     this.controls.mouseButtons={ZOOM:THREE.MOUSE.LEFT};
     this.controls.enabled=true;
-    this.controls.enableZoom=true;*/
+    this.controls.enableZoom=true;
     this.Visible="zoom";
   }
 
   zoomfit(Visible){
-    /*document.body.style.cursor = "crosshair";
+    document.body.style.cursor = "crosshair";
     this.controls.mouseButtons={ZOOM:THREE.MOUSE.LEFT};
     this.controls.enabled=true;
-    this.controls.enableZoom=true;*/
+    this.controls.enableZoom=true;
     this.Visible="zoomfit";
   }
 
-
   pan(Visible){
-    /*document.body.style.cursor = "-webkit-grab";
+    document.body.style.cursor = "-webkit-grab";
     this.controls.mouseButtons={PAN:THREE.MOUSE.LEFT};
     this.controls.enabled=true;
-    this.controls.enablePan=true;*/
+    this.controls.enablePan=true;
     this.Visible="pan";
   }
 
   rotate(Visible){
-    /*document.body.style.cursor = " -webkit-grab";
+    document.body.style.cursor = " -webkit-grab";
     this.controls.mouseButtons={ORBIT:THREE.MOUSE.LEFT};
     this.controls.enabled=true;
-    this.controls.enableOrbit=true;*/
+    this.controls.enableOrbit=true;
     this.Visible="rotate";
   }
 
   select(Visible){
-    /*document.body.style.cursor = " default";
+    document.body.style.cursor ="default";
     this.controls.enabled=false;
-    this.controls.enableOrbit=false;*/
+    this.controls.enableOrbit=false;
     this.Visible="select";
   }
  

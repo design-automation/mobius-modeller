@@ -223,7 +223,6 @@ export class FlowchartViewerComponent extends Viewer{
   //
   dragStart = {x: 0, y: 0};
   nodeDragStart($event, node): void{
-    console.log("node drag start");
     $event.dataTransfer.setDragImage( new Image(), 0, 0);
     // todo : find more elegant solution
     this.dragStart = {x: $event.pageX, y: $event.pageY}; 
@@ -242,7 +241,6 @@ export class FlowchartViewerComponent extends Viewer{
   }
 
   nodeDragEnd($event, node): void{
-    console.log("node drag end", this._linkMode);
     this.pan_mode = false;
     let relX: number = $event.pageX - this.dragStart.x; 
     let relY: number = $event.pageY - this.dragStart.y;

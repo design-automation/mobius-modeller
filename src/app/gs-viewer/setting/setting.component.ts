@@ -20,7 +20,7 @@ export class SettingComponent implements OnInit {
   alight:Array<THREE.AmbientLight>;
   gridVisible: boolean; 
   axisVisible: boolean; 
-  fogVisible: boolean; 
+  shadowVisible: boolean; 
   hue:number;
   saturation:number;
   lightness:number;
@@ -30,7 +30,7 @@ export class SettingComponent implements OnInit {
 
   ngOnInit(){
     if(this.hue == undefined) {
-        this.hue = 0;
+        this.hue = 160;
     } else {
       this.hue=this.dataService.hue;
     }
@@ -40,7 +40,7 @@ export class SettingComponent implements OnInit {
       this.saturation=this.dataService.saturation;
     }
     if(this.lightness == undefined) {
-        this.lightness = 0.7;
+        this.lightness = 0.47;
     } else {
       this.lightness=this.dataService.lightness;
     }
@@ -78,12 +78,18 @@ export class SettingComponent implements OnInit {
     }
   }
 
-  changefog(){
-    this.fogVisible = !this.fogVisible;
-    if(this.fogVisible){
-      this.scene.fog = new THREE.FogExp2( 0xcccccc, 0.002 );
-    }else {
-      this.scene.fog=null;
+  changeshadow(){
+    this.shadowVisible = !this.shadowVisible;
+    for(var i=0;i<this.scene.children.length;i++){
+      if(this.scene.children[i].type==="DirectionalLight")
+      {
+        if(this.shadowVisible){
+          this.scene.children[i].castShadow=true;
+        }
+        else{
+          this.scene.children[i].castShadow=false;
+        }
+      }
     }
   }
 

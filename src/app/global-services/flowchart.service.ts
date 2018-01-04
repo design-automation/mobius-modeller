@@ -179,8 +179,9 @@ export class FlowchartService {
     this._selectedPort = 0;
     this.update();
 
-    this.loadModules([{_name: "SimpleMath", _version: 0.1, _author: "Patrick"}, 
-                      {_name: "ComplexMath", _version: 0.1, _author: "Patrick"},
+    this.loadModules([/*{_name: "SimpleMath", _version: 0.1, _author: "Patrick"}, 
+                      {_name: "ComplexMath", _version: 0.1, _author: "Patrick"},*/
+                      {_name: "Test", _version: 0.1, _author: "Patrick"},
                       {_name: "Model", _version: 0.1, _author: "Patrick"},
                       {_name: "Point", _version: 0.1, _author: "Patrick"},
                       {_name: "Pline", _version: 0.1, _author: "Patrick"}]);

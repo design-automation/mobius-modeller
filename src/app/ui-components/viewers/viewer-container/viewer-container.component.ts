@@ -37,4 +37,9 @@ export class ViewerContainerComponent extends Viewer implements OnInit {
   	ngOnInit() {
   	}
 
+  	changed(): void{
+  		console.log("viewer was changed");
+  		this.flowchartService.update();
+  	}
+
 }
