@@ -30,7 +30,6 @@ body{
 	display: none !important;
 }
 
-
 .mat-tab-body-content{
 	overflow: hidden !important;
 }
@@ -56,15 +55,22 @@ split-area{
 	overflow: auto !important;
 }
 
+.mat-expansion-indicator{
+	color: $color1 !important;
+}
+
 .mat-expansion-panel-header{
 	height: 30px !important;
 	//padding: 0px $default-side-padding !important;
-	background-color: $color3 !important;
+	background-color: white !important;
+	border-top: 1px solid $color2 !important;
+	border-bottom: 1px solid $color2 !important;
 	.mat-expansion-panel-header-title{
 		color: $color1 !important;
+		font-weight: bold !important;
 	}
 	&:hover{
-		background-color: $color3 !important;
+		background-color: white !important;
 	}
 }
 
@@ -185,7 +191,13 @@ split-area{
 	}
 }
 
-
+/*.viewer{
+	box-sizing: border-box;
+	padding-bottom: $header-height;
+	split-area{
+		overflow: auto !important;
+	}
+}*/
 
 /*
 .param-container{

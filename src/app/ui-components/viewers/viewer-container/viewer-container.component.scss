@@ -1,7 +1,8 @@
 @import '~scss/globals';
 
 .viewer-toggle{
-	flex-direction: row; 
+	display: flex;
+	flex-flow: row wrap;
 	width: 100%;
 	background-color: $color1;
 	mat-icon{
