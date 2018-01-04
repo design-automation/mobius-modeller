@@ -1,19 +1,27 @@
 @import '~scss/globals';
 
 .toolbox{
-
-	background-color: $color3;
+	//margin-bottom: $header-height;
+	//margin-bottom: -2* $header-height;
 	height: 100%;
-
-	.fn_name{
+	background-color: $color3;
+	position: relative;
+	box-sizing: border-box;
+	padding-bottom: $header-height;
+	.toolbox-content{
+		height:	100%;
+		overflow-y: auto;
+		overflow-x: hidden;
+		.fn_name{
 		height: auto;
 		font-size: 12px;
 		line-height: 14px;
 		color: $color1; 
 		cursor: pointer;
 
-		&:hover{
-			color: $color4;
+			&:hover{
+				color: $color4;
+			}
 		}
 	}
 }

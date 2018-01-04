@@ -14,13 +14,18 @@
 			<split-area class="sidebar flowchart" [visible]="true" [size]="30" order="1">
 				
 				<section>
+					<div class="disabled">Save Flowchart</div>
+					<div class="disabled">Load Flowchart</div>
+				</section>
+
+				<section>
 					<div (click)="addNode($event, undefined)">New Empty Node</div>
 					<div class="disabled">New Subnet</div>
 				</section>
-				
-				<section>
+				<hr>
+				<!--<section>
 					<div>Save Node</div>
-				</section>
+				</section>-->
 
 				<section>
 					<div (click)="save()">Save File</div>
