@@ -24,6 +24,7 @@ body{
 
 	padding: 0px;
 	margin: 0px; 
+
 }
 
 .hidden{
@@ -34,6 +35,9 @@ body{
 	overflow: hidden !important;
 }
 
+split-gutter{ 
+	background-color: $color2 !important; 
+}
 
 split-area{
 	overflow-y: hidden !important;
