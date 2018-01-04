@@ -1,6 +1,12 @@
+@import '~scss/globals';
+
 .node{
 	cursor: pointer;
 	&:hover{
 		color: white;
 	}
+}
+
+.disabled{
+	color: $color2;
 }
