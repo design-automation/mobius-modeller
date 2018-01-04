@@ -94,7 +94,14 @@
 											</div>
 										</div>
 									</div>
+
+									<div class = "divider" style="width:5%;">
+									</div>
+
 									<div class = "seg2" *ngIf="prod.data.name != 'Else' && prod.data.name != 'If'">
+										<button mat-button>
+											<mat-icon>help_outline</mat-icon>
+										</button>
 								        <button mat-button (click)="deleteProcedure(prod.data.model)">
 		    					    		<mat-icon>delete</mat-icon>
 			    					    </button>
