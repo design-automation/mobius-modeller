@@ -142,7 +142,7 @@ split-area{
 			margin:0 !important;
 
 			display: flex;
-			flex-flow: row no-wrap!important;
+			flex-flow: row wrap!important;
 			overflow: hidden !important;
 			justify-content: space-between !important;
 
@@ -152,6 +152,8 @@ split-area{
 			width: 80% !important;
 			flex-direction: row !important;
 			justify-content: space-between !important;
+			flex-grow:1 !important;
+			flex-shrink:0 !important;
 		}
 		.procedure-item{
 			color: $color1 !important;
@@ -176,6 +178,8 @@ split-area{
 				width: 20% !important;
 				display: flex;
 				justify-content: flex-end !important;
+				flex-grow:1 !important;
+				flex-shrink:0 !important;
 			button{
 					margin: 2px 0px;
 					height: 20px;
