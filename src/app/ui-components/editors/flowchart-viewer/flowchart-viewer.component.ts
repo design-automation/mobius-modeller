@@ -482,11 +482,10 @@ export class FlowchartViewerComponent extends Viewer{
   }
 
 
-  updateNodeName($event, node): void{
-    let name: string =  $event.srcElement.innerText; 
-
+  updateNodeName($event): void{
+    let name: string =  $event.target.value; 
     if(name.trim().length > 0){
-      node.setName(name);
+      this._selectedNode.setName(name);
       this.flowchartService.update();
     }
   }

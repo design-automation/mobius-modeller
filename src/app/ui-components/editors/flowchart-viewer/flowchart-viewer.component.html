@@ -106,7 +106,10 @@
 								
 								<div class="node-name" 
 										[class.selected]="node_index == _selectedNodeIndex" >
-										{{node.getName()}}
+									    <input  matInput
+									    style="margin: 2px; min-width: 50px; width: 50px;"
+									    placeholder="Value" value="{{ node.getName() }}"
+									    (change)="updateNodeName($event)"/>
 								</div>
 								
 								<!--inputs -->

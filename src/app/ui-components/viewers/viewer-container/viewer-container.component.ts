@@ -18,7 +18,7 @@ export class ViewerContainerComponent extends Viewer implements OnInit {
 
 	update() {
 
-		if(this._lock == false){
+		if(!this._lock){
 			let port = this.flowchartService.getSelectedPort(); 
 			if(port == undefined){
 				this.group.value = 4; 
@@ -32,13 +32,11 @@ export class ViewerContainerComponent extends Viewer implements OnInit {
 
 	lock(){
 		this._lock = !this._lock;
+		alert(this._lock);
 	}
 
   	ngOnInit() {
   	}
 
-  	changed(): void{
-  		this.flowchartService.update();
-  	}
 
 }

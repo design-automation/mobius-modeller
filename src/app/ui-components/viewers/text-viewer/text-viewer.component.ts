@@ -24,6 +24,10 @@ export class TextViewerComponent extends Viewer implements OnInit {
 
 	getPortContent(): string{
 
+		if(this._selectedPort == undefined){
+			return "";
+		}
+
 		let value = this._selectedPort.getValue();
 		if(typeof(value) == "object"){
 			value = JSON.stringify(value);
