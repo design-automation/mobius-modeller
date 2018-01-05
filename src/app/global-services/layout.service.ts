@@ -6,25 +6,27 @@ import {EViewer} from '../ui-components/viewers/EViewer';
 @Injectable()
 export class LayoutService {
 
-	private layout = {
-      useTransition: true,
-      gutter: 7,
-      size: {
-        main: 70, 
-        side: 30, 
-        top: 33, 
-        middle: 33, 
-        bottom: 33
-      },
-      content: {
-        main: EViewer.Viewer, 
-        side: {
-          top: EViewer.Flowchart, 
-          middle: EViewer.Editor,
-          bottom: EViewer.Parameter
+  	private layout = {
+        useTransition: true,
+        gutter: 7,
+        size: {
+          main: 70, 
+          side: 30, 
+          top: 33, 
+          middle: 33, 
+          bottom: 33
+        },
+        content: {
+          main: EViewer.Viewer, 
+          side: {
+            top: EViewer.Flowchart, 
+            middle: EViewer.Editor,
+            bottom: EViewer.Parameter
+          }
         }
-      }
-	}
+  	}
+
+    _url: string = "index";
 
   	constructor() { }
 
@@ -42,9 +44,20 @@ export class LayoutService {
         return this.subject.asObservable();
     }
 
+    showHelp(fn: {module: string, name: string}): void{
+        this._url  = "modules/" + "_" + fn.module.toLowerCase() + "_";
+        this.sendMessage("Module: " + fn.module);
+    } 
+
+    showConsole(): void{
+        this.sendMessage("console");
+    }
+
+    getUrl(): string{
+      return this._url;
+    }
 
     // other functionality
-
   	getAssets(){
   		return this.layout;
   	}

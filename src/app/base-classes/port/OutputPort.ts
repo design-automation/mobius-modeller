@@ -10,7 +10,7 @@ export class OutputPort extends Port{
 			this._type = type;
 		}
 		else{
-			this._type = OutputPortTypes.Console;
+			this._type = OutputPortTypes.Code;
 		}
 	}
 

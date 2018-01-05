@@ -11,7 +11,7 @@ import * as CircularJSON from 'circular-json';
 import * as ModuleSet from "../../assets/modules/AllModules";
 
 import {ConsoleService} from "./console.service";
-/*import * as ModuleSet from "gs-modelling";*/
+import {LayoutService} from "./layout.service"
 
 @Injectable()
 export class FlowchartService {
@@ -37,7 +37,7 @@ export class FlowchartService {
     return this._flowchart != undefined;
   }
 
-  constructor(private consoleService: ConsoleService) { 
+  constructor(private consoleService: ConsoleService, private layoutService: LayoutService) { 
     this.newFile();
     this.checkSavedNodes();
   };
@@ -457,6 +457,7 @@ export class FlowchartService {
       catch(ex){
         this.consoleService.addMessage("There was an error executing");
         this.consoleService.addMessage(ex);
+        this.layoutService.showConsole();
       }
 
       this.update();
