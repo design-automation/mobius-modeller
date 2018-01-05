@@ -78,13 +78,26 @@ export class ModuleUtils{
 
 	
 	static getParams(func: Function): {type: string, value: any}[]{
+
+
 	 	let fnStr = func.toString().replace( /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg, '');
-		let result = fnStr.slice(fnStr.indexOf('(')+1, fnStr.indexOf(')')).match( /([^\s,]+)/g);
+		let result = fnStr.slice(fnStr.indexOf('(')+1, fnStr.indexOf(')')).split(",")//.match( /([^\s,]+)/g);
 		if(result === null){
 		 	result = [];
 		}
 
-		let final_result = result.map(function(r){ return {type: r, value: r} })
+		let final_result = result.map(function(r){ 
+			r = r.trim();
+			let r_value = r.split("=");
+
+			if (r_value.length == 1){
+				return {type: r_value[0].trim(), value: r_value[0].trim()} 
+			}
+			else{
+				return {type: r_value[0].trim(), value: r_value[1].trim()} 
+			}
+
+		})
 
 		return final_result;
 	}
