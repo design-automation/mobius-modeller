@@ -44,14 +44,16 @@ var ViewerComponent = /** @class */ (function (_super) {
     //  checks if the flowchart service has a flowchart and calls update function for the viewer
     //
     ViewerComponent.prototype.notify = function () {
-        this.updateViewer();
+        //while(this.scene.children.length > 0){ 
+        //this.scene.remove(this.scene.children[0]); 
+        //}
+        //this.sceneViewer();
     };
     ViewerComponent.prototype.ngOnInit = function () {
+        //this.sceneViewer();
         this.updateViewer();
     };
-    ViewerComponent.prototype.updateViewer = function () {
-        this.boxes = this.dataService.getGsModel();
-        this.model = new gs.Model(this.boxes);
+    ViewerComponent.prototype.sceneViewer = function () {
         this.scene.background = new THREE.Color(0xcccccc);
         this.container = this.myElement.nativeElement.children[0]; //document.getElementById( 'container' );
         this.width = this.container.clientWidth || 600;
@@ -59,125 +61,160 @@ var ViewerComponent = /** @class */ (function (_super) {
         this.renderer.setPixelRatio(window.devicePixelRatio);
         this.renderer.setSize(this.width, this.height);
         this.container.appendChild(this.renderer.domElement);
-        var self = this;
-        // window.addEventListener( 'resize', function() {
-        //   self.width=self.container.clientWidth;
-        //   self.height=self.container.clientHeight;
-        //   self.renderer.setPixelRatio( window.devicePixelRatio );
-        //   self.camera.aspect = self.width / self.height;
-        //   self.camera.updateProjectionMatrix();
-        //   self.renderer.setSize( self.width, self.height );
-        //   self.render();
-        // }, false );
-        this.camera = new THREE.PerspectiveCamera(60, this.width / this.height, 1, 1000);
+        this.camera = new THREE.PerspectiveCamera(50, this.width / this.height, 0.01, 1000);
         this.camera.position.z = 10;
         this.camera.updateMatrixWorld();
         this.camera.lookAt(this.scene.position);
-        self.light = new THREE.DirectionalLight(0xffffff, 0.5);
+        this.light = new THREE.DirectionalLight(0xffffff, 0.5);
+        this.light.castShadow = false;
         this.controls = new three_orbitcontrols_ts_1.OrbitControls(this.camera, this.renderer.domElement);
-        this.controls.enabled = true;
-        this.controls.addEventListener('change', function () {
+        this.controls.mouseButtons = { ORBIT: THREE.MOUSE.LEFT };
+        var self = this;
+        self.light.position.copy(self.camera.position);
+        self.controls.addEventListener('change', function () {
             self.light.position.copy(self.camera.position);
         });
+        self.light.target.position.set(0, 0, 0);
         this.scene.add(self.light);
-        this.geometry = this.pushGSGeometry();
-        for (var i = 0; i < 50; i++) {
-            var material = new THREE.MeshPhongMaterial({ color: 0xffffff, side: THREE.DoubleSide });
-            var mesh = new THREE.Mesh(this.geometry, material);
-            mesh.position.x = (Math.random() - 0.5) * 50;
-            mesh.position.y = (Math.random() - 0.5) * 50;
-            mesh.position.z = (Math.random() - 0.5) * 50;
-            mesh.updateMatrix();
-            mesh.matrixAutoUpdate = false;
-            this.scene.add(mesh);
-        }
         this.render();
     };
-    ViewerComponent.prototype.pushGSGeometry = function () {
-        var geom = new THREE.Geometry();
-        var material = new THREE.MeshPhongMaterial({ color: 0xffffff, side: THREE.DoubleSide });
-        for (var _i = 0, _a = this.model.getGeom().getPoints(); _i < _a.length; _i++) {
-            var p = _a[_i];
-            var xyz = p.getPosition();
-            geom.vertices.push(new THREE.Vector3(xyz[0], xyz[1], xyz[2]));
+    ViewerComponent.prototype.updateViewer = function () {
+        this.model = this.dataService.getGsModel();
+        if (this.model == undefined) {
+            return this.sceneViewer();
         }
-        for (var _b = 0, _c = this.model.getGeom().getObjs(200 /* polymesh */); _b < _c.length; _b++) {
-            var polymesh = _c[_b];
-            var faces = polymesh.getFaces();
-            for (var _d = 0, faces_1 = faces; _d < faces_1.length; _d++) {
-                var face = faces_1[_d];
-                var point_IDs = face.getVertices().map(function (v, i) { return v.getPoint().getID(); });
-                geom.faces.push(new THREE.Face3(point_IDs[0], point_IDs[1], point_IDs[2]));
-                geom.faces.push(new THREE.Face3(point_IDs[0], point_IDs[2], point_IDs[3]));
+        else {
+            for (var i = 0; i < this.scene.children.length; i++) {
+                if (this.scene.children[i].type === "Scene") {
+                    this.scene.remove(this.scene.children[i]);
+                }
             }
+            var scene_data = gs.genThreeModel(this.model);
+            var loader = new THREE.ObjectLoader();
+            var object = loader.parse(scene_data);
+            for (var i = 0; i < object.children.length; i++) {
+                if (object.children[i].children !== undefined) {
+                    for (var j = 0; j < object.children[i].children.length; j++) {
+                        if (object.children[i].children[j].type === "Mesh") {
+                            object.children[i].children[j]["geometry"].computeVertexNormals();
+                        }
+                    }
+                }
+            }
+            this.scene.add(object);
         }
-        return geom;
+        this.scene.background = new THREE.Color(0xcccccc);
+        this.container = this.myElement.nativeElement.children[0]; //document.getElementById( 'container' );
+        this.width = this.container.clientWidth || 600;
+        this.height = this.container.clientHeight;
+        this.renderer.setPixelRatio(window.devicePixelRatio);
+        this.renderer.setSize(this.width, this.height);
+        this.container.appendChild(this.renderer.domElement);
+        this.camera = new THREE.PerspectiveCamera(50, this.width / this.height, 0.01, 1000);
+        this.camera.position.z = 10;
+        this.camera.updateMatrixWorld();
+        this.camera.lookAt(this.scene.position);
+        this.light = new THREE.DirectionalLight(0xffffff, 0.5);
+        this.light.castShadow = false;
+        this.controls = new three_orbitcontrols_ts_1.OrbitControls(this.camera, this.renderer.domElement);
+        this.controls.mouseButtons = { ORBIT: THREE.MOUSE.LEFT };
+        var self = this;
+        self.light.position.copy(self.camera.position);
+        self.controls.addEventListener('change', function () {
+            self.light.position.copy(self.camera.position);
+        });
+        self.light.target.position.set(0, 0, 0);
+        self.scene.add(self.light);
+        this.render();
     };
     ViewerComponent.prototype.onDocumentMouseMove = function (event) {
         event.preventDefault();
         this.mouse = new THREE.Vector2();
-        this.mouse.x = (event.offsetX / this.container.clientWidth) * 2 - 1;
-        this.mouse.y = -(event.offsetY / this.container.clientHeight) * 2 + 1;
+        this.mouse.x = (event.offsetX / this.width) * 2 - 1;
+        this.mouse.y = -(event.clientY / this.height) * 2 + 1;
     };
     ViewerComponent.prototype.onDocumentMouseDown = function (event) {
         this.INTERSECTEDcolor = this.dataService.getINTERSECTEDColor();
-        var INTERSECTED;
-        this.raycaster.setFromCamera(this.mouse, this.camera);
-        var intersects = this.raycaster.intersectObjects(this.scene.children);
-        if (intersects.length > 0) {
-            if (INTERSECTED != intersects[0].object) {
-                if (INTERSECTED)
-                    INTERSECTED.material.color.setHex(INTERSECTED.currentHex);
-                INTERSECTED = intersects[0].object;
-                INTERSECTED.currentHex = INTERSECTED.material.color.getHex();
-                var flagInArr = false;
-                for (var i = 0; i < this.selecting.length; i++) {
-                    if (this.selecting[i].uuid == INTERSECTED.uuid) {
-                        flagInArr = true;
-                        this.selecting[i].material.color.setHex(this.INTERSECTEDcolor);
-                        this.selecting.splice(i, 1);
-                        i = i - 1;
+        this.selecting = this.dataService.selecting;
+        if (this.Visible == "select") {
+            var scenechildren = [];
+            for (var i = 0; i < this.scene.children[1].children.length; i++) {
+                for (var j = 0; j < this.scene.children[1].children[i].children.length; j++) {
+                    if (this.scene.children[1].children[i].children[j].type === "Mesh") {
+                        var children = this.scene.children[1].children[i].children[j];
+                        scenechildren.push(children);
                     }
                 }
-                if (flagInArr == false) {
-                    INTERSECTED.material.color.setHex(0x2E9AFE);
-                    this.selecting.push(INTERSECTED);
+            }
+            var INTERSECTED;
+            this.raycaster.setFromCamera(this.mouse, this.camera);
+            var intersects = this.raycaster.intersectObjects(scenechildren);
+            if (intersects.length > 0) {
+                if (INTERSECTED != intersects[0].object) {
+                    if (INTERSECTED)
+                        INTERSECTED.material.color.setHex(INTERSECTED.currentHex);
+                    INTERSECTED = intersects[0].object;
+                    INTERSECTED.currentHex = INTERSECTED.material.color.getHex();
+                    var flagInArr = false;
+                    for (var i = 0; i < this.selecting.length; i++) {
+                        if (this.selecting[i].uuid == INTERSECTED.uuid) {
+                            flagInArr = true;
+                            this.selecting[i].material.color.setHex(this.INTERSECTEDcolor);
+                            this.selecting.splice(i, 1);
+                            i = i - 1;
+                        }
+                    }
+                    if (flagInArr == false) {
+                        INTERSECTED.material.color.setHex(0x2E9AFE);
+                        this.selecting.push(INTERSECTED);
+                    }
                 }
             }
-        }
-        else {
-            if (INTERSECTED)
-                INTERSECTED.material.color.setHex(INTERSECTED.currentHex);
-            INTERSECTED = null;
-            for (var i = 0; i < this.selecting.length; i++) {
-                this.selecting[i].material.color.setHex(this.INTERSECTEDcolor);
+            else {
+                if (INTERSECTED)
+                    INTERSECTED.material.color.setHex(INTERSECTED.currentHex);
+                INTERSECTED = null;
+                for (var i = 0; i < this.selecting.length; i++) {
+                    this.selecting[i].material.color.setHex(this.INTERSECTEDcolor);
+                }
+                this.selecting = [];
             }
-            this.selecting = [];
+            this.dataService.addselecting(this.selecting);
         }
-        this.dataService.addselecting(this.selecting);
     };
     ViewerComponent.prototype.render = function () {
         var self = this;
         (function render() {
-            self.raycaster.setFromCamera(self.mouse, self.camera);
-            var intersects = self.raycaster.intersectObjects(self.scene.children);
-            if (intersects.length > 0) {
-                if (self.INTERSECTED != intersects[0].object) {
-                    if (self.INTERSECTED)
-                        self.INTERSECTED.material.color.setHex(self.INTERSECTED.currentHex);
-                    self.INTERSECTED = intersects[0].object;
-                    self.INTERSECTED.currentHex = self.INTERSECTED.material.color.getHex();
-                    self.dataService.addINTERSECTEDColor(self.INTERSECTED.currentHex);
-                    self.INTERSECTED.material.color.setHex(0xFF0000);
-                }
-            }
-            else {
-                if (self.INTERSECTED) {
-                    if (self.INTERSECTED.currentHex != 16711680) {
-                        self.INTERSECTED.material.color.setHex(self.INTERSECTED.currentHex);
+            if (self.Visible == "select") {
+                var scenechildren = [];
+                for (var i = 0; i < self.scene.children[1].children.length; i++) {
+                    for (var j = 0; j < self.scene.children[1].children[i].children.length; j++) {
+                        if (self.scene.children[1].children[i].children[j].type === "Mesh") {
+                            var children = self.scene.children[1].children[i].children[j];
+                            scenechildren.push(children);
+                        }
                     }
                 }
-                self.INTERSECTED = null;
+                self.raycaster.setFromCamera(self.mouse, self.camera);
+                var intersects = self.raycaster.intersectObjects(scenechildren);
+                if (intersects.length > 0) {
+                    if (self.INTERSECTED != intersects[0].object) {
+                        if (self.INTERSECTED)
+                            self.INTERSECTED.material.color.setHex(self.INTERSECTED.currentHex);
+                        self.INTERSECTED = intersects[0].object;
+                        self.INTERSECTED.currentHex = self.INTERSECTED.material.color.getHex();
+                        self.dataService.addINTERSECTEDColor(self.INTERSECTED.currentHex);
+                        self.INTERSECTED.material.color.setHex(0xFF0000);
+                    }
+                }
+                else {
+                    if (self.INTERSECTED) {
+                        if (self.INTERSECTED.currentHex != 16711680) {
+                            self.INTERSECTED.material.color.setHex(self.INTERSECTED.currentHex);
+                        }
+                    }
+                    self.INTERSECTED = null;
+                }
             }
             requestAnimationFrame(render);
             self.renderer.render(self.scene, self.camera);
@@ -185,37 +222,83 @@ var ViewerComponent = /** @class */ (function (_super) {
         this.renderer.render(this.scene, this.camera);
     };
     ViewerComponent.prototype.zoom = function (Visible) {
-        /*document.body.style.cursor = "crosshair";
-        this.controls.mouseButtons={ZOOM:THREE.MOUSE.LEFT};
-        this.controls.enabled=true;
-        this.controls.enableZoom=true;*/
+        document.body.style.cursor = "crosshair";
+        this.controls.mouseButtons = { ZOOM: THREE.MOUSE.LEFT };
+        this.controls.enabled = true;
+        this.controls.enableZoom = true;
         this.Visible = "zoom";
     };
     ViewerComponent.prototype.zoomfit = function (Visible) {
-        /*document.body.style.cursor = "crosshair";
-        this.controls.mouseButtons={ZOOM:THREE.MOUSE.LEFT};
-        this.controls.enabled=true;
-        this.controls.enableZoom=true;*/
+        document.body.style.cursor = "crosshair";
+        this.controls.mouseButtons = { ZOOM: THREE.MOUSE.LEFT };
+        this.controls.enabled = true;
+        this.controls.enableZoom = true;
         this.Visible = "zoomfit";
+        if (this.selecting.length !== 0) {
+            var axisX = 0;
+            var axisY = 0;
+            var axisZ = 0;
+            var radius = 0;
+            var centerX = 0;
+            var centerY = 0;
+            var centerZ = 0;
+            var radius = 0;
+            for (var i = 0; i < this.selecting.length; i++) {
+                axisX += this.selecting[i].geometry.boundingSphere.center.x;
+                ;
+                axisY += this.selecting[i].geometry.boundingSphere.center.y;
+                ;
+                axisZ += this.selecting[i].geometry.boundingSphere.center.z;
+                ;
+            }
+            centerX = axisX / this.scene.children[1].children.length;
+            centerY = axisY / this.scene.children[1].children.length;
+            centerY = axisY / this.scene.children[1].children.length;
+            console.log(this.camera);
+            //this.camera.position.set();
+        }
     };
     ViewerComponent.prototype.pan = function (Visible) {
-        /*document.body.style.cursor = "-webkit-grab";
-        this.controls.mouseButtons={PAN:THREE.MOUSE.LEFT};
-        this.controls.enabled=true;
-        this.controls.enablePan=true;*/
+        document.body.style.cursor = "-webkit-grab";
+        this.controls.mouseButtons = { PAN: THREE.MOUSE.LEFT };
+        this.controls.enabled = true;
+        this.controls.enablePan = true;
         this.Visible = "pan";
     };
     ViewerComponent.prototype.rotate = function (Visible) {
-        /*document.body.style.cursor = " -webkit-grab";
-        this.controls.mouseButtons={ORBIT:THREE.MOUSE.LEFT};
-        this.controls.enabled=true;
-        this.controls.enableOrbit=true;*/
+        document.body.style.cursor = " -webkit-grab";
+        if (this.selecting.length === 0) {
+            this.controls.target.set(0, 0, 0);
+        }
+        else {
+            var axisX = 0;
+            var axisY = 0;
+            var axisZ = 0;
+            var centerX = 0;
+            var centerY = 0;
+            var centerZ = 0;
+            for (var i = 0; i < this.selecting.length; i++) {
+                axisX += this.selecting[i].geometry.boundingSphere.center.x;
+                ;
+                axisY += this.selecting[i].geometry.boundingSphere.center.y;
+                ;
+                axisZ += this.selecting[i].geometry.boundingSphere.center.z;
+                ;
+            }
+            centerX = axisX / this.scene.children[1].children.length;
+            centerY = axisY / this.scene.children[1].children.length;
+            centerY = axisY / this.scene.children[1].children.length;
+            this.controls.target.set(centerX, centerY, centerZ);
+        }
+        this.controls.mouseButtons = { ORBIT: THREE.MOUSE.LEFT };
+        this.controls.enabled = true;
+        this.controls.enableOrbit = true;
         this.Visible = "rotate";
     };
     ViewerComponent.prototype.select = function (Visible) {
-        /*document.body.style.cursor = " default";
-        this.controls.enabled=false;
-        this.controls.enableOrbit=false;*/
+        document.body.style.cursor = "default";
+        this.controls.enabled = false;
+        this.controls.enableOrbit = false;
         this.Visible = "select";
     };
     ViewerComponent = __decorate([

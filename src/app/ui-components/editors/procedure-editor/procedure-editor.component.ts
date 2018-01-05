@@ -6,6 +6,8 @@ import {IProcedure, ProcedureFactory, ProcedureTypes} from '../../../base-classe
 import {Viewer} from '../../../base-classes/viz/Viewer';
 
 import {FlowchartService} from '../../../global-services/flowchart.service';
+import {LayoutService} from '../../../global-services/layout.service';
+
 
 import {ModuleUtils} from "../../../base-classes/code/CodeModule";
 
@@ -49,9 +51,21 @@ export class ProcedureEditorComponent extends Viewer {
 		return type.toString()
 	}
 
-	constructor(injector: Injector, public dialog: MatDialog){  
+	constructor(injector: Injector, public dialog: MatDialog, private layoutService: LayoutService){  
 		super(injector, "procedure-editor"); 
 	}
+
+	openHelp($event, prod): void{
+		$event.stopPropagation();
+
+		if(prod.data.name == "Action"){
+			let fn = prod.data.rightExpression.split("::");
+			fn = { module: fn[0], name: fn[1] }
+			this.layoutService.showHelp(fn);
+		}
+		
+	}
+
 
 	reset():void{
 		this._procedureArr = [];

@@ -9,7 +9,7 @@
 
 		<mat-list condensed>
 		 	<mat-list-item class="fn_name" *ngFor="let fn of _moduleList" (click)="addActionProcedure(fn);"> 
-		 		<span (click)="openHelp($event, fn)">[H]</span>&nbsp;&nbsp; {{ fn.module }}::{{ fn.name }} 
+		 		{{ fn.module }}::{{ fn.name }} 
 		 	</mat-list-item>
 		</mat-list>
 	</div>

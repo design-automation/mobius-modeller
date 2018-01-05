@@ -99,7 +99,9 @@
 									</div>
 
 									<div class = "seg2" *ngIf="prod.data.name != 'Else' && prod.data.name != 'If'">
-										<button mat-button>
+										<button mat-button 
+										    *ngIf="prod.data.name =='Action'"
+											(click)="openHelp($event, prod)">
 											<mat-icon>help_outline</mat-icon>
 										</button>
 								        <button mat-button (click)="deleteProcedure(prod.data.model)">

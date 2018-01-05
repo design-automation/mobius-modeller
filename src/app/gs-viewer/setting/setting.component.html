@@ -1,7 +1,7 @@
-<div id="settingview">
+<div id="settingview" (click)="setting($event)">
   <input id="grid" type="checkbox" (click)="changegrid()"> <label id="gridname" value="gridVisible">grid</label>
   <input id="axis"  type="checkbox" (click)="changeaxis()"> <label id="axisname" value="axisVisible">axis</label>
-  <input id="fog"  type="checkbox" (click)="changeshadow()"> <label id="fogname" value="shadowVisible">shadow</label><br/><hr/>&nbsp;&nbsp;&nbsp;&nbsp;Hemisphere Light&nbsp;&nbsp;<br/>
+  <input id="shadow"  type="checkbox" (click)="changeshadow()"> <label id="fogname" value="shadowVisible">shadow</label><br/><hr/>&nbsp;&nbsp;&nbsp;&nbsp;Hemisphere Light&nbsp;&nbsp;<br/>
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hue
   <mat-slider name="range" id="huerange" min=0 max=360 step=1  value={{hue}} #slider (change)="changelight(slider.value,slider1.value,slider2.value)" ></mat-slider>{{slider.value.toPrecision(2)}}<br/>
   &nbsp;&nbsp;&nbsp;saturation

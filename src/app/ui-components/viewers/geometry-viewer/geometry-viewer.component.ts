@@ -27,7 +27,6 @@ export class GeometryViewerComponent extends Viewer implements OnInit{
 	}	
 
 	update() :void{
-
       try{
         this._port = this.flowchartService.getSelectedPort();
         this.gs_dummy_data = this._port.getValue();

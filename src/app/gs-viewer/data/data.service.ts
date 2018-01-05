@@ -23,6 +23,10 @@ export class DataService {
   scenechange:any;
   INTERSECTEDColor:any;
   selecting:any = [];
+  object:any;
+  axis:boolean;
+  grid:boolean;
+  shadow:boolean;
 
   constructor() { 
     this._alight=[];
@@ -55,7 +59,7 @@ export class DataService {
 
   setGsModel(model){
     this._gsModel = model;
-    this.sendMessage();
+    this.sendMessage("model_update");
   }
 
 
@@ -142,5 +146,14 @@ export class DataService {
   }
   getselecting(){
     return this.selecting;
+  }
+  addgrid(grid){
+    this.grid=grid;
+  }
+  addaxis(axis){
+    this.axis=axis;
+  }
+  addshadow(shadow){
+    this.shadow=shadow;
   }
 }

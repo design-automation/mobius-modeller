@@ -11,6 +11,7 @@ var THREE = require("three");
 var Subject_1 = require("rxjs/Subject");
 var DataService = /** @class */ (function () {
     function DataService() {
+        this.selecting = [];
         // ---- 
         // Subscription Handling
         // 
@@ -50,10 +51,10 @@ var DataService = /** @class */ (function () {
         return this._renderer;
     };
     DataService.prototype.addAmbientLight = function () {
-        this._hueValue = 0;
+        this._hueValue = 160;
         this._saturationValue = 0;
-        this._lightnessValue = 0.7;
-        var light = new THREE.AmbientLight(0xffffff);
+        this._lightnessValue = 0.47;
+        var light = new THREE.HemisphereLight(0xffffff, 0.5);
         this._data.add(light);
         this._alight.push(light);
         var alight = this._alight;
@@ -100,7 +101,14 @@ var DataService = /** @class */ (function () {
         return this.INTERSECTEDColor;
     };
     DataService.prototype.addselecting = function (selecting) {
-        this.selecting = selecting;
+        if (selecting[selecting.length - 1] == undefined) {
+            this.selecting = [];
+        }
+        this.sendMessage();
+    };
+    DataService.prototype.pushselecting = function (selecting) {
+        this.selecting.push(selecting);
+        this.sendMessage();
     };
     DataService.prototype.getselecting = function () {
         return this.selecting;

@@ -7,7 +7,7 @@ var DataSubscriber = /** @class */ (function () {
         this.dataService = injector.get(data_service_1.DataService);
         this._subscription = this.dataService.getMessage().subscribe(function (message) {
             _this._message = message;
-            _this.notify();
+            _this.notify(message.text);
         });
     }
     DataSubscriber.prototype.notify = function () {
