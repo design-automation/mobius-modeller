@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class ViewerContainerComponent extends Viewer implements OnInit {
 
-  	group = {value: 4};
+  	group = {value: 3};
   	_lock: boolean = false;
 
   	private _layout_subscription: Subscription;
