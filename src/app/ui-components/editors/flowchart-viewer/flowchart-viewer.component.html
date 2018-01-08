@@ -36,7 +36,13 @@
 
 			</split-area>
 
-            <split-area [visible]="true" [size]="70"  style="position: relative;">
+            <split-area [visible]="true" [size]="70"  
+            		style="position: relative;"
+            		(wheel)="scale($event)">
+
+            	<div class="info-container" style="position: absolute; top: 30px; right: 30px">
+            		Zoom: {{zoom}}
+            	</div>
 
                 <!-- svg canvas to draw the edges -->
 				<svg xmlns="http://www.w3.org/2000/svg" 
@@ -45,11 +51,11 @@
 					[style.zoom]="zoom">
 
 					<g *ngFor="let edge of _edges" >
-										<path 
-										  [attr.d]="edge.path" 
-										  stroke="blue"
-										  stroke-width="3" fill="none" />
-									</g>
+						<path 
+						  [attr.d]="edge.path" 
+						  stroke="blue"
+						  stroke-width="3" fill="none" />
+					</g>
 													
 					<!-- dragging path -->
 					<g id="temporary-edge" [class.hidden]="!_linkMode" >

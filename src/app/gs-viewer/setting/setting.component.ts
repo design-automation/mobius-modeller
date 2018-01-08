@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import { OrbitControls } from 'three-orbitcontrols-ts';
 import { Component, OnInit, Input } from '@angular/core';
 import { AngularSplitModule } from 'angular-split';
 import { ViewerComponent } from '../viewer/viewer.component';

@@ -9,6 +9,7 @@ import {IFlowchart} from './IFlowchart';
 import {IGraphNode, IEdge} from '../node/NodeModule';
 import {ICodeGenerator, IModule} from '../code/CodeModule';
 
+import * as gs from 'gs-json';
 
 export class Flowchart implements IFlowchart{
 
@@ -68,7 +69,30 @@ export class Flowchart implements IFlowchart{
 		return this._edges.length;
 	};
 
+	disconnectEdgesWithNode(node_index: number): number[]{
+	      let splicedEdges: number[] = [];
+	      let edges = this.getEdges();
+	      for(let e=0; e < edges.length; e++){
+	        let edge = edges[e];
+	        if( edge.output_address[0] == node_index){
+	            let port = this.getNodeByIndex(edge.input_address[0]).getInputByIndex(edge.input_address[1]);
+	            port.disconnect();
+	            port.setComputedValue(undefined);
+	            splicedEdges.push(e);
+	        }
+	        else if(edge.input_address[0] == node_index){
+	            let port = this.getNodeByIndex(edge.output_address[0]).getOutputByIndex(edge.output_address[1]);
+	            port.disconnect();
+	            port.setComputedValue(undefined);
+	            splicedEdges.push(e);
+	        }
+	      }
+	      return splicedEdges;
+	}
+
 	deleteNode(nodeIndex: number): number{
+
+		this.deleteEdges(this.disconnectEdgesWithNode(nodeIndex));
 
 		// todo: check for valid node index
 		this._nodes.splice(nodeIndex, 1);
@@ -88,6 +112,79 @@ export class Flowchart implements IFlowchart{
 		this._edges = this._edges.filter(function(edge, index){
 			return ( edgeArr.indexOf(index) == -1 );
 		})
+	}
+
+	disconnectEdgesWithPortIndex(nodeIndex: number, portIndex: number, type: string): number[]{
+      let splicedEdges: number[] = [];
+      let edges = this.getEdges();
+      
+      for(let e=0; e < edges.length; e++){
+        let edge = edges[e];
+
+        // if type == "input"
+        if( type == "input" && edge.input_address[0] == nodeIndex && edge.input_address[1] == portIndex ){
+            let port = this.getNodeByIndex(edge.output_address[0]).getOutputByIndex(edge.output_address[1]);
+            port.disconnect();
+            port.setComputedValue(undefined);
+            splicedEdges.push(e);
+        }
+        else if( type == "output" && edge.output_address[0] == nodeIndex && edge.output_address[1] == portIndex ){
+            let port = this.getNodeByIndex(edge.input_address[0]).getInputByIndex(edge.input_address[1]);
+            port.disconnect();
+            port.setComputedValue(undefined);
+            splicedEdges.push(e);
+        }
+      }
+
+      return splicedEdges;
+  	}
+
+	deletePort(type: string, portIndex: number, nodeIndex: number): void{
+	    let edges = this._edges;
+	    let _node = this.getNodeByIndex(nodeIndex);
+
+	    /// disconnect the edges related to this port
+	    let edgesArr: number[] = this.disconnectEdgesWithPortIndex(nodeIndex, portIndex, type); 
+	    this.deleteEdges(edgesArr);
+
+	    /// update indices of edges
+	    /// delete port
+	    for(let e=0; e < edges.length; e++){
+
+	        let input_node: number = edges[e].input_address[0];
+	        let input_port: number = edges[e].input_address[1];
+
+	        if(type == "input"){
+	           let input_node: number = edges[e].input_address[0];
+	           let input_port: number = edges[e].input_address[1];
+
+	            if(input_node == nodeIndex && input_port >= portIndex){
+	              edges[e].input_address[1] = edges[e].input_address[1] - 1;
+	            }
+	        }
+	        else if(type == "output"){
+	           let output_node: number = edges[e].output_address[0];
+	           let output_port: number = edges[e].output_address[1];
+
+	            if(output_node == nodeIndex && output_port >= portIndex){
+	              edges[e].output_address[1] = edges[e].output_address[1] - 1;
+	            }
+	        }
+	        else{
+	           console.warn("reached 358");
+	        }
+	    }
+
+		if(type == "input"){
+			_node.deleteInput(portIndex);
+		}
+		else if(type == "output"){
+			_node.deleteOutput(portIndex);
+		}
+		else{
+			throw Error("Unknown port type");
+		}
+
 	}
 
 	getNodes(): IGraphNode[]{ 
@@ -194,7 +291,47 @@ export class Flowchart implements IFlowchart{
 			// should this be from within the node?
 			let outputPort = node.getOutputByIndex(edge.output_address[1]);
 			let inputPort = inputNode.getInputByIndex(edge.input_address[1]);
+
 			inputPort.setComputedValue(outputPort.getValue());
+			console.log(outputPort.getValue());
+
+
+			// let value = outputPort.getValue();
+			// if( value["_kernel"] && value["_id"] ){
+
+			// 	console.log(value);
+
+			// 	let obj: gs.Model = outputPort.getValue().getModel();
+				
+			// 	let objStr: string = obj.toJSON();
+				
+			// 	let entity = value.constructor;
+			// 	let new_obj = new entity();
+			// 	new_obj["_id"] = value["_id"];
+
+			// 	let new_model = new gs.Model(JSON.parse(objStr));
+
+			// 	inputPort.setComputedValue(new_obj);
+			// }
+			// else{
+			// 	inputPort.setComputedValue(value);
+			// }
+
+
+
+			// create a new object
+			//let entity = obj.constructor;
+			// let kernelCons = obj["_kernel"].constructor;
+			// let new_obj = new entity();
+			// new_obj["_id"] = obj["_id"];
+			
+			// new_obj["_kernel"] = new kernelCons();
+			// new_obj["_kernel"]["_model"]  = new kernelCons();
+			// ["_attribs", "_groups", "_metadata", "_objs", "_points", "_topos_trees"].map(function(prop: string){
+			// 	new_obj["_kernel"]["_model"][prop] = obj["_kernel"][prop];
+			// })
+			// console.log(new_obj);
+
 		}
 	}
 

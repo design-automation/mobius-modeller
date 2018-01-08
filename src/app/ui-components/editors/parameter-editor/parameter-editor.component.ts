@@ -62,22 +62,7 @@ export class ParameterEditorComponent extends Viewer{
 
     deletePort(event, type: string, portIndex: number): void{
       event.stopPropagation();
-
-      let edgesArr: number[] = this.flowchartService.disconnectEdgesWithPortIndex(portIndex, type); 
-      this.flowchartService.deleteEdges(edgesArr);
-
-      if(type == "input"){
-        this._node.deleteInput(portIndex);
-      }
-      else if(type == "output"){
-        this._node.deleteOutput(portIndex);
-      }
-      else{
-        throw Error("Unknown port type");
-      }
-      
-      this.flowchartService.update();
-
+      this.flowchartService.deletePort(type, portIndex);
     } 
 
     updatePortName($event, port: InputPort|OutputPort): void{
