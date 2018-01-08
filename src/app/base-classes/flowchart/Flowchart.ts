@@ -9,6 +9,7 @@ import {IFlowchart} from './IFlowchart';
 import {IGraphNode, IEdge} from '../node/NodeModule';
 import {ICodeGenerator, IModule} from '../code/CodeModule';
 
+import * as gs from 'gs-json';
 
 export class Flowchart implements IFlowchart{
 
@@ -194,7 +195,47 @@ export class Flowchart implements IFlowchart{
 			// should this be from within the node?
 			let outputPort = node.getOutputByIndex(edge.output_address[1]);
 			let inputPort = inputNode.getInputByIndex(edge.input_address[1]);
+
 			inputPort.setComputedValue(outputPort.getValue());
+			console.log(outputPort.getValue());
+
+
+			// let value = outputPort.getValue();
+			// if( value["_kernel"] && value["_id"] ){
+
+			// 	console.log(value);
+
+			// 	let obj: gs.Model = outputPort.getValue().getModel();
+				
+			// 	let objStr: string = obj.toJSON();
+				
+			// 	let entity = value.constructor;
+			// 	let new_obj = new entity();
+			// 	new_obj["_id"] = value["_id"];
+
+			// 	let new_model = new gs.Model(JSON.parse(objStr));
+
+			// 	inputPort.setComputedValue(new_obj);
+			// }
+			// else{
+			// 	inputPort.setComputedValue(value);
+			// }
+
+
+
+			// create a new object
+			//let entity = obj.constructor;
+			// let kernelCons = obj["_kernel"].constructor;
+			// let new_obj = new entity();
+			// new_obj["_id"] = obj["_id"];
+			
+			// new_obj["_kernel"] = new kernelCons();
+			// new_obj["_kernel"]["_model"]  = new kernelCons();
+			// ["_attribs", "_groups", "_metadata", "_objs", "_points", "_topos_trees"].map(function(prop: string){
+			// 	new_obj["_kernel"]["_model"][prop] = obj["_kernel"][prop];
+			// })
+			// console.log(new_obj);
+
 		}
 	}
 

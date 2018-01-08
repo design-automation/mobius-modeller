@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import { OrbitControls } from 'three-orbitcontrols-ts';
 import { Component, OnInit, Injector, ElementRef } from '@angular/core';
 import { AngularSplitModule } from 'angular-split';
 import { DataService } from "../data/data.service";
@@ -41,10 +40,11 @@ export class ToolwindowComponent extends DataSubscriber implements OnInit {
     //this.model= this.dataService.getGsModel(); 
     /*this.model=gs.genModelBoxWithAttribs();
   	this.point(this.Visible);
-    const attribs: gs.IAttrib[] = this.model.getAttribs();
-    console.log(attribs[0].getGeomType());
+    console.log(this.model.getAllAttribs());
+    const attribs: gs.IAttrib[] = this.model.getAllAttribs();
+    //console.log(attribs[0].getGeomType());
     for (const attrib of attribs) {
-      console.log(attrib.getGeomType());
+      //console.log(attrib.getGeomType());
       const type: gs.EGeomType = attrib.getGeomType();
       const name: string = attrib.getName();
       //const values: any[] = attrib.getValues();

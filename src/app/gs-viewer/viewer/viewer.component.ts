@@ -1,13 +1,12 @@
 import { Component, OnInit, Injector, ElementRef } from '@angular/core';
 import * as THREE from 'three';
-import { OrbitControls } from 'three-orbitcontrols-ts';
+import * as OrbitControls from 'three-orbit-controls';
+//import { OrbitControls } from 'three-orbitcontrols-ts';
 import { AngularSplitModule } from 'angular-split';
 import { SettingComponent } from '../setting/setting.component';
 import * as gs from "gs-json";
 
 import {DataSubscriber} from "../data/DataSubscriber";
-
-
 
 @Component({
   selector: 'app-viewer',
@@ -15,6 +14,9 @@ import {DataSubscriber} from "../data/DataSubscriber";
   styleUrls: ['./viewer.component.css']
 })
 export class ViewerComponent extends DataSubscriber implements OnInit {
+
+  OC; 
+
   scene:THREE.Scene;
   renderer:THREE.WebGLRenderer;
   container:any;
@@ -22,7 +24,7 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
   width:any;
   height:any;
   light:THREE.DirectionalLight;
-  controls:any;
+  controls:THREE.OrbitControls;
   view:any;
   raycaster:THREE.Raycaster;
   mouse:THREE.Vector2;
@@ -52,16 +54,13 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
     this.spritey=[];
     this.myElement = myElement;
     document.body.style.cursor = " pointer";
+    this.OC = OrbitControls(THREE);
   }
 
   //
   //  checks if the flowchart service has a flowchart and calls update function for the viewer
   //
   notify(message: string): void{
-    //while(this.scene.children.length > 0){ 
-        //this.scene.remove(this.scene.children[0]); 
-    //}
-    //this.sceneViewer();
     if(message == "model_update"){
       this.updateViewer();
     }
@@ -69,7 +68,7 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
 
 
   ngOnInit() {
-    //this.sceneViewer();
+    this.sceneViewer();
     this.updateViewer();
   }
 
@@ -87,8 +86,8 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
     this.camera.lookAt(this.scene.position);
     this.light = new THREE.DirectionalLight( 0xffffff,0.5);
     this.light.castShadow = false; 
-    this.controls=new OrbitControls(this.camera, this.renderer.domElement);
-    this.controls.mouseButtons={ORBIT:THREE.MOUSE.LEFT};
+    this.controls=new this.OC(this.camera, this.renderer.domElement);
+    this.controls.mouseButtons={ORBIT:0,ZOOM:null,PAN:null};
     var self=this;
     self.light.position.copy( self.camera.position );
     self.controls.addEventListener( 'change',  function() {
@@ -100,56 +99,36 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
   }
 
   updateViewer(){
-    this.model = this.dataService.getGsModel(); 
-    if(this.model == undefined){
-      return this.sceneViewer();
-    }else{
-      for(var i=0;i<this.scene.children.length;i++){
-        if(this.scene.children[i].type==="Scene"){
-          this.scene.remove(this.scene.children[i]);
+      try{
+        //empty the scene
+        for(var i=0;i<this.scene.children.length;i++){
+          if(this.scene.children[i].type==="Scene"){
+            this.scene.remove(this.scene.children[i]);
+          }
         }
-      }
-      const scene_data: gs.IThreeScene = gs.genThreeModel(this.model);
-      let loader = new THREE.ObjectLoader();
-      this.objectdata = loader.parse( scene_data );
-      for(var i =0;i<this.objectdata.children.length;i++){
-        if(this.objectdata.children[i].children!==undefined){
-          for(var j=0;j<this.objectdata.children[i].children.length;j++){
-            if(this.objectdata.children[i].children[j].type==="Mesh"){
-              this.objectdata.children[i].children[j]["geometry"].computeVertexNormals();
-              this.objectdata.children[i].children[j]["geometry"].computeBoundingBox();
-              this.objectdata.children[i].children[j]["geometry"].computeBoundingSphere();
+
+        this.model = this.dataService.getGsModel(); 
+
+        const scene_data: gs.IThreeScene = gs.genThreeModel(this.model);
+        let loader = new THREE.ObjectLoader();
+        this.objectdata = loader.parse( scene_data );
+
+        for(var i =0;i<this.objectdata.children.length;i++){
+          if(this.objectdata.children[i].children!==undefined){
+            for(var j=0;j<this.objectdata.children[i].children.length;j++){
+              if(this.objectdata.children[i].children[j].type==="Mesh"){
+                this.objectdata.children[i].children[j]["geometry"].computeVertexNormals();
+                this.objectdata.children[i].children[j]["geometry"].computeBoundingBox();
+                this.objectdata.children[i].children[j]["geometry"].computeBoundingSphere();
+              }
             }
           }
         }
+        this.scene.add( this.objectdata );
       }
-      this.scene.add( this.objectdata );
-
-    }
-
-    this.scene.background = new THREE.Color( 0xcccccc );
-    this.container= this.myElement.nativeElement.children[0];//document.getElementById( 'container' );
-    this.width=this.container.clientWidth || 600;
-    this.height=this.container.clientHeight;    
-    this.renderer.setPixelRatio( window.devicePixelRatio );
-    this.renderer.setSize( this.width, this.height );
-    this.container.appendChild( this.renderer.domElement );
-    this.camera = new THREE.PerspectiveCamera( 50, this.width / this.height, 0.01, 1000 );
-    this.camera.position.z = 10;
-    this.camera.updateProjectionMatrix();
-    this.camera.lookAt(this.scene.position);
-    this.light = new THREE.DirectionalLight( 0xffffff,0.5);
-    this.light.castShadow = false; 
-    this.controls=new OrbitControls(this.camera, this.renderer.domElement);
-    this.controls.mouseButtons={ORBIT:THREE.MOUSE.LEFT};
-    var self=this;
-    self.light.position.copy( self.camera.position );
-    self.controls.addEventListener( 'change',  function() {
-      self.light.position.copy( self.camera.position );
-    } );
-    self.light.target.position.set( 0, 0, 0 );
-    self.scene.add( self.light );
-    this.render();
+      catch(ex){
+         console.log("Cannot display given model", ex);
+      }
   }
 
   onDocumentMouseMove(event) {
@@ -169,22 +148,23 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
   onDocumentMouseDown(event){
     this.INTERSECTEDcolor=this.dataService.getINTERSECTEDColor();
     this.selecting=this.dataService.selecting;
-    var scenechildren=[];
+    var scenechildren=new THREE.Scene();
     for(var i=0;i<this.scene.children[1].children.length;i++){
       for(var j=0;j<this.scene.children[1].children[i].children.length;j++){
         if(this.scene.children[1].children[i].children[j].type==="Mesh"){
         var children=this.scene.children[1].children[i].children[j];
-        scenechildren.push(children);
-      }
+        scenechildren.children.push(children);
+        }
       }
     }
     var INTERSECTED;
     this.raycaster.setFromCamera(this.mouse,this.camera);
-      var intersects = this.raycaster.intersectObjects(scenechildren);
+      var intersects = this.raycaster.intersectObjects(scenechildren.children);
       if ( intersects.length > 0 ) {
         if ( INTERSECTED!= intersects[ 0 ].object ) {
           if ( INTERSECTED ) INTERSECTED.material.color.setHex( INTERSECTED.currentHex );
           INTERSECTED= intersects[ 0 ].object;
+          console.log(INTERSECTED);
           INTERSECTED.currentHex = INTERSECTED.material.color.getHex();
           var flagInArr = false; 
           for(var i=0;i<this.selecting.length;i++){
@@ -199,6 +179,12 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
           if(flagInArr == false){
             INTERSECTED.material.color.setHex( 0x2E9AFE);
             this.selecting.push(INTERSECTED);
+            console.log(this.spritey.length);
+            var threesprite=this.sprite("O1", { fontsize: 70} );
+            this.spritey.push(threesprite);
+            var position:THREE.Vector3=this.selecting[this.selecting.length-1].geometry.boundingBox.max;
+            this.spritey[this.spritey.length-1].position.set(position.x,position.y,position.z);
+            this.scene.add(this.spritey[this.spritey.length-1]);
           }
         }
       } else {
@@ -207,23 +193,16 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
         for(var i=0;i<this.selecting.length;i++){
           this.selecting[i].material.color.setHex(this.INTERSECTEDcolor);
         }
+        for(var j=0;j<this.scene.children.length;j++){
+          if(this.scene.children[j].type==="Sprite"){
+            this.scene.remove(this.scene.children[j]);
+            j=j-1;
+          }
+        }
+        this.spritey=[];
         this.selecting=[];
       }
       this.dataService.addselecting(this.selecting);
-    if(this.selecting.length===0){
-      for(var i=0;i<this.scene.children.length;i++){
-        if(this.scene.children[i].type==="Sprite"){
-          this.scene.remove(this.scene.children[i]);
-        }
-      }
-    }else{
-      for(var i=0;i<this.selecting.length;i++){
-        var position:THREE.Vector3=this.selecting[i].geometry.boundingBox.max;
-        this.spritey[i]=this.sprite("O1", { fontsize: 70} );
-        this.spritey[i].position.set(position.x,position.y,position.z);
-        this.scene.add(this.spritey[i]);
-      }
-    }
 
   }
 
@@ -231,17 +210,17 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
     let self = this;
     (function render(){
       if(self.Visible=="select"){
-      var scenechildren=[];
+      var scenechildren=new THREE.Scene();
       for(var i=0;i<self.scene.children[1].children.length;i++){
         for(var j=0;j<self.scene.children[1].children[i].children.length;j++){
           if(self.scene.children[1].children[i].children[j].type==="Mesh"){
           var children=self.scene.children[1].children[i].children[j];
-          scenechildren.push(children);
+          scenechildren.children.push(children);
           }
         }
       }
       self.raycaster.setFromCamera(self.mouse,self.camera);
-      var intersects = self.raycaster.intersectObjects(scenechildren);
+      var intersects = self.raycaster.intersectObjects(scenechildren.children);
       if ( intersects.length > 0 ) {
         if ( self.INTERSECTED != intersects[ 0 ].object ) {
           if ( self.INTERSECTED ) self.INTERSECTED.material.color.setHex( self.INTERSECTED.currentHex );
@@ -267,7 +246,7 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
 
   zoom(Visible){
     document.body.style.cursor = "crosshair";
-    this.controls.mouseButtons={ZOOM:THREE.MOUSE.LEFT};
+    this.controls.mouseButtons={ORBIT:null,ZOOM:0,PAN:null};
     this.controls.enabled=true;
     this.controls.enableZoom=true;
     this.Visible="zoom";
@@ -275,8 +254,8 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
 
   zoomfit(Visible){
     document.body.style.cursor = "no-drop";
-    this.controls.mouseButtons={ZOOM:THREE.MOUSE.LEFT};
-    this.controls.enabled=false;
+    this.controls.mouseButtons={ORBIT:null,ZOOM:0,PAN:null};
+    this.controls.enabled=true;
     this.controls.enableZoom=true;
     this.Visible="zoomfit";
     if(this.selecting.length===0){
@@ -339,7 +318,7 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
   pan(Visible){
     this.camera.updateProjectionMatrix();
     document.body.style.cursor = "-webkit-grab";
-    this.controls.mouseButtons={PAN:THREE.MOUSE.LEFT};
+    this.controls.mouseButtons={ORBIT:null,ZOOM:null,PAN:0};
     this.controls.enabled=true;
     this.controls.enablePan=true;
     this.Visible="pan";
@@ -377,16 +356,15 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
       centerZ=axisY/this.scene.children[1].children.length;
       this.controls.target.set(centerX,centerY,centerZ);
     }
-    this.controls.mouseButtons={ORBIT:THREE.MOUSE.LEFT};
+    this.controls.mouseButtons={ORBIT:0,ZOOM:null,PAN:null};
     this.controls.enabled=true;
-    this.controls.enableOrbit=true;
+    this.controls.enableRotate=true;
     this.Visible="rotate";
   }
 
   select(event, Visible){
     document.body.style.cursor ="default";
     this.controls.enabled=false;
-    this.controls.enableOrbit=false;
     this.Visible="select";
     event.stopPropagation();
   }
