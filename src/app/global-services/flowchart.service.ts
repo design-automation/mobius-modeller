@@ -6,6 +6,7 @@ import {IFlowchart, Flowchart, FlowchartReader} from '../base-classes/flowchart/
 import {IGraphNode, GraphNode} from '../base-classes/node/NodeModule';
 import {ICodeGenerator, CodeFactory, IModule, ModuleUtils} from "../base-classes/code/CodeModule";
 import {IPort} from "../base-classes/port/PortModule";
+import {IProcedure} from "../base-classes/procedure/IProcedure";
 
 import * as CircularJSON from 'circular-json';
 
@@ -332,8 +333,17 @@ export class FlowchartService {
       this.update();
   }
 
-  addProcedure(prod): void{
+  addProcedure(prod: IProcedure): void{
       this.getSelectedNode().addProcedure(prod);
+      this.updateProcedure(prod);
+  }
+
+  updateProcedure(prod: IProcedure): void{
+
+      // validate procedure
+      let codeString: string = prod.getCodeString(this.code_generator);
+      console.log(codeString);
+
       this.update();
   }
 

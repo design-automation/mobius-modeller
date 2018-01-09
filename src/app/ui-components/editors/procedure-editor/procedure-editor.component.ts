@@ -208,8 +208,7 @@ export class ProcedureEditorComponent extends Viewer {
 		}
 
 		/// check if valid procedure was generated
-
-		this.flowchartService.update();
+		this.flowchartService.updateProcedure(prod.data.model);
 
 	}
 
