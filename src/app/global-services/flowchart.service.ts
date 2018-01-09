@@ -346,6 +346,7 @@ export class FlowchartService {
       this.update();
   }
 
+
   deleteEdge(edgeIndex: number): void{
     this._flowchart.deleteEdge(edgeIndex);
 
