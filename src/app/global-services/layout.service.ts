@@ -26,7 +26,7 @@ export class LayoutService {
         }
   	}
 
-    private viewContainerIndex: number = 3; 
+    private viewContainerIndex: number = 4; 
 
     _url: string = "index";
 
