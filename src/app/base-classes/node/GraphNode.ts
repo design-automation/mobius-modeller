@@ -120,7 +120,7 @@ export class GraphNode implements IGraphNode{
 	//
 	addInput(name?: string): number{
 
-		let default_name = this._name + "_in" + this._inputs.length;//this.portCounter; 
+		let default_name = this._name + "_in" + this.portCounter; 
 
 		if( name !== undefined ){
 			default_name = name;
@@ -136,7 +136,7 @@ export class GraphNode implements IGraphNode{
 
 	addOutput(name?: string): number{ 
 
-		let default_name = this._name + "_out" + this._outputs.length; //this.portCounter; 
+		let default_name = this._name + "_out" + this.portCounter; 
 
 		if(name !== undefined){
 			default_name = name;

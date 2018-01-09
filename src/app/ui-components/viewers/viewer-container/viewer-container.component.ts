@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class ViewerContainerComponent extends Viewer implements OnInit {
 
-  	group = {value: 3};
+  	group = {value: undefined};
   	_lock: boolean = false;
 
   	private _layout_subscription: Subscription;
@@ -30,13 +30,19 @@ export class ViewerContainerComponent extends Viewer implements OnInit {
   		});
 	}
 
+	updateGroupValue(value: number): void{
+		this.group.value = value;
+		this.layoutService.setViewContainer(value); 
+	}
+
 	switchToHelp(): void{
-		this.group.value = 4; 
+		
+		this.updateGroupValue(4);
 		this._lock = true;
 	}
 
 	switchToConsole(): void{
-		this.group.value = 3; 
+		this.updateGroupValue(3);
 		this._lock = true;
 	}
 
@@ -44,10 +50,10 @@ export class ViewerContainerComponent extends Viewer implements OnInit {
 		if(!this._lock){
 			let port = this.flowchartService.getSelectedPort(); 
 			if(port == undefined){
-				this.group.value = 4; 
+				this.updateGroupValue(this.layoutService.getViewContainer());
 			}
 			else{
-				this.group.value  = this.flowchartService.getSelectedPort().getType(); 
+				this.updateGroupValue( this.flowchartService.getSelectedPort().getType());
 			}
 		}
 	}
@@ -57,10 +63,12 @@ export class ViewerContainerComponent extends Viewer implements OnInit {
 	}
 
   	ngOnInit() {
+  		this.updateGroupValue(this.layoutService.getViewContainer());
   	}
 
   	changed(): void{
   		this._lock = false;
+  		this.layoutService.setViewContainer(this.group.value);
   	}
 
 

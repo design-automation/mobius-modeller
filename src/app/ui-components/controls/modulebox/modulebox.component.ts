@@ -59,12 +59,10 @@ export class ModuleboxComponent extends Viewer{
 			return;
 		}
 
-
 		let prod_data :  {result: string, module: string, function: any, params: string[]} = 
 			{result: "__", module: fn.module, function: fn.name, params: fn.params};
 		let prod:IProcedure = ProcedureFactory.getProcedure( ProcedureTypes.Action, prod_data);
-		this._node.addProcedure(prod);
-		this.flowchartService.update();
+		this.flowchartService.addProcedure(prod);
 	}
 
 

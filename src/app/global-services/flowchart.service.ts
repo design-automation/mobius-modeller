@@ -5,6 +5,7 @@ import {Subject} from 'rxjs/Subject';
 import {IFlowchart, Flowchart, FlowchartReader} from '../base-classes/flowchart/FlowchartModule';
 import {IGraphNode, GraphNode} from '../base-classes/node/NodeModule';
 import {ICodeGenerator, CodeFactory, IModule, ModuleUtils} from "../base-classes/code/CodeModule";
+import {IPort} from "../base-classes/port/PortModule";
 
 import * as CircularJSON from 'circular-json';
 
@@ -307,16 +308,23 @@ export class FlowchartService {
         return;
       }
 
+      // dont remove previous edges for outputs
+      let output: IPort = this._flowchart.getNodeByIndex(outputAddress[0]).getOutputByIndex(outputAddress[1]);
+      // if (output.isConnected()){
+      //   this._flowchart.deleteEdges(this._flowchart.disconnectEdgesWithPortIndex(outputAddress[0], outputAddress[1], "output"));
+      // }
+
+      // remove previous edges for inputs
+      let input = this._flowchart.getNodeByIndex(inputAddress[0]).getInputByIndex(inputAddress[1]);
+      if (input.isConnected()){
+        this._flowchart.deleteEdges(this._flowchart.disconnectEdgesWithPortIndex(inputAddress[0], inputAddress[1], "input"));
+      }
+
+      //
       this._flowchart.addEdge(outputAddress, inputAddress);
-
-      let output = this._flowchart.getNodeByIndex(outputAddress[0]).getOutputByIndex(outputAddress[1])
-      output.connect();
-      let input = this._flowchart.getNodeByIndex(inputAddress[0]).getInputByIndex(inputAddress[1])
-      input.connect();
-
       input.setComputedValue({port: outputAddress});
-
-      this._flowchart.getNodeByIndex(inputAddress[0]).getInputByIndex(inputAddress[1]);
+      output.connect();
+      input.connect();
 
       // print message to console
       this.consoleService.addMessage("New Edge was added");
@@ -324,6 +332,10 @@ export class FlowchartService {
       this.update();
   }
 
+  addProcedure(prod): void{
+      this.getSelectedNode().addProcedure(prod);
+      this.update();
+  }
 
   //
   //  update indices in edges on port deleted

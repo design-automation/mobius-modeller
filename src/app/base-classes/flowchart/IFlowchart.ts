@@ -30,6 +30,9 @@ export interface IFlowchart{
 
 	deletePort(type: string, portIndex: number, nodeIndex: number): void;
 
+	disconnectEdgesWithNode(nodeIndex: number);
+	disconnectEdgesWithPortIndex(nodeIndex: number, portIndex: number, type: string);
+
 	getNodes(): IGraphNode[];
 	getEdges(): IEdge[];
 	getNodeByIndex(index: number): IGraphNode;
