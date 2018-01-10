@@ -19,6 +19,7 @@ export class SettingComponent implements OnInit {
   hue:number;
   saturation:number;
   lightness:number;
+  frameVisible:boolean;
 
   ngOnInit(){
     if(this.hue == undefined) {
@@ -48,10 +49,18 @@ export class SettingComponent implements OnInit {
     if(this.shadowVisible==true){
       document.getElementById("shadow").setAttribute('checked', 'checked');
     }
+    this.frameVisible=this.dataService.frame;
+    if(this.frameVisible==true){
+      document.getElementById("frame").setAttribute('checked', 'checked');
+    }
   }
 
   constructor(private dataService: DataService){
-    this.scene=this.dataService.getScene();
+
+    // avoid manipulating the scene here
+    // shift to dataservice
+    this.scene = this.dataService.getScene();
+
     this.alight=[];
     this.alight=this.dataService.getalight();
     this.hue=this.dataService.hue;
@@ -67,7 +76,7 @@ export class SettingComponent implements OnInit {
       maxX=Math.max(maxX,Math.abs(this.scene.children[1].children[i].children[0]["geometry"].boundingBox.max.x));
       maxY=Math.max(maxY,Math.abs(this.scene.children[1].children[i].children[0]["geometry"].boundingBox.max.y));
     }
-    var max=Math.ceil(Math.max(maxX,maxY)*1.3);
+    var max=Math.ceil(Math.max(maxX,maxY)*1.3)*2;
     if(this.gridVisible){
       var gridhelper=new THREE.GridHelper( max, max );
       gridhelper.name="GridHelper";
@@ -129,6 +138,21 @@ export class SettingComponent implements OnInit {
       ambientLight.color.setHSL( _hue, _saturation,_lightness );
     }
   }
+  
+  changeframe(){
+   this.frameVisible = !this.frameVisible;
+   if(this.frameVisible){
+     for(var i=0;i<this.scene.children[1].children.length;i++){
+       this.scene.children[1].children[i].children[0]["material"].wireframe=true;
+    }
+   }else{
+     for(var i=0;i<this.scene.children[1].children.length;i++){
+       this.scene.children[1].children[i].children[0]["material"].wireframe=false;
+    }
+   }
+   this.dataService.addframe(this.frameVisible);
+  }
+
   setting(event){
     event.stopPropagation();
   }

@@ -10,7 +10,7 @@ import * as gs from "gs-json";
 export class GSViewerComponent {
 
 	// gs model data passed to the viewer
-	@Input() data:gs.IModel;
+	@Input() data: gs.IModel;
 
 	constructor(private dataService: DataService){};
 

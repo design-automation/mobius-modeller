@@ -13,15 +13,15 @@
     <div *ngIf="Visible === 'point'">
       <table border="1" cellspacing="0" cellpadding="0" id="table" name="table" bordercolor="#d0d0d0">
         <tr>
-          <td name="Number" align=center width="40%" align=center>Object Number</td>
+          <td name="Number" align=center width="40%" align=center>ID</td>
           <td width="20%" align=center>X</td>
           <td width="20%" align=center>Y</td>
           <td width="20%" align=center>Z</td>
         </tr>
       </table>
-      <table border="1" cellspacing="0" cellpadding="0" id="tablename" name="table" bordercolor="#d0d0d0" *ngFor="let datascale of attribute; let i = index ">
+      <table border="1" cellspacing="0" cellpadding="0" id="tablename" name="table" bordercolor="#d0d0d0" *ngFor="let datascale of attribute; ">
         <tr>
-          <button id="numberbutton">{{i}}</button>
+          <button id="numberbutton">{{datascale.id}}</button>
           <td width="20%" align=center>{{datascale.x}}</td>
           <td width="20%" align=center>{{datascale.y}}</td>
           <td width="20%" align=center>{{datascale.z}}</td>
@@ -29,52 +29,62 @@
       </table>
     </div>
     <div *ngIf="Visible === 'vertice'">
-      <table border="1" cellspacing="0" cellpadding="0" id="table" name="table" bordercolor="#d0d0d0">
+      <table border="1" cellspacing="0" cellpadding="0" bordercolor="#d0d0d0" width="40%">
         <tr>
-          <td name="Number" align=center width="50%" align=center>Point Number</td>
-          <td width="50%" align=center>Vertice Number</td>
+          <td  align=center >Vertices Lable</td>
         </tr>
       </table>
-      <table border="1" cellspacing="0" cellpadding="0" id="tablename" name="table" bordercolor="#d0d0d0" *ngFor="let datascale of attribute; let i = index ">
+      <table border="1" cellspacing="0" cellpadding="0" bordercolor="#d0d0d0" *ngFor="let datascale of attribute" width="40%">
         <tr>
-          <button id="numberbutton">{{i}}</button>
-          <td width="50%" align=center>{{datascale}}</td>
+          <button id="numberbutton">{{datascale.id}}</button>
+        </tr>
+      </table>
+    </div>
+    <div *ngIf="Visible === 'edge'">
+      <table border="1" cellspacing="0" cellpadding="0"  bordercolor="#d0d0d0" width="40%">
+        <tr>
+          <td  align=center>Edge ID</td>
+        </tr>
+      </table>
+      <table border="1" cellspacing="0" cellpadding="0"  bordercolor="#d0d0d0" *ngFor="let datascale of attribute" width="40%">
+        <tr>
+          <button id="numberbutton" >{{datascale.id}}</button>
+        </tr>
+      </table>
+    </div>
+    <div *ngIf="Visible === 'wire'">
+      <table border="1" cellspacing="0" cellpadding="0"  bordercolor="#d0d0d0" width="40%">
+        <tr>
+          <td  align=center>Wire ID</td>
+        </tr>
+      </table>
+      <table border="1" cellspacing="0" cellpadding="0"  bordercolor="#d0d0d0" *ngFor="let datascale of attribute" width="40%">
+        <tr>
+          <button id="numberbutton" >{{datascale.id}}</button>
         </tr>
       </table>
     </div>
     <div *ngIf="Visible === 'face'">
-      <table border="1" cellspacing="0" cellpadding="0" id="table" name="table" bordercolor="#d0d0d0">
+      <table border="1" cellspacing="0" cellpadding="0"  bordercolor="#d0d0d0" width="40%">
         <tr>
-          <td name="Number" align=center width="40%" align=center>Object Number</td>
-          <td width="20%" align=center>Point1</td>
-          <td width="20%" align=center>Point2</td>
-          <td width="20%" align=center>Point3</td>
+          <td  align=center>Face ID</td>
         </tr>
       </table>
-      <table border="1" cellspacing="0" cellpadding="0" id="tablename" name="table" bordercolor="#d0d0d0" *ngFor="let datascale of attribute; let i = index ">
+      <table border="1" cellspacing="0" cellpadding="0"  bordercolor="#d0d0d0" *ngFor="let datascale of attribute" width="40%">
         <tr>
-          <button id="numberbutton">{{i}}</button>
-          <td width="20%" align=center>{{datascale.x}}</td>
-          <td width="20%" align=center>{{datascale.y}}</td>
-          <td width="20%" align=center>{{datascale.z}}</td>
+          <button id="numberbutton" >{{datascale.id}}</button>
         </tr>
       </table>
     </div>
     <div *ngIf="Visible === 'object'">
-      <table border="1" cellspacing="0" cellpadding="0" id="table" name="table" bordercolor="#d0d0d0">
+      <table border="1" cellspacing="0" cellpadding="0"  bordercolor="#d0d0d0" width="40%">
         <tr>
-          <td name="Number" align=center width="40%" align=center>Object Number</td>
-          <td width="20%" align=center>X</td>
-          <td width="20%" align=center>Y</td>
-          <td width="20%" align=center>Z</td>
+          <td name="Number" align=center  align=center>Object ID</td>
         </tr>
       </table>
-      <table border="1" cellspacing="0" cellpadding="0" id="tablename" name="table" bordercolor="#d0d0d0" *ngFor="let datascale of attribute ">
+      <table border="1" cellspacing="0" cellpadding="0"  bordercolor="#d0d0d0" *ngFor="let datascale of attribute " width="40%">
         <tr>
-          <button  id="numberbutton"  [class.selectid]="datascale.original==selectdata"  (click)=Onselect(datascale.original)>{{ datascale.original}}</button>
-          <td width="20%" align=center>{{datascale.axisX}}</td>
-          <td width="20%" align=center>{{datascale.axisY}}</td>
-          <td width="20%" align=center>{{datascale.axisZ}}</td>
+          <button  id="numberbutton" >{{ datascale.id}}</button>
         </tr>
       </table>
     </div>

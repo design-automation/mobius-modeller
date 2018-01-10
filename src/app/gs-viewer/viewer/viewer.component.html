@@ -1,12 +1,38 @@
-<div id="container"  (mousemove)="onDocumentMouseMove($event)" (click)="Mousedown($event)" >
-  <button id="rotating" [class.visible]="Visible === 'rotate'" (click)="rotate(Visible)"><i class="fa fa-refresh"></i></button>
-  <button id="paning"  [class.visible]="Visible === 'pan'" (click)="pan(Visible)"><i class="fa fa-hand-paper-o"></i></button>
-  <button id="zooming"  [class.visible]="Visible === 'zoom'" (click)="zoom(Visible)"><i class="fa fa-search"></i></button>
-  <button id="zoomingfit"  [class.visible]="Visible === 'zoomfit'" (click)="zoomfit(Visible)"><i class="fa fa-arrows-alt"></i></button>
-  <button id="selecting" [class.visible]="Visible === 'select'" (click)= "select($event, Visible)" ><i class="fa fa-mouse-pointer"></i></button>
-  <button id="setting" [class.selected]="settingVisible" (click)= "setting($event)">
-      <i class="fa fa-cog"></i></button>
-  <app-setting *ngIf="settingVisible == true"></app-setting>
+<div id="container"  
+		(mousemove)="onDocumentMouseMove($event)" 
+		(click)="Mousedown($event)">
+	
+  		<button id="rotating" 
+  			[class.visible]="Visible === 'rotate'" 
+  			(click)="rotate()">
+  			<i class="fa fa-refresh"></i>
+  		</button>
+
+  		<button id="paning"  
+  			[class.visible]="Visible === 'pan'" 
+  			(click)="pan()">
+  			<i class="fa fa-hand-paper-o"></i>
+  		</button>
+
+  		<button id="zooming"  
+  			[class.visible]="Visible === 'zoom'" 
+  			(click)="Visible='zoom'">
+  			<i class="fa fa-search"></i>
+  		</button>
+  		
+  		<button id="zoomingfit"  
+  			[class.visible]="Visible === 'zoomfit'" 
+  			(click)="zoomfit()">
+  			<i class="fa fa-arrows-alt"></i>
+  		</button>
+  		
+  		<button id="selecting" [class.visible]="Visible === 'select'" (click)= "select($event, Visible)" ><i class="fa fa-mouse-pointer"></i></button>
+  		
+  		<button id="setting" [class.selected]="settingVisible" (click)= "settingVisible = !settingVisible">
+      	
+      	<!--setting-->
+      	<i class="fa fa-cog"></i></button>
+ 		<app-setting *ngIf="settingVisible == true"></app-setting>
 </div>
 
 

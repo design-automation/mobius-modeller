@@ -12,7 +12,7 @@ import {DataSubscriber} from "../data/DataSubscriber";
   styleUrls: ['./toolwindow.component.css']
 })
 export class ToolwindowComponent extends DataSubscriber implements OnInit {
-  Visible:string="point";
+  Visible:string="object";
   boxes:any;
   model:gs.IModel;
   scene:THREE.Scene;
@@ -23,8 +23,7 @@ export class ToolwindowComponent extends DataSubscriber implements OnInit {
   selecting:any;
   geometry:any;
   num:Array<any>;
-  selectedOjb:any;
-  selectdata:any;
+  selectObj:Array<any>;
 
   constructor(injector: Injector, myElement: ElementRef){
   	super(injector);
@@ -32,214 +31,256 @@ export class ToolwindowComponent extends DataSubscriber implements OnInit {
     this.attribute=[];
     this.num=[];
     this.collection=[];
+    this.selectObj=[];
     this.myElement = myElement;
-    
   }
 
   ngOnInit() {
-    //this.model= this.dataService.getGsModel(); 
-    /*this.model=gs.genModelBoxWithAttribs();
-  	this.point(this.Visible);
-    console.log(this.model.getAllAttribs());
-    const attribs: gs.IAttrib[] = this.model.getAllAttribs();
-    //console.log(attribs[0].getGeomType());
-    for (const attrib of attribs) {
-      //console.log(attrib.getGeomType());
-      const type: gs.EGeomType = attrib.getGeomType();
-      const name: string = attrib.getName();
-      //const values: any[] = attrib.getValues();
-        // const labels: string[] = attrb.getLabels();
-        switch (type) {
-          case gs.EGeomType.points:
-            // code...
-            break;
-          case gs.EGeomType.vertices:
-            // code...
-            break;
-          default:
-            // code...
-            break;
-        }
-      }*/
+    this.model= this.dataService.getGsModel(); 
+  	this.object(this.Visible);
   }
 
   notify(){ 
-  	this.selecting=this.dataService.selecting;
   	if(this.selectedVisible==true){
   	  this.objectcheck();
   	}
+    /*for(var i=0;i<this.dataService.selecting.length;i++){
+      for(var j=0;j<this.scene.children[1].children.length;j++){
+        if(this.dataService.selecting[i].uuid===this.scene.children[1].children[j].children[0].uuid){
+           console.log(this.scene.children[1].children[j].children[0].parent);
+           this.selectObj.push(this.scene.children[1].children[j].children[0].parent);
+        }
+      }
+    }*/
+    this.dataService.visible=this.Visible;
   	
   }
 
   point(Visible){
   	this.Visible="point";
   	this.attribute=[];
-    /*for(var i=0;i<this.scene.children.length;i++){
-      if(this.scene.children[i].type=="Mesh"){
-      	var pointsgeom=this.scene.children[i].geometry.vertices;
-      	for(var j=0;j<pointsgeom.length;j++){
-      	  var attributepoints=new THREE.Vector3();
-      	  attributepoints.x=pointsgeom[j].x;
-      	  attributepoints.y=pointsgeom[j].y;
-      	  attributepoints.z=pointsgeom[j].z;
-      	  this.attribute.push(attributepoints);
-      	}
-      }
-    }*/
-    /*var pointsgeom=this.boxes.geom.points[1];
-    for(var i=0;i<pointsgeom.length;i++){
-      var attributepoints=new THREE.Vector3();
-      attributepoints.x=pointsgeom[i][0];
-      attributepoints.y=pointsgeom[i][1];
-      attributepoints.z=pointsgeom[i][2];
+    for(var i=0;i<this.model.getGeom().getAllPoints().length;i++){
+      var attributepoints:any=[];
+      attributepoints.id=this.model.getGeom().getAllPoints()[i].getID();
+      attributepoints.x=this.model.getGeom().getAllPoints()[i].getPosition()[0];
+      attributepoints.y=this.model.getGeom().getAllPoints()[i].getPosition()[1];
+      attributepoints.z=this.model.getGeom().getAllPoints()[i].getPosition()[2];
       this.attribute.push(attributepoints);
-    }*/
+    }
   }
 
   pointcheck(){
-  	this.attribute=[];
-    for(var i=0;i<this.scene.children.length;i++){
-      for(var j=0;j<this.selecting.length;j++){
-        if(this.scene.children[i].uuid==this.selecting[j].uuid){
-      	  var pointsgeom=this.scene.children[i]["geometry"].vertices;
-      		for(var j=0;j<pointsgeom.length;j++){
-		  	  var attributepoints=new THREE.Vector3();
-		  	  attributepoints.x=pointsgeom[j].x;
-		  	  attributepoints.y=pointsgeom[j].y;
-		  	  attributepoints.z=pointsgeom[j].z;
-		  	  this.attribute.push(attributepoints);
-      		}
-      	}
-      }
+    this.attribute=[];
+    for(var i=0;i<this.model.getGeom().getAllPoints().length;i++){
+      var attributepoints:any=[];
+      attributepoints.id=this.model.getGeom().getAllPoints()[i].getID();
+      attributepoints.x=this.model.getGeom().getAllPoints()[i].getPosition()[0];
+      attributepoints.y=this.model.getGeom().getAllPoints()[i].getPosition()[1];
+      attributepoints.z=this.model.getGeom().getAllPoints()[i].getPosition()[2];
+      this.attribute.push(attributepoints);
     }
   }
 
   vertice(Visible){
   	this.Visible="vertice";
   	this.attribute=[];
-  	var verticegeom=this.boxes.geom.points[0];
-  	for(var i=0;i<verticegeom.length;i++){
-  		this.attribute.push(verticegeom[i]);
-  	}
+    for(var n=0;n<this.scene.children.length;n++){
+      if(this.scene.children[n].type==="Scene"){
+        for(var i=0;i<this.scene.children[n].children.length;i++){
+          for(var j=0;j<this.scene.children[n].children[i].children.length;j++){
+            if(this.scene.children[n].children[i].children[j].name==="Vertices"){
+              for(var m=0;m<this.scene.children[n].children[i].children[j].children.length;m++){
+                var attributeface:any=[];
+                attributeface.id=this.scene.children[n].children[i].children[j].children[m].name;
+                this.attribute.push(attributeface);
+              }
+            }
+          }
+        }
+        break;
+      }
+    }
   }
 
   verticecheck(){
   	this.attribute=[];
-    for(var i=0;i<this.scene.children.length;i++){
-      for(var j=0;j<this.selecting.length;j++){
-      	if(this.scene.children[i].uuid==this.selecting[j].uuid){
-      	  var pointsgeom=this.scene.children[i]["geometry"].vertices;
-      		for(var j=0;j<pointsgeom.length;j++){
-		  	  var attributepoints=new THREE.Vector3();
-		  	  attributepoints.x=pointsgeom[j].x;
-		  	  attributepoints.y=pointsgeom[j].y;
-		  	  attributepoints.z=pointsgeom[j].z;
-		  	  this.attribute.push(attributepoints);
-      		}
-      	}
+    for(var i=0;i<this.selectObj.length;i++){
+      for(var j=0;j<this.selectObj[i].children.length;j++){
+        if(this.selectObj[i].children[j].name==="Vertices"){
+          for(var n=0;n<this.selectObj[i].children[j].children.length;n++){
+            var attributevertice:any=[];
+            attributevertice.id=this.selectObj[i].children[j].children[n].name;
+            this.attribute.push(attributevertice);
+          }
+        }
       }
     }
   }
+
   edge(Visible){
   	this.Visible="edge";
-
-
+    this.attribute=[];
+    for(var n=0;n<this.scene.children.length;n++){
+      if(this.scene.children[n].type==="Scene"){
+        for(var i=0;i<this.scene.children[n].children.length;i++){
+          for(var j=0;j<this.scene.children[n].children[i].children.length;j++){
+            if(this.scene.children[n].children[i].children[j].name==="Edges"){
+              for(var m=0;m<this.scene.children[n].children[i].children[j].children.length;m++){
+                var attributeedge:any=[];
+                attributeedge.id=this.scene.children[n].children[i].children[j].children[m].name;
+                this.attribute.push(attributeedge);
+              }
+              break;
+            }
+          }
+        }
+        break;
+      }
+    }
   }
 
   edgecheck(){
-
+    this.attribute=[];
+    for(var i=0;i<this.selectObj.length;i++){
+      for(var j=0;j<this.selectObj[i].children.length;j++){
+        if(this.selectObj[i].children[j].name==="Edges"){
+          for(var n=0;n<this.selectObj[i].children[j].children.length;n++){
+            var attributeedge:any=[];
+            attributeedge.id=this.selectObj[i].children[j].children[n].name;
+            this.attribute.push(attributeedge);
+          }
+          break;
+        }
+      }
+    }
   }
 
   wire(Visible){
   	this.Visible="wire";
-
+    this.attribute=[];
+    for(var n=0;n<this.scene.children.length;n++){
+      if(this.scene.children[n].type==="Scene"){
+        for(var i=0;i<this.scene.children[n].children.length;i++){
+          for(var j=0;j<this.scene.children[n].children[i].children.length;j++){
+            if(this.scene.children[n].children[i].children[j].name==="Wires"){
+              for(var m=0;m<this.scene.children[n].children[i].children[j].children.length;m++){
+                var attributeface:any=[];
+                attributeface.id=this.scene.children[n].children[i].children[j].children[m].name;
+                this.attribute.push(attributeface);
+              }
+            }
+          }
+        }
+        break;
+      }
+    }
   }
 
   wirecheck(){
-
+    this.attribute=[];
+    for(var i=0;i<this.selectObj.length;i++){
+      for(var j=0;j<this.selectObj[i].children.length;j++){
+        if(this.selectObj[i].children[j].name==="Wires"){
+          for(var n=0;n<this.selectObj[i].children[j].children.length;n++){
+            var attributewire:any=[];
+            attributewire.id=this.selectObj[i].children[j].children[n].name;
+            this.attribute.push(attributewire);
+          }
+        }
+      }
+    }
   }
 
   face(Visible){
   	this.Visible="face";
   	this.attribute=[];
-  	/*for(var i=0;i<this.scene.children.length;i++){
-      if(this.scene.children[i].type=="Mesh"){
-      	var facesgeom=this.scene.children[i].geometry.faces;
-      	for(var j=0;j<facesgeom.length;j++){
-      	  var attributepoints=new THREE.Vector3();
-      	  attributepoints.x=facesgeom[j].a;
-      	  attributepoints.y=facesgeom[j].b;
-      	  attributepoints.z=facesgeom[j].c;
-      	  this.attribute.push(attributepoints);
-      	}
+    for(var n=0;n<this.scene.children.length;n++){
+      if(this.scene.children[n].type==="Scene"){
+        for(var i=0;i<this.scene.children[n].children.length;i++){
+          for(var j=0;j<this.scene.children[n].children[i].children.length;j++){
+            if(this.scene.children[n].children[i].children[j].name==="Faces"){
+              for(var m=0;m<this.scene.children[n].children[i].children[j].children.length;m++){
+                var attributeface:any=[];
+                attributeface.id=this.scene.children[n].children[i].children[j].children[m].name;
+                this.attribute.push(attributeface);
+              }
+            }
+          }
+        }
+        break;
       }
-    }*/
-
+    }
   }
   
   facecheck(){
   	this.attribute=[];
-  	for(var i=0;i<this.scene.children.length;i++){
-  	  for(var j=0;j<this.selecting.length;j++){
-  		if(this.scene.children[i].uuid==this.selecting[j].uuid){
-  			var facesgeom=this.scene.children[i]["geometry"].faces;
-  			for(var j=0;j<facesgeom.length;j++){
-	  	  	  var attributepoints=new THREE.Vector3();
-	  	      attributepoints.x=facesgeom[j].a;
-	  	  	  attributepoints.y=facesgeom[j].b;
-	  	  	  attributepoints.z=facesgeom[j].c;
-	  	  	  this.attribute.push(attributepoints);
-  			}
-  		}
-  	  }
-  	}
+    for(var i=0;i<this.selectObj.length;i++){
+      for(var j=0;j<this.selectObj[i].children.length;j++){
+        if(this.selectObj[i].children[j].name==="Faces"){
+          for(var n=0;n<this.selectObj[i].children[j].children.length;n++){
+            var attributeface:any=[];
+            attributeface.id=this.selectObj[i].children[j].children[n].name;
+            this.attribute.push(attributeface);
+          }
+        }
+      }
+    }
   }
 
   object(Visible){
-    //console.log(this.object);
   	this.Visible="object";
-  	this.attribute=[];
-  	this.num=[];
-  	for(var i=0;i<this.scene.children.length;i++){
-      if(this.scene.children[i].type=="Mesh"){
-      	var attributepoints:any=[];
-      	attributepoints.original=this.attribute.length;
-      	attributepoints.mesh=this.scene.children[i];
-		    attributepoints.axisX=this.scene.children[i].position.x;
-		    attributepoints.axisY=this.scene.children[i].position.y;
-		    attributepoints.axisZ=this.scene.children[i].position.z;
-      	this.attribute.push(attributepoints);
+    this.attribute=[];
+    for(var n=0;n<this.scene.children.length;n++){
+      if(this.scene.children[n].type==="Scene"){
+        for(var i=0;i<this.scene.children[n].children.length;i++){
+          for(var j=0;j<this.scene.children[n].children[i].children[this.scene.children[n].children[i].children.length-1].children.length;j++){
+            var attributeobj:any=[];
+            attributeobj.id=this.scene.children[n].children[i].children[this.scene.children[n].children[i].children.length-1].children[j].name;
+            this.attribute.push(attributeobj);
+          }
+        }
+        break;
       }
     }
   }
 
   objectcheck(){
-  	this.selecting=this.dataService.selecting;
   	this.attribute=[];
-  	var n=-1;
-    for(var i=0;i<this.scene.children.length;i++){
-      if(this.scene.children[i].type=="Mesh") n++;
-      for(var j=0;j<this.selecting.length;j++){
-      	if(this.scene.children[i].uuid==this.selecting[j].uuid){
-		  var attributepoints:any=[];
-		  attributepoints.axisX=this.scene.children[i].position.x;
-		  attributepoints.axisY=this.scene.children[i].position.y;
-		  attributepoints.axisZ=this.scene.children[i].position.z;
-		  attributepoints.original =n;
-		  this.attribute.push(attributepoints);
-      	 }
-      }
+    for(var i=0;i<this.selectObj.length;i++){
+      for(var j=0;j<this.selectObj[i].children[this.selectObj[i].children.length-1].children.length;j++){
+        var attributeobj:any=[];
+        attributeobj.id=this.selectObj[i].children[this.selectObj[i].children.length-1].children[j].name;
+        this.attribute.push(attributeobj);
+      } 
     }
   }
 
   changeselected(){
   	this.selectedVisible = !this.selectedVisible;
+    this.selectObj=[];
+    for(var i=0;i<this.dataService.selecting.length;i++){
+       for(var n=0;n<this.scene.children.length;n++){
+        if(this.scene.children[n].type==="Scene"){
+          for(var j=0;j<this.scene.children[n].children.length;j++){
+            if(this.dataService.selecting[i].uuid===this.scene.children[n].children[j].children[0].uuid){
+               this.selectObj.push(this.scene.children[n].children[j].children[0].parent);
+            }
+          }
+        }
+      }
+    }
     if(this.selectedVisible){
       if(this.Visible==="point"){
       	this.pointcheck();
       }
       if(this.Visible==="vertice"){
       	this.verticecheck();
+      }
+      if(this.Visible==="edge"){
+        this.edgecheck();
+      }
+      if(this.Visible==="wire"){
+        this.wirecheck();
       }
       if(this.Visible==="face"){
       	this.facecheck();
@@ -273,7 +314,6 @@ export class ToolwindowComponent extends DataSubscriber implements OnInit {
   }
 
   Onselect(i){
-  	//this.selecting=this.dataService.selecting;
   	var select;
   	for(var j=0;j<this.attribute.length;j++){
   	  if(this.attribute[j].original==i){
