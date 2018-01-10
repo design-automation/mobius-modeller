@@ -1,23 +1,27 @@
 <div class="viewer-container">             
 	<mat-button-toggle-group class="viewer-toggle" [(ngModel)]="group.value" (change)="changed()">
-		<mat-button-toggle value="0" class="viewer-toggle-btn" matTooltip="3D Viewer">
-		  <mat-icon>3d_rotation</mat-icon>
-		</mat-button-toggle>
-		<mat-button-toggle value="2" class="viewer-toggle-btn" matTooltip="Text Viewer">
-		  <mat-icon>description</mat-icon>
-		</mat-button-toggle>
-		<!-- <mat-button-toggle value="3" disabled class="viewer-toggle-btn" matTooltip="??">
-		  <mat-icon>text_format</mat-icon>
-		</mat-button-toggle> -->
-		<mat-button-toggle value="3" class="viewer-toggle-btn" matTooltip="Console">
-		  <mat-icon>info_outline</mat-icon>
-		</mat-button-toggle>
-		<mat-button-toggle value="4" class="viewer-toggle-btn" matTooltip="Help" >
-		  <mat-icon>help_outline</mat-icon>
-		</mat-button-toggle>
-		<mat-button-toggle value="1" class="viewer-toggle-btn" matTooltip="Code Viewer">
-		  <mat-icon>code</mat-icon>
-		</mat-button-toggle>
+		<div class= "btn-grp1">
+			<mat-button-toggle value="0" class="viewer-toggle-btn" matTooltip="3D Viewer">
+			  <mat-icon>3d_rotation</mat-icon>
+			</mat-button-toggle>
+			<mat-button-toggle value="2" class="viewer-toggle-btn" matTooltip="Text Viewer">
+			  <mat-icon>description</mat-icon>
+			</mat-button-toggle>
+			<!-- <mat-button-toggle value="3" disabled class="viewer-toggle-btn" matTooltip="??">
+			  <mat-icon>text_format</mat-icon>
+			</mat-button-toggle> -->
+			<mat-button-toggle value="3" class="viewer-toggle-btn" matTooltip="Console">
+			  <mat-icon>info_outline</mat-icon>
+			</mat-button-toggle>
+			<mat-button-toggle value="4" class="viewer-toggle-btn" matTooltip="Help" >
+			  <mat-icon>help_outline</mat-icon>
+			</mat-button-toggle>
+		</div>
+		<div class = "btn-grp2">
+			<mat-button-toggle value="1" id="codeViewer" class="viewer-toggle-btn" matTooltip="Code Viewer">
+			  <mat-icon>code</mat-icon>
+			</mat-button-toggle>
+		</div>
 	</mat-button-toggle-group>
 
 	<!-- <button class="viewer-toggle-btn" 

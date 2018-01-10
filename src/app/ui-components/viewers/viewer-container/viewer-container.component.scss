@@ -2,17 +2,37 @@
 
 .viewer-toggle{
 	display: flex;
-	flex-flow: row wrap;
+	flex-flow: row nowrap;
 	width: 100%;
 	background-color: $color1;
 	mat-icon{
 		color:$color2;
+	}
+
+	&:hover{
+		.btn-grp1{
+			flex-flow: wrap;
+		}
 	}
 	.mat-button-toggle-disabled{
 		background-color:$color1;
 		mat-icon{
 			color:$color5 !important;
 		}
+	}
+	.btn-grp1{
+		max-width: 100% !important;
+		flex-grow: 1 !important;
+		flex-shrink: 1 !important;
+		display: flex;
+		flex-flow: row nowrap;
+	}
+	.btn-grp2{
+		width: 56px !important;
+		display: flex !important;
+		flex-flow: row-reverse nowrap !important;
+		flex-grow:1!important;
+		flex-shrink: 0!important;
 	}
 }
 
@@ -25,10 +45,11 @@
 .viewer-container{
 	position: relative;
 	height: 100%;
+	min-width: 56px !important;
 
-	padding: 0px;
 	margin: 0px !important;
 
 	overflow: hidden !important;
-
+	padding-bottom: 2*$header-height + $default-side-padding/2;
+	box-sizing: border-box;
 }
