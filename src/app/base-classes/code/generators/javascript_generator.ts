@@ -164,11 +164,14 @@ export class CodeGeneratorJS extends CodeGenerator{
 			for( let line=0; line <  node.getProcedure().length; line ++ ){
 				let procedure: IProcedure = node.getProcedure()[line];
 
+				// if procedure is disabled - skip
 				if(procedure.isDisabled()){
 					continue;
 				}
 
 				fn_code += "\n" +  this.generateProcedureCode(procedure, nodeVars, undefined); 
+
+
 			}
 
 			// add return object
@@ -230,6 +233,11 @@ export class CodeGeneratorJS extends CodeGenerator{
 				}
 
 				code =  init + procedure.getLeftComponent().expression + " = " + procedure.getRightComponent().expression + ";";
+
+				if(procedure.printToConsole()){
+					code = code + "\n" + "print(" + "\'" + procedure.getLeftComponent().expression + ":\' +" + procedure.getLeftComponent().expression + ");\n";
+				}
+
 			}
 			else if(prod_type == ProcedureTypes.Action){
 				let paramList :string[]= [];
@@ -261,6 +269,11 @@ export class CodeGeneratorJS extends CodeGenerator{
 						+ "Modules."
 						+ right.module.trim()
 						+ "." + right.fn_name + "( " + paramList.join(",") + " );\n";
+
+				if(procedure.printToConsole()){
+					code = code + "\n" + "print(" + "\'" + procedure.getLeftComponent().expression + ":\' +" + procedure.getLeftComponent().expression + ");\n";
+				}
+
 			}
 			else if( procedure.hasChildren() ){
 				let codeArr = [];
@@ -291,7 +304,6 @@ export class CodeGeneratorJS extends CodeGenerator{
 				if (prod_type !== ProcedureTypes.IfElseControl) codeArr.push("}\n")
 				code = codeArr.join("\n");
 			}
-			
 
 			return code;
 		}
@@ -311,7 +323,7 @@ export class CodeGeneratorJS extends CodeGenerator{
 			return "let " + port.getName() + " = " + port.getDefaultValue(); 
 		}
 
-		executeNode(node: IGraphNode, params: any, Modules: IModule[]): any{
+		executeNode(node: IGraphNode, params: any, Modules: IModule[], print: Function): any{
 			//let gis = this._modules["gis"];
 			let str: string = "(function(){ \
 						" + this.getNodeCode(node) + "\n" + this.getFunctionCall(node, [], true) + "\n" + "return " + node.getName() + ";" + "})(); \

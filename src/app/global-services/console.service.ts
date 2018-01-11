@@ -39,4 +39,9 @@ export class ConsoleService {
 			return this._messages; 
 	}
 
+	clearConsole(): void{
+		this._messages = [];
+		this.sendMessage();
+	}
+
 }

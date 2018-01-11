@@ -181,12 +181,13 @@ export class FlowchartService {
     this._selectedPort = 0;
     this.update();
 
-    this.loadModules([/*{_name: "SimpleMath", _version: 0.1, _author: "Patrick"}, 
-                      {_name: "ComplexMath", _version: 0.1, _author: "Patrick"},*/
-                      {_name: "Examples", _version: 0.1, _author: "Patrick"},
-                      {_name: "Model", _version: 0.1, _author: "Patrick"},
-                      {_name: "Point", _version: 0.1, _author: "Patrick"},
-                      {_name: "Pline", _version: 0.1, _author: "Patrick"}]);
+    this.loadModules(
+                      [
+                        {_name: "String", _version: 0.1, _author: "Patrick"},
+                        {_name: "List", _version: 0.1, _author: "Patrick"},
+                        {_name: "Math", _version: 0.1, _author: "Patrick"}
+                      ]
+                    );
 
     // print message to console
     this.consoleService.addMessage("New file created.");
@@ -339,10 +340,8 @@ export class FlowchartService {
   }
 
   updateProcedure(prod: IProcedure): void{
-
       // validate procedure
       let codeString: string = prod.getCodeString(this.code_generator);
-      console.log(codeString);
 
       this.update();
   }
@@ -426,9 +425,17 @@ export class FlowchartService {
   //
   execute(): any{
 
+      let consoleStrings: any[] = [];
+      function printFunction(message: any){
+        consoleStrings.push(message);
+      }
+
       try{
-        this._flowchart.execute(this.code_generator, this._moduleMap);
-        this.consoleService.addMessage("Flowchart was executed");
+        this._flowchart.execute(this.code_generator, this._moduleMap, printFunction);
+        this.consoleService.addMessage("Flowchart was executed.");
+        if(consoleStrings.length > 0){
+          this.consoleService.addMessage("Console Messages:\n" + consoleStrings.join("\n"))
+        };
       }
       catch(ex){
         this.consoleService.addMessage("There was an error executing");

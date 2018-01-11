@@ -338,7 +338,7 @@ export class Flowchart implements IFlowchart{
 	//
 	//	executes the flowchart
 	//
-	execute(code_generator: ICodeGenerator, modules: IModule[]) :any{
+	execute(code_generator: ICodeGenerator, modules: IModule[], print: Function) :any{
 
 		// set all nodes to status not executed
 		// future: cache results and set status based on changes
@@ -361,7 +361,7 @@ export class Flowchart implements IFlowchart{
 				continue;
 			}
 
-			node.execute(code_generator, modules);
+			node.execute(code_generator, modules, print);
 			//console.log(node.getName(), node.getResult());
 
 			this.updateDependentInputs(node, originalRank); 

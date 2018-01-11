@@ -293,13 +293,13 @@ export class GraphNode implements IGraphNode{
 	//
 	//
 	//
-	execute(code_generator: ICodeGenerator, modules: IModule[]): void{
+	execute(code_generator: ICodeGenerator, modules: IModule[], print: Function): void{
 
 		let params: any[] = [];
 		this.getInputs().map(function(i){ params[i.getName()] = i.getValue(); })
 
 		// use code generator to execute code
-		let result: any  = code_generator.executeNode(this, params, modules);
+		let result: any  = code_generator.executeNode(this, params, modules, print);
 
 		// add results to this node
 		for( let n=0;  n < this._outputs.length; n++ ){

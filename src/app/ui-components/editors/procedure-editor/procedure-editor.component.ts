@@ -93,6 +93,15 @@ export class ProcedureEditorComponent extends Viewer {
 		this.flowchartService.update();
 	}
 
+	togglePrint(prod: IProcedure): void{
+		if (prod.printToConsole()){
+			prod.disablePrint();
+		}
+		else{
+			prod.enablePrint();
+		}
+	}
+
 
 	//
 	//
@@ -221,12 +230,6 @@ export class ProcedureEditorComponent extends Viewer {
 		/// check if valid procedure was generated
 		this.flowchartService.updateProcedure(prod.data.model);
 
-	}
-
-	// todo:
-	disableProcedure(prod: IProcedure): void{
-		prod.disable();
-		this.update();
 	}
 
 	deleteProcedure(prod: IProcedure): void{

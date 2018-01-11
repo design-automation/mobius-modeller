@@ -32,6 +32,6 @@ export interface ICodeGenerator{
 		generateOutputPortCode(port: OutputPort): string;
 
 		// takes a node and executes the code
-		executeNode(node: IGraphNode, params: any, Modules: IModule): any;
+		executeNode(node: IGraphNode, params: any, Modules: IModule, print: Function): any;
 
 };
