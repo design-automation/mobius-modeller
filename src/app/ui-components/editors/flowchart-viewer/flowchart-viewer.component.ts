@@ -60,6 +60,15 @@ export class FlowchartViewerComponent extends Viewer{
     this.flowchartService.deleteNode(node_index);
   }
 
+  toggleNode(node: IGraphNode): void{ 
+    if(node.isDisabled()){
+      node.enable();
+    }
+    else{
+      node.disable();
+    }
+  }
+
   //
   //
   //  Viewer Related Functions

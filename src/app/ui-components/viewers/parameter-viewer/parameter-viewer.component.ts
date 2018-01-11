@@ -49,6 +49,9 @@ export class ParameterViewerComponent extends Viewer {
         // put a timeout on this update or something similar to solve jumpiness
         this.flowchartService.update();
       }
+      else{
+        input.setComputedValue(undefined);
+      }
     }
 
     getValue(port :InputPort): any{

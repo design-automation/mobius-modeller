@@ -8,6 +8,12 @@ span.function{
 	color: purple;
 }
 
+.seg1{
+	&.disabled{
+		background-color: gray;
+	}
+}
+
 /*
 .viewer{
 	@extend .viewer;

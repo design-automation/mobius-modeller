@@ -17,7 +17,9 @@
 						  
 						  <ng-template #treeNodeTemplate let-prod let-index="index" class="tree-node-wrapper">
 						  		<div class = "full-container">
-						  			<div class = "seg1" [class.error]="prod.data.hasError">
+						  			<div class = "seg1" 
+						  				[class.error]="prod.data.hasError" 
+						  				[class.disabled]="prod.data.model.isDisabled()">
 										<!-- template for data -->
 										<div *ngIf="prod.data.name == 'Data'"> 
 											<div class='procedure-item'>
@@ -108,6 +110,9 @@
 										</button>
 								        <button mat-button (click)="deleteProcedure(prod.data.model)">
 		    					    		<mat-icon>delete</mat-icon>
+			    					    </button>
+			    					    <button mat-button (click)="toggle(prod.data.model)">
+		    					    		<mat-icon>location_disabled</mat-icon>
 			    					    </button>
 			    					    <!-- <button (click)="disableProcedure(prod, $event)">Disable</button>
 			    					    <button (click)="go($event)">Copy</button> -->

@@ -145,6 +145,10 @@ split-area{
 					background-color: white;
 					cursor: move;
 
+					&.disabled{
+						background-color: gray;
+					}
+
 					&.selected{
 						border-width: 5px;
 					}

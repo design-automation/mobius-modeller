@@ -83,6 +83,16 @@ export class ProcedureEditorComponent extends Viewer {
 		}
 	}
 
+	toggle(prod: IProcedure): void{
+		if (prod.isDisabled()){
+			prod.enable();
+		}
+		else{
+			prod.disable();
+		}
+		this.flowchartService.update();
+	}
+
 
 	//
 	//

@@ -163,6 +163,11 @@ export class CodeGeneratorJS extends CodeGenerator{
 			// add procedure
 			for( let line=0; line <  node.getProcedure().length; line ++ ){
 				let procedure: IProcedure = node.getProcedure()[line];
+
+				if(procedure.isDisabled()){
+					continue;
+				}
+
 				fn_code += "\n" +  this.generateProcedureCode(procedure, nodeVars, undefined); 
 			}
 
