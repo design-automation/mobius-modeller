@@ -18,8 +18,7 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
   templateUrl: './procedure-editor.component.html',
   styleUrls: ['./procedure-editor.component.scss']
 })
-export class ProcedureEditorComponent extends Viewer {
-
+export class ProcedureEditorComponent extends Viewer implements OnInit{
 
 	@ViewChild('tree') tree;
 
@@ -165,7 +164,8 @@ export class ProcedureEditorComponent extends Viewer {
 				children: [], 
 				leftExpression: "undefined", 
 				rightExpression: "undefined",
-				model: prod
+				model: prod, 
+				isExpanded: true
 			};
 
 			//let dataObj = { id: Math.random() , name: data.getTitle(), type: procedure_type, model: data } ; 

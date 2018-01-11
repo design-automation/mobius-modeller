@@ -142,14 +142,13 @@ export class FlowchartService {
 
         // select the required module from the global module set - that has all the functions
         let modClass = ModuleSet[name]; //ModuleUtils.getModuleFromSet(ModuleSet, name);
-        if( ModuleUtils.isCompatible(mod, modClass) ){
+          if( ModuleUtils.isCompatible(mod, modClass) ){
               moduleSet.push(modClass);
               moduleMap[name] = modClass;
-        }
-        else{
-            throw Error("Module not compatible. Please check version / author");
-        }
-
+          }
+          else{
+              console.warn(moduleMap[name] + " module not compatible. Please check version / author");
+          }
     })
 
   }
