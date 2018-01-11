@@ -65,6 +65,4 @@ export abstract class CodeGenerator implements ICodeGenerator{
 		throw Error("Not implemented");
 	};
 
-
-
 }

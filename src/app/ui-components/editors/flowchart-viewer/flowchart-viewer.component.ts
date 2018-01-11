@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Injector, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, Injector, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { NgClass } from '@angular/common';
 
 import { IGraphNode, IEdge, GraphNode } from '../../../base-classes/node/NodeModule';
@@ -74,8 +74,14 @@ export class FlowchartViewerComponent extends Viewer{
   }
 
   scale($event): void{
-    let scaleFactor: number = 0.1;
-    this.zoom = this.zoom  + (Math.sign($event.wheelDelta))*scaleFactor;
+    // let scaleFactor: number = 0.1;
+    // let value: number = this.zoom  + (Math.sign($event.wheelDelta))*scaleFactor;
+    
+    // if(value > 0.5 && value < 1.5){
+    //   this.zoom = Number( (value).toPrecision(2) );
+    //   this.updateEdges();
+    // }
+
   }
 
   startPan($event): void{
@@ -98,7 +104,6 @@ export class FlowchartViewerComponent extends Viewer{
     this.pan_mode = false;
     this.pan_init = undefined;
   }
-
 
   //
   //
@@ -233,8 +238,8 @@ export class FlowchartViewerComponent extends Viewer{
     this.pan_mode = false;
     let relX: number = $event.pageX - this.dragStart.x; 
     let relY: number = $event.pageY - this.dragStart.y;
-    node.position[0] += relX/this.zoom; 
-    node.position[1] += relY/this.zoom; 
+    node.position[0] += relX; 
+    node.position[1] += relY; 
     
     this.dragStart = {x: $event.pageX, y: $event.pageY}; 
     this.updateEdges();
@@ -279,8 +284,6 @@ export class FlowchartViewerComponent extends Viewer{
         type = "po";
       }
 
-      console.log("port drag start");
-
       let port_position =  this.getPortPosition(address[0], address[1], type);
 
       this.mouse_pos.start = {x: port_position.x, y: port_position.y };
@@ -298,8 +301,8 @@ export class FlowchartViewerComponent extends Viewer{
       let relX: number = $event.clientX - this.dragStart.x; 
       let relY: number = $event.clientY - this.dragStart.y;
 
-      this.mouse_pos.current.x += relX/this.zoom; 
-      this.mouse_pos.current.y += relY/this.zoom; 
+      this.mouse_pos.current.x += relX; 
+      this.mouse_pos.current.y += relY; 
 
       this.dragStart = {x: $event.clientX, y: $event.clientY}; 
   }
@@ -310,8 +313,8 @@ export class FlowchartViewerComponent extends Viewer{
 
       let relX: number = $event.clientX - this.dragStart.x; 
       let relY: number = $event.clientY - this.dragStart.y;
-      this.mouse_pos.current.x += relX/this.zoom; 
-      this.mouse_pos.current.y += relY/this.zoom; 
+      this.mouse_pos.current.x += relX; 
+      this.mouse_pos.current.y += relY; 
       
       this.dragStart = {x: 0, y: 0}; 
 
@@ -380,7 +383,6 @@ export class FlowchartViewerComponent extends Viewer{
     let port_pos_y = el.offsetTop;
     let node_width = el.offsetParent.offsetWidth;
 
-
     if(type == "pi"){
       x = node_pos[0];
       y = node_pos[1] + port_pos_y + port_size/2;
@@ -429,7 +431,7 @@ export class FlowchartViewerComponent extends Viewer{
 
     // add the start point from output
     let startPoint: string = output_port_position.x + " " + output_port_position.y;
-    let endPoint: string = input_port_position.x + " " + input_port_position.y;
+    let endPoint: string = input_port_position.x +  " " + input_port_position.y;
 
     // move downwards/upwards in straight line
     let translate: number = 10; 

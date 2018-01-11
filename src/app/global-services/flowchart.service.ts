@@ -5,6 +5,8 @@ import {Subject} from 'rxjs/Subject';
 import {IFlowchart, Flowchart, FlowchartReader} from '../base-classes/flowchart/FlowchartModule';
 import {IGraphNode, GraphNode} from '../base-classes/node/NodeModule';
 import {ICodeGenerator, CodeFactory, IModule, ModuleUtils} from "../base-classes/code/CodeModule";
+import {IPort} from "../base-classes/port/PortModule";
+import {IProcedure} from "../base-classes/procedure/IProcedure";
 
 import * as CircularJSON from 'circular-json';
 
@@ -287,7 +289,7 @@ export class FlowchartService {
       new_node.update(n_data);
     }
     else{
-      let default_node_name: string = "hello" + (this._flowchart.getNodes().length + 1);
+      let default_node_name: string = "node" + (this._flowchart.getNodes().length + 1);
       new_node = new GraphNode(default_node_name, undefined);
       new_node.addInput(); 
       new_node.addOutput();
@@ -307,16 +309,23 @@ export class FlowchartService {
         return;
       }
 
+      // dont remove previous edges for outputs
+      let output: IPort = this._flowchart.getNodeByIndex(outputAddress[0]).getOutputByIndex(outputAddress[1]);
+      // if (output.isConnected()){
+      //   this._flowchart.deleteEdges(this._flowchart.disconnectEdgesWithPortIndex(outputAddress[0], outputAddress[1], "output"));
+      // }
+
+      // remove previous edges for inputs
+      let input = this._flowchart.getNodeByIndex(inputAddress[0]).getInputByIndex(inputAddress[1]);
+      if (input.isConnected()){
+        this._flowchart.deleteEdges(this._flowchart.disconnectEdgesWithPortIndex(inputAddress[0], inputAddress[1], "input"));
+      }
+
+      //
       this._flowchart.addEdge(outputAddress, inputAddress);
-
-      let output = this._flowchart.getNodeByIndex(outputAddress[0]).getOutputByIndex(outputAddress[1])
-      output.connect();
-      let input = this._flowchart.getNodeByIndex(inputAddress[0]).getInputByIndex(inputAddress[1])
-      input.connect();
-
       input.setComputedValue({port: outputAddress});
-
-      this._flowchart.getNodeByIndex(inputAddress[0]).getInputByIndex(inputAddress[1]);
+      output.connect();
+      input.connect();
 
       // print message to console
       this.consoleService.addMessage("New Edge was added");
@@ -324,60 +333,32 @@ export class FlowchartService {
       this.update();
   }
 
-  disconnectEdgesWithNode(node_index: number): number[]{
-      let splicedEdges: number[] = [];
-      let edges = this.getEdges();
-      for(let e=0; e < edges.length; e++){
-        let edge = edges[e];
-        if( edge.output_address[0] == node_index){
-            let port = this._flowchart.getNodeByIndex(edge.input_address[0]).getInputByIndex(edge.input_address[1]);
-            port.disconnect();
-            port.setComputedValue(undefined);
-            splicedEdges.push(e);
-        }
-        else if(edge.input_address[0] == node_index){
-            let port = this._flowchart.getNodeByIndex(edge.output_address[0]).getOutputByIndex(edge.output_address[1]);
-            port.disconnect();
-            port.setComputedValue(undefined);
-            splicedEdges.push(e);
-        }
-      }
-      return splicedEdges;
+  addProcedure(prod: IProcedure): void{
+      this.getSelectedNode().addProcedure(prod);
+      this.updateProcedure(prod);
   }
 
-  disconnectEdgesWithPortIndex(portIndex: number, type: string): number[]{
-      let node_index = this._selectedNode;
-      let splicedEdges: number[] = [];
-      let edges = this.getEdges();
-      
-      for(let e=0; e < edges.length; e++){
-        let edge = edges[e];
+  updateProcedure(prod: IProcedure): void{
 
-        // if type == "input"
-        if( type == "input" && edge.input_address[0] == node_index && edge.input_address[1] == portIndex ){
-            let port = this._flowchart.getNodeByIndex(edge.output_address[0]).getOutputByIndex(edge.output_address[1]);
-            port.disconnect();
-            port.setComputedValue(undefined);
-            splicedEdges.push(e);
-        }
-        else if( type == "output" && edge.output_address[0] == node_index && edge.output_address[1] == portIndex ){
-            let port = this._flowchart.getNodeByIndex(edge.input_address[0]).getInputByIndex(edge.input_address[1]);
-            port.disconnect();
-            port.setComputedValue(undefined);
-            splicedEdges.push(e);
-        }
-      }
+      // validate procedure
+      let codeString: string = prod.getCodeString(this.code_generator);
+      console.log(codeString);
 
-      return splicedEdges;
+      this.update();
   }
 
+  //
+  //  update indices in edges on port deleted
+  //
+  deletePort(type: string, portIndex: number): void{
+    this._flowchart.deletePort(type, portIndex, this._selectedNode);
+
+    this.update();
+  }
 
   deleteNode(node_index: number): void{
       this._selectedNode = 0;
       this._selectedPort = 0;
-
-
-      this.deleteEdges(this.disconnectEdgesWithNode(node_index));
 
       this._flowchart.deleteNode(node_index);
 
@@ -387,11 +368,6 @@ export class FlowchartService {
       this.update();
   }
 
-  deleteEdges(edgeArr: number[]): void{
-    this._flowchart.deleteEdges(edgeArr);
-    this.update();
-  }
- 
 
   deleteEdge(edgeIndex: number): void{
     this._flowchart.deleteEdge(edgeIndex);

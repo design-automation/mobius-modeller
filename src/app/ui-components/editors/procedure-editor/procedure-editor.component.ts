@@ -1,4 +1,4 @@
-import {Component, Injector, OnInit} from '@angular/core';
+import {Component, Injector, OnInit, ViewChild} from '@angular/core';
 import {NgModel} from '@angular/forms';
 
 import {IGraphNode} from '../../../base-classes/node/NodeModule';
@@ -20,12 +20,11 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 })
 export class ProcedureEditorComponent extends Viewer {
 
-	isVisible: boolean = false;
+
+	@ViewChild('tree') tree;
 
   	_procedureArr: IProcedure[] = [];
   	_node: IGraphNode;
-
-  	_showToolbox: boolean = false;
 
   	_tree = [];
 	_tree_options = {
@@ -78,10 +77,9 @@ export class ProcedureEditorComponent extends Viewer {
 		if(this._node !== undefined){
 			this._procedureArr = this._node.getProcedure();
 			this.updateProcedureTree();
-			this.isVisible = true;
 		}
 		else{
-			this.isVisible = false;
+
 		}
 	}
 
@@ -190,7 +188,6 @@ export class ProcedureEditorComponent extends Viewer {
 
 	}
 
-
 	updateProcedure($event: Event, prod: any, property: string){
 
 		let procedure: IProcedure = prod.data.model;
@@ -210,7 +207,8 @@ export class ProcedureEditorComponent extends Viewer {
 			throw Error("Invalid procedure update");
 		}
 
-		this.flowchartService.update();
+		/// check if valid procedure was generated
+		this.flowchartService.updateProcedure(prod.data.model);
 
 	}
 

@@ -48,7 +48,6 @@ export interface IProcedure{
 	setRightComponent(expression: IComponent): void;
 
 	getCodeString(code_generator: ICodeGenerator): string;
-
 }
 
 

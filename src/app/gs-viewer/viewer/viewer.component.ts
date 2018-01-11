@@ -127,7 +127,7 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
         this.scene.add( this.objectdata );
       }
       catch(ex){
-         console.log("Cannot display given model", ex);
+         console.log("Cannot display given model");
       }
   }
 

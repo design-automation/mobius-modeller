@@ -143,8 +143,6 @@ export abstract class Procedure implements IProcedure{
 		this._rightComponent = component;
 	}
 
-
-
 	getCodeString(code_generator: ICodeGenerator): string{
 		return code_generator.generateProcedureCode(this);
 	}

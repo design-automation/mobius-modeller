@@ -17,7 +17,7 @@
 						  
 						  <ng-template #treeNodeTemplate let-prod let-index="index" class="tree-node-wrapper">
 						  		<div class = "full-container">
-						  			<div class = "seg1">
+						  			<div class = "seg1" [class.error]="prod.data.hasError">
 										<!-- template for data -->
 										<div *ngIf="prod.data.name == 'Data'"> 
 											<div class='procedure-item'>

@@ -152,12 +152,14 @@ export class GraphNode implements IGraphNode{
 
 	deleteInput(input_port_index: number): number{
 		this._inputs.splice(input_port_index, 1);
+		//delete this._inputs[input_port_index];
 		return this._inputs.length; 
 	}
 
 	deleteOutput(output_port_index: number): number{ 
 		this._outputs.splice(output_port_index, 1);
-		return this._inputs.length; 
+		//delete this._outputs[output_port_index];
+		return this._outputs.length; 
 	}
 
 	getInputs(): InputPort[]{

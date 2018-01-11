@@ -18,8 +18,6 @@ export interface ICodeGenerator{
 		// takes a flowchart and generates some code string 
 		getDisplayCode(flowchart: IFlowchart) :string;
 
-
-
 		// various functions to generate different parts of the code
 		getDefinition(node: IGraphNode): string;
 		getFunctionCall(node: IGraphNode, params?: any): string;
@@ -33,10 +31,7 @@ export interface ICodeGenerator{
 		generateInputPortCode(port: InputPort): string;
 		generateOutputPortCode(port: OutputPort): string;
 
-
-
 		// takes a node and executes the code
 		executeNode(node: IGraphNode, params: any, Modules: IModule): any;
-
 
 };

@@ -26,6 +26,8 @@ export class LayoutService {
         }
   	}
 
+    private viewContainerIndex: number = 4; 
+
     _url: string = "index";
 
   	constructor() { }
@@ -51,6 +53,14 @@ export class LayoutService {
 
     showConsole(): void{
         this.sendMessage("console");
+    }
+
+    getViewContainer(): number{
+      return this.viewContainerIndex;
+    }
+
+    setViewContainer(index: number): void{
+      this.viewContainerIndex = index;
     }
 
     getUrl(): string{

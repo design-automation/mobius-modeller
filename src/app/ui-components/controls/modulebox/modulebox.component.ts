@@ -59,12 +59,10 @@ export class ModuleboxComponent extends Viewer{
 			return;
 		}
 
-
 		let prod_data :  {result: string, module: string, function: any, params: string[]} = 
-			{result: "__", module: fn.module, function: fn.name, params: fn.params};
+			{result: "", module: fn.module, function: fn.name, params: fn.params};
 		let prod:IProcedure = ProcedureFactory.getProcedure( ProcedureTypes.Action, prod_data);
-		this._node.addProcedure(prod);
-		this.flowchartService.update();
+		this.flowchartService.addProcedure(prod);
 	}
 
 
@@ -91,22 +89,20 @@ export class ModuleboxComponent extends Viewer{
 	addProcedure($event, type: ProcedureTypes): void{
 
 		$event.stopPropagation();
+		let prod:IProcedure;
 
 		if( type == ProcedureTypes.Data){
 			let default_variable_name: string = "var" + this._procedureArr.length;
 			let prod_data: {result: string, value: string} = {result: default_variable_name, value: "undefined"};
-			let prod:IProcedure = ProcedureFactory.getProcedure( ProcedureTypes.Data, prod_data );
-			this._node.addProcedure(prod);
+			prod = ProcedureFactory.getProcedure( ProcedureTypes.Data, prod_data );
 		}
 		else if (type == ProcedureTypes.IfElseControl){
 			let prod_data : {if_condition: string, el_condition: string} = {if_condition: "undefined", el_condition: "undefined"};
-			let prod:IProcedure = ProcedureFactory.getProcedure( ProcedureTypes.IfElseControl, prod_data);
-			this._node.addProcedure(prod);
+			prod = ProcedureFactory.getProcedure( ProcedureTypes.IfElseControl, prod_data);
 		}
 		else if(type == ProcedureTypes.ForLoopControl){
 			let prod_data :  {variable: string, array_name: string} = {variable: "i", array_name: "[]"};
-			let prod:IProcedure = ProcedureFactory.getProcedure( ProcedureTypes.ForLoopControl, prod_data);
-			this._node.addProcedure(prod);
+			prod = ProcedureFactory.getProcedure( ProcedureTypes.ForLoopControl, prod_data);
 		}
 		else if(type == ProcedureTypes.Action){
 
@@ -115,7 +111,7 @@ export class ModuleboxComponent extends Viewer{
 			throw Error("Procedure Type invalid");
 		}
 
-		this.flowchartService.update();
+		this.flowchartService.addProcedure(prod);
 	}
 
 
