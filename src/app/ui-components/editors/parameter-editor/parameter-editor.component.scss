@@ -26,6 +26,15 @@
 
 		background-color: white;
 
+		/*&:hover{
+			.content{
+				flex-flow: row wrap;
+			}
+			.controls{
+				display: flex;
+			}
+		}*/
+
 		span{
 			width: 100px;
 		}
@@ -68,8 +77,8 @@
 
 		.controls{
 			margin:0 !important;
-			display: flex !important;
-			//justify-content: flex-end !important;
+			display: flex;
+
 			button{
 				max-width: 40px !important;
 				height: 20px;

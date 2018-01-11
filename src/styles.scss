@@ -159,6 +159,11 @@ split-area{
 			overflow: hidden !important;
 			justify-content: space-between !important;
 
+			&:hover{
+				.seg2{
+					display: flex !important;
+				}
+			}
 //			overflow-x: auto!important;
 //			box-sizing: border-box!important;
 			.seg1{
@@ -195,7 +200,7 @@ split-area{
 			}
 
 			.seg2{
-				display: flex !important;
+				display: none !important;
 				justify-content: flex-end !important;
 
 				flex-grow:1 !important;
@@ -241,12 +246,15 @@ split-area{
 .node-content-wrapper.node-content-wrapper-active.node-content-wrapper-focused{
 	background-color: $color3 !important;
 	&:hover{
-		background-color: $color3 !important;		
+		background-color: $color3 !important;
 	}
 	.seg1{
 		width: 80% !important;
 		display: flex !important;
 		flex-flow: row wrap !important;
+	}
+	.seg2{
+		display: flex !important;
 	}
 }
 
