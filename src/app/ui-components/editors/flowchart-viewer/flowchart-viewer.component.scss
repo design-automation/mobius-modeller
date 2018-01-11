@@ -40,7 +40,7 @@ split-area{
 		.sidebar{
 			background-color: $color3;
 			color: $color1;
-
+			//overflow-y: auto !important;
 			section{
 				padding: 10px;
 				border-bottom: 1px solid $color3;
@@ -61,10 +61,12 @@ split-area{
 
 	.graph-container{
 		position: absolute; 
-		top: 0px; 
-		left: 0px; 
+		//top: 0px; 
+		//left: 0px; 
 		height: 100%; 
 		width: 100%;
+		//box-sizing: content-box !important;
+		//overflow: auto !important;
 
 		#graph-edges{
 			background-color: transparent;
