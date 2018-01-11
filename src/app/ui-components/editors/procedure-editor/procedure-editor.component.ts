@@ -158,7 +158,8 @@ export class ProcedureEditorComponent extends Viewer {
 			}
 			else if(procedure_type === ProcedureTypes.Action ){
 				treeItem["leftExpression"] = prod.getLeftComponent().expression;
-				treeItem["rightExpression"] = prod.getRightComponent().expression;
+				treeItem["module"] = prod.getRightComponent().module;
+				treeItem["function"] = prod.getRightComponent().fn_name;
 				treeItem["params"] = prod.getRightComponent().params;
 			}
 			else if(prod.hasChildren() == true){

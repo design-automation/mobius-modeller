@@ -11,8 +11,6 @@ export class ActionProcedure extends Procedure{
 			data = {result: undefined, module: undefined, function: undefined, params: []} 
 		}
 
-		console.log(data.params);
-
 		let left: IComponent = { expression: data.result, 
 								 isAction: false, 
 								 module: undefined, 
