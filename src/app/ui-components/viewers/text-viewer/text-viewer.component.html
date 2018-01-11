@@ -1,21 +1,24 @@
-<div class="viewer">
-	<div class="container" *ngIf="_selectedNode !== undefined">
-		{{_selectedNode.getName()}}
-		<ul>
-			<li  *ngFor="let output of _selectedNode.getOutputs()">
-				{{ output.getValue() }}
-			</li>
-		</ul>
-
+<div class="container" *ngIf="_selectedNode !== undefined">
+	<div class = "nameLabel">
+		<span>Node: </span>
+		<div class ="content">
+			{{_selectedNode.getName()}}
+		</div>
 	</div>
-
-	<div>
-		Selected Port: 
+	<ul>
+		<li  class = "content" *ngFor="let output of _selectedNode.getOutputs()">
+			{{ output.getValue() }}
+		</li>
+	</ul>
+	<div class="outputPort" *ngIf="_selectedNode !== undefined">
+		<span>Selected Port:</span>
 		<br>
-		{{ getPortContent() }}
+		<div class ="content">
+			{{ getPortContent() }}
+		</div>
 	</div>
+</div>
 
-	<div class="default" *ngIf="_selectedNode === undefined">
-		No Node Selected
-	</div>
+<div class="default" *ngIf="_selectedNode === undefined">
+	No Node Selected
 </div>
