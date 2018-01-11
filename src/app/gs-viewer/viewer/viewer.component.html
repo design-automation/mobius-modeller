@@ -2,7 +2,7 @@
 		(mousemove)="onDocumentMouseMove($event)" 
 		(click)="Mousedown($event)">
 	
-  		<button id="rotating" 
+  		<!-- <button id="rotating" 
   			[class.visible]="Visible === 'rotate'" 
   			(click)="rotate()">
   			<i class="fa fa-refresh"></i>
@@ -24,9 +24,9 @@
   			[class.visible]="Visible === 'zoomfit'" 
   			(click)="zoomfit()">
   			<i class="fa fa-arrows-alt"></i>
-  		</button>
+  		</button> -->
   		
-  		<button id="selecting" [class.visible]="Visible === 'select'" (click)= "select($event, Visible)" ><i class="fa fa-mouse-pointer"></i></button>
+  		<button id="selecting" [class.visible]="Visible === 'select'" (click)= "select($event)" ><i class="fa fa-mouse-pointer"></i></button>
   		
   		<button id="setting" [class.selected]="settingVisible" (click)= "settingVisible = !settingVisible">
       	
