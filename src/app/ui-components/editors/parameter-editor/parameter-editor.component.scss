@@ -26,7 +26,12 @@
 
 		background-color: white;
 
+		span{
+			width: 100px;
+		}
+		
 		.content{
+			//width: 100px;
 			display: flex;
 			flex-flow: row nowrap;
 			height: 20px;
@@ -35,7 +40,9 @@
 			justify-content: space-between;
 
 			margin-right: 50px;
-
+			select{
+				width: 100px;
+			}
 			/*.row{				
 				display: flex; 
 				flex-direction: row;
@@ -62,7 +69,7 @@
 		.controls{
 			margin:0 !important;
 			display: flex !important;
-			justify-content: flex-end !important;
+			//justify-content: flex-end !important;
 			button{
 				max-width: 40px !important;
 				height: 20px;
@@ -94,4 +101,8 @@
 .hidden{
 	display: inline-block !important;
 	visibility: hidden !important;
+}
+
+.container{
+	overflow: hidden !important;
 }

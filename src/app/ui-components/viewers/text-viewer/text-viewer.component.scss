@@ -1,2 +1,33 @@
 @import '~scss/globals';
 
+.container{
+	height: 100%;
+	width: 100%;
+
+	padding: $default-side-padding;
+	color: $color1;
+
+	box-sizing: border-box;
+	overflow: auto;
+	.nameLabel{
+		width: 100%;
+	}
+
+	.outputPort{
+		width: 100%;
+	}
+	.content{
+		margin-right: $default-side-padding;
+		width: 100%;
+		color: $color5;
+		font-size: 10px;
+	}
+
+}
+
+span{
+	font-size: 16px;
+
+	display: block;
+	border-bottom: 1px solid $color2;
+}
