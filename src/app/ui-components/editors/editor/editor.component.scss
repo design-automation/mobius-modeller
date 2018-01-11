@@ -12,6 +12,8 @@
 
 	height: 100%;
 	width: 100%;
+	padding-bottom: $header-height;
+	box-sizing: border-box;
 	//overflow: hidden;
 
 	/*.node-header{

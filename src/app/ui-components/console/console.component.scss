@@ -1,17 +1,38 @@
+@import '~scss/globals';
+
 .container{
-	padding: 15px; 
+	position: relative;
+	height: 100%;
+
+	overflow-y: auto !important;
+	box-sizing: border-box !important;
+
+	padding: $default-side-padding;
 
 	.message-container{
-		margin: 15px;
+		display: flex;
+		flex-flow: row wrap;
+		margin: $default-side-padding/2;
+		justify-content: space-between;
+
+		flex-grow: 0;
+		flex-shrink: 0;
+
+		padding: 0 5 0 0 !important;
+		border-bottom: 1px solid $color2;
 	
 		.time{
+			min-width: 50%;
 			font-size: 10px; 
-			color: #E17878;
+			color: $color5 !important;
+			display: flex;
+			flex-flow: row-reverse nowrap;
 		}
 
 		.message{
+			min-width: 50%;
 			font-size: 16px; 
-			color: black;
+			color: $color1 !important;
 		}
 	}
 
