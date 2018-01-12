@@ -111,8 +111,10 @@ export class ModuleUtils{
 					return [ "length", "prototype", "name", "_name", "_author", "_version"].indexOf(prop) == -1;
 				});
 
+
 		for(let f=0; f < fns.length; f++){
 			let function_name = fns[f];
+			
 			// todo: why!?
 			let func = mod[function_name];
 

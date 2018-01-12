@@ -18,8 +18,7 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
   templateUrl: './procedure-editor.component.html',
   styleUrls: ['./procedure-editor.component.scss']
 })
-export class ProcedureEditorComponent extends Viewer {
-
+export class ProcedureEditorComponent extends Viewer implements OnInit{
 
 	@ViewChild('tree') tree;
 
@@ -80,6 +79,25 @@ export class ProcedureEditorComponent extends Viewer {
 		}
 		else{
 
+		}
+	}
+
+	toggle(prod: IProcedure): void{
+		if (prod.isDisabled()){
+			prod.enable();
+		}
+		else{
+			prod.disable();
+		}
+		this.flowchartService.update();
+	}
+
+	togglePrint(prod: IProcedure): void{
+		if (prod.printToConsole()){
+			prod.disablePrint();
+		}
+		else{
+			prod.enablePrint();
 		}
 	}
 
@@ -146,7 +164,8 @@ export class ProcedureEditorComponent extends Viewer {
 				children: [], 
 				leftExpression: "undefined", 
 				rightExpression: "undefined",
-				model: prod
+				model: prod, 
+				isExpanded: true
 			};
 
 			//let dataObj = { id: Math.random() , name: data.getTitle(), type: procedure_type, model: data } ; 
@@ -211,12 +230,6 @@ export class ProcedureEditorComponent extends Viewer {
 		/// check if valid procedure was generated
 		this.flowchartService.updateProcedure(prod.data.model);
 
-	}
-
-	// todo:
-	disableProcedure(prod: IProcedure): void{
-		prod.disable();
-		this.update();
 	}
 
 	deleteProcedure(prod: IProcedure): void{

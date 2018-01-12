@@ -41,7 +41,7 @@
             		(wheel)="scale($event)">
 
             	<div class="info-container" style="position: absolute; top: 30px; right: 30px">
-            		Zoom: {{zoom}}
+            		<!-- Zoom: {{zoom}} -->
             	</div>
 
                 <!-- svg canvas to draw the edges -->
@@ -93,7 +93,12 @@
 									<div class="action-button" (click)="deleteNode(node_index)">
 										<mat-icon>delete</mat-icon>
 									</div>
-									<div class="action-button" (click)="saveNode(node_index)">
+									<div class="action-button" (click)="toggleNode(node)">
+										<mat-icon *ngIf='!node.isDisabled()'>check_circle</mat-icon>
+										<mat-icon *ngIf='node.isDisabled()'>highlight_off</mat-icon>
+									</div>
+									<div class="action-button" (click)="saveNode(node_index)" 
+										*ngIf="!isSaved(node)">
 										<mat-icon>file_download</mat-icon>
 									</div>
 								</div>
@@ -104,6 +109,7 @@
 							<div class="node-body" 
 								[class.library]="node.getType() !== undefined"
 								[class.error]="node._hasError"
+								[class.disabled] ="node.isDisabled()"
 								(click)="clickNode($event, node_index)"
 								draggable=true  
 								(dragstart)="nodeDragStart($event, node)" 
@@ -160,6 +166,11 @@
 
 									</div>
 								</div> 
+
+
+								<!-- <div class="fromLibrary"  style="font-size: 8px; text-align: center">
+									Library Node
+								</div> -->
 
 							</div>
 						

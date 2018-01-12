@@ -45,7 +45,7 @@ export interface IFlowchart{
 	reset(): void;
 
 	// output related
-	execute(code_generator: ICodeGenerator, moduleSet: IModule[]): boolean;
+	execute(code_generator: ICodeGenerator, moduleSet: IModule[], print: Function): boolean;
 	
 
 	// read / write

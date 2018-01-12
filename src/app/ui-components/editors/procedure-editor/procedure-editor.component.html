@@ -11,13 +11,15 @@
 					</mat-expansion-panel-header>
 
 
-
 					<div class="tree">       
 						<tree-root #tree [nodes]='_tree' [options]='_tree_options'  (moveNode)="onMoveNode($event)">
 						  
 						  <ng-template #treeNodeTemplate let-prod let-index="index" class="tree-node-wrapper">
 						  		<div class = "full-container">
-						  			<div class = "seg1" [class.error]="prod.data.hasError">
+						  			<div class = "seg1" 
+						  				[class.error]="prod.data.hasError" 
+						  				[class.disabled]="prod.data.model.isDisabled()"
+						  				[class.print]="prod.data.model.printToConsole()">
 										<!-- template for data -->
 										<div *ngIf="prod.data.name == 'Data'"> 
 											<div class='procedure-item'>
@@ -73,7 +75,7 @@
 												(change)="updateProcedure($event, prod, 'left')">
 												
 												= <span class="module">{{prod.data.module}}</span>
-														::
+													.
 												  <span class="function">{{prod.data.function}}</span> ( 
 
 												<div class="param-container" 
@@ -111,6 +113,12 @@
 										</button>
 								        <button mat-button (click)="deleteProcedure(prod.data.model)">
 		    					    		<mat-icon>delete</mat-icon>
+			    					    </button>
+			    					    <button mat-button (click)="toggle(prod.data.model)">
+		    					    		<mat-icon>location_disabled</mat-icon>
+			    					    </button>
+			    					    <button mat-button (click)="togglePrint(prod.data.model)" *ngIf="prod.data.name =='Action' || prod.data.name =='Data'">
+		    					    		<mat-icon>flag</mat-icon>
 			    					    </button>
 			    					    <!-- <button (click)="disableProcedure(prod, $event)">Disable</button>
 			    					    <button (click)="go($event)">Copy</button> -->

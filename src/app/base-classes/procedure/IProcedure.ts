@@ -31,6 +31,10 @@ export interface IProcedure{
 	enable(): void;
 	disable(): void;
 
+	printToConsole(): boolean;
+	enablePrint(): void;
+	disablePrint(): void;
+
 	hasParent(): boolean;
 	setParent(parent: IProcedure): void;
 	getParent(): IProcedure;

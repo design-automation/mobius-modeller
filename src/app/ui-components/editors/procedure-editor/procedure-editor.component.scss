@@ -12,6 +12,16 @@
 	}
 }
 
+.seg1{
+	&.disabled{
+		background-color: gray;
+	}
+	
+	&.print{
+		border: 1px solid green;
+	}
+}
+
 /*
 .viewer{
 	@extend .viewer;

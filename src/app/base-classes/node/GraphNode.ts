@@ -73,6 +73,7 @@ export class GraphNode implements IGraphNode{
 	update(nodeData: IGraphNode): void{
 
 		if(nodeData["lib"] == undefined){
+			// loading from file
 			this._id = nodeData["_id"];
 			this.position = nodeData["position"];
 			this._name = nodeData["_name"]
@@ -115,6 +116,10 @@ export class GraphNode implements IGraphNode{
 
 	}
 
+	removeType(): void{
+		this._type = undefined;
+	}
+
 	//
 	//
 	//
@@ -130,6 +135,7 @@ export class GraphNode implements IGraphNode{
 		this._inputs.push(inp);
 
 		this.portCounter++;
+		this.removeType();
 		
 		return this._inputs.length;
 	}
@@ -146,18 +152,21 @@ export class GraphNode implements IGraphNode{
 		this._outputs.push(oup);
 		
 		this.portCounter++;
+		this.removeType();
 		
 		return this._outputs.length; 
 	}
 
 	deleteInput(input_port_index: number): number{
 		this._inputs.splice(input_port_index, 1);
+		this.removeType();
 		//delete this._inputs[input_port_index];
 		return this._inputs.length; 
 	}
 
 	deleteOutput(output_port_index: number): number{ 
 		this._outputs.splice(output_port_index, 1);
+		this.removeType();
 		//delete this._outputs[output_port_index];
 		return this._outputs.length; 
 	}
@@ -183,14 +192,17 @@ export class GraphNode implements IGraphNode{
 	}
 
 	addProcedure(prod: IProcedure): void{
+		this.removeType();
 		this._procedure.push(prod);
 	}
 
 	addProcedureAtPosition(prod: IProcedure, index: number): void{
+		this.removeType();
 		this._procedure.splice(index, 0, prod);
 	}
 
 	deleteProcedure(prod: IProcedure): void{
+		this.removeType();
 		this._procedure = this._procedure.filter(function(child: IProcedure){ 
 			if(child === prod){
 				return false; 
@@ -202,6 +214,7 @@ export class GraphNode implements IGraphNode{
 	}
 
 	deleteProcedureAtPosition(index: number): void{
+		this.removeType();
 		this._procedure.splice(index, 1);
 	}
 
@@ -229,6 +242,11 @@ export class GraphNode implements IGraphNode{
 	reset(): boolean{
 		this._hasExecuted = false;
 		this._hasError = false;
+
+		this._outputs.map(function(output){
+			output.reset();
+		})
+
 		return (this._hasExecuted == false); 
 	}
 
@@ -275,13 +293,13 @@ export class GraphNode implements IGraphNode{
 	//
 	//
 	//
-	execute(code_generator: ICodeGenerator, modules: IModule[]): void{
+	execute(code_generator: ICodeGenerator, modules: IModule[], print: Function): void{
 
 		let params: any[] = [];
 		this.getInputs().map(function(i){ params[i.getName()] = i.getValue(); })
 
 		// use code generator to execute code
-		let result: any  = code_generator.executeNode(this, params, modules);
+		let result: any  = code_generator.executeNode(this, params, modules, print);
 
 		// add results to this node
 		for( let n=0;  n < this._outputs.length; n++ ){

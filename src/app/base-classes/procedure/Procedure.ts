@@ -10,6 +10,7 @@ export abstract class Procedure implements IProcedure{
 	private _hasChildren: boolean;
 	private _selected: boolean; 
 	private _disabled: boolean = false; 
+	private _printToConsole: boolean = false;
 	
 	private _parent: IProcedure;
 
@@ -59,6 +60,18 @@ export abstract class Procedure implements IProcedure{
 
 	disable(): void{
 		this._disabled = true;
+	}
+
+	printToConsole(): boolean{
+		return this._printToConsole;
+	}
+
+	enablePrint(): void{
+		this._printToConsole = true;
+	}
+
+	disablePrint(): void{
+		this._printToConsole = false;
 	}
 
 

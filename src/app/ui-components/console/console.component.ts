@@ -26,5 +26,8 @@ export class ConsoleComponent implements OnInit {
   	this._messages = this.consoleService.getContent();
   }
 
+  clearConsole(): void{
+    this.consoleService.clearConsole();
+  }
 
 }
