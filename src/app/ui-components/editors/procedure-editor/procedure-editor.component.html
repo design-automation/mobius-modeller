@@ -11,9 +11,11 @@
 					</mat-expansion-panel-header>
 
 
-					<div class="tree">       
+					<div class="tree">    
+
+						<button id="expand" style="display: none;" (click)="tree.treeModel.expandAll()">Ex</button>   
+
 						<tree-root #tree [nodes]='_treeNodes' [options]='_tree_options'  (moveNode)="onMoveNode($event)">
-						  
 						  <ng-template #treeNodeTemplate let-prod let-index="index" class="tree-node-wrapper">
 						  		<div class = "full-container">
 						  			<div class = "seg1" 
@@ -126,6 +128,7 @@
 				    			</div>
 						  </ng-template>
 						</tree-root> 
+						
 					</div>
 		</mat-expansion-panel>
 	</mat-accordion>

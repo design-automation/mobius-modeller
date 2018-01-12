@@ -142,8 +142,10 @@ split-area{
 		width:100% !important;
 		//margin-right: 10px !important;
 		//border: 1px dashed $color2;
-		border-left: 1px dashed $color2;
-		border-bottom: 1px dashed $color2;
+		border-left: 1px solid $color2;
+		border-bottom: 1px solid $color2;
+		margin-bottom: 5px;
+		min-height: 18px;
 		&:hover{
 			background-color: rgba(240,191,160,0.3) !important;
 			.seg1{
@@ -192,7 +194,7 @@ split-area{
 					width: 100px !important;
 					color: $color1 !important;
 					background-color: white;//$color3;
-					border-bottom: 1px solid $color1;
+					border-bottom: 1px solid $color2;//$color1;
 					font-weight: normal !important;
 
 					//border-radius: 3px;
