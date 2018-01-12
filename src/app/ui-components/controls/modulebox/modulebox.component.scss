@@ -1,5 +1,12 @@
 @import '~scss/globals';
 
+.disabled{
+		color: $color2 !important;
+	&:hover{
+		color: $color2 !important;
+	}
+}
+
 .toolbox{
 	//margin-bottom: $header-height;
 	//margin-bottom: -2* $header-height;
@@ -7,18 +14,29 @@
 	background-color: $color3;
 	position: relative;
 	box-sizing: border-box;
+
+	font-size: 12px;
+	line-height: 14px;
+	color: $color1; 
+	cursor: pointer;
 	//padding-bottom: $header-height;
+	.inOutBtns{
+		padding-left: $default-side-padding;
+		padding-top: $default-side-padding;
+		span{
+			display: block;
+		}
+	}
 	.toolbox-content{
 		height:	100%;
 		overflow-y: auto;
 		overflow-x: hidden;
 		.fn_name{
-		height: auto;
-		font-size: 12px;
-		line-height: 14px;
-		color: $color1; 
-		cursor: pointer;
-
+			height: auto;
+			font-size: 12px;
+			line-height: 14px;
+			color: $color1; 
+			cursor: pointer;
 			&:hover{
 				color: $color4;
 			}

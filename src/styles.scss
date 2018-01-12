@@ -175,14 +175,19 @@ split-area{
 				flex-shrink:0 !important;
 			}
 			.procedure-item{
-				color: $color1 !important;
+				color: $pcolor3 !important;
 				display: flex !important;
 				flex-flow: row wrap !important;
+				span{
+					font-weight: bold !important;
+					color: $pcolor3 !important;
+				}
 				.tree-input{
 					width: 100px !important;
-
+					color: $color1 !important;
 					background-color: white;//$color3;
 					border-bottom: 1px solid $color1;
+					font-weight: normal !important;
 
 					border-radius: 3px;
 					text-align: center; //center;
@@ -206,19 +211,20 @@ split-area{
 				flex-grow:1 !important;
 				flex-shrink:0 !important;
 				button{
-						margin: 2px 0px;
-						max-width: 40px !important;
-						height: 20px;
-						min-width: 20px !important;
+						margin: 0px !important;
+						max-width: 15px !important;
+						height: 15px;
+						min-width: 15px !important;
 						padding: 0px !important; 
 
 						flex-grow:0 !important;
 						flex-shrink:0 !important;
 								
 					mat-icon{
-						height: 20px;
+						height: 15px;
 						vertical-align: top !important;
-						font-size: 20px !important;
+						font-size: 15px !important;
+						text-align: left !important;
 					}
 					&:hover{
 						background-color: $color3 !important;
