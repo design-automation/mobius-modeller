@@ -10,18 +10,18 @@
 			
 			<div class="info">
 				<div class='param'>
-					<span class='label'>Name</span>
+					<!--<span class='label'>Name</span>-->
 					<span class='content'>{{ inp.getName() }}</span>
 				</div>
 			</div>
 
 			<div class="value">
 				<form  class='content'>
-					<mat-form-field>
+					<!-- <mat-form-field>-->
 				    <input  matInput 
 				    placeholder="Value" value="{{ getValue(inp) }}"
 				    (change)="updateComputedValue($event, inp)"/>
-					</mat-form-field>
+					<!--</mat-form-field>-->
 				</form>
 			</div> 
 

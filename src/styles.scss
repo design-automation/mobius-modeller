@@ -137,7 +137,7 @@ split-area{
 .angular-tree-component{
 	font-size: $fsize2 !important;
 	line-height: $fsize2 !important;
-	vertical-align: middle !important;
+	vertical-align: center !important;
 	.node-content-wrapper{
 		width:100% !important;
 		//margin-right: 10px !important;
@@ -169,6 +169,9 @@ split-area{
 				.seg2{
 					display: flex !important;
 				}
+				.seg3{
+					visibility: visible !important;
+				}
 			}
 //			overflow-x: auto!important;
 //			box-sizing: border-box!important;
@@ -184,6 +187,7 @@ split-area{
 				color: $pcolor3 !important;
 				display: flex !important;
 				flex-flow: row wrap !important;
+
 				span{
 					font-weight: bold !important;
 					color: $pcolor3 !important;
@@ -192,6 +196,8 @@ split-area{
 					width: 100px !important;
 					color: $color1 !important;
 					background-color: white;//$color3;
+					border-style: solid !important;
+					border: 0px;
 					border-bottom: 1px solid $color1;
 					font-weight: normal !important;
 
@@ -216,6 +222,38 @@ split-area{
 
 				flex-grow:1 !important;
 				flex-shrink:0 !important;
+				button{
+						margin: 0px !important;
+						max-width: $fsize1  !important;
+						height: $fsize1 ;
+						min-width: $fsize1  !important;
+						padding: 0px !important; 
+
+						flex-grow:0 !important;
+						flex-shrink:0 !important;
+								
+					mat-icon{
+						height: $fsize1 ;
+						vertical-align: top !important;
+						font-size: $fsize1 !important;
+						text-align: left !important
+					}
+					&:hover{
+						background-color: $color3 !important;
+						mat-icon{
+							color: $color5 !important;
+						}
+					}
+				}
+			}
+
+			.seg3{
+				visibility: hidden !important;
+				justify-content: flex-end !important;
+
+				flex-grow:0 !important;
+				flex-shrink:0 !important;
+				max-width: $fsize1 !important;
 				button{
 						margin: 0px !important;
 						max-width: $fsize1  !important;
@@ -326,3 +364,6 @@ span.addBtn{
 }
 
 
+input{
+	border-style: none !important;
+}

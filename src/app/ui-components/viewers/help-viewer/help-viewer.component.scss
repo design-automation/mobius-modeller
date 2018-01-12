@@ -3,8 +3,22 @@
 .viewer{
 	@extend .viewer;
 
-	padding: 30px;
+	padding: $default-side-padding;
+	height: 100%;
+
+	box-sizing: border-box;
+	padding-bottom: $header-height;
+
 	overflow: auto;
+
+	h1{
+		padding-left: $default-side-padding;
+		padding-bottom: 5px;
+		color: $color1;
+		display: block;
+		border-bottom: 1px solid $color3;
+	}
+
 	// display: flex !important;
 	// flex-flow: column nowrap !important;
 
@@ -35,3 +49,62 @@
 	// 	}
 	// }
 }
+
+mat-expansion-panel{
+	margin: 0 !important;
+	overflow: hidden !important;
+	mat-expansion-panel-header{
+		mat-panel-title{
+		color: $pcolor2 !important;
+	}
+}
+
+}
+
+mat-panel-description{
+	display: none;
+}
+
+
+.content{
+	width: 100%;
+}
+
+/*
+.mat-list-item-content{
+	padding: 0;
+	border: 0;
+}
+
+.mat-line{
+	padding: 0;
+	border: 0;
+	line-height: $fsize1;
+}*/
+
+mat-list{
+	.mat-subheader{
+		display: none; //not sure the purpose of this word
+		font-size: $fsize1;
+		color: $color1;
+		margin: 0;
+		padding: 0;
+	}
+	mat-list-item{
+		h4{
+			color: $pcolor4;
+			font-size: $fsize1;
+			border-bottom: 1px solid $color2;
+			font-weight: bold;
+			display: block;
+		}
+		p{
+			font-size: $fsize2;
+			color: $color1;
+			a{
+				color: $color1;
+			}
+		}
+	}
+}
+
