@@ -63,7 +63,19 @@ $execute-height: 36px;
 			.value{
 				//padding: $default-side-padding;
 				.content{
-					color:$color1;
+					vertical-align: center;
+					input{
+						color: $color1;
+						border:0;
+						border-style: solid !important;
+						border-bottom: 1px solid $color1;
+						&:hover{
+							background-color: $color4;
+						}
+						&:focus{
+							background-color: $color4;
+						}
+					}
 				}
 			}
 			//border-bottom: 1px solid $color2;

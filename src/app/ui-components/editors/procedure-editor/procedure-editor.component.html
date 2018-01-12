@@ -18,10 +18,17 @@
 						<tree-root #tree [nodes]='_treeNodes' [options]='_tree_options'  (moveNode)="onMoveNode($event)">
 						  <ng-template #treeNodeTemplate let-prod let-index="index" class="tree-node-wrapper">
 						  		<div class = "full-container">
-						  			<div class = "seg1" 
-						  				[class.error]="prod.data.hasError" 
-						  				[class.disabled]="prod.data.model.isDisabled()"
-						  				[class.print]="prod.data.model.printToConsole()">
+
+									<div class = "seg3" *ngIf="prod.data.name != 'Else' && prod.data.name != 'If'">
+			    					   	<button mat-button 
+										    *ngIf="prod.data.name =='Action'"
+											(click)="openHelp($event, prod)">
+											<mat-icon>help_outline</mat-icon>
+										</button>
+
+				    				</div>
+						  			<div class = "seg1" [class.error]="prod.data.hasError">
+
 										<!-- template for data -->
 										<div *ngIf="prod.data.name == 'Data'"> 
 											<div class='procedure-item'>
@@ -105,22 +112,14 @@
 									</div>
 
 									<div class = "seg2" *ngIf="prod.data.name != 'Else' && prod.data.name != 'If'">
-										<button mat-button>
-											<mat-icon>help_outline</mat-icon>
-										</button>
-										<button mat-button 
-										    *ngIf="prod.data.name =='Action'"
-											(click)="openHelp($event, prod)">
-											<mat-icon>help_outline</mat-icon>
-										</button>
+									   <button mat-button (click)="togglePrint(prod.data.model)" *ngIf="prod.data.name =='Action' || prod.data.name =='Data'">
+		    					    		<mat-icon>print</mat-icon>
+			    					    </button>
+										 <button mat-button (click)="toggle(prod.data.model)">
+		    					    		<mat-icon>check_circle</mat-icon>
+			    					    </button>
 								        <button mat-button (click)="deleteProcedure(prod.data.model)">
 		    					    		<mat-icon>delete</mat-icon>
-			    					    </button>
-			    					    <button mat-button (click)="toggle(prod.data.model)">
-		    					    		<mat-icon>location_disabled</mat-icon>
-			    					    </button>
-			    					    <button mat-button (click)="togglePrint(prod.data.model)" *ngIf="prod.data.name =='Action' || prod.data.name =='Data'">
-		    					    		<mat-icon>flag</mat-icon>
 			    					    </button>
 			    					    <!-- <button (click)="disableProcedure(prod, $event)">Disable</button>
 			    					    <button (click)="go($event)">Copy</button> -->
