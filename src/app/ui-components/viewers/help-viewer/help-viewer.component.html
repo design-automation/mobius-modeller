@@ -10,12 +10,11 @@
 	    		<mat-panel-title>
 			      {{ getModName(m.name) }} 
 			    </mat-panel-title>
-			    <mat-panel-description>
-			      {{m.comment.shortText}}
-			    </mat-panel-description>
 	    	</mat-expansion-panel-header>
 
-			<mat-list>
+			<mat-list style="max-height: 500px; overflow: auto;">
+				<h3 mat-subheader>{{m.comment.shortText}}</h3>
+
 				<h3 mat-subheader>Functions</h3>
 			 	<mat-list-item *ngFor="let fn of m.children"> 
 			 		<h4 mat-line>{{fn.name}}</h4>

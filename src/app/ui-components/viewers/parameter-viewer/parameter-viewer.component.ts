@@ -62,7 +62,7 @@ export class ParameterViewerComponent extends Viewer {
           return otp.getValue();
         }
         else{*/
-          return (port.getValue() || "undefined");
+          return (port.getValue() || " ");
         //}
     }
   	//
