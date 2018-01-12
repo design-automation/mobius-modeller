@@ -25,8 +25,9 @@ export class ProcedureEditorComponent extends Viewer implements OnInit{
   	_procedureArr: IProcedure[] = [];
   	_node: IGraphNode;
 
-  	_tree = [];
+  	_treeNodes = [];
 	_tree_options = {
+	  isExpanded: 'expanded', 
 	  allowDrag: function(element){
 	  	if(element.data.name == ProcedureTypes.IfControl || element.data.name == ProcedureTypes.ElseControl){
 	  		return false;
@@ -68,7 +69,7 @@ export class ProcedureEditorComponent extends Viewer implements OnInit{
 	reset():void{
 		this._procedureArr = [];
 		this._node = undefined;
-		this._tree = [];
+		this._treeNodes = [];
 	}
 
 	update(){
@@ -76,6 +77,12 @@ export class ProcedureEditorComponent extends Viewer implements OnInit{
 		if(this._node !== undefined){
 			this._procedureArr = this._node.getProcedure();
 			this.updateProcedureTree();
+
+			// horrible fix
+			setTimeout(function(){ 
+				document.getElementById("expand").click();
+			}, 300)
+
 		}
 		else{
 
@@ -161,11 +168,11 @@ export class ProcedureEditorComponent extends Viewer implements OnInit{
 			let treeItem = { 
 				index: index,
 				name: procedure_type, 
+				expanded: true,
 				children: [], 
 				leftExpression: "undefined", 
 				rightExpression: "undefined",
-				model: prod, 
-				isExpanded: true
+				model: prod
 			};
 
 			//let dataObj = { id: Math.random() , name: data.getTitle(), type: procedure_type, model: data } ; 
@@ -202,7 +209,7 @@ export class ProcedureEditorComponent extends Viewer implements OnInit{
 			return treeItem;
 		}
 
-		this._tree = this._procedureArr.map(function(prod, index){
+		this._treeNodes = this._procedureArr.map(function(prod, index){
 			return getTreeItem(prod, index);
 		})
 
