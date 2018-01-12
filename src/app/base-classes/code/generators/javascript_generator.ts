@@ -192,7 +192,7 @@ export class CodeGeneratorJS extends CodeGenerator{
 			return code;
 		}
 
-		existsInNodeVars(nodeVars: string[], name: string): boolean{
+		static existsInNodeVars(nodeVars: string[], name: string): boolean{
 
 			let var_name: string = name;
 
@@ -224,7 +224,7 @@ export class CodeGeneratorJS extends CodeGenerator{
 			if(prod_type == ProcedureTypes.Data){
 				let init: string;
 
-				if( this.existsInNodeVars(nodeVars, procedure.getLeftComponent().expression) == false){
+				if( CodeGeneratorJS.existsInNodeVars(nodeVars, procedure.getLeftComponent().expression) == false){
 					init = "let ";
 					nodeVars.push( procedure.getLeftComponent().expression );
 				}
