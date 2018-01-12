@@ -342,7 +342,7 @@ export class FlowchartService {
       // validate procedure
       let codeString: string = prod.getCodeString(this.code_generator);
 
-      //this.update();
+      this.update();
   }
 
   //
