@@ -4,6 +4,7 @@ split-area{
 	overflow: auto !important;
 }
 
+
 .viewer{
 
 	@extend .viewer;
@@ -38,9 +39,10 @@ split-area{
 		}
 
 		.sidebar{
+			font-size: $fsize2;
 			background-color: $color3;
 			color: $color1;
-
+			//overflow-y: auto !important;
 			section{
 				padding: 10px;
 				border-bottom: 1px solid $color3;
@@ -61,10 +63,12 @@ split-area{
 
 	.graph-container{
 		position: absolute; 
-		top: 0px; 
-		left: 0px; 
+		//top: 0px; 
+		//left: 0px; 
 		height: 100%; 
 		width: 100%;
+		//box-sizing: content-box !important;
+		//overflow: auto !important;
 
 		#graph-edges{
 			background-color: transparent;
@@ -164,7 +168,7 @@ split-area{
 
 					.node-name{
 						font-family: sans-serif; 
-						font-size: 14px;
+						font-size: $fsize1;
 						border-bottom: 1px solid $color1; 
 						text-align: center;
 						background-color: $color2;
@@ -210,8 +214,8 @@ split-area{
 									background-color: $color4;
 								}
 							}
-
 							.port-name{
+								font-size: $fsize2;
 								margin: 0px 5px; 
 							}
 

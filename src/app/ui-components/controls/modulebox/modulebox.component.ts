@@ -114,5 +114,21 @@ export class ModuleboxComponent extends Viewer{
 		this.flowchartService.addProcedure(prod);
 	}
 
+	addPort(type: string): void{
+
+      // add port 
+      if(type == "in"){
+          this._node.addInput();
+      }
+      else if(type == "out"){
+          this._node.addOutput();
+      }
+      else{
+        throw Error("Unknown Port Type");
+      }  
+
+      this.flowchartService.update();
+    }
+
 
 }

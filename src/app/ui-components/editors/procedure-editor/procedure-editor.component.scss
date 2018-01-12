@@ -1,11 +1,15 @@
 @import '~scss/globals';
 
-span.module{
-	color: green;
-}
+.procedure-item{
+	span.module{
+		color: $pcolor2 !important;
+		font-weight: bold;
+	}
 
-span.function{
-	color: purple;
+	span.function{
+		color: $pcolor4 !important;
+		font-weight: bold;
+	}
 }
 
 .seg1{
