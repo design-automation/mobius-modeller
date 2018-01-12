@@ -25,8 +25,8 @@ export class ProcedureEditorComponent extends Viewer implements OnInit{
   	_procedureArr: IProcedure[] = [];
   	_node: IGraphNode;
 
-  	_tree = [];
-	_tree_options = {
+  	_treeNodes = [];
+	_treeNodes_options = {
 	  allowDrag: function(element){
 	  	if(element.data.name == ProcedureTypes.IfControl || element.data.name == ProcedureTypes.ElseControl){
 	  		return false;
@@ -68,7 +68,7 @@ export class ProcedureEditorComponent extends Viewer implements OnInit{
 	reset():void{
 		this._procedureArr = [];
 		this._node = undefined;
-		this._tree = [];
+		this._treeNodes = [];
 	}
 
 	update(){
@@ -202,7 +202,7 @@ export class ProcedureEditorComponent extends Viewer implements OnInit{
 			return treeItem;
 		}
 
-		this._tree = this._procedureArr.map(function(prod, index){
+		this._treeNodes = this._procedureArr.map(function(prod, index){
 			return getTreeItem(prod, index);
 		})
 

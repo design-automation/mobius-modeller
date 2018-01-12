@@ -12,7 +12,7 @@
 
 
 					<div class="tree">       
-						<tree-root #tree [nodes]='_tree' [options]='_tree_options'  (moveNode)="onMoveNode($event)">
+						<tree-root #tree [nodes]='_treeNodes' [options]='_tree_options'  (moveNode)="onMoveNode($event)">
 						  
 						  <ng-template #treeNodeTemplate let-prod let-index="index" class="tree-node-wrapper">
 						  		<div class = "full-container">
