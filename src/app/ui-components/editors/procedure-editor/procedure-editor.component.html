@@ -40,28 +40,28 @@
 
 										<div *ngIf="prod.data.name == 'IfElse'">
 											<div class='procedure-item'>
-												If-Else
+												<span>if-else</span>
 											</div>
 										</div>
 
 										<div *ngIf="prod.data.name == 'If'">
 											<div class='procedure-item'>
-											 If ( <input matInput class="tree-input"  [(ngModel)]="prod.data.leftExpression" #ctrl="ngModel" required
+											 <span>if</span> ( <input matInput class="tree-input"  [(ngModel)]="prod.data.leftExpression" #ctrl="ngModel" required
 												(change)="updateProcedure($event, prod, 'left')"> )
 											</div>
 										</div>
 
 										<div *ngIf="prod.data.name == 'Else'">
 											<div class='procedure-item'>
-											 Else 
+											 <span>else</span>
 											</div>
 										</div>
 
 										<div *ngIf="prod.data.name == 'For Loop'">
 											<div class='procedure-item'>
-											 for (  
+											 <span>for (</span> 
 											  <input matInput class="tree-input"  [(ngModel)]="prod.data.leftExpression" #ctrl="ngModel" required (change)="updateProcedure($event, prod, 'left')">
-											 in  
+											 <span>in</span>  
 											  <input matInput class="tree-input" [(ngModel)]="prod.data.rightExpression" #ctrl="ngModel" required (change)="updateProcedure($event, prod, 'right')"> 
 											  )
 											</div>
@@ -101,6 +101,9 @@
 									</div>
 
 									<div class = "seg2" *ngIf="prod.data.name != 'Else' && prod.data.name != 'If'">
+										<button mat-button>
+											<mat-icon>help_outline</mat-icon>
+										</button>
 										<button mat-button 
 										    *ngIf="prod.data.name =='Action'"
 											(click)="openHelp($event, prod)">

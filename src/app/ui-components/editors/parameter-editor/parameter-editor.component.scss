@@ -1,5 +1,9 @@
 @import '~scss/globals';
 
+.addBtn{
+	font-size: $fsize2;
+}
+
 .viewer{
 	@extend .viewer;
 
@@ -7,7 +11,7 @@
 	flex-direction: column;
 
 	.port-heading{
-		font-size: 18px;
+		font-size: $fsize1;
 		line-height: 36px;
 		padding: 0px 4px;
 		text-align: center;
@@ -26,6 +30,15 @@
 
 		background-color: white;
 
+		/*&:hover{
+			.content{
+				flex-flow: row wrap;
+			}
+			.controls{
+				display: flex;
+			}
+		}*/
+
 		span{
 			width: 100px;
 		}
@@ -35,12 +48,13 @@
 			display: flex;
 			flex-flow: row nowrap;
 			height: 20px;
-			font-size: 14px;
+			font-size: $fsize2;
 			line-height: 20px;
 			justify-content: space-between;
 
 			margin-right: 50px;
 			select{
+				font-size: $fsize2;
 				width: 100px;
 			}
 			/*.row{				
@@ -68,19 +82,20 @@
 
 		.controls{
 			margin:0 !important;
-			display: flex !important;
-			//justify-content: flex-end !important;
+			display: flex;
+
 			button{
-				max-width: 40px !important;
-				height: 20px;
-				min-width: 20px !important;
+				max-width: $fsize1 !important;
+				height: $fsize1;
+				min-width: $fsize1 !important;
 				padding: 0px !important; 
 				flex-grow: 0 !important;
 				flex-shrink: 0 !important;
 				mat-icon{
-					height: 20px;
+					height: $fsize2;
 					vertical-align: top !important;
-					font-size: 20px !important;
+					font-size: $fsize1 !important;
+					text-align: left !important;
 				}
 				&:hover{
 					background-color: $color3 !important;

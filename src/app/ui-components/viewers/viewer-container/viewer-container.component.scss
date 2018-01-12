@@ -5,8 +5,13 @@
 	flex-flow: row nowrap;
 	width: 100%;
 	background-color: $color1;
+	span{
+		font-style: italic;
+		font-weight: bold;
+	}
 	mat-icon{
 		color:$color2;
+		height: $header-height !important;
 	}
 
 	&:hover{
@@ -14,12 +19,17 @@
 			flex-flow: wrap;
 		}
 	}
+	.mat-button-toggle{
+		height: $header-height !important;
+	}
+
 	.mat-button-toggle-disabled{
 		background-color:$color1;
 		mat-icon{
 			color:$color5 !important;
 		}
 	}
+
 	.btn-grp1{
 		max-width: 100% !important;
 		flex-grow: 1 !important;
