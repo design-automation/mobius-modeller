@@ -39,6 +39,7 @@ split-area{
 		}
 
 		.sidebar{
+			font-size: $fsize2;
 			background-color: $color3;
 			color: $color1;
 			//overflow-y: auto !important;
@@ -163,7 +164,7 @@ split-area{
 
 					.node-name{
 						font-family: sans-serif; 
-						font-size: 14px;
+						font-size: $fsize1;
 						border-bottom: 1px solid $color1; 
 						text-align: center;
 						background-color: $color2;
@@ -209,8 +210,8 @@ split-area{
 									background-color: $color4;
 								}
 							}
-
 							.port-name{
+								font-size: $fsize2;
 								margin: 0px 5px; 
 							}
 

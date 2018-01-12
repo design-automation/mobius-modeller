@@ -15,7 +15,7 @@
 	position: relative;
 	box-sizing: border-box;
 
-	font-size: 12px;
+	font-size: $fsize2;
 	line-height: 14px;
 	color: $color1; 
 	cursor: pointer;
@@ -33,7 +33,7 @@
 		overflow-x: hidden;
 		.fn_name{
 			height: auto;
-			font-size: 12px;
+			font-size: $fsize2;
 			line-height: 14px;
 			color: $color1; 
 			cursor: pointer;

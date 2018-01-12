@@ -13,7 +13,7 @@ html{
 	margin: 0px;
 
 	font-family: sans-serif;
-	font-size: 12px;
+	font-size: $fsize2;
 	line-height: 14px; 
 }
 
@@ -44,7 +44,7 @@ split-area{
 }
 
 .mat-tab-label{
-	font-size: 12px !important; 
+	font-size: $fsize2 !important; 
 	line-height: 18px;
 	min-height: 30px !important; 
 	min-width: 100px !important;
@@ -135,9 +135,15 @@ split-area{
 
 
 .angular-tree-component{
+	font-size: $fsize2 !important;
+	line-height: $fsize2 !important;
+	vertical-align: middle !important;
 	.node-content-wrapper{
 		width:100% !important;
-		border-bottom: 1px dashed $color1;
+		//margin-right: 10px !important;
+		//border: 1px dashed $color2;
+		border-left: 1px dashed $color2;
+		border-bottom: 1px dashed $color2;
 		&:hover{
 			background-color: rgba(240,191,160,0.3) !important;
 			.seg1{
@@ -189,7 +195,7 @@ split-area{
 					border-bottom: 1px solid $color1;
 					font-weight: normal !important;
 
-					border-radius: 3px;
+					//border-radius: 3px;
 					text-align: center; //center;
 					margin: 2px 0px;
 					&:focus{
@@ -212,19 +218,19 @@ split-area{
 				flex-shrink:0 !important;
 				button{
 						margin: 0px !important;
-						max-width: 15px !important;
-						height: 15px;
-						min-width: 15px !important;
+						max-width: $fsize1  !important;
+						height: $fsize1 ;
+						min-width: $fsize1  !important;
 						padding: 0px !important; 
 
 						flex-grow:0 !important;
 						flex-shrink:0 !important;
 								
 					mat-icon{
-						height: 15px;
+						height: $fsize1 ;
 						vertical-align: top !important;
-						font-size: 15px !important;
-						text-align: left !important;
+						font-size: $fsize1 !important;
+						text-align: left !important
 					}
 					&:hover{
 						background-color: $color3 !important;

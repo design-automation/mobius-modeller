@@ -28,7 +28,7 @@ $execute-height: 36px;
 			display: flex; 
 			flex-direction: row; 
 			justify-content: space-equally;
-			font-size: 14px;
+			font-size: $fsize1;
 			line-height: 18px;
 			border-bottom: 1px solid $color2;
 			width: 100%;
@@ -46,12 +46,12 @@ $execute-height: 36px;
 					.label{
 						width: 80px; 
 						text-transform: uppercase; 
-						font-size: 10px; 
+						font-size: $fsize2; 
 						color: $color2; 
 					}
 
 					.content{
-						font-size: 12px;
+						font-size: $fsize2;
 					}
 				}
 			}
@@ -61,7 +61,7 @@ $execute-height: 36px;
 					margin: 0;
 			}*/
 			.value{
-				padding: $default-side-padding;
+				//padding: $default-side-padding;
 				.content{
 					color:$color1;
 				}
