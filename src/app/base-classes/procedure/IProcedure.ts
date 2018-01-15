@@ -39,7 +39,7 @@ export interface IProcedure{
 	setParent(parent: IProcedure): void;
 	getParent(): IProcedure;
 
-	hasChildren(): boolean;
+	hasChildren: boolean;
 	getChildren(): IProcedure[];
 	addChild(procedure: IProcedure): void;
 	addChildFromData(child: IProcedure): void;

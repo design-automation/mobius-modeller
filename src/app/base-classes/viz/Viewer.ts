@@ -3,7 +3,7 @@ import { FlowchartService } from '../../global-services/flowchart.service';
 import { Subscription } from 'rxjs/Subscription';
 
 interface IViewer{
-	update(): void;
+	update(message?: string): void;
 	reset(): void;
 }
 
@@ -28,7 +28,7 @@ export abstract class Viewer implements OnInit, OnDestroy, IViewer{
 		this.flowchartService = injector.get(FlowchartService);
 		this._subscription = this.flowchartService.getMessage().subscribe(message => { 
 			this._message = message; 
-			this.notify();
+			this.notify(message.text);
 		});
   	}
 
@@ -39,9 +39,9 @@ export abstract class Viewer implements OnInit, OnDestroy, IViewer{
   	//
   	//	checks if the flowchart service has a flowchart and calls update function for the viewer
   	//
-  	notify(): void{
+  	notify(message?: string): void{
   		if ( this.flowchartService.hasFlowchart() && this.flowchartService.getNodes().length > 0 ){
-  			this.update();
+  			this.update(message);
   		}
   		else{
   			this.reset();  		
@@ -69,7 +69,7 @@ export abstract class Viewer implements OnInit, OnDestroy, IViewer{
 	// 
 	//	update function to be overriden by each viewer
 	//
-	update(){
+	update(message?:string){
 		console.log(this._name + " has not implemented the update function!");
 	}
 }
