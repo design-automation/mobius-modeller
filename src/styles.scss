@@ -63,7 +63,7 @@ split-area{
 }
 
 .mat-expansion-panel-header{
-	height: 30px !important;
+	height: 28px !important;
 	background-color: white !important;
 	border-top: 1px solid $color2 !important;
 	border-bottom: 1px solid $color2 !important;
@@ -71,6 +71,7 @@ split-area{
 	.mat-expansion-panel-header-title{
 		color: $color1 !important;
 		font-weight: bold !important;
+		font-size: $fsize1 !important;
 	}
 	&:hover{
 		background-color: white !important;
@@ -79,7 +80,7 @@ split-area{
 
 .mat-expansion-panel-body{
 		height: 100%;
-		overflow: auto !important;
+		//overflow: auto !important;
 		color: $color1;
 		padding: 0 !important;
 		box-sizing: border-box !important;
@@ -190,12 +191,17 @@ split-area{
 				display: flex !important;
 				flex-flow: row wrap !important;
 
+				align-items: center !important;
+				justify-content: center !important;
+
 				span{
 					font-weight: bold !important;
 					color: $pcolor3 !important;
 				}
 				.tree-input{
-					width: 100px !important;
+					min-width: 10px !important;
+					max-width: 100px !important;
+					
 					color: $color1 !important;
 					background-color: white;//$color3;
 					border-style: solid !important;
@@ -365,7 +371,6 @@ span.addBtn{
 	padding-left: $default-side-padding !important;
 }
 
-
-input{
-	border-style: none !important;
+split-area.sidebar.flowchart{
+	width: 150px !important;
 }

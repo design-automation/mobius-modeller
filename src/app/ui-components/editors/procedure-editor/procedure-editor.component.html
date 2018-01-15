@@ -38,8 +38,8 @@
 
 												<!-- <input width=50 class="tree-input" [(ngModel)]="prod.data.leftExpression" #ctrl="ngModel" required
 												(change)="updateProcedure($event, prod, 'left')"> -->
-												=
-												
+												<span class="equal">=</span>
+									
 												<input matInput class="tree-input" 
 												[(ngModel)]="prod.data.rightExpression" #ctrl="ngModel" required
 												(change)="updateProcedure($event, prod, 'right')">
@@ -83,9 +83,12 @@
 												<input matInput class="tree-input" [(ngModel)]="prod.data.leftExpression" #ctrl="ngModel" required
 												(change)="updateProcedure($event, prod, 'left')">
 												
-												= <span class="module">{{prod.data.module}}</span>
-													.
-												  <span class="function">{{prod.data.function}}</span> ( 
+												<span class="equal">=</span>
+
+												<span class="module">{{prod.data.module}}</span>
+												.
+
+												  <span class="function">{{prod.data.function}}</span> (
 
 												<div class="param-container" 
 													*ngFor="let p of prod.data.params; let i=index">
@@ -102,7 +105,7 @@
 													 #ctrl="ngModel" required 
 													 (change)="updateProcedure($event, prod, 'right')"> --> 
 												</div>
-												) 
+												)
 												
 											</div>
 										</div>
