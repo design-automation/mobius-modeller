@@ -14,6 +14,8 @@ export class IfElseControlProcedure extends Procedure{
 			let if_control: IProcedure = new IfElseControlProcedure( ProcedureTypes.IfControl, data )
 			let else_control: IProcedure = new IfElseControlProcedure( ProcedureTypes.ElseControl, data)
 			
+			this["virtual"] = true;
+
 			super.addChild(if_control);
 			super.addChild(else_control);
 		}

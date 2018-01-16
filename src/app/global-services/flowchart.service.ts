@@ -350,34 +350,35 @@ export class FlowchartService {
         }
         else{
 
-           if(selectedProcedure.hasParent()){
-             let parent: IProcedure = selectedProcedure.getParent();
-             let index: number = 0;
-             let allChildren: IProcedure[] = parent.getChildren();
+           if(selectedProcedure.getParent()){
 
-             for(let i=0; i<allChildren.length; i++){
-                 if(allChildren[i] === selectedProcedure){
-                     index = i;
-                     break;
-                 }
-             }
+               let parent: IProcedure = selectedProcedure.getParent();
+               let index: number = 0;
+               let allChildren: IProcedure[] = parent.getChildren();
 
-             parent.addChildAtPosition(prod, index + 1);
+               for(let i=0; i<allChildren.length; i++){
+                   if(allChildren[i] === selectedProcedure){
+                       index = i;
+                       break;
+                   }
+               }
+
+               parent.addChildAtPosition(prod, index + 1);
 
            }
            else{
-             let parent: IGraphNode = node;
-             let index: number = 0;
-             let allChildren: IProcedure[] = node.getProcedure();
+               let parent: IGraphNode = node;
+               let index: number = 0;
+               let allChildren: IProcedure[] = node.getProcedure();
 
-             for(let i=0; i<allChildren.length; i++){
-                 if(allChildren[i] === selectedProcedure){
-                     index = i;
-                     break;
-                 }
-             }
+               for(let i=0; i<allChildren.length; i++){
+                   if(allChildren[i] === selectedProcedure){
+                       index = i;
+                       break;
+                   }
+               }
 
-             node.addProcedureAtPosition(prod, index + 1);
+               node.addProcedureAtPosition(prod, index + 1);
            }
 
 
@@ -405,10 +406,13 @@ export class FlowchartService {
   }
 
   deleteNode(node_index: number): void{
-      this._selectedNode = 0;
-      this._selectedPort = 0;
 
       this._flowchart.deleteNode(node_index);
+
+      if(this._selectedNode == node_index){
+        this._selectedNode = undefined;
+        this._selectedPort = undefined;
+      }
 
       // print message to console
       this.consoleService.addMessage("Node was deleted");

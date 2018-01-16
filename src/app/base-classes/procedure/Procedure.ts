@@ -5,6 +5,8 @@ import {ICodeGenerator} from "../code/CodeModule";
 
 export abstract class Procedure implements IProcedure{
 
+	public hasChildren: boolean;
+	public children: IProcedure[];
 
 	private _type: ProcedureTypes; 
 	private _hasChildren: boolean;
@@ -19,11 +21,12 @@ export abstract class Procedure implements IProcedure{
 
 	protected _children: IProcedure[] = []; 
 
-	public children: IProcedure[] = []; 
-
 	constructor(type: ProcedureTypes, hasChildren: boolean){
 		this._type = type; 
 		this._hasChildren = hasChildren;
+		
+		this.hasChildren = this._hasChildren;
+		this.children = this._children;
 	}	
 
 	update(prodData: any, parent: IProcedure): void{
@@ -34,6 +37,9 @@ export abstract class Procedure implements IProcedure{
 
 		this._parent = parent;
 		this._children = [];
+
+		this.hasChildren = this._hasChildren;
+		this.children = this._children;
 	}
 
 	getType(): ProcedureTypes{
@@ -95,7 +101,6 @@ export abstract class Procedure implements IProcedure{
 	}
 
 
-	hasChildren:  boolean = this._hasChildren;
 
 	getChildren(): IProcedure[]{
 		if( this._hasChildren == false){
@@ -110,6 +115,7 @@ export abstract class Procedure implements IProcedure{
 	addChild(child: IProcedure): void{
 		if( this._hasChildren ){
 			this._children.push(child);
+			this.children = this._children;
 		}
 		else{
 			throw Error("Cannot add child to this procedure");
@@ -119,6 +125,7 @@ export abstract class Procedure implements IProcedure{
 	addChildFromData(child: IProcedure): void{
 		if( this._hasChildren ){
 			this._children.push(child);
+			this.children = this._children;
 		}
 		else{
 			throw Error("Cannot add child to this procedure");
@@ -127,6 +134,7 @@ export abstract class Procedure implements IProcedure{
 
 	addChildAtPosition(child: IProcedure, index: number): void{
 		this._children.splice(index, 0, child);
+		this.children = this._children;
 	}
 
 	deleteChild(procedure: IProcedure): void{
@@ -138,6 +146,7 @@ export abstract class Procedure implements IProcedure{
 				return true;
 			}
 		});
+		this.children = this._children;
 	}
 
 	getLeftComponent(): IComponent{

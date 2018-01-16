@@ -27,7 +27,7 @@ export class ProcedureEditorComponent extends Viewer implements OnInit{
   	_procedureArr: IProcedure[] = [];
   	_node: IGraphNode;
 
-  	_treeNodes = [];
+  	//_treeNodes = [];
 	_tree_options = {
 	  allowDrag: function(element){
 	  	if(element.data._type == ProcedureTypes.IfControl || element.data._type == ProcedureTypes.ElseControl){
@@ -70,21 +70,27 @@ export class ProcedureEditorComponent extends Viewer implements OnInit{
 	reset():void{
 		this._procedureArr = [];
 		this._node = undefined;
-		this._treeNodes = [];
+		//this._treeNodes = [];
 	}
 
 	update(message: string){
 		if(message == "procedure"){
-			this._procedureArr = this._node.getProcedure();
-			let lastProd: IProcedure = this._procedureArr[this._procedureArr.length - 1];
 			this.tree.treeModel.update();
+			
 		}
 		else{
 			this._node = this.flowchartService.getSelectedNode();
 			this._procedureArr = this._node.getProcedure();
-			this._treeNodes = this._procedureArr; 
 			//this.updateProcedureTree();
 		}
+	}		
+
+	ngOnInit(){
+		this._node = this.flowchartService.getSelectedNode();
+		this._procedureArr = this._node.getProcedure();
+		//this._treeNodes = this._procedureArr; 
+		this.tree.treeModel.update();
+
 	}
 
 	ngAfterViewInit() {
@@ -120,44 +126,43 @@ export class ProcedureEditorComponent extends Viewer implements OnInit{
 	onMoveNode($event) {
 		// get previous parent
 		let moved_procedure: IProcedure = $event.node;
-		let to_procedure: IProcedure = $event.to.parent.data;
+		let to_procedure: IProcedure = $event.to.parent;
 		let moved_position: number = $event.to.index;
 
-		let parent: IProcedure|IGraphNode = moved_procedure.getParent();
+		moved_procedure.setParent(to_procedure);
 
 		// case: no parent and parent added
 		// case: no parent and no parent
 		// case: parent and different parent
 		// case: parent and same parent
 		// case: parent and no parent
-		if( moved_procedure.getParent() === to_procedure ){
-			if(parent === undefined){
-				this._node.deleteProcedure(moved_procedure);
-				this._node.addProcedureAtPosition(moved_procedure, moved_position);
-			}
-			else{
-				to_procedure.deleteChild(moved_procedure);
-				to_procedure.addChildAtPosition(moved_procedure, moved_position);
-			}
-		}
-		else{
+		// if( moved_procedure.getParent() === to_procedure ){
+		// 	if(parent === undefined){
+		// 		this._node.deleteProcedure(moved_procedure);
+		// 		this._node.addProcedureAtPosition(moved_procedure, moved_position);
+		// 	}
+		// 	else{
+		// 		to_procedure.deleteChild(moved_procedure);
+		// 		to_procedure.addChildAtPosition(moved_procedure, moved_position);
+		// 	}
+		// }
+		// else{
 			
-			if(parent === undefined){
-				this._node.deleteProcedure(moved_procedure);
-			}
-			else{
-				parent.deleteChild(moved_procedure);
-			}
+		// 	if(parent === undefined){
+		// 		this._node.deleteProcedure(moved_procedure);
+		// 	}
+		// 	else{
+		// 		parent.deleteChild(moved_procedure);
+		// 	}
 
-			if(to_procedure === undefined){
-				this._node.addProcedureAtPosition(moved_procedure, moved_position)
-			}
-			else{
-				to_procedure.addChildAtPosition(moved_procedure, moved_position);
-			}
+		// 	if(to_procedure === undefined){
+		// 		this._node.addProcedureAtPosition(moved_procedure, moved_position)
+		// 	}
+		// 	else{
+		// 		to_procedure.addChildAtPosition(moved_procedure, moved_position);
+		// 	}
 
-		}
-		moved_procedure.setParent(to_procedure);
+		// }
 
 		//this.flowchartService.update();
 
@@ -247,15 +252,27 @@ export class ProcedureEditorComponent extends Viewer implements OnInit{
 
 	deleteProcedure(node): void{
 
-		let prod: IProcedure = node.data;
-		if(prod.hasParent()){
-			prod.getParent().deleteChild(prod);
+		let parent = node.parent;
+		if(parent.data.virtual){
+			this._node.deleteProcedure(node.data);
+			this._procedureArr = this._node.getProcedure();
 		}
 		else{
-			this._node.deleteProcedure(prod);
+			parent.data.deleteChild(node.data);
+			this.tree.treeModel.update();
 		}
+
+		// let prod: IProcedure = node.data;
+		// if(prod.getParent()){
+		// 	prod.getParent().deleteChild(prod);
+		// 	this.tree.treeModel.update();
+		// }
+		// else{
+		// }
+
+		// this.update("procedure");
 		
-		this.flowchartService.update();
+		//this.flowchartService.update();
 	}
 
 }

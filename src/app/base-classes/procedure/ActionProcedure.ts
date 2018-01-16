@@ -18,7 +18,7 @@ export class ActionProcedure extends Procedure{
 								 fn_name: undefined,
 								 params: undefined
 								}
-		let right: IComponent = { expression: data.module + /*"." + data.category +*/ "::" + data.function, 
+		let right: IComponent = { expression: data.module + /*"." + data.category +*/ "." + data.function, 
 								  isAction: true, 
 								  module: data.module, 
 								  category: undefined,//data.category, 

@@ -20,6 +20,9 @@ import {IComponent} from "./IComponent";
 
 export interface IProcedure{
 
+	hasChildren: boolean; 
+	children: IProcedure[];
+
 	getType(): ProcedureTypes; 
 
 	update(prodData: any, parent: IProcedure): void;
@@ -39,7 +42,6 @@ export interface IProcedure{
 	setParent(parent: IProcedure): void;
 	getParent(): IProcedure;
 
-	hasChildren: boolean;
 	getChildren(): IProcedure[];
 	addChild(procedure: IProcedure): void;
 	addChildFromData(child: IProcedure): void;

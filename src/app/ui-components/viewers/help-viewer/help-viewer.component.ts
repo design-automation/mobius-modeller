@@ -35,8 +35,6 @@ export class HelpViewerComponent implements OnInit {
           let mod_name: string = child.name.substring(1, child.name.length - 1);
           return mods.indexOf(mod_name) > -1;
       })
-
-      console.log(this._helpMods);
   }
 
   notify(): void{
