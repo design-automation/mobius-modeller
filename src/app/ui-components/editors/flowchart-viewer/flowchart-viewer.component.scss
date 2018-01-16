@@ -42,6 +42,8 @@ split-area{
 			font-size: $fsize2;
 			background-color: $color3;
 			color: $color1;
+			white-space: nowrap;
+			overflow-x: hidden !important;
 			//overflow-y: auto !important;
 			section{
 				padding: 10px;
@@ -150,7 +152,7 @@ split-area{
 					cursor: move;
 
 					&.disabled{
-						background-color: gray;
+						background-color: $pcolor5;
 					}
 
 					&.selected{
@@ -163,7 +165,7 @@ split-area{
 					}
 
 					&.error{
-						background-color: red;
+						background-color: $pcolor1;
 					}
 
 					.node-name{
@@ -171,11 +173,25 @@ split-area{
 						font-size: $fsize1;
 						border-bottom: 1px solid $color1; 
 						text-align: center;
-						background-color: $color2;
+						background-color: $color3;
+
+						input{
+							background-color: inherit;
+							border: 0px;
+							color: $color1;
+							text-align: center;
+						}
 
 						&.selected{
-							background-color: $color5;
-							color: white;
+							background-color: $color2;
+							input{
+								color: white;
+								font-weight: bold;
+								&:focus{
+									color: $color1;
+									background-color: $color4;
+								}
+							}
 						}
 					}
 
@@ -207,7 +223,7 @@ split-area{
 								cursor: pointer;
 
 								&.selected{
-									border: 2px solid $color5;
+									border: 2px solid $color2;
 								}
 
 								&:hover{

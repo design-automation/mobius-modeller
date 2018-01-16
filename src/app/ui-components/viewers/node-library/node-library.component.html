@@ -5,9 +5,7 @@
 <div (click)="clearLibrary()">
 	Clear Library
 </div>
-
-<br><br><br>
-
+<br>
 <div class="node" *ngFor="let n of _savedNodes; let i=index"
 	(click)="addNode($event, i)">
 	{{n._name}}

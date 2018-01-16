@@ -62,6 +62,9 @@ $execute-height: 36px;
 			}*/
 			.value{
 				//padding: $default-side-padding;
+				display: flex;
+				align-items: center;
+				justify-content: center;
 				.content{
 					vertical-align: center;
 					input{

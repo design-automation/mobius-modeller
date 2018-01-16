@@ -30,19 +30,18 @@
 
 		background-color: white;
 
-		/*&:hover{
-			.content{
-				flex-flow: row wrap;
-			}
+		&:hover{
 			.controls{
 				display: flex;
 			}
-		}*/
+		}
 
 		span{
 			width: 100px;
+			&:hover{
+				border-bottom: 1px solid $color4 !important;
+			}
 		}
-		
 		.content{
 			//width: 100px;
 			display: flex;
@@ -53,9 +52,13 @@
 			justify-content: space-between;
 
 			margin-right: 50px;
+
 			select{
 				font-size: $fsize2;
 				width: 100px;
+				border: 0px;
+
+				color: $color1;
 			}
 			/*.row{				
 				display: flex; 
@@ -82,7 +85,7 @@
 
 		.controls{
 			margin:0 !important;
-			display: flex;
+			display: none;
 
 			button{
 				max-width: $fsize1 !important;
@@ -104,10 +107,10 @@
 					}
 				}
 			}
-			.btn:hover{
-				cursor: pointer;
-				border-bottom: 1px dashed blue;
-			}
+			//.btn:hover{
+				//cursor: pointer;
+				//border-bottom: 1px dashed blue;
+			//}
 		}
 	
 	}
@@ -120,4 +123,19 @@
 
 .container{
 	overflow: hidden !important;
+
+	mat-expansion-panel-header{
+		background-color: $color3 !important;
+		border-top: 1px solid $color2 !important;
+		border-bottom: 1px solid $color2 !important;
+		padding-left: $default-side-padding !important;
+		mat-panel-title{
+			color: $color1 !important;
+			font-weight: bold !important;
+			font-size: $fsize2 !important;
+		}
+		&:hover{
+			background-color: $color3 !important;
+		}
+	}
 }

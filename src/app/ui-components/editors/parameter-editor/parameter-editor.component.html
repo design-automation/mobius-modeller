@@ -26,8 +26,7 @@
 					<div class='port input' *ngFor="let inp of _inputs; let i=index"><div class="content">
 						<div class='row'>
 							<!--<span class='label'>Name</span>-->
-							<span class='content' contenteditable="true" (blur)="updatePortName($event, inp)"
-								style="border-bottom: 1px solid gray;">
+							<span class='content' contenteditable="true" (blur)="updatePortName($event, inp)">
 								{{ inp.getName() }}
 							</span>
 						</div>
@@ -43,8 +42,7 @@
 
 						<div class='row'>
 							<!--<span class='label'>Default</span>-->
-							<span class='content' contenteditable="true" (blur)="updateDefaultValue($event, inp)"
-								style="border-bottom: 1px solid gray;">
+							<span class='content' contenteditable="true" (blur)="updateDefaultValue($event, inp)">
 								{{inp.getDefaultValue()}}
 							</span>
 						</div>	
