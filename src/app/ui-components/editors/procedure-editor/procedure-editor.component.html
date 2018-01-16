@@ -3,7 +3,7 @@
 		<mat-expansion-panel [expanded]="true">
 					<mat-expansion-panel-header>
 						<mat-panel-title>
-						  Procedure 
+						  Procedure ({{_procedureArr.length}})
 						</mat-panel-title>
 						<mat-panel-description>
 						  <!-- This is a summary of the content -->
@@ -17,89 +17,94 @@
 
 						<tree-root #tree [nodes]='_treeNodes' [options]='_tree_options'  (moveNode)="onMoveNode($event)">
 						  <ng-template #treeNodeTemplate let-prod let-index="index" class="tree-node-wrapper">
-						  		<div class = "full-container">
+						  		<div class = "full-container" (click)="focus($event, prod)">
 
-									<div class = "seg3" *ngIf="prod.data.name != 'Else' && prod.data.name != 'If'">
+									<div class = "seg3" *ngIf="prod.data.getType() != 'Else' && prod.data.getType() != 'If'">
 			    					   	<button mat-button 
-										    *ngIf="prod.data.name =='Action'"
+										    *ngIf="prod.data.getType() =='Action'"
 											(click)="openHelp($event, prod)">
 											<mat-icon>help_outline</mat-icon>
 										</button>
 
 				    				</div>
-						  			<div class = "seg1" [class.error]="prod.data.hasError">
+						  			<div class = "seg1" 
+						  				[class.error]="prod.data.hasError" 
+						  				[class.print]="prod.data.printToConsole()"
+						  				[class.disabled]="prod.data.isDisabled()">
 
 										<!-- template for data -->
-										<div *ngIf="prod.data.name == 'Data'"> 
+										<div *ngIf="prod.data.getType() == 'Data'"> 
 											<div class='procedure-item'>
 												<input matInput class="tree-input" 
-												[(ngModel)]="prod.data.leftExpression" #ctrl="ngModel" required
+												[(ngModel)]="prod.data.getLeftComponent().expression" #ctrl="ngModel" required
 												(change)="updateProcedure($event, prod, 'left')">
 
-												<!-- <input width=50 class="tree-input" [(ngModel)]="prod.data.leftExpression" #ctrl="ngModel" required
+												<!-- <input width=50 class="tree-input" [(ngModel)]="prod.data.getLeftComponent().expression" #ctrl="ngModel" required
 												(change)="updateProcedure($event, prod, 'left')"> -->
 												<span class="equal">=</span>
 									
 												<input matInput class="tree-input" 
-												[(ngModel)]="prod.data.rightExpression" #ctrl="ngModel" required
+												[(ngModel)]="prod.data.getRightComponent().expression" #ctrl="ngModel" required
 												(change)="updateProcedure($event, prod, 'right')">
 
-												<!-- <input width=50 class="tree-input" [(ngModel)]="prod.data.rightExpression" #ctrl="ngModel" required
+												<!-- <input width=50 class="tree-input" [(ngModel)]="prod.data.getRightComponent().expression" #ctrl="ngModel" required
 												(change)="updateProcedure($event, prod, 'right')"> -->
 											</div>
 										</div>
 
-										<div *ngIf="prod.data.name == 'IfElse'">
+										<div *ngIf="prod.data.getType() == 'IfElse'">
 											<div class='procedure-item'>
 												<span>if-else</span>
 											</div>
 										</div>
 
-										<div *ngIf="prod.data.name == 'If'">
+										<div *ngIf="prod.data.getType() == 'If'">
 											<div class='procedure-item'>
-											 <span>if</span> ( <input matInput class="tree-input"  [(ngModel)]="prod.data.leftExpression" #ctrl="ngModel" required
+											 <span>if</span> ( <input matInput class="tree-input"  [(ngModel)]="prod.data.getLeftComponent().expression" #ctrl="ngModel" required
 												(change)="updateProcedure($event, prod, 'left')"> )
 											</div>
 										</div>
 
-										<div *ngIf="prod.data.name == 'Else'">
+										<div *ngIf="prod.data.getType() == 'Else'">
 											<div class='procedure-item'>
 											 <span>else</span>
 											</div>
 										</div>
 
-										<div *ngIf="prod.data.name == 'For Loop'">
+										<div *ngIf="prod.data.getType() == 'For Loop'">
 											<div class='procedure-item'>
 											 <span>for (</span> 
-											  <input matInput class="tree-input"  [(ngModel)]="prod.data.leftExpression" #ctrl="ngModel" required (change)="updateProcedure($event, prod, 'left')">
+											  <input matInput class="tree-input"  [(ngModel)]="prod.data.getLeftComponent().expression" #ctrl="ngModel" required (change)="updateProcedure($event, prod, 'left')">
 											 <span>in</span>  
-											  <input matInput class="tree-input" [(ngModel)]="prod.data.rightExpression" #ctrl="ngModel" required (change)="updateProcedure($event, prod, 'right')"> 
+											  <input matInput class="tree-input" [(ngModel)]="prod.data.getRightComponent().expression" #ctrl="ngModel" required (change)="updateProcedure($event, prod, 'right')"> 
 											  )
 											</div>
 										</div>
 
-										<div *ngIf="prod.data.name == 'Action'">
+										<div *ngIf="prod.data.getType() == 'Action'">
 											<div class='procedure-item'>
-												<input matInput class="tree-input" [(ngModel)]="prod.data.leftExpression" #ctrl="ngModel" required
+												<input matInput class="tree-input" [(ngModel)]="prod.data.getLeftComponent().expression" #ctrl="ngModel" required
 												(change)="updateProcedure($event, prod, 'left')">
 												
+
 												<span class="equal">=</span>
 
-												<span class="module">{{prod.data.module}}</span>
+												<span class="module">{{prod.data.getRightComponent().module}}</span>
 												.
 
-												  <span class="function">{{prod.data.function}}</span> (
+												  <span class="function">{{prod.data.getRightComponent().fn_name}}</span> (
+
 
 												<div class="param-container" 
-													*ngFor="let p of prod.data.params; let i=index">
+													*ngFor="let p of prod.data.getRightComponent().params; let i=index">
 													
 													<input matInput class="tree-input" 
-													 [(ngModel)]="prod.data.params[i].value"
+													 [(ngModel)]="prod.data.getRightComponent().params[i].value"
 													 #ctrl="ngModel" 
 													 required
 													 (change)="updateProcedure($event, prod, 'right')">
 
-													<span *ngIf='i<prod.data.params.length-1'>,</span>
+													<span *ngIf='i<prod.data.getRightComponent().params.length-1'>,</span>
 													<!-- <input width=50 class="tree-input" [(ngModel)]="p" 
 													 placeholder="Input something here" 
 													 #ctrl="ngModel" required 
@@ -114,14 +119,16 @@
 									<div class = "divider">
 									</div>
 
-									<div class = "seg2" *ngIf="prod.data.name != 'Else' && prod.data.name != 'If'">
-									   <button mat-button (click)="togglePrint(prod.data.model)" *ngIf="prod.data.name =='Action' || prod.data.name =='Data'">
+									<div class = "seg2" *ngIf="prod.data.getType() != 'Else' && prod.data.getType() != 'If'">
+									   <button mat-button
+									   		(click)="togglePrint(prod.data)" 
+									   		*ngIf="prod.data.getType() =='Action' || prod.data.getType() =='Data'">
 		    					    		<mat-icon>print</mat-icon>
 			    					    </button>
-										 <button mat-button (click)="toggle(prod.data.model)">
+										 <button mat-button (click)="toggle(prod.data)">
 		    					    		<mat-icon>check_circle</mat-icon>
 			    					    </button>
-								        <button mat-button (click)="deleteProcedure(prod.data.model)">
+								        <button mat-button (click)="deleteProcedure(prod)">
 		    					    		<mat-icon>delete</mat-icon>
 			    					    </button>
 			    					    <!-- <button (click)="disableProcedure(prod, $event)">Disable</button>

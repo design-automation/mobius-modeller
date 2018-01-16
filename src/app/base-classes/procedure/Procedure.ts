@@ -19,6 +19,8 @@ export abstract class Procedure implements IProcedure{
 
 	protected _children: IProcedure[] = []; 
 
+	public children: IProcedure[] = []; 
+
 	constructor(type: ProcedureTypes, hasChildren: boolean){
 		this._type = type; 
 		this._hasChildren = hasChildren;
@@ -93,9 +95,7 @@ export abstract class Procedure implements IProcedure{
 	}
 
 
-	hasChildren():  boolean{
-		return this._hasChildren;
-	}
+	hasChildren:  boolean = this._hasChildren;
 
 	getChildren(): IProcedure[]{
 		if( this._hasChildren == false){

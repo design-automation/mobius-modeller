@@ -275,7 +275,7 @@ export class CodeGeneratorJS extends CodeGenerator{
 				}
 
 			}
-			else if( procedure.hasChildren() ){
+			else if( procedure.hasChildren ){
 				let codeArr = [];
 
 				// add statement

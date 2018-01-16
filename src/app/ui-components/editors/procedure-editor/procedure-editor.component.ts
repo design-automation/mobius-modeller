@@ -22,14 +22,15 @@ export class ProcedureEditorComponent extends Viewer implements OnInit{
 
 	@ViewChild('tree') tree;
 
+	_focusedProd;
+
   	_procedureArr: IProcedure[] = [];
   	_node: IGraphNode;
 
   	_treeNodes = [];
 	_tree_options = {
-	  isExpanded: 'expanded', 
 	  allowDrag: function(element){
-	  	if(element.data.name == ProcedureTypes.IfControl || element.data.name == ProcedureTypes.ElseControl){
+	  	if(element.data._type == ProcedureTypes.IfControl || element.data._type == ProcedureTypes.ElseControl){
 	  		return false;
 	  	}
 	  	else{
@@ -38,10 +39,11 @@ export class ProcedureEditorComponent extends Viewer implements OnInit{
 	 },
 	  allowDrop:  (element, { parent, index }) => {
 	    // return true / false based on element, to.parent, to.index. e.g.
-	    return (parent.data.name !== this.getString(ProcedureTypes.IfElseControl) && 
-	    	parent.data.name !== this.getString(ProcedureTypes.Data) && parent.data.name !== this.getString(ProcedureTypes.Action))/*(parent.data.name == this.getString(ProcedureTypes.IfControl) 
-	    	|| parent.data.name == this.getString(ProcedureTypes.ElseControl
-	    	|| parent.data.name == this.getString(ProcedureTypes.ForLoopControl));*/
+	    return (	parent.data._type !== ProcedureTypes.IfElseControl 
+	    			&& parent.data._type !== ProcedureTypes.Data 
+	    			&& parent.data._type !== ProcedureTypes.Action)/*(parent.data._type == ProcedureTypes.IfControl) 
+	    	|| parent.data._type == ProcedureTypes.ElseControl
+	    	|| parent.data._type == ProcedureTypes.ForLoopControl));*/
 	  }
 	};
 
@@ -57,7 +59,7 @@ export class ProcedureEditorComponent extends Viewer implements OnInit{
 	openHelp($event, prod): void{
 		$event.stopPropagation();
 
-		if(prod.data.name == "Action"){
+		if(prod.data._type == "Action"){
 			let fn = prod.data.rightExpression.split("::");
 			fn = { module: fn[0], name: fn[1] }
 			this.layoutService.showHelp(fn);
@@ -65,29 +67,29 @@ export class ProcedureEditorComponent extends Viewer implements OnInit{
 		
 	}
 
-
 	reset():void{
 		this._procedureArr = [];
 		this._node = undefined;
 		this._treeNodes = [];
 	}
 
-	update(){
-		this._node = this.flowchartService.getSelectedNode();
-		if(this._node !== undefined){
+	update(message: string){
+		if(message == "procedure"){
 			this._procedureArr = this._node.getProcedure();
-			this.updateProcedureTree();
-
-			// horrible fix
-			setTimeout(function(){ 
-				document.getElementById("expand").click();
-			}, 300)
-
+			let lastProd: IProcedure = this._procedureArr[this._procedureArr.length - 1];
+			this.tree.treeModel.update();
 		}
 		else{
-
+			this._node = this.flowchartService.getSelectedNode();
+			this._procedureArr = this._node.getProcedure();
+			this._treeNodes = this._procedureArr; 
+			//this.updateProcedureTree();
 		}
 	}
+
+	ngAfterViewInit() {
+    	this.tree.treeModel.expandAll();
+  	}
 
 	toggle(prod: IProcedure): void{
 		if (prod.isDisabled()){
@@ -96,7 +98,6 @@ export class ProcedureEditorComponent extends Viewer implements OnInit{
 		else{
 			prod.disable();
 		}
-		this.flowchartService.update();
 	}
 
 	togglePrint(prod: IProcedure): void{
@@ -108,14 +109,18 @@ export class ProcedureEditorComponent extends Viewer implements OnInit{
 		}
 	}
 
+	focus($event, prod): void{
+		this._focusedProd = prod;
+		this.flowchartService.selectProcedure(prod.data);
+	}
 
 	//
 	//
 	//
 	onMoveNode($event) {
 		// get previous parent
-		let moved_procedure: IProcedure = $event.node.model;
-		let to_procedure: IProcedure = $event.to.parent.model;
+		let moved_procedure: IProcedure = $event.node;
+		let to_procedure: IProcedure = $event.to.parent.data;
 		let moved_position: number = $event.to.index;
 
 		let parent: IProcedure|IGraphNode = moved_procedure.getParent();
@@ -154,100 +159,102 @@ export class ProcedureEditorComponent extends Viewer implements OnInit{
 		}
 		moved_procedure.setParent(to_procedure);
 
-
-		this.flowchartService.update();
-
-	}
-
-	updateProcedureTree(){
-
-		// converts the procedure into a tree item
-		let getTreeItem = function(prod : IProcedure, index: number): Object{
-
-			let procedure_type :ProcedureTypes = prod.getType();
-			let treeItem = { 
-				index: index,
-				name: procedure_type, 
-				expanded: true,
-				children: [], 
-				leftExpression: "undefined", 
-				rightExpression: "undefined",
-				model: prod
-			};
-
-			//let dataObj = { id: Math.random() , name: data.getTitle(), type: procedure_type, model: data } ; 
-
-			// ProcedureType.Data
-			if(procedure_type === ProcedureTypes.Data){
-				treeItem["leftExpression"] = prod.getLeftComponent().expression;
-				treeItem["rightExpression"] = prod.getRightComponent().expression;
-			}
-			else if(procedure_type === ProcedureTypes.Action ){
-				treeItem["leftExpression"] = prod.getLeftComponent().expression;
-				treeItem["module"] = prod.getRightComponent().module;
-				treeItem["function"] = prod.getRightComponent().fn_name;
-				treeItem["params"] = prod.getRightComponent().params;
-			}
-			else if(prod.hasChildren() == true){
-				treeItem["children"] = prod.getChildren().map(function(node, id){
-					return getTreeItem(node, id) 
-				})
-
-				if(procedure_type == ProcedureTypes.ForLoopControl){
-					treeItem["leftExpression"] = prod.getLeftComponent().expression;
-					treeItem["rightExpression"] = prod.getRightComponent().expression;
-				}
-				else if(procedure_type == ProcedureTypes.IfControl){
-					treeItem["leftExpression"] = prod.getLeftComponent().expression;
-				}
-
-			}
-			else{
-				throw Error("unknown procedure type");
-			}
-
-			return treeItem;
-		}
-
-		this._treeNodes = this._procedureArr.map(function(prod, index){
-			return getTreeItem(prod, index);
-		})
+		//this.flowchartService.update();
 
 	}
+
+	// converts the procedure into a tree item
+	// getTreeItem(prod : IProcedure, index: number): Object{
+
+	// 	let self = this;
+
+	// 	let procedure_type :ProcedureTypes = prod.getType();
+	// 	let treeItem = { 
+	// 		index: index,
+	// 		name: procedure_type, 
+	// 		expanded: true,
+	// 		children: [], 
+	// 		leftExpression: "undefined", 
+	// 		rightExpression: "undefined",
+	// 		model: prod
+	// 	};
+
+	// 	//let dataObj = { id: Math.random() , name: data.getTitle(), type: procedure_type, model: data } ; 
+
+	// 	// ProcedureType.Data
+	// 	if(procedure_type === ProcedureTypes.Data){
+	// 		treeItem["leftExpression"] = prod.getLeftComponent().expression;
+	// 		treeItem["rightExpression"] = prod.getRightComponent().expression;
+	// 	}
+	// 	else if(procedure_type === ProcedureTypes.Action ){
+	// 		treeItem["leftExpression"] = prod.getLeftComponent().expression;
+	// 		treeItem["module"] = prod.getRightComponent().module;
+	// 		treeItem["function"] = prod.getRightComponent().fn_name;
+	// 		treeItem["params"] = prod.getRightComponent().params;
+	// 	}
+	// 	else if(prod.hasChildren() == true){
+	// 		treeItem["children"] = prod.getChildren().map(function(node, id){
+	// 			return self.getTreeItem(node, id) 
+	// 		})
+
+	// 		if(procedure_type == ProcedureTypes.ForLoopControl){
+	// 			treeItem["leftExpression"] = prod.getLeftComponent().expression;
+	// 			treeItem["rightExpression"] = prod.getRightComponent().expression;
+	// 		}
+	// 		else if(procedure_type == ProcedureTypes.IfControl){
+	// 			treeItem["leftExpression"] = prod.getLeftComponent().expression;
+	// 		}
+
+	// 	}
+	// 	else{
+	// 		throw Error("unknown procedure type");
+	// 	}
+
+	// 	return treeItem;
+	// }
+
+	// updateProcedureTree(){
+	// 	let self = this;
+	// 	this._treeNodes = this._procedureArr.map(function(prod, index){
+	// 		return self.getTreeItem(prod, index);
+	// 	})
+	// }
 
 	updateProcedure($event: Event, prod: any, property: string){
 
-		let procedure: IProcedure = prod.data.model;
+		// let procedure: IProcedure = prod.data;
 
-		if(property == "left"){	
-			let comp = procedure.getLeftComponent(); 
-			comp.expression = prod.data.leftExpression;
-			procedure.setLeftComponent(comp);
-		}
-		else if(property == "right"){
-			let comp = procedure.getRightComponent(); 
-			comp.expression = prod.data.rightExpression;
-			comp.params = prod.data.params;
-			procedure.setRightComponent(comp);
-		}
-		else{
-			throw Error("Invalid procedure update");
-		}
+		// if(property == "left"){	
+		// 	let comp = procedure.getLeftComponent(); 
+		// 	//comp.expression = prod.data.leftExpression;
+		// 	//procedure.setLeftComponent(comp);
+		// }
+		// else if(property == "right"){
+		// 	let comp = procedure.getRightComponent(); 
+		// 	comp.expression = prod.data.rightExpression;
+		// 	comp.params = prod.data.params;
+		// 	procedure.setRightComponent(comp);
+		// }
+		// else{
+		// 	throw Error("Invalid procedure update");
+		// }
 
+		//this.tree.treeModel.update();
 		/// check if valid procedure was generated
-		this.flowchartService.updateProcedure(prod.data.model);
+		// this.flowchartService.updateProcedure(prod.data);
 
 	}
 
-	deleteProcedure(prod: IProcedure): void{
+	deleteProcedure(node): void{
 
-		let parent: IProcedure = prod.getParent();
-		if( parent ){
-			parent.deleteChild(prod);
+		let prod: IProcedure = node.data;
+		if(prod.hasParent()){
+			prod.getParent().deleteChild(prod);
 		}
-
-		this._node.deleteProcedure(prod);
-
+		else{
+			this._node.deleteProcedure(prod);
+		}
+		
 		this.flowchartService.update();
 	}
 

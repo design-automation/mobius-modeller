@@ -19,7 +19,7 @@
 
 .seg1{
 	&.disabled{
-		background-color: gray;
+		opacity: 0.4;
 	}
 	
 	&.print{

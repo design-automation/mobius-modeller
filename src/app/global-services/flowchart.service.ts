@@ -33,6 +33,8 @@ export class FlowchartService {
   private _selectedNode: number;
   private _selectedPort: number;
 
+  private _selectedProcedure: IProcedure;
+
   private _savedNodes: IGraphNode[] = [];
 
   private check(){
@@ -80,8 +82,8 @@ export class FlowchartService {
   //
   //  message to all viewers that flowchart updated
   //
-  update(): void{
-    this.sendMessage("Updated");
+  update(message?: string): void{
+    this.sendMessage(message || "Updated");
   }
 
   
@@ -334,15 +336,61 @@ export class FlowchartService {
   }
 
   addProcedure(prod: IProcedure): void{
-      this.getSelectedNode().addProcedure(prod);
-      this.updateProcedure(prod);
+      
+      let node: IGraphNode = this.getSelectedNode();
+      let selectedProcedure: IProcedure = this._selectedProcedure;
+
+      this.checkProcedure(prod);
+
+      if(selectedProcedure){
+        if(selectedProcedure.hasChildren()){
+            selectedProcedure.addChild(prod);
+        }
+        else{
+
+           if(selectedProcedure.hasParent()){
+             let parent: IProcedure = selectedProcedure.getParent();
+             let index: number = 0;
+             let allChildren: IProcedure[] = parent.getChildren();
+
+             for(let i=0; i<allChildren.length; i++){
+                 if(allChildren[i] === selectedProcedure){
+                     index = i;
+                     break;
+                 }
+             }
+
+             parent.addChildAtPosition(prod, index + 1);
+
+           }
+           else{
+             let parent: IGraphNode = node;
+             let index: number = 0;
+             let allChildren: IProcedure[] = node.getProcedure();
+
+             for(let i=0; i<allChildren.length; i++){
+                 if(allChildren[i] === selectedProcedure){
+                     index = i;
+                     break;
+                 }
+             }
+
+             node.addProcedureAtPosition(prod, index + 1);
+           }
+
+
+        }
+      }
+      else{
+        node.addProcedure(prod);
+      }
+
+      this.update("procedure");
   }
 
-  updateProcedure(prod: IProcedure): void{
+  checkProcedure(prod: IProcedure): void{
       // validate procedure
       let codeString: string = prod.getCodeString(this.code_generator);
-
-      this.update();
   }
 
   //
@@ -381,6 +429,10 @@ export class FlowchartService {
     this._selectedNode = nodeIndex;
     this._selectedPort = portIndex || 0;
     this.update();
+  }
+
+  selectProcedure(prod: IProcedure): void{
+    this._selectedProcedure = prod;
   }
 
   getSelectedNode(): IGraphNode{
