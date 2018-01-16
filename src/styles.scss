@@ -56,7 +56,7 @@ split-area{
 .mat-accordion{
 	height: 100% !important;
 	width: 100% !important;
-	overflow: auto !important;
+	//overflow: auto !important;
 }
 
 .mat-expansion-indicator{
@@ -85,7 +85,7 @@ split-area{
 		color: $color1;
 		padding: 0 !important;
 		box-sizing: border-box !important;
-		padding-bottom: $default-side-padding!important;
+		//padding-bottom: $default-side-padding!important;
 	span{
 		color: $color1;
 		&:hover{
@@ -374,4 +374,11 @@ span.addBtn{
 
 split-area.sidebar.flowchart{
 	width: 150px !important;
+}
+
+.sidebar{
+	border-right: 2px solid $color2 !important;
+	width: 20% !important;
+	max-width: 200px;
+	min-width: 150px;
 }

@@ -10,9 +10,6 @@
 			<mat-list-item class="fn_name" *ngFor="let type of procedureTypes"
 								 		(click)="addProcedure($event, type)">{{getStringForProcedureType(type)}}</mat-list-item>
 		</mat-list>
-
-		<hr/>
-
 		<mat-accordion multi="true">
 
 				<!-- inputs -->

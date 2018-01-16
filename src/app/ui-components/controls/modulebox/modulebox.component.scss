@@ -41,6 +41,28 @@
 				color: $color4;
 			}
 		}
+		mat-expansion-panel{
+			margin: 0 !important;
+		}
+		mat-expansion-panel-header{
+			background-color: $color3 !important;
+			border-top: 1px solid $color2 !important;
+			border-bottom: 1px solid $color2 !important;
+			padding-left: $default-side-padding !important;
+			mat-panel-title{
+				color: $color1 !important;
+				font-weight: bold !important;
+				font-size: $fsize2 !important;
+			}
+			&:hover{
+				background-color: $color3 !important;
+			}
+		}
+		mat-list{
+			background-color: $color3 !important;
+			padding-top: $fsize2;
+			padding-bottom: $fsize2;
+		}
 	}
 
 	span.module{
@@ -54,3 +76,4 @@
 
 	}
 }
+

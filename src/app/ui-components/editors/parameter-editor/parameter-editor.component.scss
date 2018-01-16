@@ -31,6 +31,10 @@
 		background-color: white;
 
 		&:hover{
+			.content{
+				flex-flow: row wrap;
+				height: auto;
+			}
 			.controls{
 				display: flex;
 				//opacity: 100%;
@@ -140,4 +144,9 @@
 			background-color: $color3 !important;
 		}
 	}
+}
+
+.view-container{
+	padding: 0 !important;
+	overflow: hidden !important;
 }
