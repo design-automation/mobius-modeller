@@ -33,6 +33,7 @@
 		&:hover{
 			.controls{
 				display: flex;
+				//opacity: 100%;
 			}
 		}
 
@@ -86,6 +87,7 @@
 		.controls{
 			margin:0 !important;
 			display: none;
+			//opacity: 0;
 
 			button{
 				max-width: $fsize1 !important;

@@ -1,24 +1,26 @@
-<div class="container" *ngIf="_selectedNode !== undefined">
-	<div class = "nameLabel">
-		<span>Node: </span>
-		<div class ="content">
-			{{_selectedNode.getName()}}
-		</div>
-	</div>
-	<ul>
-		<li  class = "content" *ngFor="let output of _selectedNode.getOutputs()">
-			{{ output.getValue() }}
-		</li>
-	</ul>
-	<div class="outputPort" *ngIf="_selectedNode !== undefined">
-		<span>Selected Port:</span>
-		<br>
-		<div class ="content">
-			{{ getPortContent() }}
-		</div>
-	</div>
-</div>
-
 <div class="default" *ngIf="_selectedNode === undefined">
 	No Node Selected
+</div>
+
+<div class="container" *ngIf="_selectedNode != undefined">
+	<h3>Selected Node: {{_selectedNode.getName()}}</h3>
+	<hr>
+	<mat-accordion multi="true" [displayMode]="flat">
+			<!-- inputs -->
+			<mat-expansion-panel [expanded]="true" *ngFor="let output of _selectedNode.getOutputs()">
+				
+				<mat-expansion-panel-header>
+					<mat-panel-title>
+					  {{ output.getName() }}
+					</mat-panel-title>
+					<mat-panel-description>
+					  <!-- This is a summary of the content -->
+					</mat-panel-description>
+				</mat-expansion-panel-header>
+
+				<p>{{ output.getValue() }}</p>
+
+			</mat-expansion-panel>
+			
+	</mat-accordion>
 </div>

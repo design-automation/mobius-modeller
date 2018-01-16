@@ -299,6 +299,8 @@ export class FlowchartService {
 
     this._flowchart.addNode(new_node);
 
+    this.selectNode(this._flowchart.getNodes().length - 1);
+
     // print message to console
     this.consoleService.addMessage("New Node was added");
 

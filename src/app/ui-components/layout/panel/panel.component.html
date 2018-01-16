@@ -21,8 +21,8 @@
 </div>
 
 
-<app-viewer-container *ngIf='heading == "Viewer"'></app-viewer-container>        
-<app-flowchart-viewer *ngIf='heading == "Flowchart"'></app-flowchart-viewer>
-<app-editor  *ngIf='heading == "Procedure Editor"'></app-editor>
-<app-parameter-viewer  *ngIf='heading == "Parameter Viewer"'></app-parameter-viewer>
+<app-viewer-container *ngIf='heading === EV.Viewer'></app-viewer-container>        
+<app-flowchart-viewer *ngIf='heading === EV.Flowchart'></app-flowchart-viewer>
+<app-editor  *ngIf='heading === EV.Editor'></app-editor>
+<app-parameter-viewer  *ngIf='heading === EV.Parameter'></app-parameter-viewer>
 

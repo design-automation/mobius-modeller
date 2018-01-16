@@ -82,7 +82,7 @@ export class ModuleUtils{
 
 	 	let fnStr = func.toString().replace( /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg, '');
 		let result = fnStr.slice(fnStr.indexOf('(')+1, fnStr.indexOf(')')).split(",")//.match( /([^\s,]+)/g);
-		if(result === null){
+		if(result === null || result[0]==""){
 		 	result = [];
 		}
 
@@ -97,7 +97,7 @@ export class ModuleUtils{
 				return {type: r_value[0].trim(), value: r_value[1].trim()} 
 			}
 
-		})
+		});
 
 		return final_result;
 	}
@@ -124,6 +124,7 @@ export class ModuleUtils{
 							params: this.getParams( func ),
 							def: func
 						  }
+
 				fn.push(obj);
 			}
 			else{

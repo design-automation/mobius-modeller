@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import { DatePipe } from '@angular/common';
 import { ConsoleService } from '../../global-services/console.service';
 
 @Component({

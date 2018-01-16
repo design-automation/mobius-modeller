@@ -5,6 +5,8 @@
 }
 
 .editor{
+	@extend .viewer;
+
 	background-color: white;
 
 	display: flex; 
@@ -14,37 +16,11 @@
 	width: 100%;
 	padding-bottom: $header-height;
 	box-sizing: border-box;
-	//overflow: hidden;
 
-	/*.node-header{
-		padding: 15px 0px 15px 0px;
-		font-size: 18px; 
-		line-height: 24px;
-
-		border-bottom: 1px solid white;
-	}
-
-	.tabs{
-		flex-grow: 1;
-		margin-top: 30px; 
-
-	
-		.tab-container{
-			padding: 5px 0px 15px 0px;
-
-		}
-	}
-
-	.full-width{
+	.view-container{
 		width: 100%;
-	}*/
+	}
+
 
 }
 
-.editor-container{
-	box-sizing: border-box;
-	height: 100%;
-	width: 100%;
-	padding-bottom: $header-height;
-	overflow: auto;
-}

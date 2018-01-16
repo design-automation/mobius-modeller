@@ -6,7 +6,7 @@
 		<div class="default" *ngIf="!isVisible">No node selected</div>
 
 		<!-- main -->
-		<div class="container" *ngIf="isVisible">
+		<div class="view-container" *ngIf="isVisible">
 			<mat-accordion multi="true" [displayMode]="flat">
 
 				<!-- inputs -->
@@ -23,29 +23,30 @@
 
 					<!-- <span class="addBtn" (click)="addPort(node_index, 'in')">Add Input</span> -->
 
-					<div class='port input' *ngFor="let inp of _inputs; let i=index"><div class="content">
-						<div class='row'>
-							<!--<span class='label'>Name</span>-->
-							<span class='content' contenteditable="true" (blur)="updatePortName($event, inp)">
-								{{ inp.getName() }}
-							</span>
-						</div>
+					<div class='port input' *ngFor="let inp of _inputs; let i=index">
+						<div class="content">
+							<div class='row'>
+								<!--<span class='label'>Name</span>-->
+								<span class='content' contenteditable="true" (blur)="updatePortName($event, inp)">
+									{{ inp.getName() }}
+								</span>
+							</div>
 
-						<div class='row'>
-							<!--<span class='label'>Type</span>-->
-							<span class='content'>
-								<select (change)="updateType($event.target.value, inp)">
-									         	    <option *ngFor="let x of inputPortOpts" [value]="x" [selected]="inp.getType() == x">{{getInputTypeName(x)}}</option>
-									            </select>
-							</span>
-						</div>
+							<div class='row'>
+								<!--<span class='label'>Type</span>-->
+								<span class='content'>
+									<select (change)="updateType($event.target.value, inp)">
+										         	    <option *ngFor="let x of inputPortOpts" [value]="x" [selected]="inp.getType() == x">{{getInputTypeName(x)}}</option>
+										            </select>
+								</span>
+							</div>
 
-						<div class='row'>
-							<!--<span class='label'>Default</span>-->
-							<span class='content' contenteditable="true" (blur)="updateDefaultValue($event, inp)">
-								{{inp.getDefaultValue()}}
-							</span>
-						</div>	
+							<div class='row'>
+								<!--<span class='label'>Default</span>-->
+								<span class='content' contenteditable="true" (blur)="updateDefaultValue($event, inp)">
+									{{inp.getDefaultValue()}}
+								</span>
+							</div>	
 						</div>			
 						<div class="controls">
 					        <button mat-button (click)='deletePort($event, "input", i)'>
@@ -99,7 +100,6 @@
 				</mat-expansion-panel>
 
 			</mat-accordion>
-
 		</div>
 
 	</div>

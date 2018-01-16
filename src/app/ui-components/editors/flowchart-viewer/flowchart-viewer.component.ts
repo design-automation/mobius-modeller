@@ -216,6 +216,10 @@ export class FlowchartViewerComponent extends Viewer{
     this.flowchartService.selectNode(nodeIndex, portIndex);
   }
 
+  // clickEdge(): void{
+  //   alert("hello wrold");
+  // }
+
   // addPort(nodeIndex: number, type: string): void{
   //   // select the node
   //   this.clickNode(null, nodeIndex);

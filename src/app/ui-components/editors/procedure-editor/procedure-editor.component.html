@@ -92,25 +92,24 @@
 												<span class="module">{{prod.data.getRightComponent().module}}</span>
 												.
 
-												  <span class="function">{{prod.data.getRightComponent().fn_name}}</span> (
+												  <span class="function">{{prod.data.getRightComponent().fn_name}}</span> 
 
+												( <span *ngIf="prod.data.getRightComponent().params.length>0">
+														<div class="param-container" 														*ngFor="let p of prod.data.getRightComponent().params; let i=index">
+															
+															<input matInput class="tree-input" 
+															 [(ngModel)]="prod.data.getRightComponent().params[i].value"
+															 #ctrl="ngModel" 
+															 required
+															 (change)="updateProcedure($event, prod, 'right')">
 
-												<div class="param-container" 
-													*ngFor="let p of prod.data.getRightComponent().params; let i=index">
-													
-													<input matInput class="tree-input" 
-													 [(ngModel)]="prod.data.getRightComponent().params[i].value"
-													 #ctrl="ngModel" 
-													 required
-													 (change)="updateProcedure($event, prod, 'right')">
-
-													<span *ngIf='i<prod.data.getRightComponent().params.length-1'>,</span>
-													<!-- <input width=50 class="tree-input" [(ngModel)]="p" 
-													 placeholder="Input something here" 
-													 #ctrl="ngModel" required 
-													 (change)="updateProcedure($event, prod, 'right')"> --> 
-												</div>
-												)
+															<span *ngIf='i<prod.data.getRightComponent().params.length-1'>,</span>
+															<!-- <input width=50 class="tree-input" [(ngModel)]="p" 
+															 placeholder="Input something here" 
+															 #ctrl="ngModel" required 
+															 (change)="updateProcedure($event, prod, 'right')"> --> 
+														</div> 
+													</span>	)
 												
 											</div>
 										</div>
@@ -122,13 +121,14 @@
 									<div class = "seg2" *ngIf="prod.data.getType() != 'Else' && prod.data.getType() != 'If'">
 									   <button mat-button
 									   		(click)="togglePrint(prod.data)" 
+									   		matTooltip="Print value to console"
 									   		*ngIf="prod.data.getType() =='Action' || prod.data.getType() =='Data'">
 		    					    		<mat-icon>print</mat-icon>
 			    					    </button>
-										 <button mat-button (click)="toggle(prod.data)">
+										 <button mat-button (click)="toggle(prod.data)" matTooltip="Enable/Disable Line">
 		    					    		<mat-icon>check_circle</mat-icon>
 			    					    </button>
-								        <button mat-button (click)="deleteProcedure(prod)">
+								        <button mat-button (click)="deleteProcedure(prod)" matTooltip="Delete Line">
 		    					    		<mat-icon>delete</mat-icon>
 			    					    </button>
 			    					    <!-- <button (click)="disableProcedure(prod, $event)">Disable</button>

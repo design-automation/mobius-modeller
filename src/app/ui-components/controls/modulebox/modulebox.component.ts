@@ -29,6 +29,8 @@ export class ModuleboxComponent extends Viewer implements OnInit{
 
 	ngOnInit(){
   		this._moduleList = [];
+  		this._node = this.flowchartService.getSelectedNode();
+  		this._procedureArr = this._node.getProcedure();
 
 		let modules = this.flowchartService.getModules();
 		for(let mod=0; mod < modules.length; mod++){
@@ -71,12 +73,12 @@ export class ModuleboxComponent extends Viewer implements OnInit{
 	}
 
 
-	getImageForType(type: ProcedureTypes): string{
+	getStringForProcedureType(type: ProcedureTypes): string{
 
 		let value:string = "";
 
 		if(type == ProcedureTypes.Data){
-			value = "assignment"
+			value = "variable"
 		}
 		else if(type == ProcedureTypes.Action){
 			value = "function"
@@ -85,7 +87,7 @@ export class ModuleboxComponent extends Viewer implements OnInit{
 			value = "if-else"
 		}
 		else if(type == ProcedureTypes.ForLoopControl){
-			value = "for-loop"	
+			value = "for-each loop"	
 		}
 
 		return value;

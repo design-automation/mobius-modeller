@@ -74,6 +74,7 @@ split-area{
 
 		#graph-edges{
 			background-color: transparent;
+			z-index: 1;
 
 			#temporary-edge{
 				.hidden{
@@ -85,6 +86,7 @@ split-area{
 		#graph-nodes{
 			background-color: transparent;
 			overflow: hidden;
+			z-index: 1;
 		}
 	}
 
@@ -147,6 +149,7 @@ split-area{
 					position: relative;
 					min-height: 30px;
 					min-width: 70px;
+					width: auto;
 					border: 1px solid $color1;
 					background-color: white;
 					cursor: move;
@@ -187,6 +190,7 @@ split-area{
 							input{
 								color: white;
 								font-weight: bold;
+
 								&:focus{
 									color: $color1;
 									background-color: $color4;

@@ -60,7 +60,7 @@ export class ProcedureEditorComponent extends Viewer implements OnInit{
 		$event.stopPropagation();
 
 		if(prod.data._type == "Action"){
-			let fn = prod.data.rightExpression.split("::");
+			let fn = prod.data.getRightComponent().expression.split(".");
 			fn = { module: fn[0], name: fn[1] }
 			this.layoutService.showHelp(fn);
 		}

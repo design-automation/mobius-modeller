@@ -4,7 +4,21 @@
 		No Node Selected
 	</div>
 
-	<split  *ngIf="_selectedNode != undefined"
+	<div class="container" *ngIf="_selectedNode != undefined">
+		
+		<div class="sidebar">
+			<app-modulebox></app-modulebox>
+		</div>
+
+		<div class="view-container">
+	 		<app-parameter-editor></app-parameter-editor>
+			<app-procedure-editor></app-procedure-editor>
+		</div>
+
+	</div>
+
+
+	<!-- <split  *ngIf="_selectedNode != undefined"
 			  direction="horizontal" 
               [gutterSize]="7" 
               [useTransition]="true">
@@ -20,16 +34,7 @@
 			</div>
 		</split-area>
 
-    </split>
-
-	<!-- default message when no node selected -->
-	
-		<!-- <form class="node-header">
-		  <mat-form-field class="full-width">
-		    <input  matInput placeholder="Node Name" value="{{_selectedNode.getName()}}"
-		    (change)="updateNodeName($event, _selectedNode)">
-		  </mat-form-field>
-		</form> -->
+    </split> -->
 
 </div>
 

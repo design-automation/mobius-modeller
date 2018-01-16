@@ -14,6 +14,8 @@ export class PanelComponent implements OnInit{
   _subscription: Subscription;
   heading: string;
 
+  EV = EViewer;
+
   @Input() panel_id: string;
 
   constructor(private layoutService: LayoutService) { 
