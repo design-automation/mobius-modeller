@@ -343,7 +343,7 @@ export class FlowchartService {
       this.checkProcedure(prod);
 
       if(selectedProcedure){
-        if(selectedProcedure.hasChildren()){
+        if(selectedProcedure.hasChildren){
             selectedProcedure.addChild(prod);
         }
         else{

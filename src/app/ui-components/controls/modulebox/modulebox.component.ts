@@ -1,4 +1,4 @@
-import {Component, Injector} from '@angular/core';
+import {Component, Injector, OnInit} from '@angular/core';
 import {FlowchartService} from '../../../global-services/flowchart.service';
 import {ModuleUtils} from "../../../base-classes/code/CodeModule";
 import {Viewer} from '../../../base-classes/viz/Viewer';
@@ -10,9 +10,10 @@ import {IGraphNode} from '../../../base-classes/node/NodeModule';
   templateUrl: './modulebox.component.html',
   styleUrls: ['./modulebox.component.scss']
 })
-export class ModuleboxComponent extends Viewer{
+export class ModuleboxComponent extends Viewer implements OnInit{
 
   	_moduleList = [];
+  	_category: string[] = [];
   	_node: IGraphNode;
   	_procedureArr: IProcedure[] = [];
 
@@ -24,12 +25,16 @@ export class ModuleboxComponent extends Viewer{
 
   	constructor(injector: Injector) { 
   		super(injector, "module-viewer"); 
+	}
+
+	ngOnInit(){
   		this._moduleList = [];
 
 		let modules = this.flowchartService.getModules();
 		for(let mod=0; mod < modules.length; mod++){
 			let user_module = modules[mod];
-			this._moduleList = this._moduleList.concat(ModuleUtils.getFunctions(user_module));
+			this._category.push(user_module["_name"]);
+			this._moduleList[user_module["_name"]] = this._moduleList.concat(ModuleUtils.getFunctions(user_module));
 		}
 	}
 
