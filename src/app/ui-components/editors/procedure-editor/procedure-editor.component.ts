@@ -227,6 +227,11 @@ export class ProcedureEditorComponent extends Viewer implements OnInit{
 
 	updateProcedure($event: Event, prod: any, property: string){
 
+		if(property == 'left'){
+			prod.data.getLeftComponent().expression = 
+				prod.data.getLeftComponent().expression.replace(/[^\w\[\]]/gi, '');
+		}
+
 		// let procedure: IProcedure = prod.data;
 
 		// if(property == "left"){	

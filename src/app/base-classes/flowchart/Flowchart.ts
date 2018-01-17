@@ -144,6 +144,16 @@ export class Flowchart implements IFlowchart{
 
   		this.deleteEdges(this.disconnectEdgesWithNode(nodeIndex));
 
+  		_node.getInputs().map(function(input){
+  			input.disconnect();
+  			input.setComputedValue(undefined);
+  		})
+
+  		_node.getOutputs().map(function(output){
+  			output.disconnect();
+  			output.setComputedValue(undefined);
+  		})
+
   		// for(let i=0; i < _node.getInputs().length; i++){
   		// 	this.disconnectPort("input", i, nodeIndex)
   		// }	

@@ -21,11 +21,10 @@ export class ParameterEditorComponent extends Viewer{
 
     // shift to iport
     inputPortOpts: InputPortTypes[] = [
-        InputPortTypes.Default, 
-        InputPortTypes.Input, 
-        InputPortTypes.ColorPicker, 
-        InputPortTypes.FilePicker, 
-        InputPortTypes.Dropdown
+        InputPortTypes.Input//, 
+        // InputPortTypes.ColorPicker, 
+        // InputPortTypes.FilePicker, 
+        // InputPortTypes.Dropdown
     ]; 
 
     outputPortOpts: OutputPortTypes[] = [
@@ -68,6 +67,9 @@ export class ParameterEditorComponent extends Viewer{
     updatePortName($event, port: InputPort|OutputPort): void{
       let name: string =  $event.srcElement.innerText; 
 
+      // check for validity
+      name = name.replace(/[^\w]/gi, '');
+
       if(name.trim().length > 0){
         // put a timeout on this update or something similar to solve jumpiness
         port.setName(name);
@@ -94,7 +96,7 @@ export class ParameterEditorComponent extends Viewer{
       if(type == InputPortTypes.ColorPicker){
         return "Color";
       }
-      else if(type == InputPortTypes.Default){
+      else if(type == InputPortTypes.Input){
         return "Simple Input";
       }
       else if(type == InputPortTypes.Dropdown){

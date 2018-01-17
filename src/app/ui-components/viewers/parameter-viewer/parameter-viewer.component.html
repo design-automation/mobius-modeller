@@ -17,16 +17,20 @@
 
 			<div class="value">
 				<form  class='content'>
-					<!-- <mat-form-field>-->
-				    <input  matInput 
-				    placeholder="Value" value="{{ getValue(inp) }}"
-				    (change)="updateComputedValue($event, inp)"/>
-					<!--</mat-form-field>-->
+					<mat-form-field>
+						<textarea matInput 
+							placeholder="Value" 
+							matTextareaAutosize 
+							matAutosizeMinRows="1"
+	            			matAutosizeMaxRows="5" 
+	            			(change)="updateComputedValue($event, inp)">
+	            			{{ getValue(inp) }}
+	            		</textarea>
+					</mat-form-field>
 				</form>
 			</div> 
 
 		</div>
-
 
 			<!-- todo: disable if port is connected -->
 			<!-- ui options based on type -->
