@@ -9,6 +9,9 @@
 
 	padding: $default-side-padding;
 
+	display: flex;
+	flex-flow: column nowrap;
+
 	.message-container{
 		display: flex;
 		flex-flow: column wrap;
@@ -39,4 +42,43 @@
 		}
 	}
 
+	button{
+		max-width: $fsize1*2;
+		height: $fsize1 *2;
+		min-width: $fsize1*2;
+		padding: 0px !important;
+		border-radius: 50%;
+		border: 1px solid $color1;
+
+		display: flex;
+		align-items: center;
+		justify-content: center; 
+
+		.fa-eraser{
+			height: $fsize1;
+			font-size: $fsize1 !important;
+			color: $color1;
+			padding: 0;
+
+			display: flex;
+			align-items: center;
+			justify-content: center; 
+		}
+		&:hover{
+			background-color: $color3 !important;
+			.fa-eraser{
+				color: $color5 !important;
+			}
+		}
+	}
 }
+
+.btn-container{
+	position: absolute;
+	right: 4*$default-side-padding;
+	top: $default-side-padding;
+	button{
+		position: fixed;
+	}
+}
+
