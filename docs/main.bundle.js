@@ -828,9 +828,26 @@ class Flowchart {
         }
         return splicedEdges;
     }
-    deletePort(type, portIndex, nodeIndex) {
-        let edges = this._edges;
+    disconnectNode(nodeIndex) {
         let _node = this.getNodeByIndex(nodeIndex);
+        this.deleteEdges(this.disconnectEdgesWithNode(nodeIndex));
+        _node.getInputs().map(function (input) {
+            input.disconnect();
+            input.setComputedValue(undefined);
+        });
+        _node.getOutputs().map(function (output) {
+            output.disconnect();
+            output.setComputedValue(undefined);
+        });
+        // for(let i=0; i < _node.getInputs().length; i++){
+        // 	this.disconnectPort("input", i, nodeIndex)
+        // }	
+        // for(let i=0; i < _node.getOutputs().length; i++){
+        // 	this.disconnectPort("output", i, nodeIndex)
+        // }
+    }
+    disconnectPort(type, portIndex, nodeIndex) {
+        let edges = this._edges;
         /// disconnect the edges related to this port
         let edgesArr = this.disconnectEdgesWithPortIndex(nodeIndex, portIndex, type);
         this.deleteEdges(edgesArr);
@@ -857,6 +874,10 @@ class Flowchart {
                 console.warn("reached 358");
             }
         }
+    }
+    deletePort(type, portIndex, nodeIndex) {
+        this.disconnectPort(type, portIndex, nodeIndex);
+        let _node = this.getNodeByIndex(nodeIndex);
         if (type == "input") {
             _node.deleteInput(portIndex);
         }
@@ -1778,21 +1799,19 @@ class Procedure {
     constructor(type, hasChildren) {
         this._disabled = false;
         this._printToConsole = false;
-        this._children = [];
+        this.children = [];
         this._type = type;
-        this._hasChildren = hasChildren;
-        this.hasChildren = this._hasChildren;
-        this.children = this._children;
+        this.hasChildren = hasChildren;
+        this.hasChildren = this.hasChildren;
+        this.children = this.children;
     }
     update(prodData, parent) {
-        this._hasChildren = prodData._hasChildren;
         this._disabled = prodData._disabled;
         this._leftComponent = prodData._leftComponent;
         this._rightComponent = prodData._rightComponent;
         this._parent = parent;
-        this._children = [];
-        this.hasChildren = this._hasChildren;
-        this.children = this._children;
+        this.hasChildren = prodData.hasChildren;
+        this.children = [];
     }
     getType() {
         return this._type;
@@ -1839,37 +1858,34 @@ class Procedure {
         this._parent = parent;
     }
     getChildren() {
-        if (this._hasChildren == false) {
+        if (this.hasChildren == false) {
             throw Error("This Procedure Type is not a container");
         }
         else {
-            return this._children;
+            return this.children;
         }
     }
     addChild(child) {
-        if (this._hasChildren) {
-            this._children.push(child);
-            this.children = this._children;
+        if (this.hasChildren) {
+            this.children.push(child);
         }
         else {
             throw Error("Cannot add child to this procedure");
         }
     }
     addChildFromData(child) {
-        if (this._hasChildren) {
-            this._children.push(child);
-            this.children = this._children;
+        if (this.hasChildren) {
+            this.children.push(child);
         }
         else {
             throw Error("Cannot add child to this procedure");
         }
     }
     addChildAtPosition(child, index) {
-        this._children.splice(index, 0, child);
-        this.children = this._children;
+        this.children.splice(index, 0, child);
     }
     deleteChild(procedure) {
-        this._children = this._children.filter(function (child) {
+        this.children = this.children.filter(function (child) {
             if (child === procedure) {
                 return false;
             }
@@ -1877,7 +1893,6 @@ class Procedure {
                 return true;
             }
         });
-        this.children = this._children;
     }
     getLeftComponent() {
         return this._leftComponent;
@@ -2464,6 +2479,13 @@ let FlowchartService = class FlowchartService {
     checkProcedure(prod) {
         // validate procedure
         let codeString = prod.getCodeString(this.code_generator);
+    }
+    disconnectPort(type, portIndex, nodeIndex) {
+        this._flowchart.disconnectPort(type, portIndex, nodeIndex);
+    }
+    disconnectNode(nodeIndex) {
+        this._flowchart.disconnectNode(nodeIndex);
+        this.update();
     }
     //
     //  update indices in edges on port deleted
@@ -4631,7 +4653,7 @@ EditorComponent = __decorate([
 /***/ "../../../../../src/app/ui-components/editors/flowchart-viewer/flowchart-viewer.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!-- <mat-expansion-panel class='viewer' \r\n\t\t[expanded]=\"panelOpenState\">\r\n  \t<mat-expansion-panel-header>\r\n\t    <mat-panel-title class='header'> -->\r\n\r\n<div class=\"viewer\">\r\n\r\n\t<div class=\"container\">\r\n\t\t<div class='sidebar'>\r\n\t\t\t<section>\r\n\t\t\t\t<div (click)=\"save()\">Save Flowchart</div>\r\n\t\t\t\t<div (click)=\"openPicker()\">Load Flowchart\r\n\t\t\t\t\t<input #fileInput style=\"display: none;\"\r\n\t\t\t  \t\ttype=\"file\" (change)=\"loadFile()\"/>\r\n\t\t\t\t</div>\r\n\t\t\t</section>\r\n\t\t\t<hr>\r\n\t\t\t<section>\r\n\t\t\t\t<div (click)=\"addNode($event, undefined)\">New Empty Node</div>\r\n\t\t\t\t<div class=\"disabled\">New Subnet</div>\r\n\t\t\t</section>\r\n\t\t\t<hr>\r\n\t\t\t<!--<section>\r\n\t\t\t\t<div>Save Node</div>\r\n\t\t\t</section>-->\r\n\r\n\t\t\t<section>\r\n\t\t\t\t<app-node-library></app-node-library>\r\n\t\t\t</section>\r\n\t\t\t<hr>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"view-container\">\r\n\t    \t<div class=\"info-container\" style=\"position: absolute; top: 30px; right: 30px\">\r\n\t    \t\t<!-- Zoom: {{zoom}} -->\r\n\t    \t</div>\r\n\r\n\t        <!-- svg canvas to draw the edges -->\r\n\t\t\t<svg xmlns=\"http://www.w3.org/2000/svg\" \r\n\t\t\t\tclass=\"graph-container\" \r\n\t\t\t\tid=\"graph-edges\" \r\n\t\t\t\t[style.zoom]=\"zoom\">\r\n\r\n\t\t\t\t<g class=\"edge\" *ngFor=\"let edge of _edges\" >\r\n\t\t\t\t\t<path \r\n\t\t\t\t\t  [attr.d]=\"edge.path\" \r\n\t\t\t\t\t  stroke=\"#7469FF\"\r\n\t\t\t\t\t  stroke-width=\"3\" fill=\"none\" />\r\n\t\t\t\t</g>\r\n\t\t\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t<!-- dragging path -->\r\n\t\t\t\t<g id=\"temporary-edge\" [class.hidden]=\"!_linkMode\" >\r\n\t\t\t\t\t<path \r\n\t\t\t\t\t[attr.d]=\"edgeString(mouse_pos.start, mouse_pos.current)\" \r\n\t\t\t\t\t \tstroke=\"#7469FF\"\r\n\t\t\t\t\t \tstroke-width=\"5\" \r\n\t\t\t\t\t \tfill=\"none\" \r\n\t\t\t\t\t \tstroke-dasharray=\"5, 5\"/>\r\n\t\t\t\t\t\t<circle id=\"pointC\" [attr.cx]=\"mouse_pos.current.x\" [attr.cy]=\"mouse_pos.current.y\" r=\"5\" />\r\n\t\t\t\t\t</g>\r\n\r\n\t\t\t</svg>\r\n\r\n\t\t\t<!-- div container for the nodes -->\r\n\t\t\t<div class=\"graph-container\" \r\n\t\t\t\tid=\"graph-nodes\" ondragover=\"return false\" [style.zoom]=\"zoom\" >\r\n\t\t\t\t\r\n\t\t\t\t<!-- all nodes -->\r\n\t\t\t\t<div class=\"node-container\">\r\n\r\n\t\t\t\t\t<!-- one node -->\r\n\t\t\t\t\t<div  class=\"node\"\r\n\t\t\t\t\t\t\t*ngFor=\"let node of _nodes; let node_index = index\" \r\n\t\t\t\t\t\t\t[style.left.px]=\"node.position[0]\" \r\n\t\t\t\t\t\t\t[style.top.px]=\"node.position[1]\" >\r\n\r\n\t\t\t\t\t\t<div class=\"btn-container\" *ngIf=\"node_index == _selectedNodeIndex\" >\r\n\t\t\t\t\t\t\t<!-- <div class=\"btn-group node-btns\">\r\n\t\t\t\t\t\t\t\t<div class=\"action-button\" (click)=\"addPort(node_index, 'in')\">\r\n\t\t\t\t\t\t\t\t\t<mat-icon>input</mat-icon>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div class=\"action-button\" (click)=\"addPort(node_index, 'out')\">\r\n\t\t\t\t\t\t\t\t\t<mat-icon>add_to_queue</mat-icon>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t</div> -->\r\n\t\t\t\t\t\t\t<div class=\"btn-group port-btns\">\r\n\t\t\t\t\t\t\t\t<div class=\"action-button\" (click)=\"deleteNode(node_index)\" \t\t\r\n\t\t\t\t\t\t\t\t\tmatTooltip=\"Delete Node\">\r\n\t\t\t\t\t\t\t\t\t<mat-icon>delete</mat-icon>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div class=\"action-button\" (click)=\"toggleNode(node)\"\r\n\t\t\t\t\t\t\t\t\tmatTooltip=\"Disable Node\">\r\n\t\t\t\t\t\t\t\t\t<mat-icon *ngIf='!node.isDisabled()'>check_circle</mat-icon>\r\n\t\t\t\t\t\t\t\t\t<mat-icon *ngIf='node.isDisabled()'>highlight_off</mat-icon>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div class=\"action-button\" (click)=\"saveNode(node_index)\" \r\n\t\t\t\t\t\t\t\t\tmatTooltip=\"Save Node To Library\"\r\n\t\t\t\t\t\t\t\t\t*ngIf=\"!isSaved(node)\">\r\n\t\t\t\t\t\t\t\t\t<mat-icon>file_download</mat-icon>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t<!-- node body -->\r\n\t\t\t\t\t\t<div class=\"node-body\" \r\n\t\t\t\t\t\t\t[class.library]=\"node.getType() !== undefined\"\r\n\t\t\t\t\t\t\t[class.error]=\"node._hasError\"\r\n\t\t\t\t\t\t\t[class.disabled] =\"node.isDisabled()\"\r\n\t\t\t\t\t\t\t(click)=\"clickNode($event, node_index)\"\r\n\t\t\t\t\t\t\tdraggable=true  \r\n\t\t\t\t\t\t\t(dragstart)=\"nodeDragStart($event, node)\" \r\n\t\t\t\t\t\t\t(drag)=\"nodeDragging($event, node)\" \r\n\t\t\t\t\t\t\t(dragend)=\"nodeDragEnd($event, node)\">\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t<div class=\"node-name\" \r\n\t\t\t\t\t\t\t\t\t[class.selected]=\"node_index == _selectedNodeIndex\"\r\n\t\t\t\t\t\t\t\t\tmatTooltip=\"{{node.getName()}}\">\r\n\t\t\t\t\t\t\t\t    <input matInput\r\n\t\t\t\t\t\t\t\t    style=\"margin: 2px; min-width: 50px; width: 50px;\"\r\n\t\t\t\t\t\t\t\t    placeholder=\"Value\" value=\"{{ node.getName() }}\"\r\n\t\t\t\t\t\t\t\t    (change)=\"updateNodeName($event)\"/>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t<!--inputs -->\r\n\t\t\t\t\t\t\t<div class=\"port-container\">\r\n\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t<div class=\"port input\" \r\n\t\t\t\t\t\t\t\t\t*ngFor=\"let port of node.getInputs(); let pi=index\"  \r\n\t\t\t\t\t\t\t\t\tid=\"n{{node_index}}pi{{pi}}\">\r\n\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t<div class=\"port-grip\" \r\n\t\t\t\t\t\t\t\t\t\tdraggable=true\r\n\t\t\t\t\t\t\t\t\t\t[class.connected]=\"port.isConnected()\" \r\n\t\t\t\t\t\t\t\t\t\t(dragstart)=\"portDragStart($event, port, [node_index, pi])\" \r\n\t\t\t\t\t\t\t\t\t\t(drag)=\"portDragging($event, port)\" \r\n\t\t\t\t\t\t\t\t\t\t(dragend)=\"portDragEnd($event, port)\"\r\n\t\t\t\t\t\t\t\t\t\t(drop)=\"portDrop($event, port, [node_index, pi])\">\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t<span class=\"port-name\">{{ port.getName() }}</span>\r\n\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t<!-- outputs -->\r\n\t\t\t\t\t\t\t<div class=\"port-container\">\r\n\t\t\t\t\t\t\t\t<div class=\"port output\"\r\n\t\t\t\t\t\t\t\t\t*ngFor=\"let port of node.getOutputs(); let po=index;\"\r\n\t\t\t\t\t\t\t\t\tid=\"n{{node_index}}po{{po}}\">\r\n\r\n\t\t\t\t\t\t\t\t\t<span class=\"port-name\">{{port.getName()}}</span>\r\n\r\n\t\t\t\t\t\t\t\t\t<div class=\"port-grip\" \r\n\t\t\t\t\t\t\t\t\t\tdraggable=true\r\n\t\t\t\t\t\t\t\t\t\t[class.selected]=\"isPortSelected(node_index, po)\"\r\n\t\t\t\t\t\t\t\t\t\t[class.connected]=\"port.isConnected()\" \r\n\t\t\t\t\t\t\t\t\t\t(click)=\"clickPort($event, node_index, po)\"\r\n\t\t\t\t\t\t\t\t\t\t(dragstart)=\"portDragStart($event, port, [node_index, po])\" \r\n\t\t\t\t\t\t\t\t\t\t(drag)=\"portDragging($event, port)\" \r\n\t\t\t\t\t\t\t\t\t\t(dragend)=\"portDragEnd($event, port)\"\r\n\t\t\t\t\t\t\t\t\t\t(drop)=\"portDrop($event, port, [node_index, po])\">\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t</div> \r\n\r\n\r\n\t\t\t\t\t\t\t<!-- <div class=\"fromLibrary\"  style=\"font-size: 8px; text-align: center\">\r\n\t\t\t\t\t\t\t\tLibrary Node\r\n\t\t\t\t\t\t\t</div> -->\r\n\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\r\n\t\t\t\t</div>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\t</div>\r\n\t\r\n\r\n</div>\r\n<!-- </mat-expansion-panel> -->\r\n\r\n\r\n\r\n"
+module.exports = "<!-- <mat-expansion-panel class='viewer' \r\n\t\t[expanded]=\"panelOpenState\">\r\n  \t<mat-expansion-panel-header>\r\n\t    <mat-panel-title class='header'> -->\r\n\r\n<div class=\"viewer\">\r\n\r\n\t<div class=\"container\">\r\n\t\t<div class='sidebar'>\r\n\t\t\t<section>\r\n\t\t\t\t<div (click)=\"save()\">Save Flowchart</div>\r\n\t\t\t\t<div (click)=\"openPicker()\">Load Flowchart\r\n\t\t\t\t\t<input #fileInput style=\"display: none;\"\r\n\t\t\t  \t\ttype=\"file\" (change)=\"loadFile()\"/>\r\n\t\t\t\t</div>\r\n\t\t\t</section>\r\n\t\t\t<hr>\r\n\t\t\t<section>\r\n\t\t\t\t<div (click)=\"addNode($event, undefined)\">New Empty Node</div>\r\n\t\t\t\t<div class=\"disabled\">New Subnet</div>\r\n\t\t\t</section>\r\n\t\t\t<hr>\r\n\t\t\t<!--<section>\r\n\t\t\t\t<div>Save Node</div>\r\n\t\t\t</section>-->\r\n\r\n\t\t\t<section>\r\n\t\t\t\t<app-node-library></app-node-library>\r\n\t\t\t</section>\r\n\t\t\t<hr>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"view-container\">\r\n\t    \t<div class=\"info-container\" style=\"position: absolute; top: 30px; right: 30px\">\r\n\t    \t\t<!-- Zoom: {{zoom}} -->\r\n\t    \t</div>\r\n\r\n\t        <!-- svg canvas to draw the edges -->\r\n\t\t\t<svg xmlns=\"http://www.w3.org/2000/svg\" \r\n\t\t\t\tclass=\"graph-container\" \r\n\t\t\t\tid=\"graph-edges\" \r\n\t\t\t\t[style.zoom]=\"zoom\">\r\n\r\n\t\t\t\t<g class=\"edge\" *ngFor=\"let edge of _edges\" >\r\n\t\t\t\t\t<path \r\n\t\t\t\t\t  [attr.d]=\"edge.path\" \r\n\t\t\t\t\t  stroke=\"#7469FF\"\r\n\t\t\t\t\t  stroke-width=\"3\" fill=\"none\" />\r\n\t\t\t\t</g>\r\n\t\t\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t<!-- dragging path -->\r\n\t\t\t\t<g id=\"temporary-edge\" [class.hidden]=\"!_linkMode\" >\r\n\t\t\t\t\t<path \r\n\t\t\t\t\t[attr.d]=\"edgeString(mouse_pos.start, mouse_pos.current)\" \r\n\t\t\t\t\t \tstroke=\"#7469FF\"\r\n\t\t\t\t\t \tstroke-width=\"5\" \r\n\t\t\t\t\t \tfill=\"none\" \r\n\t\t\t\t\t \tstroke-dasharray=\"5, 5\"/>\r\n\t\t\t\t\t\t<circle id=\"pointC\" [attr.cx]=\"mouse_pos.current.x\" [attr.cy]=\"mouse_pos.current.y\" r=\"5\" />\r\n\t\t\t\t\t</g>\r\n\r\n\t\t\t</svg>\r\n\r\n\t\t\t<!-- div container for the nodes -->\r\n\t\t\t<div class=\"graph-container\" \r\n\t\t\t\tid=\"graph-nodes\" ondragover=\"return false\" [style.zoom]=\"zoom\" >\r\n\t\t\t\t\r\n\t\t\t\t<!-- all nodes -->\r\n\t\t\t\t<div class=\"node-container\">\r\n\r\n\t\t\t\t\t<!-- one node -->\r\n\t\t\t\t\t<div  class=\"node\"\r\n\t\t\t\t\t\t\t*ngFor=\"let node of _nodes; let node_index = index\" \r\n\t\t\t\t\t\t\t[style.left.px]=\"node.position[0]\" \r\n\t\t\t\t\t\t\t[style.top.px]=\"node.position[1]\" >\r\n\r\n\t\t\t\t\t\t<div class=\"btn-container\" *ngIf=\"node_index == _selectedNodeIndex\" >\r\n\t\t\t\t\t\t\t<!-- <div class=\"btn-group node-btns\">\r\n\t\t\t\t\t\t\t\t<div class=\"action-button\" (click)=\"addPort(node_index, 'in')\">\r\n\t\t\t\t\t\t\t\t\t<mat-icon>input</mat-icon>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div class=\"action-button\" (click)=\"addPort(node_index, 'out')\">\r\n\t\t\t\t\t\t\t\t\t<mat-icon>add_to_queue</mat-icon>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t</div> -->\r\n\t\t\t\t\t\t\t<div class=\"btn-group port-btns\">\r\n\t\t\t\t\t\t\t\t<div class=\"action-button\" (click)=\"deleteNode(node_index)\" \t\t\r\n\t\t\t\t\t\t\t\t\tmatTooltip=\"Delete Node\">\r\n\t\t\t\t\t\t\t\t\t<mat-icon>delete</mat-icon>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div class=\"action-button\" (click)=\"toggleNode(node)\"\r\n\t\t\t\t\t\t\t\t\tmatTooltip=\"Disable Node\">\r\n\t\t\t\t\t\t\t\t\t<mat-icon *ngIf='!node.isDisabled()'>check_circle</mat-icon>\r\n\t\t\t\t\t\t\t\t\t<mat-icon *ngIf='node.isDisabled()'>highlight_off</mat-icon>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div class=\"action-button\" (click)=\"saveNode(node_index)\" \r\n\t\t\t\t\t\t\t\t\tmatTooltip=\"Save Node To Library\"\r\n\t\t\t\t\t\t\t\t\t*ngIf=\"!isSaved(node)\">\r\n\t\t\t\t\t\t\t\t\t<mat-icon>file_download</mat-icon>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t<!-- node body -->\r\n\t\t\t\t\t\t<div class=\"node-body\" \r\n\t\t\t\t\t\t\t[class.library]=\"node.getType() !== undefined\"\r\n\t\t\t\t\t\t\t[class.error]=\"node._hasError\"\r\n\t\t\t\t\t\t\t[class.disabled] =\"node.isDisabled()\"\r\n\t\t\t\t\t\t\t(click)=\"clickNode($event, node_index)\"\r\n\t\t\t\t\t\t\tdraggable=true  \r\n\t\t\t\t\t\t\t(dragstart)=\"nodeDragStart($event, node)\" \r\n\t\t\t\t\t\t\t(drag)=\"nodeDragging($event, node, node_index)\" \r\n\t\t\t\t\t\t\t(dragend)=\"nodeDragEnd($event, node)\">\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t<div class=\"node-name\" \r\n\t\t\t\t\t\t\t\t\t[class.selected]=\"node_index == _selectedNodeIndex\"\r\n\t\t\t\t\t\t\t\t\tmatTooltip=\"{{node.getName()}}\">\r\n\t\t\t\t\t\t\t\t    <input matInput\r\n\t\t\t\t\t\t\t\t    style=\"margin: 2px; min-width: 50px; width: 50px;\"\r\n\t\t\t\t\t\t\t\t    placeholder=\"Value\" value=\"{{ node.getName() }}\"\r\n\t\t\t\t\t\t\t\t    (change)=\"updateNodeName($event)\"/>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t<!--inputs -->\r\n\t\t\t\t\t\t\t<div class=\"port-container\">\r\n\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t<div class=\"port input\" \r\n\t\t\t\t\t\t\t\t\t*ngFor=\"let port of node.getInputs(); let pi=index\"  \r\n\t\t\t\t\t\t\t\t\tid=\"n{{node_index}}pi{{pi}}\">\r\n\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t<div class=\"port-grip\" \r\n\t\t\t\t\t\t\t\t\t\tdraggable=true\r\n\t\t\t\t\t\t\t\t\t\t[class.connected]=\"port.isConnected()\" \r\n\t\t\t\t\t\t\t\t\t\t(dragstart)=\"portDragStart($event, port, [node_index, pi])\" \r\n\t\t\t\t\t\t\t\t\t\t(drag)=\"portDragging($event, port)\" \r\n\t\t\t\t\t\t\t\t\t\t(dragend)=\"portDragEnd($event, port)\"\r\n\t\t\t\t\t\t\t\t\t\t(drop)=\"portDrop($event, port, [node_index, pi])\">\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t<span class=\"port-name\">{{ port.getName() }}</span>\r\n\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t<!-- outputs -->\r\n\t\t\t\t\t\t\t<div class=\"port-container\">\r\n\t\t\t\t\t\t\t\t<div class=\"port output\"\r\n\t\t\t\t\t\t\t\t\t*ngFor=\"let port of node.getOutputs(); let po=index;\"\r\n\t\t\t\t\t\t\t\t\tid=\"n{{node_index}}po{{po}}\">\r\n\r\n\t\t\t\t\t\t\t\t\t<span class=\"port-name\">{{port.getName()}}</span>\r\n\r\n\t\t\t\t\t\t\t\t\t<div class=\"port-grip\" \r\n\t\t\t\t\t\t\t\t\t\tdraggable=true\r\n\t\t\t\t\t\t\t\t\t\t[class.selected]=\"isPortSelected(node_index, po)\"\r\n\t\t\t\t\t\t\t\t\t\t[class.connected]=\"port.isConnected()\" \r\n\t\t\t\t\t\t\t\t\t\t(click)=\"clickPort($event, node_index, po)\"\r\n\t\t\t\t\t\t\t\t\t\t(dragstart)=\"portDragStart($event, port, [node_index, po])\" \r\n\t\t\t\t\t\t\t\t\t\t(drag)=\"portDragging($event, port)\" \r\n\t\t\t\t\t\t\t\t\t\t(dragend)=\"portDragEnd($event, port)\"\r\n\t\t\t\t\t\t\t\t\t\t(drop)=\"portDrop($event, port, [node_index, po])\">\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t</div> \r\n\r\n\r\n\t\t\t\t\t\t\t<!-- <div class=\"fromLibrary\"  style=\"font-size: 8px; text-align: center\">\r\n\t\t\t\t\t\t\t\tLibrary Node\r\n\t\t\t\t\t\t\t</div> -->\r\n\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\r\n\t\t\t\t</div>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\t</div>\r\n\t\r\n\r\n</div>\r\n<!-- </mat-expansion-panel> -->\r\n\r\n\r\n\r\n"
 
 /***/ }),
 
@@ -4708,6 +4730,8 @@ let FlowchartViewerComponent = class FlowchartViewerComponent extends __WEBPACK_
         //  node dragging
         //
         this.dragStart = { x: 0, y: 0 };
+        this.trend = { x: 1, y: 1 };
+        this.shakeCount = 0;
         this._linkMode = false;
         this.mouse_pos = {
             start: { x: 0, y: 0 },
@@ -4861,15 +4885,25 @@ let FlowchartViewerComponent = class FlowchartViewerComponent extends __WEBPACK_
         $event.dataTransfer.setDragImage(new Image(), 0, 0);
         // todo : find more elegant solution
         this.dragStart = { x: $event.pageX, y: $event.pageY };
-        this.pan_mode = false;
+        this.trend = { x: 1, y: 1 };
+        this.shakeCount = 0;
     }
-    nodeDragging($event, node) {
+    nodeDragging($event, node, nodeIndex) {
         this.pan_mode = false;
         let relX = $event.pageX - this.dragStart.x;
         let relY = $event.pageY - this.dragStart.y;
         node.position[0] += relX;
         node.position[1] += relY;
         this.dragStart = { x: $event.pageX, y: $event.pageY };
+        if (relX && relY) {
+            if (Math.sign(relX) !== this.trend.x || Math.sign(relY) !== this.trend.y) {
+                this.trend = { x: Math.sign(relX), y: Math.sign(relY) };
+                this.shakeCount++;
+                if (this.shakeCount == 8) {
+                    this.flowchartService.disconnectNode(nodeIndex);
+                }
+            }
+        }
         this.updateEdges();
     }
     nodeDragEnd($event, node) {
@@ -4879,6 +4913,8 @@ let FlowchartViewerComponent = class FlowchartViewerComponent extends __WEBPACK_
         node.position[0] += relX;
         node.position[1] += relY;
         this.dragStart = { x: 0, y: 0 };
+        this.trend = { x: 1, y: 1 };
+        this.shakeCount = 0;
         this.updateEdges();
     }
     portDragStart($event, port, address) {
@@ -5140,11 +5176,10 @@ let ParameterEditorComponent = class ParameterEditorComponent extends __WEBPACK_
         this.isVisible = false;
         // shift to iport
         this.inputPortOpts = [
-            __WEBPACK_IMPORTED_MODULE_1__base_classes_port_PortModule__["b" /* InputPortTypes */].Default,
-            __WEBPACK_IMPORTED_MODULE_1__base_classes_port_PortModule__["b" /* InputPortTypes */].Input,
-            __WEBPACK_IMPORTED_MODULE_1__base_classes_port_PortModule__["b" /* InputPortTypes */].ColorPicker,
-            __WEBPACK_IMPORTED_MODULE_1__base_classes_port_PortModule__["b" /* InputPortTypes */].FilePicker,
-            __WEBPACK_IMPORTED_MODULE_1__base_classes_port_PortModule__["b" /* InputPortTypes */].Dropdown
+            __WEBPACK_IMPORTED_MODULE_1__base_classes_port_PortModule__["b" /* InputPortTypes */].Input //, 
+            // InputPortTypes.ColorPicker, 
+            // InputPortTypes.FilePicker, 
+            // InputPortTypes.Dropdown
         ];
         this.outputPortOpts = [
             __WEBPACK_IMPORTED_MODULE_1__base_classes_port_PortModule__["d" /* OutputPortTypes */].Three,
@@ -5178,6 +5213,8 @@ let ParameterEditorComponent = class ParameterEditorComponent extends __WEBPACK_
     }
     updatePortName($event, port) {
         let name = $event.srcElement.innerText;
+        // check for validity
+        name = name.replace(/[^\w]/gi, '');
         if (name.trim().length > 0) {
             // put a timeout on this update or something similar to solve jumpiness
             port.setName(name);
@@ -5199,7 +5236,7 @@ let ParameterEditorComponent = class ParameterEditorComponent extends __WEBPACK_
         if (type == __WEBPACK_IMPORTED_MODULE_1__base_classes_port_PortModule__["b" /* InputPortTypes */].ColorPicker) {
             return "Color";
         }
-        else if (type == __WEBPACK_IMPORTED_MODULE_1__base_classes_port_PortModule__["b" /* InputPortTypes */].Default) {
+        else if (type == __WEBPACK_IMPORTED_MODULE_1__base_classes_port_PortModule__["b" /* InputPortTypes */].Input) {
             return "Simple Input";
         }
         else if (type == __WEBPACK_IMPORTED_MODULE_1__base_classes_port_PortModule__["b" /* InputPortTypes */].Dropdown) {
@@ -5478,6 +5515,10 @@ let ProcedureEditorComponent = class ProcedureEditorComponent extends __WEBPACK_
     // 	})
     // }
     updateProcedure($event, prod, property) {
+        if (property == 'left') {
+            prod.data.getLeftComponent().expression =
+                prod.data.getLeftComponent().expression.replace(/[^\w\[\]]/gi, '');
+        }
         // let procedure: IProcedure = prod.data;
         // if(property == "left"){	
         // 	let comp = procedure.getLeftComponent(); 
@@ -6209,7 +6250,7 @@ NodeLibraryComponent = __decorate([
 /***/ "../../../../../src/app/ui-components/viewers/parameter-viewer/parameter-viewer.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"viewer\">\r\n\r\n\t<div class=\"container\">\r\n\r\n\t\t<div class=\"default\" *ngIf='_inputs == undefined || _inputs.length == 0'>\r\n\t\t\tThis node has no inputs\r\n\t\t</div>\r\n \r\n\t\t<div class='paramater-container' *ngFor=\"let inp of _inputs\" >\r\n\t\t\t\r\n\t\t\t<div class=\"info\">\r\n\t\t\t\t<div class='param'>\r\n\t\t\t\t\t<!--<span class='label'>Name</span>-->\r\n\t\t\t\t\t<span class='content'>{{ inp.getName() }}</span>\r\n\t\t\t\t</div>\r\n\t\t\t</div>\r\n\r\n\t\t\t<div class=\"value\">\r\n\t\t\t\t<form  class='content'>\r\n\t\t\t\t\t<!-- <mat-form-field>-->\r\n\t\t\t\t    <input  matInput \r\n\t\t\t\t    placeholder=\"Value\" value=\"{{ getValue(inp) }}\"\r\n\t\t\t\t    (change)=\"updateComputedValue($event, inp)\"/>\r\n\t\t\t\t\t<!--</mat-form-field>-->\r\n\t\t\t\t</form>\r\n\t\t\t</div> \r\n\r\n\t\t</div>\r\n\r\n\r\n\t\t\t<!-- todo: disable if port is connected -->\r\n\t\t\t<!-- ui options based on type -->\r\n\t\t\t<!-- todo: -->\r\n\t</div>\r\n\t<button id=\"execute\" mat-raised-button color=\"accent\" (click)=\"executeFlowchart($event)\">Execute Flowchart</button>  \r\n\r\n</div>"
+module.exports = "<div class=\"viewer\">\r\n\r\n\t<div class=\"container\">\r\n\r\n\t\t<div class=\"default\" *ngIf='_inputs == undefined || _inputs.length == 0'>\r\n\t\t\tThis node has no inputs\r\n\t\t</div>\r\n \r\n\t\t<div class='paramater-container' *ngFor=\"let inp of _inputs\" >\r\n\t\t\t\r\n\t\t\t<div class=\"info\">\r\n\t\t\t\t<div class='param'>\r\n\t\t\t\t\t<!--<span class='label'>Name</span>-->\r\n\t\t\t\t\t<span class='content'>{{ inp.getName() }}</span>\r\n\t\t\t\t</div>\r\n\t\t\t</div>\r\n\r\n\t\t\t<div class=\"value\">\r\n\t\t\t\t<form  class='content'>\r\n\t\t\t\t\t<mat-form-field>\r\n\t\t\t\t\t\t<textarea matInput \r\n\t\t\t\t\t\t\tplaceholder=\"Value\" \r\n\t\t\t\t\t\t\tmatTextareaAutosize \r\n\t\t\t\t\t\t\tmatAutosizeMinRows=\"1\"\r\n\t            \t\t\tmatAutosizeMaxRows=\"5\" \r\n\t            \t\t\t(change)=\"updateComputedValue($event, inp)\">\r\n\t            \t\t\t{{ getValue(inp) }}\r\n\t            \t\t</textarea>\r\n\t\t\t\t\t</mat-form-field>\r\n\t\t\t\t</form>\r\n\t\t\t</div> \r\n\r\n\t\t</div>\r\n\r\n\t\t\t<!-- todo: disable if port is connected -->\r\n\t\t\t<!-- ui options based on type -->\r\n\t\t\t<!-- todo: -->\r\n\t</div>\r\n\t<button id=\"execute\" mat-raised-button color=\"accent\" (click)=\"executeFlowchart($event)\">Execute Flowchart</button>  \r\n\r\n</div>"
 
 /***/ }),
 
