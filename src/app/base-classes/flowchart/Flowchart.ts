@@ -139,9 +139,24 @@ export class Flowchart implements IFlowchart{
       return splicedEdges;
   	}
 
-	deletePort(type: string, portIndex: number, nodeIndex: number): void{
-	    let edges = this._edges;
-	    let _node = this.getNodeByIndex(nodeIndex);
+  	disconnectNode(nodeIndex: number): void{
+  		let _node = this.getNodeByIndex(nodeIndex);
+
+  		this.deleteEdges(this.disconnectEdgesWithNode(nodeIndex));
+
+  		// for(let i=0; i < _node.getInputs().length; i++){
+  		// 	this.disconnectPort("input", i, nodeIndex)
+  		// }	
+
+  		// for(let i=0; i < _node.getOutputs().length; i++){
+  		// 	this.disconnectPort("output", i, nodeIndex)
+  		// }
+
+  	}
+
+
+  	disconnectPort(type: string, portIndex: number, nodeIndex: number): void{
+  		let edges = this._edges;
 
 	    /// disconnect the edges related to this port
 	    let edgesArr: number[] = this.disconnectEdgesWithPortIndex(nodeIndex, portIndex, type); 
@@ -174,6 +189,13 @@ export class Flowchart implements IFlowchart{
 	           console.warn("reached 358");
 	        }
 	    }
+  	}
+
+	deletePort(type: string, portIndex: number, nodeIndex: number): void{
+	    
+	    this.disconnectPort(type, portIndex, nodeIndex);
+
+		let _node = this.getNodeByIndex(nodeIndex);
 
 		if(type == "input"){
 			_node.deleteInput(portIndex);

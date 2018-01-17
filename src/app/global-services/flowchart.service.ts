@@ -396,6 +396,15 @@ export class FlowchartService {
       let codeString: string = prod.getCodeString(this.code_generator);
   }
 
+  disconnectPort(type: string, portIndex: number, nodeIndex: number): void{
+    this._flowchart.disconnectPort(type, portIndex, nodeIndex)
+  }
+
+  disconnectNode(nodeIndex: number): void{
+    this._flowchart.disconnectNode(nodeIndex);
+    this.update();
+  }
+
   //
   //  update indices in edges on port deleted
   //

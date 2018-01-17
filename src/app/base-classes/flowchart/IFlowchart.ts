@@ -29,6 +29,8 @@ export interface IFlowchart{
 	deleteEdges(edgeIndexArr: number[]): void;
 
 	deletePort(type: string, portIndex: number, nodeIndex: number): void;
+	disconnectPort(type: string, portIndex: number, nodeIndex: number);
+	disconnectNode(nodeIndex: number);
 
 	disconnectEdgesWithNode(nodeIndex: number);
 	disconnectEdgesWithPortIndex(nodeIndex: number, portIndex: number, type: string);

@@ -110,7 +110,7 @@
 							(click)="clickNode($event, node_index)"
 							draggable=true  
 							(dragstart)="nodeDragStart($event, node)" 
-							(drag)="nodeDragging($event, node)" 
+							(drag)="nodeDragging($event, node, node_index)" 
 							(dragend)="nodeDragEnd($event, node)">
 							
 							<div class="node-name" 

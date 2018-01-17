@@ -240,21 +240,39 @@ export class FlowchartViewerComponent extends Viewer{
   //  node dragging
   //
   dragStart = {x: 0, y: 0};
+  trend = {x: 1, y: 1};
+  shakeCount: number = 0;
+
   nodeDragStart($event, node): void{
     $event.dataTransfer.setDragImage( new Image(), 0, 0);
     // todo : find more elegant solution
     this.dragStart = {x: $event.pageX, y: $event.pageY}; 
-    this.pan_mode = false;
+
+    this.trend = {x: 1, y: 1};
+    this.shakeCount = 0; 
   }
 
-  nodeDragging($event, node): void{
+  nodeDragging($event, node, nodeIndex): void{
     this.pan_mode = false;
     let relX: number = $event.pageX - this.dragStart.x; 
     let relY: number = $event.pageY - this.dragStart.y;
     node.position[0] += relX; 
     node.position[1] += relY; 
     
-    this.dragStart = {x: $event.pageX, y: $event.pageY}; 
+    this.dragStart = {x: $event.pageX, y: $event.pageY};
+
+    if(relX && relY){
+      if( Math.sign(relX) !== this.trend.x || Math.sign(relY) !== this.trend.y ){
+        this.trend = {x: Math.sign(relX), y: Math.sign(relY) };
+        this.shakeCount++;
+
+        if(this.shakeCount == 8){
+           this.flowchartService.disconnectNode(nodeIndex);
+        }
+
+      }
+    }
+
     this.updateEdges();
   }
 
@@ -266,6 +284,10 @@ export class FlowchartViewerComponent extends Viewer{
     node.position[1] += relY; 
 
     this.dragStart = {x:  0, y: 0};
+
+    this.trend = {x: 1, y: 1};
+    this.shakeCount = 0;
+
     this.updateEdges();
   }
 

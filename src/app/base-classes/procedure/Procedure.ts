@@ -5,11 +5,8 @@ import {ICodeGenerator} from "../code/CodeModule";
 
 export abstract class Procedure implements IProcedure{
 
-	public hasChildren: boolean;
-	public children: IProcedure[];
 
 	private _type: ProcedureTypes; 
-	private _hasChildren: boolean;
 	private _selected: boolean; 
 	private _disabled: boolean = false; 
 	private _printToConsole: boolean = false;
@@ -19,27 +16,26 @@ export abstract class Procedure implements IProcedure{
 	protected _leftComponent: IComponent; 
 	protected _rightComponent: IComponent; 
 
-	protected _children: IProcedure[] = []; 
+	public hasChildren: boolean;
+	public children: IProcedure[] = []; 
 
 	constructor(type: ProcedureTypes, hasChildren: boolean){
 		this._type = type; 
-		this._hasChildren = hasChildren;
+		this.hasChildren = hasChildren;
 		
-		this.hasChildren = this._hasChildren;
-		this.children = this._children;
+		this.hasChildren = this.hasChildren;
+		this.children = this.children;
 	}	
 
 	update(prodData: any, parent: IProcedure): void{
-		this._hasChildren = prodData._hasChildren;
 		this._disabled = prodData._disabled; 
 		this._leftComponent = prodData._leftComponent;
 		this._rightComponent = prodData._rightComponent;
 
 		this._parent = parent;
-		this._children = [];
-
-		this.hasChildren = this._hasChildren;
-		this.children = this._children;
+		
+		this.hasChildren = prodData.hasChildren;
+		this.children = [];
 	}
 
 	getType(): ProcedureTypes{
@@ -103,19 +99,18 @@ export abstract class Procedure implements IProcedure{
 
 
 	getChildren(): IProcedure[]{
-		if( this._hasChildren == false){
+		if( this.hasChildren == false){
 			throw Error("This Procedure Type is not a container");
 		}
 		else{
-			return this._children;
+			return this.children;
 		}
 		
 	}	
 
 	addChild(child: IProcedure): void{
-		if( this._hasChildren ){
-			this._children.push(child);
-			this.children = this._children;
+		if( this.hasChildren ){
+			this.children.push(child);
 		}
 		else{
 			throw Error("Cannot add child to this procedure");
@@ -123,9 +118,8 @@ export abstract class Procedure implements IProcedure{
 	}
 
 	addChildFromData(child: IProcedure): void{
-		if( this._hasChildren ){
-			this._children.push(child);
-			this.children = this._children;
+		if( this.hasChildren ){
+			this.children.push(child);
 		}
 		else{
 			throw Error("Cannot add child to this procedure");
@@ -133,12 +127,11 @@ export abstract class Procedure implements IProcedure{
 	}
 
 	addChildAtPosition(child: IProcedure, index: number): void{
-		this._children.splice(index, 0, child);
-		this.children = this._children;
+		this.children.splice(index, 0, child);
 	}
 
 	deleteChild(procedure: IProcedure): void{
-		this._children = this._children.filter(function(child: IProcedure){ 
+		this.children = this.children.filter(function(child: IProcedure){ 
 			if(child === procedure){
 				return false; 
 			}
@@ -146,7 +139,6 @@ export abstract class Procedure implements IProcedure{
 				return true;
 			}
 		});
-		this.children = this._children;
 	}
 
 	getLeftComponent(): IComponent{
