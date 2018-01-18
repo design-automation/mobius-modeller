@@ -1,6 +1,5 @@
 import { Component,  Injector } from '@angular/core';
 import { FlowchartService } from '../../../global-services/flowchart.service';
-import { LayoutService } from '../../../global-services/layout.service';
 import { Viewer } from '../../../base-classes/viz/Viewer';
 import { IGraphNode } from '../../../base-classes/node/NodeModule';
 
@@ -16,7 +15,7 @@ export class EditorComponent extends Viewer{
 
   isVisible: boolean = false;
 
-  constructor(injector: Injector, private layoutService: LayoutService){  
+  constructor(injector: Injector){  
     super(injector, "Editor");  
   }
 
@@ -32,12 +31,20 @@ export class EditorComponent extends Viewer{
   }
 
   reset(){
-    
+    this._selectedNode = this.flowchartService.getSelectedNode();
+    if(this._selectedNode == undefined){
+      this.isVisible = false;
+    }
+    else{
+      this.isVisible = true;
+    }
   }
 
 
   updateNodeName($event, node): void{
     let name: string =  $event.srcElement.value;
+
+    name = name.replace(/[^\w]/gi, '');
 
     if(name.trim().length > 0){
       node.setName(name);

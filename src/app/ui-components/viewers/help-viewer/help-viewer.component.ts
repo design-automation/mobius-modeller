@@ -18,6 +18,8 @@ export class HelpViewerComponent implements OnInit {
 
   _helpMods: any;
 
+  fnObj: {module: string, name: string};
+
   //modules/_group_.html
   constructor(private layoutService: LayoutService, private sanitizer: DomSanitizer, private flowchartService: FlowchartService) { 
   		this.sanitizer = sanitizer;
@@ -41,6 +43,30 @@ export class HelpViewerComponent implements OnInit {
   		let url_segment: string = this.layoutService.getUrl();
       let url: string = 'https://phtj.github.io/gs-modelling/docs/' + url_segment;
       this._url = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+      
+      let fnObj = this.layoutService.getObj();
+      if(fnObj){
+        this.fnObj = fnObj;
+
+        for(let m=0; m < this._helpMods.length; m++){
+
+            let mo = this._helpMods[m];
+            let mname = this.getModName(mo.name);
+
+            if(mname.toLowerCase() == fnObj.module.toLowerCase()){
+              for(let f=0; f < mo.children.length; f++){
+                  let child = mo.children[f];
+                  if(fnObj.name.toLowerCase() == child.name.toLowerCase()){
+                      fnObj["content"] = child;
+                  }
+              }
+            }
+
+        }
+
+        // add required params to the fnObj
+
+      }
   }
 
   getUrl(name: string, fn: string): string{
@@ -50,6 +76,15 @@ export class HelpViewerComponent implements OnInit {
   getModName(name: string): string{
     return name.substring(1, name.length - 1).toUpperCase();
   }
+
+  getHash(m, fn): string{
+    return this.getModName(m.name) + "/" + fn.name;
+  }
+
+  showAll(): void{
+      this.fnObj = undefined;
+      this.layoutService.setObj();
+  }  
 
   ngOnInit() { 
       this.notify();

@@ -1,22 +1,22 @@
 <div class="editor">
 	
-	<div class="default" *ngIf="_selectedNode == undefined">
+	<div class="default" *ngIf="!isVisible">
 		No Node Selected
 	</div>
 	
 	<!-- @Derek: Modify gutterSize/gutterColor/size -->
 	<!-- https://bertrandg.github.io/angular-split/#/documentation -->
-	<split  *ngIf="_selectedNode != undefined"
+	<split  *ngIf="isVisible"
 			  direction="horizontal" 
 			  gutterColor="#8AA8C0"
               [gutterSize]="3" 
               [useTransition]="true">
 
-		<split-area [visible]="true" [size]="20" order="1">
+		<split-area [visible]="isVisible" [size]="20" order="1">
 			<app-modulebox></app-modulebox>
 		</split-area>
 
-		<split-area [visible]="true" [size]="80" order="2">
+		<split-area [visible]="isVisible" [size]="80" order="2">
 			<div class="editor-container">
 		 		<app-parameter-editor></app-parameter-editor>
 				<app-procedure-editor></app-procedure-editor>

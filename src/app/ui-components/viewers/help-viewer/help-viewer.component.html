@@ -4,7 +4,7 @@
 	<!-- <div class="iframe-container">
 		<iframe [src]="_url" frameborder="0"></iframe>
 	</div> -->
-	<mat-accordion>
+	<mat-accordion *ngIf='!fnObj'>
 	 	<mat-expansion-panel *ngFor="let m of _helpMods">
 	    	<mat-expansion-panel-header>
 	    		<mat-panel-title>
@@ -12,7 +12,8 @@
 			    </mat-panel-title>
 	    	</mat-expansion-panel-header>
 
-			<mat-list style="max-height: 500px; overflow: auto;">
+			<mat-list id="{{getModName(m.name)}}" 
+				style="max-height: 500px; overflow: auto;">
 				<!-- <h3 mat-subheader>{{m.comment.shortText}}</h3> -->
 
 				<h3 mat-subheader>Functions</h3>
@@ -28,7 +29,27 @@
 			</mat-list>
 
 	 	</mat-expansion-panel>
-
 	</mat-accordion>
+
+	<!-- specific function -->
+	<div *ngIf='fnObj'>
+		
+		<h4>Module: {{fnObj.module}}</h4>
+		<h3>{{fnObj.name}}</h3>
+		
+		<div>
+			{{fnObj.content.signatures[0].comment.shortText}}
+			Returns: {{fnObj.content.signatures[0].comment.returns}}
+				<a href="https://phtj.github.io/gs-modelling/docs/modules/{{getUrl(fnObj.module, fnObj.name)}}" target="_blank">
+				More
+				</a>
+		</div>
+	
+		<hr>
+		
+		<div (click)="showAll()" style="cursor: pointer;">[Show All]</div>
+	
+	</div>
+
 
 </div>

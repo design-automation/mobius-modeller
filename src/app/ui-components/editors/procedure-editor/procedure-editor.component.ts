@@ -61,7 +61,7 @@ export class ProcedureEditorComponent extends Viewer implements OnInit{
 
 		if(prod.data._type == "Action"){
 			let fn = prod.data.getRightComponent().expression.split(".");
-			fn = { module: fn[0], name: fn[1] }
+			fn = { module: fn[0], name: fn[1] };
 			this.layoutService.showHelp(fn);
 		}
 		

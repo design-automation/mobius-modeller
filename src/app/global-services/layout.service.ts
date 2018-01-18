@@ -29,6 +29,7 @@ export class LayoutService {
     private viewContainerIndex: number = 4; 
 
     _url: string = "index";
+    _fnObj: {module: string, name: string};
 
   	constructor() { }
 
@@ -48,6 +49,7 @@ export class LayoutService {
 
     showHelp(fn: {module: string, name: string}): void{
         this._url  = "modules/" + "_" + fn.module.toLowerCase() + "_";
+        this._fnObj = fn;
         this.sendMessage("Module: " + fn.module);
     } 
 
@@ -65,6 +67,15 @@ export class LayoutService {
 
     getUrl(): string{
       return this._url;
+    }
+
+    getObj(): {module: string, name: string}{
+      return this._fnObj;
+    }
+
+    setObj(): void{
+      this._url = undefined;
+      this._fnObj = undefined;
     }
 
     // other functionality

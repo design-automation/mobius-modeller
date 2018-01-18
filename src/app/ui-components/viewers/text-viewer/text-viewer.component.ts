@@ -22,6 +22,10 @@ export class TextViewerComponent extends Viewer implements OnInit {
 		this.update();
 	}
 
+	reset(): void{
+		this.update();
+	}
+
 	getPortContent(): string{
 
 		if(this._selectedPort == undefined){
