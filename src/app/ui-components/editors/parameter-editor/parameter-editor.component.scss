@@ -10,12 +10,12 @@
 	display: flex;
 	flex-direction: column;
 
-	.port-heading{
-		font-size: $fsize1;
-		line-height: 36px;
+	/*.port-heading{
+		font-size: $fsize2;
+		line-height: $header-height;
 		padding: 0px 4px;
 		text-align: center;
-	}
+	}*/
 
 	.port {
 		display: flex; 
@@ -24,9 +24,9 @@
 		padding: 0px;
 		padding-left: $default-side-padding;
 
-		margin: 2px;
-		border-bottom: 1px dashed $color2;
-		border-top: 1px dashed $color2;
+		//margin: 2px;
+		border-bottom: 1px solid $color2;
+		//border-top: 1px dashed $color2;
 
 		background-color: white;
 

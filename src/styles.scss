@@ -72,7 +72,7 @@ split-area{
 	.mat-expansion-panel-header-title{
 		color: $color1 !important;
 		font-weight: bold !important;
-		font-size: $fsize1 !important;
+		font-size: $fsize2 !important;
 	}
 	&:hover{
 		background-color: white !important;
@@ -372,13 +372,28 @@ span.addBtn{
 	padding-left: $default-side-padding !important;
 }
 
+
+.mat-input-wrapper{
+	padding: 0 !important;
+	border-bottom: 1px solid $color2 !important;
+}
+
+.mat-input-infix{
+	padding: 0 !important;
+	border: 0 !important;
+}
+
+.mat-input-underline{
+	display: none !important;
+}
+
 // split-area.sidebar.flowchart{
 // 	width: 150px !important;
 // }
 
-.sidebar{
+//.sidebar{
 	//border-right: 2px solid $color2 !important;
-	width: 20% !important;
-	max-width: 200px;
-	min-width: 150px;
-}
+	//width: 10% !important;
+	//max-width: 200px;
+	//min-width: 150px;
+//}

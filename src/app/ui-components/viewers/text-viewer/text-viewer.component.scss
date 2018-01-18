@@ -25,6 +25,20 @@
 		font-size: $fsize2;
 	}
 
+	mat-expansion-panel-header{
+		background-color: $color3 !important;
+		border-top: 1px solid $color2 !important;
+		border-bottom: 1px solid $color2 !important;
+		padding-left: $default-side-padding !important;
+		mat-panel-title{
+			color: $color1 !important;
+			font-weight: bold !important;
+			font-size: $fsize2 !important;
+		}
+		&:hover{
+			background-color: $color3 !important;
+		}
+	}
 }
 
 span{
@@ -33,3 +47,5 @@ span{
 	display: block;
 	border-bottom: 1px solid $color2;
 }
+
+

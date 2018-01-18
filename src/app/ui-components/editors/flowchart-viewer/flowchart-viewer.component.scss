@@ -46,8 +46,10 @@ split-area{
 			overflow-x: hidden !important;
 			//overflow-y: auto !important;
 			section{
-				padding: 10px;
-				border-bottom: 1px solid $color3;
+				padding-left: $default-side-padding;
+				padding-bottom: $default-side-padding/3;
+				padding-top: $default-side-padding/3;
+				border-bottom: 1px solid $color2;
 
 				div{
 					cursor: pointer;
@@ -173,7 +175,7 @@ split-area{
 
 					.node-name{
 						font-family: sans-serif; 
-						font-size: $fsize1;
+						font-size: $fsize2;
 						border-bottom: 1px solid $color1; 
 						text-align: center;
 						background-color: $color3;

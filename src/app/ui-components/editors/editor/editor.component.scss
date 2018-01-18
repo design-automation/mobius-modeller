@@ -16,9 +16,12 @@
 	width: 100%;
 	padding-bottom: $header-height;
 	box-sizing: border-box;
-
 	.view-container{
 		width: 100%;
+	}
+
+	split-area{
+		overflow-y:auto !important;
 	}
 
 

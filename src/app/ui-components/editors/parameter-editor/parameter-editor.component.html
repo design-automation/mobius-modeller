@@ -27,7 +27,7 @@
 						<div class="content">
 							<div class='row'>
 								<!--<span class='label'>Name</span>-->
-								<span class='content' contenteditable="true" (blur)="updatePortName($event, inp)">
+								<span class='content' contenteditable="true" (blur)="updatePortName($event, inp)" spellcheck="false">
 									{{ inp.getName() }}
 								</span>
 							</div>
@@ -72,7 +72,7 @@
 					<div class='port output' *ngFor="let output of _outputs; let o=index"><div class="content">
 						<div class='row'>
 							<!--<span class='label'>Name</span>-->
-							<span class='content' contenteditable="true" (blur)="updatePortName($event, output)">
+							<span class='content' contenteditable="true" (blur)="updatePortName($event, output)" spellcheck="false">
 								{{ output.getName() || "undefined" }}
 							</span>
 						</div>

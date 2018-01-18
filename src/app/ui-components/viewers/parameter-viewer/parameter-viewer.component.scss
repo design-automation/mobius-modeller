@@ -1,6 +1,10 @@
 @import '~scss/globals';
 $execute-height: 36px;
 
+div.mat-input-wrapper.mat-form-field-wrapper{
+	padding: 0;
+}
+
 .viewer{
 	display: flex; 
 	flex-direction: column;
@@ -32,8 +36,7 @@ $execute-height: 36px;
 			line-height: 18px;
 			border-bottom: 1px solid $color2;
 			width: 100%;
-			/*padding: 5px 0px 0px 0px;
-			margin: 15px; */
+			padding: 2px 0px;
 			.info{
 			background-color: white;
 			padding: 0 $default-side-padding;
@@ -43,12 +46,12 @@ $execute-height: 36px;
 					display: flex; 
 					flex-direction: column; 
 					margin: 5px 0px;
-					.label{
-						width: 80px; 
-						text-transform: uppercase; 
-						font-size: $fsize2; 
-						color: $color2; 
-					}
+					//.label{
+						//width: 80px; 
+						//text-transform: uppercase; 
+						//font-size: $fsize2; 
+						//color: $color2; 
+					//}
 
 					.content{
 						font-size: $fsize2;
@@ -66,8 +69,9 @@ $execute-height: 36px;
 				align-items: center;
 				justify-content: center;
 				.content{
-					vertical-align: center;
-					input{
+					//vertical-align: center;
+
+					/*input{
 						color: $color1;
 						border:0;
 						border-style: solid !important;
@@ -78,7 +82,7 @@ $execute-height: 36px;
 						&:focus{
 							background-color: $color4;
 						}
-					}
+					}*/
 				}
 			}
 			//border-bottom: 1px solid $color2;
@@ -116,6 +120,8 @@ $execute-height: 36px;
 } */
 	
 }
+
+
 //.buttoncontainer{
 	//display: flex;
 	//flex-direction: reverse-row;
@@ -136,3 +142,4 @@ $execute-height: 36px;
 		color:$color5;
 	}
 }
+

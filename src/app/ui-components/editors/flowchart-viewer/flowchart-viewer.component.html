@@ -10,10 +10,12 @@
 		<!-- @Derek: Modify gutterSize/gutterColor/size -->
 		<!-- https://bertrandg.github.io/angular-split/#/documentation -->
 		<split  direction="horizontal" 
-              [gutterSize]="3" 
-              [useTransition]="true" gutterColor="#8AA8C0">
+              [gutterSize]="7" 
+              [useTransition]="true" gutterColor=white
+              >
 
 				<split-area class="sidebar"
+					[size]="20"
 			        order="1">
 						<section>
 							<div (click)="save()">Save Flowchart</div>
@@ -22,12 +24,12 @@
 						  		type="file" (change)="loadFile()"/>
 							</div>
 						</section>
-						<hr>
+						
 						<section>
 							<div (click)="addNode($event, undefined)">New Empty Node</div>
 							<div class="disabled">New Subnet</div>
 						</section>
-						<hr>
+						
 						<!--<section>
 							<div>Save Node</div>
 						</section>-->
@@ -35,11 +37,11 @@
 						<section>
 							<app-node-library></app-node-library>
 						</section>
-						<hr>
+						
 				</split-area>
 				
 		
-				<split-area order="2">
+				<split-area order="2" [size]="80">
 				    	<div class="info-container" 
 				    		style="position: absolute; 
 				    		top: 30px; 
