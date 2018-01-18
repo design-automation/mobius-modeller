@@ -5,7 +5,9 @@
 		<iframe [src]="_url" frameborder="0"></iframe>
 	</div> -->
 	<mat-accordion *ngIf='!fnObj'>
-	 	<mat-expansion-panel *ngFor="let m of _helpMods">
+	 	<mat-expansion-panel 
+	 		*ngFor="let m of _helpMods"
+	 		[expanded]="getModName(m.name) ==_activeMod">
 	    	<mat-expansion-panel-header>
 	    		<mat-panel-title>
 			      {{ getModName(m.name) }} 
@@ -32,7 +34,7 @@
 	</mat-accordion>
 
 	<!-- specific function -->
-	<div *ngIf='fnObj'>
+	<div *ngIf='fnObj && fnObj.name'>
 		
 		<h4>Module: {{fnObj.module}}</h4>
 		<h3>{{fnObj.name}}</h3>

@@ -17,6 +17,7 @@ export class HelpViewerComponent implements OnInit {
   private _subscription: Subscription;
 
   _helpMods: any;
+  _activeMod: string;
 
   fnObj: {module: string, name: string};
 
@@ -37,6 +38,7 @@ export class HelpViewerComponent implements OnInit {
           let mod_name: string = child.name.substring(1, child.name.length - 1);
           return mods.indexOf(mod_name) > -1;
       })
+
   }
 
   notify(): void{
@@ -45,7 +47,7 @@ export class HelpViewerComponent implements OnInit {
       this._url = this.sanitizer.bypassSecurityTrustResourceUrl(url);
       
       let fnObj = this.layoutService.getObj();
-      if(fnObj){
+      if(fnObj && fnObj.name){
         this.fnObj = fnObj;
 
         for(let m=0; m < this._helpMods.length; m++){
@@ -63,9 +65,10 @@ export class HelpViewerComponent implements OnInit {
             }
 
         }
-
-        // add required params to the fnObj
-
+      }
+      else if(fnObj && fnObj.module && !fnObj.name){
+          this._activeMod = fnObj.module.toUpperCase();
+          this.fnObj = undefined;
       }
   }
 

@@ -1,5 +1,6 @@
 import {Component, Injector, OnInit} from '@angular/core';
 import {FlowchartService} from '../../../global-services/flowchart.service';
+import {LayoutService} from '../../../global-services/layout.service';
 import {ModuleUtils} from "../../../base-classes/code/CodeModule";
 import {Viewer} from '../../../base-classes/viz/Viewer';
 import {IProcedure, ProcedureFactory, ProcedureTypes} from '../../../base-classes/procedure/ProcedureModule';
@@ -23,7 +24,7 @@ export class ModuleboxComponent extends Viewer implements OnInit{
   			ProcedureTypes.IfElseControl
   	];
 
-  	constructor(injector: Injector) { 
+  	constructor(injector: Injector, private layoutService: LayoutService) { 
   		super(injector, "module-viewer"); 
 	}
 
@@ -137,5 +138,11 @@ export class ModuleboxComponent extends Viewer implements OnInit{
       this.flowchartService.update();
     }
 
+
+    openModuleHelp($event, category: string): void{
+    	$event.stopPropagation();
+
+    	this.layoutService.showHelp({module: category, name: undefined})
+	}
 
 }

@@ -75,7 +75,6 @@ export class LayoutService {
 
     setObj(): void{
       this._url = undefined;
-      this._fnObj = undefined;
     }
 
     // other functionality
