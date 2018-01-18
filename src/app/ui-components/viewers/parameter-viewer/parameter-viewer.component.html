@@ -19,9 +19,8 @@
 				<form  class='content'>
 					<mat-form-field>
 						<textarea matInput 
-							placeholder="Value" 
 							matTextareaAutosize 
-							matAutosizeMinRows="1"
+							matAutosizeMinRows="0"
 	            			matAutosizeMaxRows="5" 
 	            			(change)="updateComputedValue($event, inp)">
 	            			{{ getValue(inp) }}

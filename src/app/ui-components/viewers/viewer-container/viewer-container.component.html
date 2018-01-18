@@ -1,9 +1,9 @@
 <div class="viewer-container">     
 	<mat-button-toggle-group class="viewer-toggle" [(ngModel)]="group.value" (change)="changed()">
 		<div class= "btn-grp1">
-			<mat-button-toggle value="0" class="viewer-toggle-btn" matTooltip="3D Viewer">
+			<!-- <mat-button-toggle value="0" class="viewer-toggle-btn" matTooltip="3D Viewer">
 			  <mat-icon>3d_rotation</mat-icon>
-			</mat-button-toggle>
+			</mat-button-toggle> -->
 			<mat-button-toggle value="2" class="viewer-toggle-btn" matTooltip="Text Viewer">
 			  <mat-icon>description</mat-icon>
 			</mat-button-toggle>
@@ -33,7 +33,7 @@
 		<mat-icon>lock</mat-icon>
 	</button>
  -->
-	<app-geometry-viewer *ngIf="group.value == 0"></app-geometry-viewer>
+	<!-- <app-geometry-viewer *ngIf="group.value == 0"></app-geometry-viewer> -->
 	<app-code-viewer *ngIf="group.value == 1"></app-code-viewer>
 	<app-text-viewer *ngIf="group.value == 2"></app-text-viewer>
 	<app-console *ngIf="group.value == 3"></app-console>

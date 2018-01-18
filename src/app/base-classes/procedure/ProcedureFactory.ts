@@ -43,10 +43,9 @@ export class ProcedureFactory{
 
 		procedure.update(procedureData, undefined);
 
-		if(procedureData._children !== undefined){
-			for(let child=0; child < procedureData._children.length; child++){
-				let childProd :IProcedure = procedureData._children[child];
-				
+		if(procedureData.children !== undefined){
+			for(let child=0; child < procedureData.children.length; child++){
+				let childProd :IProcedure = procedureData.children[child];
 				procedure.addChildFromData(ProcedureFactory.getProcedureFromData(childProd, procedure));
 			}
 		}

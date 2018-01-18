@@ -34,9 +34,9 @@ body{
 	overflow: hidden !important;
 }
 
-split-gutter{ 
-	background-color: $color2 !important; 
-}
+// split-gutter{ 
+// 	background-color: $color2 !important; 
+// }
 
 split-area{
 	overflow-y: hidden !important;
@@ -372,12 +372,12 @@ span.addBtn{
 	padding-left: $default-side-padding !important;
 }
 
-split-area.sidebar.flowchart{
-	width: 150px !important;
-}
+// split-area.sidebar.flowchart{
+// 	width: 150px !important;
+// }
 
 .sidebar{
-	border-right: 2px solid $color2 !important;
+	//border-right: 2px solid $color2 !important;
 	width: 20% !important;
 	max-width: 200px;
 	min-width: 150px;

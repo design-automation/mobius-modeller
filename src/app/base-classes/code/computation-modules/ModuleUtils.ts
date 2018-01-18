@@ -79,7 +79,6 @@ export class ModuleUtils{
 	
 	static getParams(func: Function): {type: string, value: any}[]{
 
-
 	 	let fnStr = func.toString().replace( /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg, '');
 		let result = fnStr.slice(fnStr.indexOf('(')+1, fnStr.indexOf(')')).split(",")//.match( /([^\s,]+)/g);
 		if(result === null || result[0]==""){
@@ -94,6 +93,7 @@ export class ModuleUtils{
 				return {type: r_value[0].trim(), value: r_value[0].trim()} 
 			}
 			else{
+				console.log("here")
 				return {type: r_value[0].trim(), value: r_value[1].trim()} 
 			}
 

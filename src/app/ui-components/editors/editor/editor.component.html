@@ -3,38 +3,27 @@
 	<div class="default" *ngIf="_selectedNode == undefined">
 		No Node Selected
 	</div>
-
-	<div class="container" *ngIf="_selectedNode != undefined">
-		
-		<div class="sidebar">
-			<app-modulebox></app-modulebox>
-		</div>
-
-		<div class="view-container">
-	 		<app-parameter-editor></app-parameter-editor>
-			<app-procedure-editor></app-procedure-editor>
-		</div>
-
-	</div>
-
-
-	<!-- <split  *ngIf="_selectedNode != undefined"
+	
+	<!-- @Derek: Modify gutterSize/gutterColor/size -->
+	<!-- https://bertrandg.github.io/angular-split/#/documentation -->
+	<split  *ngIf="_selectedNode != undefined"
 			  direction="horizontal" 
-              [gutterSize]="7" 
+			  gutterColor="#8AA8C0"
+              [gutterSize]="3" 
               [useTransition]="true">
 
-		<split-area [visible]="true" [size]="30" order="1">
+		<split-area [visible]="true" [size]="20" order="1">
 			<app-modulebox></app-modulebox>
 		</split-area>
 
-		<split-area [visible]="true" [size]="70" order="2">
+		<split-area [visible]="true" [size]="80" order="2">
 			<div class="editor-container">
 		 		<app-parameter-editor></app-parameter-editor>
 				<app-procedure-editor></app-procedure-editor>
 			</div>
 		</split-area>
 
-    </split> -->
+    </split>
 
 </div>
 

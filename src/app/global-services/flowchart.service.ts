@@ -338,7 +338,7 @@ export class FlowchartService {
   }
 
   addProcedure(prod: IProcedure): void{
-      
+
       let node: IGraphNode = this.getSelectedNode();
       let selectedProcedure: IProcedure = this._selectedProcedure;
 
@@ -380,7 +380,6 @@ export class FlowchartService {
 
                node.addProcedureAtPosition(prod, index + 1);
            }
-
 
         }
       }

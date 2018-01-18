@@ -111,6 +111,7 @@ export abstract class Procedure implements IProcedure{
 	addChild(child: IProcedure): void{
 		if( this.hasChildren ){
 			this.children.push(child);
+			child.setParent(this);
 		}
 		else{
 			throw Error("Cannot add child to this procedure");
@@ -120,6 +121,7 @@ export abstract class Procedure implements IProcedure{
 	addChildFromData(child: IProcedure): void{
 		if( this.hasChildren ){
 			this.children.push(child);
+			child.setParent(this);
 		}
 		else{
 			throw Error("Cannot add child to this procedure");
@@ -128,6 +130,7 @@ export abstract class Procedure implements IProcedure{
 
 	addChildAtPosition(child: IProcedure, index: number): void{
 		this.children.splice(index, 0, child);
+		child.setParent(this);
 	}
 
 	deleteChild(procedure: IProcedure): void{

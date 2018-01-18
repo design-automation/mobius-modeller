@@ -76,7 +76,7 @@ export class ProcedureEditorComponent extends Viewer implements OnInit{
 	update(message: string){
 		if(message == "procedure"){
 			this.tree.treeModel.update();
-			
+			this.tree.treeModel.expandAll();
 		}
 		else{
 			this._node = this.flowchartService.getSelectedNode();
@@ -227,7 +227,9 @@ export class ProcedureEditorComponent extends Viewer implements OnInit{
 
 	updateProcedure($event: Event, prod: any, property: string){
 
-		if(property == 'left'){
+		//
+		// todo: change this string attachment!
+		if(property == 'left' && prod.data._type !== "If"){
 			prod.data.getLeftComponent().expression = 
 				prod.data.getLeftComponent().expression.replace(/[^\w\[\]]/gi, '');
 		}
@@ -266,6 +268,8 @@ export class ProcedureEditorComponent extends Viewer implements OnInit{
 			parent.data.deleteChild(node.data);
 			this.tree.treeModel.update();
 		}
+
+		this.flowchartService.selectProcedure(undefined);
 
 		// let prod: IProcedure = node.data;
 		// if(prod.getParent()){
