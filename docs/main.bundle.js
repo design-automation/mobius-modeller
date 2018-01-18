@@ -2707,7 +2707,6 @@ let LayoutService = class LayoutService {
     }
     setObj() {
         this._url = undefined;
-        this._fnObj = undefined;
     }
     // other functionality
     getAssets() {
@@ -4422,7 +4421,7 @@ MenuComponent = __decorate([
 /***/ "../../../../../src/app/ui-components/controls/modulebox/modulebox.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"toolbox\">\r\n\t<div class = \"toolbox-content\">\r\n\t\t<div class=\"inOutBtns\">\r\n\t\t\t<span class=\"fn_name\" (click)=\"addPort('in')\">Add Input</span>\r\n\t\t\t<span class =\"fn_name\" (click)=\"addPort('out')\">Add Output</span>\r\n\t\t</div>\r\n\t\t<hr>\r\n\r\n\t\t<mat-list condensed>\r\n\t\t\t<mat-list-item class=\"fn_name\" *ngFor=\"let type of procedureTypes\"\r\n\t\t\t\t\t\t\t\t \t\t(click)=\"addProcedure($event, type)\">{{getStringForProcedureType(type)}}</mat-list-item>\r\n\t\t</mat-list>\r\n\t\t<mat-accordion multi=\"true\">\r\n\r\n\t\t\t\t<!-- inputs -->\r\n\t\t\t\t<mat-expansion-panel [expanded]=\"true\" *ngFor=\"let cat of _category\">\r\n\t\t\t\t\t\r\n\t\t\t\t\t<mat-expansion-panel-header>\r\n\t\t\t\t\t\t<mat-panel-title>\r\n\t\t\t\t\t\t  {{ cat }} \r\n\t\t\t\t\t\t</mat-panel-title>\r\n\t\t\t\t\t\t<mat-panel-description>\r\n\t\t\t\t\t\t  <!-- This is a summary of the content -->\r\n\t\t\t\t\t\t</mat-panel-description>\r\n\t\t\t\t\t</mat-expansion-panel-header>\r\n\r\n\t\t\t\t\t<mat-list condensed>\r\n\t\t\t\t\t \t<mat-list-item class=\"fn_name\" *ngFor=\"let fn of _moduleList[cat]\" (click)=\"addActionProcedure(fn);\"> \r\n\t\t\t\t\t \t\t<span class=\"module\">{{ fn.module }}</span>.<span class=\"function\">{{ fn.name }}</span>\r\n\t\t\t\t\t \t</mat-list-item>\r\n\t\t\t\t\t</mat-list>\r\n\r\n\t\t\t\t</mat-expansion-panel>\r\n\t\t\t\t\r\n\t\t</mat-accordion>\r\n\t\t\r\n\t</div>\r\n</div>\r\n\r\n"
+module.exports = "<div class=\"toolbox\">\r\n\t<div class = \"toolbox-content\">\r\n\t\t<div class=\"inOutBtns\">\r\n\t\t\t<span class=\"fn_name\" (click)=\"addPort('in')\">Add Input</span>\r\n\t\t\t<span class =\"fn_name\" (click)=\"addPort('out')\">Add Output</span>\r\n\t\t</div>\r\n\t\t<hr>\r\n\r\n\t\t<mat-list condensed>\r\n\t\t\t<mat-list-item class=\"fn_name\" *ngFor=\"let type of procedureTypes\"\r\n\t\t\t\t\t\t\t\t \t\t(click)=\"addProcedure($event, type)\">{{getStringForProcedureType(type)}}</mat-list-item>\r\n\t\t</mat-list>\r\n\t\t<mat-accordion multi=\"true\">\r\n\r\n\t\t\t\t<!-- inputs -->\r\n\t\t\t\t<mat-expansion-panel [expanded]=\"true\" *ngFor=\"let cat of _category\">\r\n\t\t\t\t\t\r\n\t\t\t\t\t<mat-expansion-panel-header>\r\n\t\t\t\t\t\t<mat-panel-title>\r\n\t\t\t\t\t\t  {{ cat }} \r\n\t\t\t\t\t\t  <mat-icon style=\"font-size: 14px; margin-left: 5px;\" (click)=\"openModuleHelp($event, cat)\">help_outline</mat-icon>\r\n\t\t\t\t\t\t</mat-panel-title>\r\n\t\t\t\t\t\t<mat-panel-description>\r\n\t\t\t\t\t\t  <!-- This is a summary of the content -->\r\n\t\t\t\t\t\t</mat-panel-description>\r\n\t\t\t\t\t</mat-expansion-panel-header>\r\n\r\n\t\t\t\t\t<mat-list condensed>\r\n\t\t\t\t\t \t<mat-list-item class=\"fn_name\" *ngFor=\"let fn of _moduleList[cat]\" (click)=\"addActionProcedure(fn);\"> \r\n\t\t\t\t\t \t\t<span class=\"module\">{{ fn.module }}</span>.<span class=\"function\">{{ fn.name }}</span>\r\n\t\t\t\t\t \t</mat-list-item>\r\n\t\t\t\t\t</mat-list>\r\n\r\n\t\t\t\t</mat-expansion-panel>\r\n\t\t\t\t\r\n\t\t</mat-accordion>\r\n\t\t\r\n\t</div>\r\n</div>\r\n\r\n"
 
 /***/ }),
 
@@ -4450,9 +4449,10 @@ module.exports = module.exports.toString();
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ModuleboxComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm2015/core.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__base_classes_code_CodeModule__ = __webpack_require__("../../../../../src/app/base-classes/code/CodeModule.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__base_classes_viz_Viewer__ = __webpack_require__("../../../../../src/app/base-classes/viz/Viewer.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__base_classes_procedure_ProcedureModule__ = __webpack_require__("../../../../../src/app/base-classes/procedure/ProcedureModule.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__global_services_layout_service__ = __webpack_require__("../../../../../src/app/global-services/layout.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__base_classes_code_CodeModule__ = __webpack_require__("../../../../../src/app/base-classes/code/CodeModule.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__base_classes_viz_Viewer__ = __webpack_require__("../../../../../src/app/base-classes/viz/Viewer.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__base_classes_procedure_ProcedureModule__ = __webpack_require__("../../../../../src/app/base-classes/procedure/ProcedureModule.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -4466,16 +4466,18 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-let ModuleboxComponent = class ModuleboxComponent extends __WEBPACK_IMPORTED_MODULE_2__base_classes_viz_Viewer__["a" /* Viewer */] {
-    constructor(injector) {
+
+let ModuleboxComponent = class ModuleboxComponent extends __WEBPACK_IMPORTED_MODULE_3__base_classes_viz_Viewer__["a" /* Viewer */] {
+    constructor(injector, layoutService) {
         super(injector, "module-viewer");
+        this.layoutService = layoutService;
         this._moduleList = [];
         this._category = [];
         this._procedureArr = [];
         this.procedureTypes = [
-            __WEBPACK_IMPORTED_MODULE_3__base_classes_procedure_ProcedureModule__["b" /* ProcedureTypes */].Data,
-            __WEBPACK_IMPORTED_MODULE_3__base_classes_procedure_ProcedureModule__["b" /* ProcedureTypes */].ForLoopControl,
-            __WEBPACK_IMPORTED_MODULE_3__base_classes_procedure_ProcedureModule__["b" /* ProcedureTypes */].IfElseControl
+            __WEBPACK_IMPORTED_MODULE_4__base_classes_procedure_ProcedureModule__["b" /* ProcedureTypes */].Data,
+            __WEBPACK_IMPORTED_MODULE_4__base_classes_procedure_ProcedureModule__["b" /* ProcedureTypes */].ForLoopControl,
+            __WEBPACK_IMPORTED_MODULE_4__base_classes_procedure_ProcedureModule__["b" /* ProcedureTypes */].IfElseControl
         ];
     }
     ngOnInit() {
@@ -4486,7 +4488,7 @@ let ModuleboxComponent = class ModuleboxComponent extends __WEBPACK_IMPORTED_MOD
         for (let mod = 0; mod < modules.length; mod++) {
             let user_module = modules[mod];
             this._category.push(user_module["_name"]);
-            this._moduleList[user_module["_name"]] = this._moduleList.concat(__WEBPACK_IMPORTED_MODULE_1__base_classes_code_CodeModule__["b" /* ModuleUtils */].getFunctions(user_module));
+            this._moduleList[user_module["_name"]] = this._moduleList.concat(__WEBPACK_IMPORTED_MODULE_2__base_classes_code_CodeModule__["b" /* ModuleUtils */].getFunctions(user_module));
         }
     }
     reset() {
@@ -4511,21 +4513,21 @@ let ModuleboxComponent = class ModuleboxComponent extends __WEBPACK_IMPORTED_MOD
             return;
         }
         let prod_data = { result: "", module: fn.module, function: fn.name, params: fn.params };
-        let prod = __WEBPACK_IMPORTED_MODULE_3__base_classes_procedure_ProcedureModule__["a" /* ProcedureFactory */].getProcedure(__WEBPACK_IMPORTED_MODULE_3__base_classes_procedure_ProcedureModule__["b" /* ProcedureTypes */].Action, prod_data);
+        let prod = __WEBPACK_IMPORTED_MODULE_4__base_classes_procedure_ProcedureModule__["a" /* ProcedureFactory */].getProcedure(__WEBPACK_IMPORTED_MODULE_4__base_classes_procedure_ProcedureModule__["b" /* ProcedureTypes */].Action, prod_data);
         this.flowchartService.addProcedure(prod);
     }
     getStringForProcedureType(type) {
         let value = "";
-        if (type == __WEBPACK_IMPORTED_MODULE_3__base_classes_procedure_ProcedureModule__["b" /* ProcedureTypes */].Data) {
+        if (type == __WEBPACK_IMPORTED_MODULE_4__base_classes_procedure_ProcedureModule__["b" /* ProcedureTypes */].Data) {
             value = "variable";
         }
-        else if (type == __WEBPACK_IMPORTED_MODULE_3__base_classes_procedure_ProcedureModule__["b" /* ProcedureTypes */].Action) {
+        else if (type == __WEBPACK_IMPORTED_MODULE_4__base_classes_procedure_ProcedureModule__["b" /* ProcedureTypes */].Action) {
             value = "function";
         }
-        else if (type == __WEBPACK_IMPORTED_MODULE_3__base_classes_procedure_ProcedureModule__["b" /* ProcedureTypes */].IfElseControl) {
+        else if (type == __WEBPACK_IMPORTED_MODULE_4__base_classes_procedure_ProcedureModule__["b" /* ProcedureTypes */].IfElseControl) {
             value = "if-else";
         }
-        else if (type == __WEBPACK_IMPORTED_MODULE_3__base_classes_procedure_ProcedureModule__["b" /* ProcedureTypes */].ForLoopControl) {
+        else if (type == __WEBPACK_IMPORTED_MODULE_4__base_classes_procedure_ProcedureModule__["b" /* ProcedureTypes */].ForLoopControl) {
             value = "for-each loop";
         }
         return value;
@@ -4533,20 +4535,20 @@ let ModuleboxComponent = class ModuleboxComponent extends __WEBPACK_IMPORTED_MOD
     addProcedure($event, type) {
         $event.stopPropagation();
         let prod;
-        if (type == __WEBPACK_IMPORTED_MODULE_3__base_classes_procedure_ProcedureModule__["b" /* ProcedureTypes */].Data) {
+        if (type == __WEBPACK_IMPORTED_MODULE_4__base_classes_procedure_ProcedureModule__["b" /* ProcedureTypes */].Data) {
             let default_variable_name = "var" + this._procedureArr.length;
             let prod_data = { result: default_variable_name, value: "undefined" };
-            prod = __WEBPACK_IMPORTED_MODULE_3__base_classes_procedure_ProcedureModule__["a" /* ProcedureFactory */].getProcedure(__WEBPACK_IMPORTED_MODULE_3__base_classes_procedure_ProcedureModule__["b" /* ProcedureTypes */].Data, prod_data);
+            prod = __WEBPACK_IMPORTED_MODULE_4__base_classes_procedure_ProcedureModule__["a" /* ProcedureFactory */].getProcedure(__WEBPACK_IMPORTED_MODULE_4__base_classes_procedure_ProcedureModule__["b" /* ProcedureTypes */].Data, prod_data);
         }
-        else if (type == __WEBPACK_IMPORTED_MODULE_3__base_classes_procedure_ProcedureModule__["b" /* ProcedureTypes */].IfElseControl) {
+        else if (type == __WEBPACK_IMPORTED_MODULE_4__base_classes_procedure_ProcedureModule__["b" /* ProcedureTypes */].IfElseControl) {
             let prod_data = { if_condition: "undefined", el_condition: "undefined" };
-            prod = __WEBPACK_IMPORTED_MODULE_3__base_classes_procedure_ProcedureModule__["a" /* ProcedureFactory */].getProcedure(__WEBPACK_IMPORTED_MODULE_3__base_classes_procedure_ProcedureModule__["b" /* ProcedureTypes */].IfElseControl, prod_data);
+            prod = __WEBPACK_IMPORTED_MODULE_4__base_classes_procedure_ProcedureModule__["a" /* ProcedureFactory */].getProcedure(__WEBPACK_IMPORTED_MODULE_4__base_classes_procedure_ProcedureModule__["b" /* ProcedureTypes */].IfElseControl, prod_data);
         }
-        else if (type == __WEBPACK_IMPORTED_MODULE_3__base_classes_procedure_ProcedureModule__["b" /* ProcedureTypes */].ForLoopControl) {
+        else if (type == __WEBPACK_IMPORTED_MODULE_4__base_classes_procedure_ProcedureModule__["b" /* ProcedureTypes */].ForLoopControl) {
             let prod_data = { variable: "i", array_name: "[]" };
-            prod = __WEBPACK_IMPORTED_MODULE_3__base_classes_procedure_ProcedureModule__["a" /* ProcedureFactory */].getProcedure(__WEBPACK_IMPORTED_MODULE_3__base_classes_procedure_ProcedureModule__["b" /* ProcedureTypes */].ForLoopControl, prod_data);
+            prod = __WEBPACK_IMPORTED_MODULE_4__base_classes_procedure_ProcedureModule__["a" /* ProcedureFactory */].getProcedure(__WEBPACK_IMPORTED_MODULE_4__base_classes_procedure_ProcedureModule__["b" /* ProcedureTypes */].ForLoopControl, prod_data);
         }
-        else if (type == __WEBPACK_IMPORTED_MODULE_3__base_classes_procedure_ProcedureModule__["b" /* ProcedureTypes */].Action) {
+        else if (type == __WEBPACK_IMPORTED_MODULE_4__base_classes_procedure_ProcedureModule__["b" /* ProcedureTypes */].Action) {
         }
         else {
             throw Error("Procedure Type invalid");
@@ -4566,6 +4568,10 @@ let ModuleboxComponent = class ModuleboxComponent extends __WEBPACK_IMPORTED_MOD
         }
         this.flowchartService.update();
     }
+    openModuleHelp($event, category) {
+        $event.stopPropagation();
+        this.layoutService.showHelp({ module: category, name: undefined });
+    }
 };
 ModuleboxComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
@@ -4573,7 +4579,7 @@ ModuleboxComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/ui-components/controls/modulebox/modulebox.component.html"),
         styles: [__webpack_require__("../../../../../src/app/ui-components/controls/modulebox/modulebox.component.scss")]
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* Injector */]])
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* Injector */], __WEBPACK_IMPORTED_MODULE_1__global_services_layout_service__["a" /* LayoutService */]])
 ], ModuleboxComponent);
 
 
@@ -6023,7 +6029,7 @@ GeometryViewerComponent = __decorate([
 /***/ "../../../../../src/app/ui-components/viewers/help-viewer/help-viewer.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"viewer\">\r\n\t\r\n\t<h1> Welcome to Mobius! </h1>\r\n\t<!-- <div class=\"iframe-container\">\r\n\t\t<iframe [src]=\"_url\" frameborder=\"0\"></iframe>\r\n\t</div> -->\r\n\t<mat-accordion *ngIf='!fnObj'>\r\n\t \t<mat-expansion-panel *ngFor=\"let m of _helpMods\">\r\n\t    \t<mat-expansion-panel-header>\r\n\t    \t\t<mat-panel-title>\r\n\t\t\t      {{ getModName(m.name) }} \r\n\t\t\t    </mat-panel-title>\r\n\t    \t</mat-expansion-panel-header>\r\n\r\n\t\t\t<mat-list id=\"{{getModName(m.name)}}\" \r\n\t\t\t\tstyle=\"max-height: 500px; overflow: auto;\">\r\n\t\t\t\t<!-- <h3 mat-subheader>{{m.comment.shortText}}</h3> -->\r\n\r\n\t\t\t\t<h3 mat-subheader>Functions</h3>\r\n\t\t\t \t<mat-list-item *ngFor=\"let fn of m.children\">\r\n\t\t\t \t\t<div class = \"content\">\r\n\t\t\t\t \t\t<h4 mat-line>{{fn.name}}</h4>\r\n\t    \t\t\t\t<p mat-line>{{fn.signatures[0].comment.shortText}}</p>\r\n\t    \t\t\t\t<p mat-line>Returns: {{fn.signatures[0].comment.returns}}</p>\r\n\t    \t\t\t\t<p mat-line><a href=\"https://phtj.github.io/gs-modelling/docs/modules/{{getUrl(m.name, fn.name)}}\" target=\"_blank\">More</a></p>\r\n    \t\t\t\t</div>\r\n\t\t\t \t</mat-list-item>\r\n\t\t\t \t<mat-divider></mat-divider>\r\n\t\t\t</mat-list>\r\n\r\n\t \t</mat-expansion-panel>\r\n\t</mat-accordion>\r\n\r\n\t<!-- specific function -->\r\n\t<div *ngIf='fnObj'>\r\n\t\t\r\n\t\t<h4>Module: {{fnObj.module}}</h4>\r\n\t\t<h3>{{fnObj.name}}</h3>\r\n\t\t\r\n\t\t<div>\r\n\t\t\t{{fnObj.content.signatures[0].comment.shortText}}\r\n\t\t\tReturns: {{fnObj.content.signatures[0].comment.returns}}\r\n\t\t\t\t<a href=\"https://phtj.github.io/gs-modelling/docs/modules/{{getUrl(fnObj.module, fnObj.name)}}\" target=\"_blank\">\r\n\t\t\t\tMore\r\n\t\t\t\t</a>\r\n\t\t</div>\r\n\t\r\n\t\t<hr>\r\n\t\t\r\n\t\t<div (click)=\"showAll()\" style=\"cursor: pointer;\">[Show All]</div>\r\n\t\r\n\t</div>\r\n\r\n\r\n</div>"
+module.exports = "<div class=\"viewer\">\r\n\t\r\n\t<h1> Welcome to Mobius! </h1>\r\n\t<!-- <div class=\"iframe-container\">\r\n\t\t<iframe [src]=\"_url\" frameborder=\"0\"></iframe>\r\n\t</div> -->\r\n\t<mat-accordion *ngIf='!fnObj'>\r\n\t \t<mat-expansion-panel \r\n\t \t\t*ngFor=\"let m of _helpMods\"\r\n\t \t\t[expanded]=\"getModName(m.name) ==_activeMod\">\r\n\t    \t<mat-expansion-panel-header>\r\n\t    \t\t<mat-panel-title>\r\n\t\t\t      {{ getModName(m.name) }} \r\n\t\t\t    </mat-panel-title>\r\n\t    \t</mat-expansion-panel-header>\r\n\r\n\t\t\t<mat-list id=\"{{getModName(m.name)}}\" \r\n\t\t\t\tstyle=\"max-height: 500px; overflow: auto;\">\r\n\t\t\t\t<!-- <h3 mat-subheader>{{m.comment.shortText}}</h3> -->\r\n\r\n\t\t\t\t<h3 mat-subheader>Functions</h3>\r\n\t\t\t \t<mat-list-item *ngFor=\"let fn of m.children\">\r\n\t\t\t \t\t<div class = \"content\">\r\n\t\t\t\t \t\t<h4 mat-line>{{fn.name}}</h4>\r\n\t    \t\t\t\t<p mat-line>{{fn.signatures[0].comment.shortText}}</p>\r\n\t    \t\t\t\t<p mat-line>Returns: {{fn.signatures[0].comment.returns}}</p>\r\n\t    \t\t\t\t<p mat-line><a href=\"https://phtj.github.io/gs-modelling/docs/modules/{{getUrl(m.name, fn.name)}}\" target=\"_blank\">More</a></p>\r\n    \t\t\t\t</div>\r\n\t\t\t \t</mat-list-item>\r\n\t\t\t \t<mat-divider></mat-divider>\r\n\t\t\t</mat-list>\r\n\r\n\t \t</mat-expansion-panel>\r\n\t</mat-accordion>\r\n\r\n\t<!-- specific function -->\r\n\t<div *ngIf='fnObj && fnObj.name'>\r\n\t\t\r\n\t\t<h4>Module: {{fnObj.module}}</h4>\r\n\t\t<h3>{{fnObj.name}}</h3>\r\n\t\t\r\n\t\t<div>\r\n\t\t\t{{fnObj.content.signatures[0].comment.shortText}}\r\n\t\t\tReturns: {{fnObj.content.signatures[0].comment.returns}}\r\n\t\t\t\t<a href=\"https://phtj.github.io/gs-modelling/docs/modules/{{getUrl(fnObj.module, fnObj.name)}}\" target=\"_blank\">\r\n\t\t\t\tMore\r\n\t\t\t\t</a>\r\n\t\t</div>\r\n\t\r\n\t\t<hr>\r\n\t\t\r\n\t\t<div (click)=\"showAll()\" style=\"cursor: pointer;\">[Show All]</div>\r\n\t\r\n\t</div>\r\n\r\n\r\n</div>"
 
 /***/ }),
 
@@ -6095,7 +6101,7 @@ let HelpViewerComponent = class HelpViewerComponent {
         let url = 'https://phtj.github.io/gs-modelling/docs/' + url_segment;
         this._url = this.sanitizer.bypassSecurityTrustResourceUrl(url);
         let fnObj = this.layoutService.getObj();
-        if (fnObj) {
+        if (fnObj && fnObj.name) {
             this.fnObj = fnObj;
             for (let m = 0; m < this._helpMods.length; m++) {
                 let mo = this._helpMods[m];
@@ -6109,7 +6115,10 @@ let HelpViewerComponent = class HelpViewerComponent {
                     }
                 }
             }
-            // add required params to the fnObj
+        }
+        else if (fnObj && fnObj.module && !fnObj.name) {
+            this._activeMod = fnObj.module.toUpperCase();
+            this.fnObj = undefined;
         }
     }
     getUrl(name, fn) {
