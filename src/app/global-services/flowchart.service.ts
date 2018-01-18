@@ -13,7 +13,8 @@ import * as CircularJSON from 'circular-json';
 import * as ModuleSet from "../../assets/modules/AllModules";
 
 import {ConsoleService} from "./console.service";
-import {LayoutService} from "./layout.service"
+import {LayoutService} from "./layout.service";
+
 
 @Injectable()
 export class FlowchartService {
@@ -350,7 +351,7 @@ export class FlowchartService {
         }
         else{
 
-           if(selectedProcedure.getParent()){
+           if(selectedProcedure.getParent() && !selectedProcedure.getParent()["virtual"]){
 
                let parent: IProcedure = selectedProcedure.getParent();
                let index: number = 0;

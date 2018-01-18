@@ -76,7 +76,7 @@ export class ProcedureEditorComponent extends Viewer implements OnInit{
 	update(message: string){
 		if(message == "procedure"){
 			this.tree.treeModel.update();
-			this.tree.treeModel.expandAll();
+			//this.tree.treeModel.expandAll();
 		}
 		else{
 			this._node = this.flowchartService.getSelectedNode();

@@ -328,15 +328,19 @@ export class CodeGeneratorJS extends CodeGenerator{
 			return "let " + port.getName() + " = " + port.getDefaultValue(); 
 		}
 
-		executeNode(node: IGraphNode, params: any, Modules: IModule[], print: Function): any{
+		executeNode(node: IGraphNode, params: any, 
+							Modules: IModule[], 
+							print: Function): any{
+
 			//let gis = this._modules["gis"];
 			let str: string = "(function(){ \
-						" + this.getNodeCode(node) + "\n" + this.getFunctionCall(node, [], true) + "\n" + "return " + node.getName() + ";" + "})(); \
+						" + this.getNodeCode(node) + "\n" + 
+							this.getFunctionCall(node, [], true) + "\n" + 
+							"return " + node.getName() + ";" + "})(); \
 						";
 			let result: any;
 
 			try{
-				console.log(str);
 				result = eval(str);
 			}
 			catch(ex){
