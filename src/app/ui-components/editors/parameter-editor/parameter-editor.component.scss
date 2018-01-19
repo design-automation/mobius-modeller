@@ -21,8 +21,9 @@
 		display: flex; 
 		flex-flow: row nowrap; 
 		justify-content: space-between!important;
-		padding: 0px;
 		padding-left: $default-side-padding;
+		height: auto;
+		min-height: 24px;
 
 		//margin: 2px;
 		border-bottom: 1px solid $color2;
@@ -33,7 +34,7 @@
 		&:hover{
 			.content{
 				flex-flow: row wrap;
-				height: auto;
+				height: auto !important;
 			}
 			.controls{
 				display: flex;
@@ -43,25 +44,39 @@
 
 		span{
 			width: 100px;
+			height: $fsize2;
+			//border-bottom: 1px solid $color2 !important;
 			&:hover{
-				border-bottom: 1px solid $color4 !important;
+				//border-bottom: 1px solid $color4 !important;
 			}
 		}
 		.content{
 			//width: 100px;
 			display: flex;
 			flex-flow: row nowrap;
-			height: 20px;
+			height: $fsize1;
 			font-size: $fsize2;
-			line-height: 20px;
+			line-height: $fsize1;
 			justify-content: space-between;
-
-			margin-right: 50px;
+			padding: 0;
+			margin: 2px 0px;
+			
+			.row{
+				height: 20px !important;
+			}
+			span{
+				padding:0 !important;
+				text-align: center !important;
+				border-bottom: 1px solid $color2;
+				margin-right: 5px;
+				//height: $fsize2 !important;
+				//line-height: $fsize1 !important;
+			}
 
 			select{
 				font-size: $fsize2;
 				width: 100px;
-				border: 0px;
+				border: 0px !important;
 
 				color: $color1;
 			}
