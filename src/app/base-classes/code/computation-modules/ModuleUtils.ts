@@ -119,6 +119,9 @@ export class ModuleUtils{
 			let func = mod[function_name];
 
 			if( mod.hasOwnProperty( function_name )){
+
+				console.log(function_name)
+
 				let obj = { name: function_name, 
 							module: module_name,
 							params: this.getParams( func ),

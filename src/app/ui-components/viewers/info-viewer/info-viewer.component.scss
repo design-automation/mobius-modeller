@@ -4,8 +4,7 @@
 	@extend .viewer;
 
 	padding: $default-side-padding;
-	height: 100%;
-
+	height: auto;
 	overflow: auto;
-
+	
 }
