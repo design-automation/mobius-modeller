@@ -39,6 +39,8 @@ export class HelpViewerComponent implements OnInit {
           return mods.indexOf(mod_name) > -1;
       })
 
+      console.log(this._helpMods);
+
   }
 
   notify(): void{
@@ -73,7 +75,13 @@ export class HelpViewerComponent implements OnInit {
   }
 
   getUrl(name: string, fn: string): string{
-    return "_" + name.substring(1, name.length - 1).toLowerCase() + "_.html#" + fn.toLowerCase(); 
+    if(name.startsWith("\"")){
+       return "_" + name.substring(1, name.length - 1).toLowerCase() + "_.html#" + fn.toLowerCase();  
+    }
+    else{
+       return "_" + name.toLowerCase() + "_.html#" + fn.toLowerCase(); 
+    }
+   
   }
 
   getModName(name: string): string{
