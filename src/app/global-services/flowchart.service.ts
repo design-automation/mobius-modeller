@@ -388,6 +388,8 @@ export class FlowchartService {
         node.addProcedure(prod);
       }
 
+      this.selectProcedure(prod);
+
       this.update("procedure");
   }
 
@@ -474,6 +476,10 @@ export class FlowchartService {
 
   getSelectedPortIndex(): number{
     return this._selectedPort;
+  }
+
+  getSelectedProcedure(): IProcedure{
+    return this._selectedProcedure;
   }
 
   //
