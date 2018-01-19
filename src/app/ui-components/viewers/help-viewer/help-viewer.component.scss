@@ -82,10 +82,12 @@ mat-panel-description{
 	line-height: $fsize1;
 }*/
 
+
+
 mat-list{
 	.mat-subheader{
 		display: none; //not sure the purpose of this word
-		font-size: $fsize1;
+		font-size: $fsize2;
 		color: $color1;
 		margin: 0;
 		padding: 0;
@@ -93,18 +95,24 @@ mat-list{
 	mat-list-item{
 		h4{
 			color: $pcolor4;
-			font-size: $fsize1;
+			font-size: $fsize2;
 			border-bottom: 1px solid $color2;
 			font-weight: bold;
 			display: block;
+			margin: 0;
+			//margin-bottom: $fsize2;
 		}
 		p{
 			font-size: $fsize2;
 			color: $color1;
+			margin:0;
 			a{
 				color: $color1;
 			}
 		}
+	}
+	div{
+		padding: 0 !important;
 	}
 }
 

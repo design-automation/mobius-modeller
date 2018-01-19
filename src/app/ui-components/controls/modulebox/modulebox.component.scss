@@ -22,7 +22,9 @@
 	//padding-bottom: $header-height;
 	.inOutBtns{
 		padding-left: $default-side-padding;
-		padding-top: $default-side-padding;
+		padding-top: $default-side-padding/3;
+		padding-bottom: $default-side-padding/3;
+		border-bottom: 1px solid $color2;
 		span{
 			display: block;
 		}
@@ -37,6 +39,7 @@
 			line-height: 14px;
 			color: $color1; 
 			cursor: pointer;
+			white-space:nowrap;
 			&:hover{
 				color: $color4;
 			}
@@ -53,6 +56,12 @@
 				color: $color1 !important;
 				font-weight: bold !important;
 				font-size: $fsize2 !important;
+				display: flex;
+				align-items: center;
+			}
+			mat-icon{
+				display: flex;
+				align-items: center;
 			}
 			&:hover{
 				background-color: $color3 !important;
@@ -60,8 +69,8 @@
 		}
 		mat-list{
 			background-color: $color3 !important;
-			padding-top: $fsize2;
-			padding-bottom: $fsize2;
+			padding-top: $default-side-padding/3;
+			padding-bottom: $default-side-padding/3;
 		}
 	}
 
