@@ -3,8 +3,8 @@
 </div>
 
 <div class="container" *ngIf="_selectedNode != undefined">
-	<h3>Selected Node: {{_selectedNode.getName()}}</h3>
-	<hr>
+	<!-- <h3>Selected Node: {{_selectedNode.getName()}}</h3>
+	<hr> -->
 	<mat-accordion multi="true" [displayMode]="flat">
 			<!-- inputs -->
 			<mat-expansion-panel [expanded]="true" *ngFor="let output of _selectedNode.getOutputs()">

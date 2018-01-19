@@ -87,8 +87,13 @@ export class ParameterEditorComponent extends Viewer{
       if(value.trim().length > 0){
         port.setDefaultValue(value)
         // put a timeout on this update or something similar to solve jumpiness
-        this.flowchartService.update();
       }
+      else{
+        port.setDefaultValue(undefined)
+      }
+
+      this.flowchartService.update();
+
 
     }
 

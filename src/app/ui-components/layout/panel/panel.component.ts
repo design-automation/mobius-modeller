@@ -1,29 +1,46 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Injector } from '@angular/core';
 import { LayoutService } from '../../../global-services/layout.service';
 import { Subscription } from 'rxjs/Subscription';
 import {EViewer} from '../../viewers/EViewer';
+
+
+import {Viewer} from '../../../base-classes/viz/Viewer';
 
 @Component({
   selector: 'app-panel',
   templateUrl: './panel.component.html',
   styleUrls: ['./panel.component.scss']
 })
-export class PanelComponent implements OnInit{
+export class PanelComponent extends Viewer implements OnInit{
 
   layout;
-  _subscription: Subscription;
+  _lsubscription: Subscription;
   heading: string;
+
+  _selectedNodeName: string;
 
   EV = EViewer;
 
   @Input() panel_id: string;
 
-  constructor(private layoutService: LayoutService) { 
-	  this._subscription = this.layoutService.getMessage().subscribe(message => { 
+  constructor(injector: Injector, private layoutService: LayoutService) { 
+
+    super(injector);
+
+	  this._lsubscription = this.layoutService.getMessage().subscribe(message => { 
 			this.refresh();
 	  });
 
 	  this.refresh();
+
+  }
+
+  update(): void{
+    this._selectedNodeName = ":" + " " + this.flowchartService.getSelectedNode().getName();
+  }
+
+  reset(): void{
+    this._selectedNodeName = "";
   }
 
   refresh(){ 

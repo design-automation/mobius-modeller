@@ -34,10 +34,11 @@ import { TextViewerComponent } from './ui-components/viewers/text-viewer/text-vi
 import { HelpViewerComponent } from './ui-components/viewers/help-viewer/help-viewer.component';
 import { NodeLibraryComponent } from './ui-components/viewers/node-library/node-library.component';
 import { PanelComponent } from './ui-components/layout/panel/panel.component';
+import { ConsoleComponent } from './ui-components/console/console.component';
+import { InfoViewerComponent } from './ui-components/viewers/info-viewer/info-viewer.component';
 
 
 import { GSViewer } from './gs-viewer/gs-viewer.module';
-import { ConsoleComponent } from './ui-components/console/console.component';
 import { ConsoleService } from './global-services/console.service';
 
 @NgModule({
@@ -59,7 +60,8 @@ import { ConsoleService } from './global-services/console.service';
     HelpViewerComponent,
     NodeLibraryComponent,
     PanelComponent,
-    ConsoleComponent
+    ConsoleComponent,
+    InfoViewerComponent
   ],
   entryComponents: [
     ModuleboxComponent

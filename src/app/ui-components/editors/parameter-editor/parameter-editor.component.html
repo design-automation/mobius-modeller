@@ -14,7 +14,7 @@
 					
 					<mat-expansion-panel-header>
 						<mat-panel-title>
-						  Inputs 
+						  Inputs ({{ _inputs.length }})
 						</mat-panel-title>
 						<mat-panel-description>
 						  <!-- This is a summary of the content -->
@@ -41,12 +41,12 @@
 								</span>
 							</div>
 
-							<div class='row'>
-								<!--<span class='label'>Default</span>-->
+							<!-- <div class='row'>
 								<span class='content' contenteditable="true" (blur)="updateDefaultValue($event, inp)">
-									{{inp.getDefaultValue()}}
+									<span *ngIf="!inp.getDefaultValue()"><i>Default Value</i></span>
+									<span *ngIf="inp.getDefaultValue()">{{inp.getDefaultValue()}}</span>
 								</span>
-							</div>	
+							</div>	 -->
 						</div>			
 						<div class="controls">
 					        <button mat-button (click)='deletePort($event, "input", i)'>
@@ -60,7 +60,7 @@
 				<mat-expansion-panel [disabled]="_outputs.length == 0" [expanded]="true">
 					<mat-expansion-panel-header>
 						<mat-panel-title>
-						  Outputs 
+						  Outputs ({{ _outputs.length }})
 						</mat-panel-title>
 						<mat-panel-description>
 						  <!-- This is a summary of the content -->

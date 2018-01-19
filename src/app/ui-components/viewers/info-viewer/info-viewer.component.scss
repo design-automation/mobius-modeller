@@ -1,0 +1,11 @@
+@import '~scss/globals';
+
+.viewer{
+	@extend .viewer;
+
+	padding: $default-side-padding;
+	height: 100%;
+
+	overflow: auto;
+
+}

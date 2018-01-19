@@ -1,5 +1,5 @@
 export enum EViewer{
-  Viewer = "Output Viewer", 
+  Viewer = "Output", 
   Flowchart = "Flowchart", 
   Editor = "Procedure", 
   Parameter = "Parameters"

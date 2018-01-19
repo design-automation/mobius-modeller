@@ -20,10 +20,10 @@
 					<mat-form-field>
 						<textarea matInput 
 							matTextareaAutosize 
-							matAutosizeMinRows="0"
+							matAutosizeMinRows="1"
 	            			matAutosizeMaxRows="5" 
-	            			(change)="updateComputedValue($event, inp)">
-	            			{{ getValue(inp) }}
+	            			(change)="updateComputedValue($event, inp)"
+	            			value="{{ getValue(inp) }}">
 	            		</textarea>
 					</mat-form-field>
 				</form>
@@ -38,3 +38,4 @@
 	<button id="execute" mat-raised-button color="accent" (click)="executeFlowchart($event)">Execute Flowchart</button>  
 
 </div>
+
