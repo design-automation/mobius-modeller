@@ -43,6 +43,10 @@ split-area{
 	height: 100% !important;
 }
 
+split-gutter{
+	border-right: 1px solid $color2 !important;
+}
+
 .mat-tab-label{
 	font-size: $fsize2 !important; 
 	line-height: 18px;
@@ -88,14 +92,16 @@ split-area{
 		//padding-bottom: $default-side-padding!important;
 	span{
 		color: $color1;
+		padding: 0 !important;
 		&:hover{
 			cursor: pointer;
 			color: $color4;
-			border: 0px !important;
+			//border: 0px !important;
 		}
 	}
 	.content{
 		color: $color1 !important;
+		text-align: center !important;
 		select{
 			color:$color1 !important;
 			border-color: $color1 !important;
@@ -376,6 +382,8 @@ span.addBtn{
 .mat-input-wrapper{
 	padding: 0 !important;
 	border-bottom: 1px solid $color2 !important;
+	font-size: $fsize2 !important;
+	color: $color1;
 }
 
 .mat-input-infix{

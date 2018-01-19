@@ -43,9 +43,14 @@ div.mat-input-wrapper.mat-form-field-wrapper{
 			color: $color1;
 			width:20%;
 				.param{
-					display: flex; 
-					flex-direction: column; 
+					display: flex;
 					margin: 5px 0px;
+
+
+					height: 100%;
+					align-items: center;
+					justify-content: center;
+
 					//.label{
 						//width: 80px; 
 						//text-transform: uppercase; 
