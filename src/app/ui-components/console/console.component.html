@@ -5,7 +5,9 @@
 	<div class = "console-log">
 		<div class="message-container" *ngFor="let msg of _messages;">
 			<span class="time">{{msg.time | date:'mediumTime'}}</span>
-			<span class="message">{{msg.message}}</span>
+			<div class="message"
+				[innerHTML]="msg.message">
+			</div>
 		</div>
 	</div>
 </div>

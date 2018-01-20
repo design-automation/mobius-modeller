@@ -60,10 +60,21 @@ export abstract class Procedure implements IProcedure{
 
 	enable(): void{
 		this._disabled = false;
+		if(this.children.length){
+			for(let i=0; i < this.children.length; i++){
+				this.children[i].enable();
+			}
+		}
 	}
 
 	disable(): void{
 		this._disabled = true;
+
+		if(this.children.length){
+			for(let i=0; i < this.children.length; i++){
+				this.children[i].disable();
+			}
+		}
 	}
 
 	printToConsole(): boolean{

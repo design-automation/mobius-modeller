@@ -391,7 +391,12 @@ export class FlowchartService {
         node.addProcedure(prod);
       }
 
-      this.selectProcedure(prod);
+      if(prod.getType() == "IfElse"){
+          this.selectProcedure(prod.getChildren()[0]);
+      }
+      else{
+        this.selectProcedure(prod);
+      }
 
       this.update("procedure");
   }
@@ -510,12 +515,24 @@ export class FlowchartService {
         this._flowchart.execute(this.code_generator, this._moduleMap, printFunction);
         this.consoleService.addMessage("Flowchart was executed.");
         if(consoleStrings.length > 0){
-          this.consoleService.addMessage("Console Messages:\n" + consoleStrings.join("\n"))
+
+          let consoleHTML: string = "<div class='console-heading'>Console Messages:</div>";
+
+          for(let i=0; i < consoleStrings.length; i++){
+               let split = consoleStrings[i].split(":");
+               consoleHTML += "<div class='console-line'>" + 
+                       "<span class='var-name'>Value of "  + split[0] + ": " + 
+                       "<span class='var-value'>"  + split[1] + 
+                         "</div>"
+          }
+
+          this.consoleService.addMessage(consoleHTML);
+
         };
       }
       catch(ex){
-        this.consoleService.addMessage("There was an error executing");
-        this.consoleService.addMessage(ex);
+        let errorMessage: string = "<div class='error'>" + ex + "</div>";
+        this.consoleService.addMessage( errorMessage );
         this.layoutService.showConsole();
       }
 
