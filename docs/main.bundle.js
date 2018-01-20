@@ -2574,6 +2574,24 @@ let FlowchartService = class FlowchartService {
         }
         return this._flowchart.getNodeByIndex(this._selectedNode).getId() == node.getId();
     }
+    //
+    //
+    //
+    printConsole(consoleStrings) {
+        if (consoleStrings.length > 0) {
+            let consoleHTML = "<div>\
+          <div class='console-heading'>Console Messages:</div>";
+            for (let i = 0; i < consoleStrings.length; i++) {
+                let split = consoleStrings[i].split(":");
+                consoleHTML += "<div class='console-line'>" +
+                    "<span class='var-name'>Value of " + split[0] + ": " +
+                    "<span class='var-value'>" + split[1] +
+                    "</div>";
+            }
+            consoleHTML += "</div>";
+            this.consoleService.addMessage(consoleHTML);
+        }
+    }
     // 
     //  run this flowchart
     //
@@ -2584,21 +2602,11 @@ let FlowchartService = class FlowchartService {
         }
         try {
             this._flowchart.execute(this.code_generator, this._moduleMap, printFunction);
+            this.printConsole(consoleStrings);
             this.consoleService.addMessage("Flowchart was executed.");
-            if (consoleStrings.length > 0) {
-                let consoleHTML = "<div class='console-heading'>Console Messages:</div>";
-                for (let i = 0; i < consoleStrings.length; i++) {
-                    let split = consoleStrings[i].split(":");
-                    consoleHTML += "<div class='console-line'>" +
-                        "<span class='var-name'>Value of " + split[0] + ": " +
-                        "<span class='var-value'>" + split[1] +
-                        "</div>";
-                }
-                this.consoleService.addMessage(consoleHTML);
-            }
-            ;
         }
         catch (ex) {
+            this.printConsole(consoleStrings);
             let errorMessage = "<div class='error'>" + ex + "</div>";
             this.consoleService.addMessage(errorMessage);
             this.layoutService.showConsole();
@@ -4212,7 +4220,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".reset {\n  margin: 0px;\n  padding: 0px; }\n\n.default {\n  font-size: 12px;\n  color: #8AA8C0;\n  line-height: 150px;\n  text-align: center; }\n\n.viewer {\n  /* \twidth: 100%; \r\noverflow: auto;\r\n\r\npadding: 0px;\r\nmargin: 0px;\r\n\r\n.header{\r\n\r\n\tdisplay: flex; \r\n\tflex-direction: row; \r\n\tjustify-content: space-between;\r\n\r\n\tposition: relative;\r\n\tfont-size: 14px; \r\n\tfont-weight: 600; \r\n\tline-height: $header-height;\r\n\ttext-transform: uppercase;\r\n\tletter-spacing: 1.5px;\r\n\theight: $header-height;\r\n\r\n\tcolor: #ADADAD;\r\n\r\n\t.btn-group{\r\n\t\theight: $header-height; \r\n\r\n\t\tbutton{\r\n\t\t\twidth: 0.9*$header-height; \r\n\t\t\theight: 0.9*$header-height; \r\n\t\t\tmargin: 0px;\r\n\t\t\tborder: 1px solid #B4B1B1;\r\n\t\t\tbox-shadow: none;\r\n\r\n\t\t\t&:focus{\r\n\t\t\t\t\r\n\t\t\t}\r\n\t\t}\r\n\t\t\r\n\t}\r\n\r\n}\r\n\r\n.container{\r\n}\r\n\r\nbutton{\r\n\t&:focus{\r\n\t\t\r\n\t}\r\n} */ }\n\n.viewer .container {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    height: 100%; }\n\n.viewer .container .view-container {\n      -webkit-box-sizing: border-box;\n              box-sizing: border-box;\n      height: 100%;\n      width: 100%;\n      padding-bottom: 30px;\n      overflow: auto; }\n\n.container {\n  position: relative;\n  height: 100%;\n  overflow-y: auto !important;\n  -webkit-box-sizing: border-box !important;\n          box-sizing: border-box !important;\n  padding: 15px;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-flow: column nowrap;\n          flex-flow: column nowrap; }\n\n.container .message-container {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-flow: column wrap;\n            flex-flow: column wrap;\n    margin: 7.5px;\n    -webkit-box-pack: justify;\n        -ms-flex-pack: justify;\n            justify-content: space-between;\n    -webkit-box-flex: 0;\n        -ms-flex-positive: 0;\n            flex-grow: 0;\n    -ms-flex-negative: 0;\n        flex-shrink: 0;\n    padding: 0 5 0 0 !important;\n    border-bottom: 1px solid #8AA8C0;\n    font-family: 'Ubuntu Mono', monospace; }\n\n.container .message-container .time {\n      min-width: 50%;\n      font-size: 10px;\n      white-space: nowrap;\n      color: grey !important; }\n\n.container .message-container .message {\n      min-width: auto;\n      font-size: 12px;\n      display: -webkit-box;\n      display: -ms-flexbox;\n      display: flex;\n      -webkit-box-orient: horizontal;\n      -webkit-box-direction: normal;\n          -ms-flex-flow: row wrap;\n              flex-flow: row wrap;\n      color: #395D73 !important; }\n\n.container button {\n    max-width: 30px;\n    height: 30px;\n    min-width: 30px;\n    padding: 0px !important;\n    border-radius: 50%;\n    border: 1px solid #395D73;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center; }\n\n.container button .fa-eraser {\n      height: 15px;\n      font-size: 15px !important;\n      color: #395D73;\n      padding: 0;\n      display: -webkit-box;\n      display: -ms-flexbox;\n      display: flex;\n      -webkit-box-align: center;\n          -ms-flex-align: center;\n              align-items: center;\n      -webkit-box-pack: center;\n          -ms-flex-pack: center;\n              justify-content: center; }\n\n.container button:hover {\n      background-color: #F1F1F1 !important; }\n\n.container button:hover .fa-eraser {\n        color: #F07A79 !important; }\n\n.btn-container {\n  position: absolute;\n  right: 60px;\n  top: 15px; }\n\n.btn-container button {\n    position: fixed; }\n", ""]);
+exports.push([module.i, ".reset {\n  margin: 0px;\n  padding: 0px; }\n\n.default {\n  font-size: 12px;\n  color: #8AA8C0;\n  line-height: 150px;\n  text-align: center; }\n\n.viewer {\n  /* \twidth: 100%; \r\noverflow: auto;\r\n\r\npadding: 0px;\r\nmargin: 0px;\r\n\r\n.header{\r\n\r\n\tdisplay: flex; \r\n\tflex-direction: row; \r\n\tjustify-content: space-between;\r\n\r\n\tposition: relative;\r\n\tfont-size: 14px; \r\n\tfont-weight: 600; \r\n\tline-height: $header-height;\r\n\ttext-transform: uppercase;\r\n\tletter-spacing: 1.5px;\r\n\theight: $header-height;\r\n\r\n\tcolor: #ADADAD;\r\n\r\n\t.btn-group{\r\n\t\theight: $header-height; \r\n\r\n\t\tbutton{\r\n\t\t\twidth: 0.9*$header-height; \r\n\t\t\theight: 0.9*$header-height; \r\n\t\t\tmargin: 0px;\r\n\t\t\tborder: 1px solid #B4B1B1;\r\n\t\t\tbox-shadow: none;\r\n\r\n\t\t\t&:focus{\r\n\t\t\t\t\r\n\t\t\t}\r\n\t\t}\r\n\t\t\r\n\t}\r\n\r\n}\r\n\r\n.container{\r\n}\r\n\r\nbutton{\r\n\t&:focus{\r\n\t\t\r\n\t}\r\n} */ }\n\n.viewer .container {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    height: 100%; }\n\n.viewer .container .view-container {\n      -webkit-box-sizing: border-box;\n              box-sizing: border-box;\n      height: 100%;\n      width: 100%;\n      padding-bottom: 30px;\n      overflow: auto; }\n\n.container {\n  position: relative;\n  height: 100%;\n  overflow-y: auto !important;\n  -webkit-box-sizing: border-box !important;\n          box-sizing: border-box !important;\n  padding: 15px;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-flow: column nowrap;\n          flex-flow: column nowrap; }\n\n.container .message-container {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-flow: column wrap;\n            flex-flow: column wrap;\n    margin: 7.5px;\n    -webkit-box-pack: justify;\n        -ms-flex-pack: justify;\n            justify-content: space-between;\n    -webkit-box-flex: 0;\n        -ms-flex-positive: 0;\n            flex-grow: 0;\n    -ms-flex-negative: 0;\n        flex-shrink: 0;\n    padding: 0 5 0 0 !important;\n    border-bottom: 1px solid #8AA8C0;\n    font-family: 'Ubuntu Mono', monospace; }\n\n.container .message-container .time {\n      min-width: 50%;\n      font-size: 10px;\n      white-space: nowrap;\n      color: grey !important; }\n\n.container .message-container .message {\n      min-width: auto;\n      font-size: 12px;\n      color: #395D73 !important; }\n\n.container .message-container .message .error {\n        color: red; }\n\n.container button {\n    max-width: 30px;\n    height: 30px;\n    min-width: 30px;\n    padding: 0px !important;\n    border-radius: 50%;\n    border: 1px solid #395D73;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center; }\n\n.container button .fa-eraser {\n      height: 15px;\n      font-size: 15px !important;\n      color: #395D73;\n      padding: 0;\n      display: -webkit-box;\n      display: -ms-flexbox;\n      display: flex;\n      -webkit-box-align: center;\n          -ms-flex-align: center;\n              align-items: center;\n      -webkit-box-pack: center;\n          -ms-flex-pack: center;\n              justify-content: center; }\n\n.container button:hover {\n      background-color: #F1F1F1 !important; }\n\n.container button:hover .fa-eraser {\n        color: #F07A79 !important; }\n\n.btn-container {\n  position: absolute;\n  right: 60px;\n  top: 15px; }\n\n.btn-container button {\n    position: fixed; }\n", ""]);
 
 // exports
 
