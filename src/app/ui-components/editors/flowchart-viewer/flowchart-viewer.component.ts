@@ -521,7 +521,9 @@ export class FlowchartViewerComponent extends Viewer{
 
   updateNodeName($event): void{
     let name: string =  $event.target.value; 
+
     if(name.trim().length > 0){
+      name = name.replace(/[^\w\[\]]/gi, '');
       this._selectedNode.setName(name);
       this.flowchartService.update();
     }

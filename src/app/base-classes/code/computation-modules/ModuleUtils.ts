@@ -93,7 +93,6 @@ export class ModuleUtils{
 				return {type: r_value[0].trim(), value: r_value[0].trim()} 
 			}
 			else{
-				console.log("here")
 				return {type: r_value[0].trim(), value: r_value[1].trim()} 
 			}
 
@@ -119,9 +118,6 @@ export class ModuleUtils{
 			let func = mod[function_name];
 
 			if( mod.hasOwnProperty( function_name )){
-
-				console.log(function_name)
-
 				let obj = { name: function_name, 
 							module: module_name,
 							params: this.getParams( func ),
