@@ -68,6 +68,10 @@ mat-panel-description{
 
 .content{
 	width: 100%;
+	.head-descr{
+		margin-bottom: $fsize2;
+		font-size: $fsize2;
+	}
 }
 
 /*
@@ -106,8 +110,10 @@ mat-list{
 			font-size: $fsize2;
 			color: $color1;
 			margin:0;
+
 			a{
-				color: $color1;
+				color: $color2;
+				font-size: $fsize2;
 			}
 		}
 	}
@@ -116,3 +122,27 @@ mat-list{
 	}
 }
 
+
+.topic{
+	color: $color1; 
+	cursor: default !important;
+	font-weight: bold;
+	font-size: $fsize2;
+	&:hover{
+		color: $color1;
+	}
+}
+
+.descr{
+	font-size: $fsize2;
+	color: $color1;
+	cursor: default !important;
+}
+
+.return-block{
+	//margin-top: $fsize2/2;
+	//display: block;
+	.topic{
+		text-decoration: underline;
+	}
+}

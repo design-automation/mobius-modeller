@@ -37,7 +37,9 @@
 		.message{
 			min-width: auto;
 			font-size: $fsize2; 
-			white-space: nowrap;
+			
+			display: flex;
+			flex-flow: row wrap;
 			color: $color1 !important;
 		}
 	}

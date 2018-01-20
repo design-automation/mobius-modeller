@@ -22,18 +22,25 @@
 			 	<mat-list-item *ngFor="let fn of m.children">
 			 		<div class = "content">
 				 		<h4 mat-line>{{fn.name}}</h4>
-	    				<p mat-line>{{fn.signatures[0].comment.shortText}}</p>
+	    				<p class="head-descr" mat-line>{{fn.signatures[0].comment.shortText}}</p>
 					
 						<!-- @derek: parameters-->
-						<div  mat-line *ngIf='fn.signatures[0].parameters'>
+						<div  class="parameters" mat-line *ngIf='fn.signatures[0].parameters'>
 							<div *ngFor="let pa of fn.signatures[0].parameters">
-								<span>Name: {{pa.name}}</span>
+								<!--<span class="topic">Name: </span>-->
+								<span class="topic">{{pa.name}}: </span>
 								<!-- <span *ngIf="pa.type">Type: {{pa.type.type}}</span> -->
-								<span *ngIf="pa.comment">Description: {{pa.comment.text}}</span>
+								<!--<span class="topic">Description: </span>-->
+								<span class="descr" *ngIf="pa.comment">{{pa.comment.text}}</span>
 							</div>
 						</div>
 
-	    				<p mat-line>Returns: {{fn.signatures[0].comment.returns}}</p>
+						<div class="return-block">
+		    				<span class="topic">Returns: </span>
+		    				<span class="descr">{{fn.signatures[0].comment.returns}}</span>
+		    			</div>
+
+		    			
 	    				<p mat-line>	
 	    					<a href="https://phtj.github.io/gs-modelling/docs/modules/{{getUrl(m.name, fn.name)}}" target="_blank">More</a>
 	    				</p>

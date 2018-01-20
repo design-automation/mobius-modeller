@@ -157,7 +157,7 @@ split-area{
 					cursor: move;
 
 					&.disabled{
-						background-color: $pcolor5;
+						opacity: 0.4;
 					}
 
 					&.selected{
