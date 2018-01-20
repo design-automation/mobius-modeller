@@ -500,6 +500,28 @@ export class FlowchartService {
     return this._flowchart.getNodeByIndex(this._selectedNode).getId() == node.getId();
   }
 
+  //
+  //
+  //
+  printConsole(consoleStrings: string[]): void{
+      if(consoleStrings.length > 0){
+          let consoleHTML: string = "<div>\
+          <div class='console-heading'>Console Messages:</div>";
+
+          for(let i=0; i < consoleStrings.length; i++){
+               let split = consoleStrings[i].split(":");
+               consoleHTML += "<div class='console-line'>" + 
+                       "<span class='var-name'>Value of "  + split[0] + ": " + 
+                       "<span class='var-value'>"  + split[1] + 
+                         "</div>"
+          }
+
+          consoleHTML += "</div>";
+
+          this.consoleService.addMessage(consoleHTML);
+      }
+  }
+
 
   // 
   //  run this flowchart
@@ -512,27 +534,18 @@ export class FlowchartService {
       }
 
       try{
-        this._flowchart.execute(this.code_generator, this._moduleMap, printFunction);
-        this.consoleService.addMessage("Flowchart was executed.");
-        if(consoleStrings.length > 0){
+          this._flowchart.execute(this.code_generator, this._moduleMap, printFunction);
+          this.printConsole(consoleStrings);
+          this.consoleService.addMessage("Flowchart was executed.");
 
-          let consoleHTML: string = "<div class='console-heading'>Console Messages:</div>";
-
-          for(let i=0; i < consoleStrings.length; i++){
-               let split = consoleStrings[i].split(":");
-               consoleHTML += "<div class='console-line'>" + 
-                       "<span class='var-name'>Value of "  + split[0] + ": " + 
-                       "<span class='var-value'>"  + split[1] + 
-                         "</div>"
-          }
-
-          this.consoleService.addMessage(consoleHTML);
-
-        };
       }
       catch(ex){
+        
+        this.printConsole(consoleStrings);
+
         let errorMessage: string = "<div class='error'>" + ex + "</div>";
         this.consoleService.addMessage( errorMessage );
+
         this.layoutService.showConsole();
       }
 

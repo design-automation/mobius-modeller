@@ -38,9 +38,13 @@
 			min-width: auto;
 			font-size: $fsize2; 
 			
-			display: flex;
-			flex-flow: row wrap;
+			// display: flex;
+			// flex-flow: row wrap;
 			color: $color1 !important;
+
+			.error{
+				color: red;
+			}
 
 		}
 		
