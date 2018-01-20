@@ -1,10 +1,179 @@
 <div class="viewer">
 	
-	<h1>Möbius Functions</h1>
-	<!-- <div class="iframe-container">
-		<iframe [src]="_url" frameborder="0"></iframe>
-	</div> -->
+	<h1>Möbius Procedures</h1>
+
 	<mat-accordion *ngIf='!fnObj'>
+
+		<!-- fundamentals -->
+		<mat-expansion-panel>
+			<mat-expansion-panel-header>
+	    		<mat-panel-title>
+			      	FUNDAMENTALS
+			    </mat-panel-title>
+	    	</mat-expansion-panel-header>
+
+	    	<div>
+	    		<p>
+				    In order to get a better understanding of creating procedures in Mobius, it will be helpful to review some of the fundamental constructs of programming.
+				</p>
+
+				<ul>
+				    <li>Execution</li>
+				    <li>Variables</li>
+				    <li>Primitive Data Types</li>
+				    <li>List Data Type</li>
+				    <li>Expressions</li>
+				</ul>
+
+				<h2>Execution</h2>
+
+				<p>
+				    A procedure consists of a sequence of lines of code. When you execute the procedure, your computer will execute the each line of code, one by one. It is like a sequence of instructions.
+				</p>
+
+				<code>
+				    // code on line 1
+				    // code on line 2
+				    // code on line 3
+				</code>
+
+				<p>
+				    (Note that in the code example above, each line starts with a "//". This is actually a shorthand to indicate that this line consists of a comment. The computer will not ignore such lines.)
+				</p>
+
+				<p>
+				    In general, the flow of the execution goes one line at a time, top to bottom. However, you can change this linear behaviour by using <i>if-else</i> conditions and <i>for-loops</i>. More on that later.
+				</p>
+
+				<p>
+				    Each line of code can contain various types of statements. The most basic is a variable assignment.
+				</p>
+
+				<h2>Variables</h2>
+
+				<p>
+				    A variable can be thought of as a named container in which you can place some data. A variable is something like this:
+				</p>
+
+				<code>
+				    x = 123
+				</code>
+
+				<p>
+				    In the above code, the variable named “x” contains the number 123. We can say: "the value of the variable is 123". The first time you use a variable like this, it gets declared, which creates the container in memory. Once it is declared, you can change the value at any time.
+				</p>
+
+				<code>
+				    x = 123
+				    x = 456
+				</code>
+
+				<p>
+				    In the above code, the variable named “x” was used for the first time, and value was set to 123. Then, on the second line, the value 123 was discarded and replaced with the value 456. We can say: "the value of 456 was assigned to the variable x". You can change the value as many times as you like.
+				</p>
+
+				<p>
+				    By convention, variables are typically named using lowercase letters only. For example, "my_variable". The variable name should not contain spaces, or any special character. Also, it should not start with a number.
+				</p>
+
+				<h2>Primitive Data Types</h2>
+
+				<p>
+				    The data that you assign to a variable can have different types. Mobius allows you to work with three primitive data types:
+				</p>
+
+				<ul>
+				    <li>Numbers, eg. 123, 120.50 etc.</li>
+				    <li>Strings of text e.g. "This text string" etc.</li>
+				    <li>Boolean e.g. true or false.</li>
+				</ul>
+
+				<p>
+				    Below is an example of some variable assignments:
+				</p>
+
+				<code>
+				    my_age = 47
+				    my_name = "Patrick"
+				    lives_in_sg = true
+				</code>
+
+				<p>
+				    There is also a specie data type called <i>null</i>. When a value has already been assigned, and you want to clear it without assigning some other value, then you can assign <i>null</i>.
+				</p>
+
+				<code>
+				    my_age = 47
+				    // do some other stuff
+				    my_age = null
+				</code>
+
+				<p>
+				    The three primitive data types allow you to do a lot. They allow your procedure to work with lots of different types of data. In particular, a string can contain a lot of data. Here is an example of a long string:
+				</p>
+
+				<code>
+				    some_text = "The Möbius Modeller is a 3D parametric modelling software. It has a visual programming interface that combines dataflow programming with blocks-based programming. Dataflow programming is used to define the overall structure of your code, using nodes connected by wires. Blocks-based programming is used to define the individual procedures in each of your nodes. Procedures contain fours main types if elements: 1) variables, 2) if-else conditions, 3) for loops, and 4) function calls."
+				</code>
+
+				<p>
+				    In the example above, the variable called "some_text" is assigned a very long string.
+				</p>
+
+				<p>
+				    Also, note also that a string can contain some text that looks like a number, but that is actually not a number data type. Here is an example:
+				</p>
+
+				<code>
+				    text_that_looks_like_number = "123.456"
+				    a_number = 123.456
+				</code>
+
+				<h2>List Data Types</h2>
+
+				<p>
+				    Three three primitive data types described so far are very useful, and already allow may useful procedures to be written. However, there is one key problem: none of them allow you to handle collections of data items. When creating procedures, you will find that a lot of data needs to managed as a collection.
+				</p>
+
+				<p>
+				    For example, lets say you have 10 people in your group, and you want to store their names. You could create 10 variables, named <code>person1="patrick"</code>, <code>person2="kainwee"</code>, <code>person3="akshata"</code>,etc, and assign each one a different name. But that would get tedious. You could store them all in one string, for example: <code>people="patrick, kainwee, akshata"</code>. But that is rather inflexible, since everything is stored in a single lump of text.
+				</p>
+
+				<p>
+				    In order to be easily handle collections of data, Mobius allows you to use a list data type. A list object lets you store multiple values in a single variable. A list is defined using square brackets, like this:
+				</p>
+
+				<code>
+				    names_list = ["patrick", "kianwee", "akshata"]
+				</code>
+
+				<p>
+				    In the above code, a variable called "my_data" has been created, and a value has been assigned to it that has a list data type. The list has three items inside it, each of which is a string.
+				</p>
+
+				<p>
+				    The items in a list can be accessed using a zero based index. This index starts at '0', and counts up the list, one element at a time. So in the names_list above, "patrick" is at index 0, "kianwee" at 1, and "akshata" at 2. Below is an example of accessing items in names_list:
+				</p>
+
+				<code>
+				    names_list = ["patrick", "kianwee", "akshata"]
+				    person = names_list[1]
+				</code>
+
+				<p>
+				    To be completed...
+				</p>
+
+				<h2>Expressions</h2>
+
+				<p>
+				    To be completed...
+				</p>
+	    	</div>
+
+		</mat-expansion-panel>
+
+		<!-- functions -->
 	 	<mat-expansion-panel 
 	 		*ngFor="let m of _helpMods"
 	 		[expanded]="getModName(m.name) ==_activeMod">
@@ -51,6 +220,7 @@
 			</mat-list>
 
 	 	</mat-expansion-panel>
+	 	
 	</mat-accordion>
 
 	<!-- specific function -->
@@ -72,6 +242,5 @@
 		<div (click)="showAll()" style="cursor: pointer;">[Show All]</div>
 	
 	</div>
-
 
 </div>
