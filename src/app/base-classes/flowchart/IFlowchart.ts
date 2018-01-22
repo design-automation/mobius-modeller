@@ -15,6 +15,9 @@ import {IModule} from "../code/CodeModule";
 
 export interface IFlowchart{
 
+	setSavedTime(date: Date): void;
+	getSavedTime(): Date;
+
 	// gets the author of the flowchart
 	getAuthor(): string; 
 	getSummary(): string;

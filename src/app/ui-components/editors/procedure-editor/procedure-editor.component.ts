@@ -11,8 +11,6 @@ import {LayoutService} from '../../../global-services/layout.service';
 
 import {ModuleUtils} from "../../../base-classes/code/CodeModule";
 
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
-
 @Component({
   selector: 'app-procedure-editor',
   templateUrl: './procedure-editor.component.html',
@@ -52,7 +50,7 @@ export class ProcedureEditorComponent extends Viewer implements OnInit{
 		return type.toString()
 	}
 
-	constructor(injector: Injector, public dialog: MatDialog, private layoutService: LayoutService){  
+	constructor(injector: Injector, private layoutService: LayoutService){  
 		super(injector, "procedure-editor"); 
 	}
 

@@ -15,13 +15,16 @@ import * as ModuleSet from "../../assets/modules/AllModules";
 import {ConsoleService} from "./console.service";
 import {LayoutService} from "./layout.service";
 
+import {MOBIUS} from './mobius.constants';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+
+import {FileLoadDialogComponent} from '../ui-components/dialogs/file-load-dialog.component';
 
 @Injectable()
 export class FlowchartService {
 
   /*private _ffactory = new FlowchartFactory();
   private _fc = new FlowchartConverter();*/
-
 
   private _user: string = "AKM";
  
@@ -43,19 +46,83 @@ export class FlowchartService {
     return this._flowchart != undefined;
   }
 
-  constructor(private consoleService: ConsoleService, private layoutService: LayoutService) { 
-    this.newFile();
-    this.checkSavedNodes();
+  constructor(private consoleService: ConsoleService, 
+              private layoutService: LayoutService, 
+              public dialog: MatDialog,) { 
+      this.newFile();
+      this.checkSavedNodes();
+      this.checkSavedFile();
+      this.autoSave(5);
   };
+
+  autoSave(time_in_seconds: number): void{
+    Observable.interval(1000 * time_in_seconds).subscribe(x => {
+        // console.log("saving file");
+        this.saveFile(true);
+    });
+  }
+
+  checkSavedFile(): void{
+      this.openFileLoadDialog();
+  }
+
+  openFileLoadDialog(): void{
+
+    let myStorage = window.localStorage;
+    let property = MOBIUS.PROPERTY.FLOWCHART;
+    let storageString = myStorage.getItem(property);
+
+    let message: string;
+ 
+    if(storageString){
+      let fc = CircularJSON.parse(storageString)["flowchart"]["_lastSaved"];
+
+      message = "A file saved on " + (new Date(fc)).toDateString() + " at " 
+              + (new Date(fc)).toTimeString() + " was found. Do you want to reload?"
+    }
+
+    if(message){
+      if (confirm(message)) {
+         this.loadFile(storageString);
+      } else {
+          this.newFile();
+      }
+    }
+    else{
+      this.newFile();
+    }
+
+    
+
+
+        // let dialogRef = this.dialog.open(FileLoadDialogComponent, {
+        //     height: '400px',
+        //     width: '600px'
+        // });
+
+        // dialogRef.afterClosed().subscribe(result => {
+
+        //     if(result == 'load'){
+        //       console.log();
+        //     }
+        //     else if(result == 'new'){
+        //       this.newFile()
+        //     }
+        //     else{
+        //       this.newFile();
+        //     }
+
+        // });
+  }
 
   checkSavedNodes(): void{ 
 
     this._savedNodes = [];
     
     let myStorage = window.localStorage;
-    let property = "MOBIUS_NODES";
+    let property = MOBIUS.PROPERTY.NODE;
     let storageString = myStorage.getItem(property);
-    let nodesStorage = JSON.parse( storageString == null ? JSON.stringify({n: []}) : storageString );
+    let nodesStorage = CircularJSON.parse( storageString == null ? CircularJSON.stringify({n: []}) : storageString );
 
     let nodeData = nodesStorage.n; 
 
@@ -63,7 +130,6 @@ export class FlowchartService {
         let n_data = nodeData[n];
         this._savedNodes.push(n_data);
     }
-
 
   }
 
@@ -237,39 +303,56 @@ export class FlowchartService {
 
     // todo: check if overwrite
     if( node.getType() !== undefined ){
-        console.log(this._savedNodes[node.getType()]);
+      console.error("This node was already in the library and shouldn't have invoked this function.");
     }
     else{
+      let message: string;
+
       let nav: any = navigator;
       let myStorage = window.localStorage;
 
-      let property = "MOBIUS_NODES";
+      let property = MOBIUS.PROPERTY.NODE; 
       let storageString = myStorage.getItem(property);
-      let nodesStorage = JSON.parse( storageString == null ? JSON.stringify({n: []}) : storageString );
 
-      // add the node
-      nodesStorage.n.push(node);
-      myStorage.setItem( property, JSON.stringify(nodesStorage) );
-      console.log( JSON.parse(myStorage.getItem(property)).n.length + " nodes in the library" );
+      // initialize node storage by reading from localStorage or reading an empty array
+      let nodesStorage = CircularJSON.parse(storageString == null ? CircularJSON.stringify({n: []}) : storageString);
 
-      /*if (nav.storage && nav.storage.persist)
-        nav.storage.persist().then(granted => {
-          if (granted){
+      // array of nodes
+      let nodes = nodesStorage.n;
 
-            alert("Storage will not be cleared except by explicit user action");
+      // check is another node exists with same name
+      for(let i=0; i < nodes.length; i++){
+
+          let node_in_lib: IGraphNode = nodes[i];
+          if(node_in_lib["_name"] === node.getName()){
+            message = "Node with this name already exists in the library. Either delete existing\
+            node from the library or rename your node and try again.";
+            this.consoleService.addMessage(message);
+            this.layoutService.showConsole();
+            return;
           }
-          else{
-            alert("Storage may be cleared by the UA under storage pressure.");
-          }
-        });*/
+      }
 
-      // print message to console
-      this.consoleService.addMessage("Node Saved.");
+      // no node with common name was found
+      try{
+        nodesStorage.n.push(node);
+        myStorage.setItem( property, CircularJSON.stringify(nodesStorage) );
+        message = "Bravo! Node saved. Now you have " + (nodes.length) + " node(s) in the library!";
+        node.saved();
 
-      this.checkSavedNodes();
-      this.update();
+        this.consoleService.addMessage(message);
+        this.layoutService.showConsole();
+        this.checkSavedNodes();
+        this.update();
+      }
+      catch(ex){
+        this.consoleService.addMessage("Oops. Something went wrong while saving this node.\
+                                        Post the error message to the dev team on our Slack channel.");
+        this.consoleService.addMessage(ex);
+        this.layoutService.showConsole();
+      }
+
     }
-
 
   }
 
@@ -568,9 +651,11 @@ export class FlowchartService {
     return this.code_generator.getDisplayCode(this._flowchart);
   }
 
-  saveFile(): void{
+  saveFile(local?: boolean): void{
     let file = {};
     let fileString: string;
+
+    this._flowchart.setSavedTime(new Date());
 
     file["language"] = "js";
     file["modules"] = [];
@@ -578,14 +663,22 @@ export class FlowchartService {
 
     fileString = CircularJSON.stringify(file);
 
-    this.downloadContent({
-        type: 'text/plain;charset=utf-8',
-        filename: 'Scene' + (new Date()).getTime() + ".mob",
-        content: fileString
-    });
+    if(local == true){
+      // add file string to local storage
+      let myStorage = window.localStorage;
+      let property = MOBIUS.PROPERTY.FLOWCHART;
+      myStorage.setItem(property, fileString);
 
-    // print message to console
-    this.consoleService.addMessage("File saved successfully");
+      this.consoleService.addMessage("Autosaved flowchart.");
+    }
+    else{
+      this.downloadContent({
+          type: 'text/plain;charset=utf-8',
+          filename: 'Scene' + (new Date()).getTime() + ".mob",
+          content: fileString
+      });
+      this.consoleService.addMessage("File saved successfully");
+    }
 
   }
 

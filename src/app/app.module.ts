@@ -42,6 +42,8 @@ import { MobiusAbout, HelpFundamentals } from './ui-components/help/info-viewer/
 import { GSViewer } from './gs-viewer/gs-viewer.module';
 import { ConsoleService } from './global-services/console.service';
 
+import { FileLoadDialogComponent } from './ui-components/dialogs/file-load-dialog.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -65,11 +67,13 @@ import { ConsoleService } from './global-services/console.service';
     HelpViewerComponent,
     InfoViewerComponent,
     MobiusAbout, 
-    HelpFundamentals
+    HelpFundamentals,
+    FileLoadDialogComponent
   ],
   entryComponents: [
     ModuleboxComponent,
-    ParameterSettingsDialogComponent
+    ParameterSettingsDialogComponent,
+    FileLoadDialogComponent
   ],
   imports: [
     BrowserModule,

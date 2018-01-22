@@ -72,6 +72,10 @@ export class GraphNode implements IGraphNode{
 		return this._version++;
 	}
 
+	saved(): void{
+		this._type = this._id;
+	}
+
 	update(nodeData: IGraphNode): void{
 
 		if(nodeData["lib"] == undefined){

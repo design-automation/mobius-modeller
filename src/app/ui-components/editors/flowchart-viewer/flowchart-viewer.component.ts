@@ -7,6 +7,7 @@ import { InputPort, OutputPort } from '../../../base-classes/port/PortModule';
 import { Viewer } from '../../../base-classes/viz/Viewer';
 import { FlowchartService } from '../../../global-services/flowchart.service';
 import { LayoutService } from '../../../global-services/layout.service';
+import { ConsoleService } from '../../../global-services/console.service';
 
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatMenuModule} from '@angular/material/menu';
@@ -38,7 +39,9 @@ export class FlowchartViewerComponent extends Viewer{
 
   showDialog: {status: boolean, position: number[]} = {status: false, position: [0,0]};
 
-  constructor(injector: Injector, private layoutService: LayoutService){  
+  constructor(injector: Injector, 
+      private layoutService: LayoutService, 
+      private consoleService: ConsoleService){  
     super(injector, "FlowchartViewer");  
   }
 
@@ -521,13 +524,32 @@ export class FlowchartViewerComponent extends Viewer{
 
 
   updateNodeName($event): void{
-    let name: string =  $event.target.value; 
+    let name: string =  $event.target.value.trim(); 
+    name = name.replace(/[^\w\[\]]/gi, '');
 
-    if(name.trim().length > 0){
-      name = name.replace(/[^\w\[\]]/gi, '');
+    if(name.length == 0){
+      return;
+    }
+
+    // check no other node has the same name
+    let flag: boolean = false;
+    for(let i=0; i < this._nodes.length; i++){
+        if(this._nodes[i].getName() == name){
+          this.consoleService.addMessage("Node with this name already exists in the flowchart!");
+          this.layoutService.showConsole();
+          flag = true;
+          break;
+        }
+    }
+
+    if(!flag){
       this._selectedNode.setName(name);
       this.flowchartService.update();
     }
+    else{
+      $event.target.value = this._selectedNode.getName();
+    }
+
   }
 
   saveNode(node: IGraphNode): void{
