@@ -315,9 +315,10 @@ export class FlowchartViewerComponent extends Viewer{
       if(port instanceof InputPort){
         type = "pi";
       }
-      else if(port instanceof OutputPort){
+      if(port instanceof OutputPort){
         type = "po";
       }
+      
 
       let port_position =  this.getPortPosition(address[0], address[1], type);
 

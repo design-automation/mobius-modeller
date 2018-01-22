@@ -8,6 +8,7 @@ export abstract class Port implements IPort{
 
 	private _id: string;
 	protected _type: InputPortTypes|OutputPortTypes;
+	protected opts;
 
 	private _selected: boolean = false;
 	private _disabled: boolean = false;
@@ -37,6 +38,14 @@ export abstract class Port implements IPort{
 		this._type = type;
 	}
 
+	setOpts(opts: any): void{
+		
+	}
+
+	getOpts(): void{
+		throw Error("not defined");
+	}
+
 	isSelected(): boolean{
 		return this._selected; 
 	}
@@ -63,7 +72,7 @@ export abstract class Port implements IPort{
 		this._disabled = portData["_disabled"];
 		this._connected = portData["_connected"];
 		this._default = portData["_default"];
-
+		this.opts = portData["opts"];
 		// todo: assign computed also??
 	}	
 

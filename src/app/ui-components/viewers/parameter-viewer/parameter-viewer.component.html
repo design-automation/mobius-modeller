@@ -14,8 +14,10 @@
 					<span class='content'>{{ inp.getName() }}</span>
 				</div>
 			</div>
+	
 
-			<div class="value">
+			<!-- if input type == Input -->
+			<div class="value" *ngIf="inp.getType() == InputPortTypes.Input">
 				<form  class='content'>
 					<mat-form-field>
 						<textarea matInput 
@@ -28,6 +30,18 @@
 					</mat-form-field>
 				</form>
 			</div> 
+
+			<!-- if input type == Slider -->
+			<div class="value" 
+				*ngIf="inp.getType() == InputPortTypes.Slider">
+				<mat-slider min="{{inp.getOpts().min}}" 
+							max="{{inp.getOpts().max}}" 
+							step="{{inp.getOpts().step}}" 
+							[thumb-label]="true"
+							[(ngModel)]="value"
+							(change)="updateComputedValue($event, inp, value)"
+							value="{{ getValue(inp) }}"></mat-slider>
+			</div>
 
 		</div>
 

@@ -2,7 +2,7 @@ import { Component, Injector } from '@angular/core';
 
 import { Viewer } from '../../../base-classes/viz/Viewer';
 import { IGraphNode } from '../../../base-classes/node/NodeModule';
-import { InputPort } from '../../../base-classes/port/PortModule';
+import { InputPort, InputPortTypes } from '../../../base-classes/port/PortModule';
 
 @Component({
   selector: 'app-parameter-viewer',
@@ -14,6 +14,8 @@ export class ParameterViewerComponent extends Viewer {
 	  _node: IGraphNode;
 	  _inputs: InputPort[];
     isVisible: boolean = false;
+
+    InputPortTypes = InputPortTypes;
 
   	constructor(injector: Injector){  super(injector, "parameter-viewer"); }
 
@@ -41,17 +43,19 @@ export class ParameterViewerComponent extends Viewer {
     //   alert(type);
     // }
 
-    updateComputedValue($event, input): void{
-      let value: string = $event.srcElement.value;
-      if(value.trim().length > 0){
-        input.setComputedValue(value);
+    updateComputedValue($event, input, value?: any): void{
 
-        // put a timeout on this update or something similar to solve jumpiness
-        this.flowchartService.update();
+      if($event.srcElement){
+        value = $event.srcElement.value;
+        value = value.trim();
+        if(value.length == 0){
+          input.setComputedValue(undefined);
+          return;
+        }
       }
-      else{
-        input.setComputedValue(undefined);
-      }
+
+      input.setComputedValue(value);
+      this.flowchartService.update();
     }
 
     getValue(port :InputPort): any{

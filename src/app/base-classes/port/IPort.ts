@@ -7,6 +7,8 @@ export interface IPort{
 	getType(): InputPortTypes|OutputPortTypes;
 
 	setType(type: InputPortTypes|OutputPortTypes): void;
+	setOpts(opts: any);
+	getOpts(opts: any);
 
 
 	isSelected(): boolean;

@@ -21,6 +21,7 @@ import { MenuComponent } from './ui-components/controls/main-menu/menu.component
 
 import { ProcedureEditorComponent } from './ui-components/editors/procedure-editor/procedure-editor.component';
 import { ParameterEditorComponent } from './ui-components/editors/parameter-editor/parameter-editor.component';
+import { ParameterSettingsDialogComponent } from './ui-components/editors/parameter-editor/parameter-settings-dialog.component';
 import { FlowchartViewerComponent } from './ui-components/editors/flowchart-viewer/flowchart-viewer.component';
 
 import { CodeViewerComponent } from './ui-components/viewers/code-viewer/code-viewer.component';
@@ -61,10 +62,12 @@ import { ConsoleService } from './global-services/console.service';
     NodeLibraryComponent,
     PanelComponent,
     ConsoleComponent,
-    InfoViewerComponent
+    InfoViewerComponent,
+    ParameterSettingsDialogComponent
   ],
   entryComponents: [
-    ModuleboxComponent
+    ModuleboxComponent,
+    ParameterSettingsDialogComponent
   ],
   imports: [
     BrowserModule,

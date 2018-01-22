@@ -1,0 +1,68 @@
+<h2>Input Name: {{input.getName()}}</h2>
+<h3>Input Type: {{input.getType()}}</h3>
+
+<div *ngIf='type == inputPortTypes.Input'>
+
+	<form class="example-form">
+	  <mat-form-field class="example-full-width">
+	    <textarea matInput 
+	    		matTextareaAutosize 
+				matAutosizeMinRows="2"
+    			matAutosizeMaxRows="8" 
+    			placeholder="Default Value" 
+    			value="{{ default(input) }}"
+    			(change)="updateDefaultValue($event, input)">
+		</textarea>
+	  </mat-form-field>
+	</form>
+	
+</div>
+
+<div *ngIf='type == inputPortTypes.Slider'>
+	<form class="example-form"
+			style="display: flex; flex-direction: column;">
+		  <mat-form-field class="example-full-width" style="height: 45px;">
+		    <input matInput placeholder="Minimum Value" 
+		    	(change)="updateSliderOpts($event, 'min')" 
+		    	value="{{ opts.min }}">
+		    <!-- <mat-hint>Enter the minimum slider value</mat-hint> -->
+		  </mat-form-field>
+
+		  <mat-form-field class="example-full-width"  style="height: 45px;">
+		    <input matInput placeholder="Maximum Value" 
+		    	(change)="updateSliderOpts($event, 'max')" 
+		    	value="{{ opts.max }}">
+		  	<!-- <mat-hint>Enter the maximum slider value</mat-hint> -->
+		  </mat-form-field>
+
+		  <mat-form-field class="example-full-width"  style="height: 45px;">
+		    <input matInput placeholder="Step" 
+		    	(change)="updateSliderOpts($event, 'step')" 
+		    	value="{{ opts.step }}">
+		  	<!-- <mat-hint>Enter the step size value</mat-hint> -->
+		  </mat-form-field>
+
+		  <mat-form-field class="example-full-width"  style="height: 45px;">
+		    <input matInput placeholder="Default Value" 
+		    (change)="updateDefaultValue($event, input)" 
+		    value="{{ default(input) }}">
+		  	<!-- <mat-hint>Enter the default value</mat-hint> -->
+		  </mat-form-field>
+
+	</form>
+</div>
+
+<!-- <div *ngIf='type == inputPortTypes.File'>
+	Sunt dolor in officia veniam id tempor occaecat sint ea exercitation ut aliqua esse eu laborum elit commodo ea amet magna id consequat dolor occaecat esse id tempor labore nulla nisi velit mollit voluptate.
+</div>
+
+<div *ngIf='type == inputPortTypes.Input'>
+	Sunt dolor in officia veniam id tempor occaecat sint ea exercitation ut aliqua esse eu laborum elit commodo ea amet magna id consequat dolor occaecat esse id tempor labore nulla nisi velit mollit voluptate.
+</div> -->
+<!-- 
+<div class="options" style="width: 100%" *ngIf='inp.getType() == inputPortOpts[1]'>
+	Min: <input/><br>
+	Max: <input/><br>
+	Step: <input/><br>
+	value: <input/><br>
+</div> -->

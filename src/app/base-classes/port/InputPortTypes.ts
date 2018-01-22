@@ -1,10 +1,9 @@
 export enum InputPortTypes{
-    Default, 
-    Input, 
-    ColorPicker, 
-    Dropdown, 
-    FilePicker,
-    Output
+    Input = "Input", 
+    ColorPicker = "ColorPicker", 
+    Dropdown = "Dropdown", 
+    FilePicker= "Filepicker",
+    Slider = "Slider",
 }  
 
 
