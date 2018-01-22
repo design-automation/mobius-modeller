@@ -198,6 +198,7 @@ export class FlowchartService {
                         {_name: "Plane", _version: 0.1, _author: "Patrick"},
                         {_name: "Split", _version: 0.1, _author: "Patrick"},
                         {_name: "Intersect", _version: 0.1, _author: "Patrick"},
+                        {_name: "Model", _version: 0.1, _author: "Patrick"},
                         //{_name: "Calc", _version: 0.1, _author: "Patrick"}
                       ]
                     );

@@ -32,7 +32,7 @@ export class ParameterEditorComponent extends Viewer{
     ]; 
 
     outputPortOpts: OutputPortTypes[] = [
-        // OutputPortTypes.Three, 
+        OutputPortTypes.Three, 
         OutputPortTypes.Text, 
         OutputPortTypes.Code, 
         OutputPortTypes.Console 

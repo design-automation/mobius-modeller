@@ -32,7 +32,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".reset {\n  margin: 0px;\n  padding: 0px; }\n\n.default {\n  font-size: 12px;\n  color: #8AA8C0;\n  line-height: 150px;\n  text-align: center; }\n\n.viewer {\n  /* \twidth: 100%; \r\noverflow: auto;\r\n\r\npadding: 0px;\r\nmargin: 0px;\r\n\r\n.header{\r\n\r\n\tdisplay: flex; \r\n\tflex-direction: row; \r\n\tjustify-content: space-between;\r\n\r\n\tposition: relative;\r\n\tfont-size: 14px; \r\n\tfont-weight: 600; \r\n\tline-height: $header-height;\r\n\ttext-transform: uppercase;\r\n\tletter-spacing: 1.5px;\r\n\theight: $header-height;\r\n\r\n\tcolor: #ADADAD;\r\n\r\n\t.btn-group{\r\n\t\theight: $header-height; \r\n\r\n\t\tbutton{\r\n\t\t\twidth: 0.9*$header-height; \r\n\t\t\theight: 0.9*$header-height; \r\n\t\t\tmargin: 0px;\r\n\t\t\tborder: 1px solid #B4B1B1;\r\n\t\t\tbox-shadow: none;\r\n\r\n\t\t\t&:focus{\r\n\t\t\t\t\r\n\t\t\t}\r\n\t\t}\r\n\t\t\r\n\t}\r\n\r\n}\r\n\r\n.container{\r\n}\r\n\r\nbutton{\r\n\t&:focus{\r\n\t\t\r\n\t}\r\n} */ }\n\n.viewer .container {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    height: 100%; }\n\n.viewer .container .view-container {\n      -webkit-box-sizing: border-box;\n              box-sizing: border-box;\n      height: 100%;\n      width: 100%;\n      padding-bottom: 30px;\n      overflow: auto; }\n\n#app-container {\n  position: relative;\n  width: 100%;\n  height: 100%;\n  margin: 0px;\n  padding: 0px;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  -webkit-touch-callout: none;\n  -webkit-user-select: none;\n  /* Webkit */\n  -moz-user-select: none;\n  /* Firefox */\n  -ms-user-select: none;\n  /* IE 10  */\n  /* Currently not supported in Opera but will be soon */\n  -o-user-select: none;\n  user-select: none; }\n\n#app-container #setting {\n    position: absolute;\n    left: 30px;\n    bottom: 30px; }\n\n#app-container .container {\n    position: relative;\n    -webkit-box-flex: 1;\n        -ms-flex-positive: 1;\n            flex-grow: 1;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column;\n    background-color: white; }\n\n#app-container .container .wrapper {\n      position: absolute;\n      width: 100%;\n      height: 100%; }\n\n#app-container .container .wrapper .split {\n        height: 100%;\n        -webkit-box-flex: 1;\n            -ms-flex-positive: 1;\n                flex-grow: 1; }\n\n#app-container .container .wrapper .split-area {\n        overflow: hidden; }\n\n#app-container .container .wrapper .split-area .view-wrapper {\n          position: absolute;\n          height: 100%;\n          width: 100%; }\n", ""]);
+exports.push([module.i, ".reset {\n  margin: 0px;\n  padding: 0px; }\n\n.default {\n  font-size: 12px;\n  color: #8AA8C0;\n  line-height: 150px;\n  text-align: center; }\n\n.viewer {\n  /* \twidth: 100%; \r\noverflow: auto;\r\n\r\npadding: 0px;\r\nmargin: 0px;\r\n\r\n.header{\r\n\r\n\tdisplay: flex; \r\n\tflex-direction: row; \r\n\tjustify-content: space-between;\r\n\r\n\tposition: relative;\r\n\tfont-size: 14px; \r\n\tfont-weight: 600; \r\n\tline-height: $header-height;\r\n\ttext-transform: uppercase;\r\n\tletter-spacing: 1.5px;\r\n\theight: $header-height;\r\n\r\n\tcolor: #ADADAD;\r\n\r\n\t.btn-group{\r\n\t\theight: $header-height; \r\n\r\n\t\tbutton{\r\n\t\t\twidth: 0.9*$header-height; \r\n\t\t\theight: 0.9*$header-height; \r\n\t\t\tmargin: 0px;\r\n\t\t\tborder: 1px solid #B4B1B1;\r\n\t\t\tbox-shadow: none;\r\n\r\n\t\t\t&:focus{\r\n\t\t\t\t\r\n\t\t\t}\r\n\t\t}\r\n\t\t\r\n\t}\r\n\r\n}\r\n\r\n.container{\r\n}\r\n\r\nbutton{\r\n\t&:focus{\r\n\t\t\r\n\t}\r\n} */ }\n  .viewer .container {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    height: 100%; }\n    .viewer .container .view-container {\n      box-sizing: border-box;\n      height: 100%;\n      width: 100%;\n      padding-bottom: 30px;\n      overflow: auto; }\n\n#app-container {\n  position: relative;\n  width: 100%;\n  height: 100%;\n  margin: 0px;\n  padding: 0px;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  -webkit-touch-callout: none;\n  -webkit-user-select: none;\n  /* Webkit */\n  -moz-user-select: none;\n  /* Firefox */\n  -ms-user-select: none;\n  /* IE 10  */\n  /* Currently not supported in Opera but will be soon */\n  -o-user-select: none;\n  user-select: none; }\n  #app-container #setting {\n    position: absolute;\n    left: 30px;\n    bottom: 30px; }\n  #app-container .container {\n    position: relative;\n    -webkit-box-flex: 1;\n        -ms-flex-positive: 1;\n            flex-grow: 1;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column;\n    background-color: white; }\n    #app-container .container .wrapper {\n      position: absolute;\n      width: 100%;\n      height: 100%; }\n      #app-container .container .wrapper .split {\n        height: 100%;\n        -webkit-box-flex: 1;\n            -ms-flex-positive: 1;\n                flex-grow: 1; }\n      #app-container .container .wrapper .split-area {\n        overflow: hidden; }\n        #app-container .container .wrapper .split-area .view-wrapper {\n          position: absolute;\n          height: 100%;\n          width: 100%; }\n", ""]);
 
 // exports
 
@@ -131,22 +131,24 @@ AppComponent = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__ui_components_controls_main_menu_menu_component__ = __webpack_require__("../../../../../src/app/ui-components/controls/main-menu/menu.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__ui_components_editors_procedure_editor_procedure_editor_component__ = __webpack_require__("../../../../../src/app/ui-components/editors/procedure-editor/procedure-editor.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__ui_components_editors_parameter_editor_parameter_editor_component__ = __webpack_require__("../../../../../src/app/ui-components/editors/parameter-editor/parameter-editor.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__ui_components_editors_flowchart_viewer_flowchart_viewer_component__ = __webpack_require__("../../../../../src/app/ui-components/editors/flowchart-viewer/flowchart-viewer.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__ui_components_viewers_code_viewer_code_viewer_component__ = __webpack_require__("../../../../../src/app/ui-components/viewers/code-viewer/code-viewer.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__ui_components_viewers_geometry_viewer_geometry_viewer_component__ = __webpack_require__("../../../../../src/app/ui-components/viewers/geometry-viewer/geometry-viewer.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__ui_components_viewers_module_viewer_module_viewer_component__ = __webpack_require__("../../../../../src/app/ui-components/viewers/module-viewer/module-viewer.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__ui_components_viewers_parameter_viewer_parameter_viewer_component__ = __webpack_require__("../../../../../src/app/ui-components/viewers/parameter-viewer/parameter-viewer.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__ui_components_controls_modulebox_modulebox_component__ = __webpack_require__("../../../../../src/app/ui-components/controls/modulebox/modulebox.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__ui_components_editors_editor_editor_component__ = __webpack_require__("../../../../../src/app/ui-components/editors/editor/editor.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__ui_components_viewers_viewer_container_viewer_container_component__ = __webpack_require__("../../../../../src/app/ui-components/viewers/viewer-container/viewer-container.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__ui_components_viewers_text_viewer_text_viewer_component__ = __webpack_require__("../../../../../src/app/ui-components/viewers/text-viewer/text-viewer.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__ui_components_viewers_help_viewer_help_viewer_component__ = __webpack_require__("../../../../../src/app/ui-components/viewers/help-viewer/help-viewer.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__ui_components_editors_parameter_editor_parameter_settings_dialog_component__ = __webpack_require__("../../../../../src/app/ui-components/editors/parameter-editor/parameter-settings-dialog.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__ui_components_editors_flowchart_viewer_flowchart_viewer_component__ = __webpack_require__("../../../../../src/app/ui-components/editors/flowchart-viewer/flowchart-viewer.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__ui_components_viewers_code_viewer_code_viewer_component__ = __webpack_require__("../../../../../src/app/ui-components/viewers/code-viewer/code-viewer.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__ui_components_viewers_geometry_viewer_geometry_viewer_component__ = __webpack_require__("../../../../../src/app/ui-components/viewers/geometry-viewer/geometry-viewer.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__ui_components_viewers_module_viewer_module_viewer_component__ = __webpack_require__("../../../../../src/app/ui-components/viewers/module-viewer/module-viewer.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__ui_components_viewers_parameter_viewer_parameter_viewer_component__ = __webpack_require__("../../../../../src/app/ui-components/viewers/parameter-viewer/parameter-viewer.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__ui_components_controls_modulebox_modulebox_component__ = __webpack_require__("../../../../../src/app/ui-components/controls/modulebox/modulebox.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__ui_components_editors_editor_editor_component__ = __webpack_require__("../../../../../src/app/ui-components/editors/editor/editor.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__ui_components_viewers_viewer_container_viewer_container_component__ = __webpack_require__("../../../../../src/app/ui-components/viewers/viewer-container/viewer-container.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__ui_components_viewers_text_viewer_text_viewer_component__ = __webpack_require__("../../../../../src/app/ui-components/viewers/text-viewer/text-viewer.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__ui_components_viewers_node_library_node_library_component__ = __webpack_require__("../../../../../src/app/ui-components/viewers/node-library/node-library.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__ui_components_layout_panel_panel_component__ = __webpack_require__("../../../../../src/app/ui-components/layout/panel/panel.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__ui_components_console_console_component__ = __webpack_require__("../../../../../src/app/ui-components/console/console.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__ui_components_viewers_info_viewer_info_viewer_component__ = __webpack_require__("../../../../../src/app/ui-components/viewers/info-viewer/info-viewer.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__gs_viewer_gs_viewer_module__ = __webpack_require__("../../../../../src/app/gs-viewer/gs-viewer.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__global_services_console_service__ = __webpack_require__("../../../../../src/app/global-services/console.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__ui_components_help_info_viewer_info_viewer_component__ = __webpack_require__("../../../../../src/app/ui-components/help/info-viewer/info-viewer.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__ui_components_help_help_viewer_help_viewer_component__ = __webpack_require__("../../../../../src/app/ui-components/help/help-viewer/help-viewer.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__ui_components_help_info_viewer_help_template__ = __webpack_require__("../../../../../src/app/ui-components/help/info-viewer/help.template.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__gs_viewer_gs_viewer_module__ = __webpack_require__("../../../../../src/app/gs-viewer/gs-viewer.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_32__global_services_console_service__ = __webpack_require__("../../../../../src/app/global-services/console.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -186,6 +188,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
+
+
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -193,26 +197,30 @@ AppModule = __decorate([
         declarations: [
             __WEBPACK_IMPORTED_MODULE_4__app_component__["a" /* AppComponent */],
             __WEBPACK_IMPORTED_MODULE_12__ui_components_controls_main_menu_menu_component__["a" /* MenuComponent */],
-            __WEBPACK_IMPORTED_MODULE_15__ui_components_editors_flowchart_viewer_flowchart_viewer_component__["a" /* FlowchartViewerComponent */],
-            __WEBPACK_IMPORTED_MODULE_16__ui_components_viewers_code_viewer_code_viewer_component__["a" /* CodeViewerComponent */],
-            __WEBPACK_IMPORTED_MODULE_17__ui_components_viewers_geometry_viewer_geometry_viewer_component__["a" /* GeometryViewerComponent */],
+            __WEBPACK_IMPORTED_MODULE_16__ui_components_editors_flowchart_viewer_flowchart_viewer_component__["a" /* FlowchartViewerComponent */],
+            __WEBPACK_IMPORTED_MODULE_17__ui_components_viewers_code_viewer_code_viewer_component__["a" /* CodeViewerComponent */],
+            __WEBPACK_IMPORTED_MODULE_18__ui_components_viewers_geometry_viewer_geometry_viewer_component__["a" /* GeometryViewerComponent */],
             __WEBPACK_IMPORTED_MODULE_11__ui_components_controls_flowchart_controls_flowchart_controls_component__["a" /* FlowchartControlsComponent */],
-            __WEBPACK_IMPORTED_MODULE_18__ui_components_viewers_module_viewer_module_viewer_component__["a" /* ModuleViewerComponent */],
+            __WEBPACK_IMPORTED_MODULE_19__ui_components_viewers_module_viewer_module_viewer_component__["a" /* ModuleViewerComponent */],
             __WEBPACK_IMPORTED_MODULE_13__ui_components_editors_procedure_editor_procedure_editor_component__["a" /* ProcedureEditorComponent */],
-            __WEBPACK_IMPORTED_MODULE_19__ui_components_viewers_parameter_viewer_parameter_viewer_component__["a" /* ParameterViewerComponent */],
+            __WEBPACK_IMPORTED_MODULE_20__ui_components_viewers_parameter_viewer_parameter_viewer_component__["a" /* ParameterViewerComponent */],
             __WEBPACK_IMPORTED_MODULE_14__ui_components_editors_parameter_editor_parameter_editor_component__["a" /* ParameterEditorComponent */],
-            __WEBPACK_IMPORTED_MODULE_20__ui_components_controls_modulebox_modulebox_component__["a" /* ModuleboxComponent */],
-            __WEBPACK_IMPORTED_MODULE_21__ui_components_editors_editor_editor_component__["a" /* EditorComponent */],
-            __WEBPACK_IMPORTED_MODULE_22__ui_components_viewers_viewer_container_viewer_container_component__["a" /* ViewerContainerComponent */],
-            __WEBPACK_IMPORTED_MODULE_23__ui_components_viewers_text_viewer_text_viewer_component__["a" /* TextViewerComponent */],
-            __WEBPACK_IMPORTED_MODULE_24__ui_components_viewers_help_viewer_help_viewer_component__["a" /* HelpViewerComponent */],
+            __WEBPACK_IMPORTED_MODULE_21__ui_components_controls_modulebox_modulebox_component__["a" /* ModuleboxComponent */],
+            __WEBPACK_IMPORTED_MODULE_22__ui_components_editors_editor_editor_component__["a" /* EditorComponent */],
+            __WEBPACK_IMPORTED_MODULE_23__ui_components_viewers_viewer_container_viewer_container_component__["a" /* ViewerContainerComponent */],
+            __WEBPACK_IMPORTED_MODULE_24__ui_components_viewers_text_viewer_text_viewer_component__["a" /* TextViewerComponent */],
             __WEBPACK_IMPORTED_MODULE_25__ui_components_viewers_node_library_node_library_component__["a" /* NodeLibraryComponent */],
             __WEBPACK_IMPORTED_MODULE_26__ui_components_layout_panel_panel_component__["a" /* PanelComponent */],
             __WEBPACK_IMPORTED_MODULE_27__ui_components_console_console_component__["a" /* ConsoleComponent */],
-            __WEBPACK_IMPORTED_MODULE_28__ui_components_viewers_info_viewer_info_viewer_component__["a" /* InfoViewerComponent */]
+            __WEBPACK_IMPORTED_MODULE_15__ui_components_editors_parameter_editor_parameter_settings_dialog_component__["a" /* ParameterSettingsDialogComponent */],
+            __WEBPACK_IMPORTED_MODULE_29__ui_components_help_help_viewer_help_viewer_component__["a" /* HelpViewerComponent */],
+            __WEBPACK_IMPORTED_MODULE_28__ui_components_help_info_viewer_info_viewer_component__["a" /* InfoViewerComponent */],
+            __WEBPACK_IMPORTED_MODULE_30__ui_components_help_info_viewer_help_template__["b" /* MobiusAbout */],
+            __WEBPACK_IMPORTED_MODULE_30__ui_components_help_info_viewer_help_template__["a" /* HelpFundamentals */]
         ],
         entryComponents: [
-            __WEBPACK_IMPORTED_MODULE_20__ui_components_controls_modulebox_modulebox_component__["a" /* ModuleboxComponent */]
+            __WEBPACK_IMPORTED_MODULE_21__ui_components_controls_modulebox_modulebox_component__["a" /* ModuleboxComponent */],
+            __WEBPACK_IMPORTED_MODULE_15__ui_components_editors_parameter_editor_parameter_settings_dialog_component__["a" /* ParameterSettingsDialogComponent */]
         ],
         imports: [
             __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
@@ -222,9 +230,9 @@ AppModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_6_angular_split__["a" /* AngularSplitModule */],
             __WEBPACK_IMPORTED_MODULE_8_angular_tree_component__["a" /* TreeModule */],
             __WEBPACK_IMPORTED_MODULE_5__custom_angular_modules_CustomMaterialModule__["a" /* CustomMaterialModule */],
-            __WEBPACK_IMPORTED_MODULE_29__gs_viewer_gs_viewer_module__["a" /* GSViewer */]
+            __WEBPACK_IMPORTED_MODULE_31__gs_viewer_gs_viewer_module__["a" /* GSViewer */]
         ],
-        providers: [__WEBPACK_IMPORTED_MODULE_9__global_services_flowchart_service__["a" /* FlowchartService */], __WEBPACK_IMPORTED_MODULE_10__global_services_layout_service__["a" /* LayoutService */], __WEBPACK_IMPORTED_MODULE_30__global_services_console_service__["a" /* ConsoleService */]],
+        providers: [__WEBPACK_IMPORTED_MODULE_9__global_services_flowchart_service__["a" /* FlowchartService */], __WEBPACK_IMPORTED_MODULE_10__global_services_layout_service__["a" /* LayoutService */], __WEBPACK_IMPORTED_MODULE_32__global_services_console_service__["a" /* ConsoleService */]],
         bootstrap: [__WEBPACK_IMPORTED_MODULE_4__app_component__["a" /* AppComponent */]]
     })
 ], AppModule);
@@ -1161,6 +1169,8 @@ class IdGenerator {
 class GraphNode {
     constructor(name, type) {
         this.portCounter = 0;
+        this.inputPortCounter = 0;
+        this.outputPortCounter = 0;
         this._version = 1;
         this._type = undefined;
         this._inputs = [];
@@ -1246,24 +1256,26 @@ class GraphNode {
     //
     //
     addInput(name) {
-        let default_name = "in" + this.portCounter;
+        let default_name = "in" + this.inputPortCounter;
         if (name !== undefined) {
             default_name = name;
         }
         let inp = new __WEBPACK_IMPORTED_MODULE_2__port_PortModule__["a" /* InputPort */](default_name);
         this._inputs.push(inp);
         this.portCounter++;
+        this.inputPortCounter++;
         this.removeType();
         return this._inputs.length;
     }
     addOutput(name) {
-        let default_name = "out" + this.portCounter;
+        let default_name = "out" + this.outputPortCounter;
         if (name !== undefined) {
             default_name = name;
         }
         let oup = new __WEBPACK_IMPORTED_MODULE_2__port_PortModule__["c" /* OutputPort */](default_name);
         this._outputs.push(oup);
         this.portCounter++;
+        this.outputPortCounter++;
         this.removeType();
         return this._outputs.length;
     }
@@ -1439,8 +1451,15 @@ class InputPort extends __WEBPACK_IMPORTED_MODULE_0__Port__["a" /* Port */] {
             this.setDefaultValue(type.value);
         }
         else {
-            this._type = __WEBPACK_IMPORTED_MODULE_1__InputPortTypes__["a" /* InputPortTypes */].Default;
+            this._type = __WEBPACK_IMPORTED_MODULE_1__InputPortTypes__["a" /* InputPortTypes */].Input;
         }
+    }
+    setOpts(opts) {
+        this.opts = opts;
+        //todo: check if options valid for type
+    }
+    getOpts() {
+        return this.opts;
     }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = InputPort;
@@ -1456,12 +1475,11 @@ class InputPort extends __WEBPACK_IMPORTED_MODULE_0__Port__["a" /* Port */] {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return InputPortTypes; });
 var InputPortTypes;
 (function (InputPortTypes) {
-    InputPortTypes[InputPortTypes["Default"] = 0] = "Default";
-    InputPortTypes[InputPortTypes["Input"] = 1] = "Input";
-    InputPortTypes[InputPortTypes["ColorPicker"] = 2] = "ColorPicker";
-    InputPortTypes[InputPortTypes["Dropdown"] = 3] = "Dropdown";
-    InputPortTypes[InputPortTypes["FilePicker"] = 4] = "FilePicker";
-    InputPortTypes[InputPortTypes["Output"] = 5] = "Output";
+    InputPortTypes["Input"] = "Input";
+    InputPortTypes["ColorPicker"] = "ColorPicker";
+    InputPortTypes["Dropdown"] = "Dropdown";
+    InputPortTypes["FilePicker"] = "Filepicker";
+    InputPortTypes["Slider"] = "Slider";
 })(InputPortTypes || (InputPortTypes = {}));
 
 
@@ -1534,6 +1552,11 @@ class Port {
     setType(type) {
         this._type = type;
     }
+    setOpts(opts) {
+    }
+    getOpts() {
+        throw Error("not defined");
+    }
     isSelected() {
         return this._selected;
     }
@@ -1556,6 +1579,7 @@ class Port {
         this._disabled = portData["_disabled"];
         this._connected = portData["_connected"];
         this._default = portData["_default"];
+        this.opts = portData["opts"];
         // todo: assign computed also??
     }
     //
@@ -2106,14 +2130,14 @@ let CustomMaterialModule = class CustomMaterialModule {
 };
 CustomMaterialModule = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["I" /* NgModule */])({
-        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_platform_browser_animations__["a" /* BrowserAnimationsModule */], __WEBPACK_IMPORTED_MODULE_2__angular_material__["f" /* MatExpansionModule */],
-            __WEBPACK_IMPORTED_MODULE_2__angular_material__["j" /* MatMenuModule */], __WEBPACK_IMPORTED_MODULE_2__angular_material__["a" /* MatButtonModule */], __WEBPACK_IMPORTED_MODULE_2__angular_material__["c" /* MatCheckboxModule */],
-            __WEBPACK_IMPORTED_MODULE_2__angular_material__["m" /* MatTooltipModule */], __WEBPACK_IMPORTED_MODULE_2__angular_material__["e" /* MatDialogModule */], __WEBPACK_IMPORTED_MODULE_2__angular_material__["l" /* MatToolbarModule */], __WEBPACK_IMPORTED_MODULE_2__angular_material__["g" /* MatIconModule */],
-            __WEBPACK_IMPORTED_MODULE_2__angular_material__["b" /* MatButtonToggleModule */], __WEBPACK_IMPORTED_MODULE_2__angular_material__["k" /* MatTabsModule */], __WEBPACK_IMPORTED_MODULE_2__angular_material__["h" /* MatInputModule */], __WEBPACK_IMPORTED_MODULE_2__angular_material__["i" /* MatListModule */]],
-        exports: [__WEBPACK_IMPORTED_MODULE_1__angular_platform_browser_animations__["a" /* BrowserAnimationsModule */], __WEBPACK_IMPORTED_MODULE_2__angular_material__["f" /* MatExpansionModule */],
-            __WEBPACK_IMPORTED_MODULE_2__angular_material__["j" /* MatMenuModule */], __WEBPACK_IMPORTED_MODULE_2__angular_material__["a" /* MatButtonModule */], __WEBPACK_IMPORTED_MODULE_2__angular_material__["c" /* MatCheckboxModule */],
-            __WEBPACK_IMPORTED_MODULE_2__angular_material__["m" /* MatTooltipModule */], __WEBPACK_IMPORTED_MODULE_2__angular_material__["e" /* MatDialogModule */], __WEBPACK_IMPORTED_MODULE_2__angular_material__["l" /* MatToolbarModule */], __WEBPACK_IMPORTED_MODULE_2__angular_material__["g" /* MatIconModule */],
-            __WEBPACK_IMPORTED_MODULE_2__angular_material__["b" /* MatButtonToggleModule */], __WEBPACK_IMPORTED_MODULE_2__angular_material__["k" /* MatTabsModule */], __WEBPACK_IMPORTED_MODULE_2__angular_material__["h" /* MatInputModule */], __WEBPACK_IMPORTED_MODULE_2__angular_material__["i" /* MatListModule */]]
+        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_platform_browser_animations__["a" /* BrowserAnimationsModule */], __WEBPACK_IMPORTED_MODULE_2__angular_material__["h" /* MatExpansionModule */],
+            __WEBPACK_IMPORTED_MODULE_2__angular_material__["l" /* MatMenuModule */], __WEBPACK_IMPORTED_MODULE_2__angular_material__["b" /* MatButtonModule */], __WEBPACK_IMPORTED_MODULE_2__angular_material__["d" /* MatCheckboxModule */],
+            __WEBPACK_IMPORTED_MODULE_2__angular_material__["p" /* MatTooltipModule */], __WEBPACK_IMPORTED_MODULE_2__angular_material__["f" /* MatDialogModule */], __WEBPACK_IMPORTED_MODULE_2__angular_material__["o" /* MatToolbarModule */], __WEBPACK_IMPORTED_MODULE_2__angular_material__["i" /* MatIconModule */],
+            __WEBPACK_IMPORTED_MODULE_2__angular_material__["c" /* MatButtonToggleModule */], __WEBPACK_IMPORTED_MODULE_2__angular_material__["n" /* MatTabsModule */], __WEBPACK_IMPORTED_MODULE_2__angular_material__["j" /* MatInputModule */], __WEBPACK_IMPORTED_MODULE_2__angular_material__["k" /* MatListModule */], __WEBPACK_IMPORTED_MODULE_2__angular_material__["m" /* MatSliderModule */]],
+        exports: [__WEBPACK_IMPORTED_MODULE_1__angular_platform_browser_animations__["a" /* BrowserAnimationsModule */], __WEBPACK_IMPORTED_MODULE_2__angular_material__["h" /* MatExpansionModule */],
+            __WEBPACK_IMPORTED_MODULE_2__angular_material__["l" /* MatMenuModule */], __WEBPACK_IMPORTED_MODULE_2__angular_material__["b" /* MatButtonModule */], __WEBPACK_IMPORTED_MODULE_2__angular_material__["d" /* MatCheckboxModule */],
+            __WEBPACK_IMPORTED_MODULE_2__angular_material__["p" /* MatTooltipModule */], __WEBPACK_IMPORTED_MODULE_2__angular_material__["f" /* MatDialogModule */], __WEBPACK_IMPORTED_MODULE_2__angular_material__["o" /* MatToolbarModule */], __WEBPACK_IMPORTED_MODULE_2__angular_material__["i" /* MatIconModule */],
+            __WEBPACK_IMPORTED_MODULE_2__angular_material__["c" /* MatButtonToggleModule */], __WEBPACK_IMPORTED_MODULE_2__angular_material__["n" /* MatTabsModule */], __WEBPACK_IMPORTED_MODULE_2__angular_material__["j" /* MatInputModule */], __WEBPACK_IMPORTED_MODULE_2__angular_material__["k" /* MatListModule */], __WEBPACK_IMPORTED_MODULE_2__angular_material__["m" /* MatSliderModule */]]
     })
 ], CustomMaterialModule);
 
@@ -2339,7 +2363,15 @@ let FlowchartService = class FlowchartService {
         this.loadModules([
             { _name: "String", _version: 0.1, _author: "Patrick" },
             { _name: "List", _version: 0.1, _author: "Patrick" },
-            { _name: "Math", _version: 0.1, _author: "Patrick" }
+            { _name: "Math", _version: 0.1, _author: "Patrick" },
+            { _name: "Point", _version: 0.1, _author: "Patrick" },
+            { _name: "Pline", _version: 0.1, _author: "Patrick" },
+            { _name: "PMesh", _version: 0.1, _author: "Patrick" },
+            { _name: "Circle", _version: 0.1, _author: "Patrick" },
+            { _name: "Plane", _version: 0.1, _author: "Patrick" },
+            { _name: "Split", _version: 0.1, _author: "Patrick" },
+            { _name: "Intersect", _version: 0.1, _author: "Patrick" },
+            { _name: "Model", _version: 0.1, _author: "Patrick" },
         ]);
         // print message to console
         this.consoleService.addMessage("New file created.");
@@ -2841,8 +2873,9 @@ class DataSubscriber {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm2015/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_Subject__ = __webpack_require__("../../../../rxjs/_esm2015/Subject.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_three__ = __webpack_require__("../../../../three/build/three.module.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_three_orbit_controls__ = __webpack_require__("../../../../three-orbit-controls/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_three_orbit_controls___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_three_orbit_controls__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_gs_json__ = __webpack_require__("../../../../gs-json/dist/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_three_orbit_controls__ = __webpack_require__("../../../../three-orbit-controls/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_three_orbit_controls___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_three_orbit_controls__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2856,16 +2889,20 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 let DataService = class DataService {
     constructor() {
         // intializations
         // this only runs once
         this.selecting = [];
+        this.sprite = [];
+        this.selectedFaces = [];
+        this.scenechildren = [];
         // ---- 
         // Subscription Handling
         // 
         this.subject = new __WEBPACK_IMPORTED_MODULE_1_rxjs_Subject__["a" /* Subject */]();
-        let default_width = 600, default_height = 600;
+        let default_width = 1510, default_height = 720;
         // scene
         let scene = new __WEBPACK_IMPORTED_MODULE_2_three__["Scene"]();
         scene.background = new __WEBPACK_IMPORTED_MODULE_2_three__["Color"](0xcccccc);
@@ -2875,19 +2912,21 @@ let DataService = class DataService {
         // camera settings
         let aspect_ratio = this._width / this._height;
         let camera = new __WEBPACK_IMPORTED_MODULE_2_three__["PerspectiveCamera"](50, aspect_ratio, 0.01, 1000);
-        camera.position.z = 10;
+        camera.position.y = 10;
+        camera.up.set(0, 0, 1);
         camera.lookAt(scene.position);
         camera.updateProjectionMatrix();
         // orbit controls
-        let _OC = __WEBPACK_IMPORTED_MODULE_3_three_orbit_controls__(__WEBPACK_IMPORTED_MODULE_2_three__);
+        let _OC = __WEBPACK_IMPORTED_MODULE_4_three_orbit_controls__(__WEBPACK_IMPORTED_MODULE_2_three__);
         let controls = new _OC(camera, renderer.domElement);
-        controls.mouseButtons = { ORBIT: 0, ZOOM: null, PAN: null };
         controls.enableKeys = false;
-        controls.enabled = true;
         // default directional lighting
         let directional_light = new __WEBPACK_IMPORTED_MODULE_2_three__["DirectionalLight"](0xffffff, 0.5);
         directional_light.castShadow = false;
         directional_light.position.copy(camera.position);
+        controls.addEventListener('change', function () {
+            directional_light.position.copy(camera.position);
+        });
         directional_light.target.position.set(0, 0, 0);
         scene.add(directional_light);
         // default ambient lighting
@@ -2934,13 +2973,17 @@ let DataService = class DataService {
         this._gsModel = model;
         this.sendMessage("model_update");
     }
+    updateModel() {
+        var scene_and_maps = __WEBPACK_IMPORTED_MODULE_3_gs_json__["e" /* genThreeOptModelAndMaps */](this._gsModel);
+        return scene_and_maps;
+    }
     //
     // Getter and Setter for Scene
     //
-    addScene(scene) {
-        console.warn("Three Scene is being reset");
-        this._scene = scene;
-    }
+    // addScene(scene: THREE.Scene): void{
+    //   console.warn("Three Scene is being reset");
+    // 	this._scene = scene;
+    // }
     getScene(width, height) {
         if (width && height) {
             this._width = width;
@@ -2980,6 +3023,23 @@ let DataService = class DataService {
     getlightness(_lightness) {
         this.lightness = _lightness;
     }
+    getopacity(_opacity) {
+        this.opacity = _opacity;
+    }
+    addbackvalue(red, green, blue) {
+        this.red = red;
+        this.green = green;
+        this.blue = blue;
+    }
+    getred(red) {
+        this.red = red;
+    }
+    getgreen(green) {
+        this.green = green;
+    }
+    getblue(blue) {
+        this.blue = blue;
+    }
     addGeom(Geom) {
         this._Geom = Geom;
     }
@@ -3010,6 +3070,10 @@ let DataService = class DataService {
         this.selecting.push(selecting);
         this.sendMessage();
     }
+    spliceselecting(index, number) {
+        this.selecting.splice(index, number);
+        this.sendMessage();
+    }
     getselecting() {
         return this.selecting;
     }
@@ -3036,6 +3100,29 @@ let DataService = class DataService {
         }
         return -1;
     }
+    getFaceIndex(name) {
+        for (var i = 0; i < this.selectedFaces.length; i++) {
+            if (this.selectedFaces[i].name == name) {
+                return i;
+            }
+        }
+        return -1;
+    }
+    addsprite(sprite) {
+        this.sprite.push(sprite);
+        this.sendMessage();
+    }
+    pushsprite(sprite) {
+        this.sprite = sprite;
+    }
+    addscenechild(scenechildren) {
+        this.scenechildren = scenechildren;
+        this.sendMessage();
+    }
+    getscenechild() {
+        this.sendMessage();
+        return this.scenechildren;
+    }
 };
 DataService = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* Injectable */])(),
@@ -3058,10 +3145,10 @@ module.exports = "<div id=\"appdiv\">\r\n\t<split direction=\"vertical\">\r\n\t\
 
 exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
 // imports
-
+exports.push([module.i, "@import url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css);", ""]);
 
 // module
-exports.push([module.i, "@import url(\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css\");\n.reset {\n  margin: 0px;\n  padding: 0px; }\n.default {\n  font-size: 12px;\n  color: #8AA8C0;\n  line-height: 150px;\n  text-align: center; }\n.viewer {\n  /* \twidth: 100%; \r\noverflow: auto;\r\n\r\npadding: 0px;\r\nmargin: 0px;\r\n\r\n.header{\r\n\r\n\tdisplay: flex; \r\n\tflex-direction: row; \r\n\tjustify-content: space-between;\r\n\r\n\tposition: relative;\r\n\tfont-size: 14px; \r\n\tfont-weight: 600; \r\n\tline-height: $header-height;\r\n\ttext-transform: uppercase;\r\n\tletter-spacing: 1.5px;\r\n\theight: $header-height;\r\n\r\n\tcolor: #ADADAD;\r\n\r\n\t.btn-group{\r\n\t\theight: $header-height; \r\n\r\n\t\tbutton{\r\n\t\t\twidth: 0.9*$header-height; \r\n\t\t\theight: 0.9*$header-height; \r\n\t\t\tmargin: 0px;\r\n\t\t\tborder: 1px solid #B4B1B1;\r\n\t\t\tbox-shadow: none;\r\n\r\n\t\t\t&:focus{\r\n\t\t\t\t\r\n\t\t\t}\r\n\t\t}\r\n\t\t\r\n\t}\r\n\r\n}\r\n\r\n.container{\r\n}\r\n\r\nbutton{\r\n\t&:focus{\r\n\t\t\r\n\t}\r\n} */ }\n.viewer .container {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    height: 100%; }\n.viewer .container .view-container {\n      -webkit-box-sizing: border-box;\n              box-sizing: border-box;\n      height: 100%;\n      width: 100%;\n      padding-bottom: 30px;\n      overflow: auto; }\n@font-face {\n  font-family: \"FontAwesome\"; }\n.font-awesome-hand {\n  font-family: FontAwesome; }\n.font-awesome-hand::after {\n  font-family: FontAwesome; }\nhtml, body {\n  font-family: 'Open Sans', sans-serif;\n  text-align: justify;\n  margin: 0px;\n  padding: 0px; }\n#appdiv {\n  position: absolute;\n  width: 99%;\n  height: 98%;\n  background-color: white;\n  overflow: hidden; }\na {\n  text-decoration: none;\n  color: #fff;\n  text-transform: uppercase; }\n.toolbar {\n  background-color: #333; }\n.toolbar ul {\n  list-style: none;\n  overflow: hidden;\n  margin-bottom: 0px;\n  z-index: 1; }\n.toolbar div > ul > li {\n  display: inline-block;\n  float: left; }\n.toolbar div > ul > li:hover {\n  background-color: #fff; }\n.toolbar div > ul > li:hover a {\n  color: #333; }\n.toolbar div > ul > li > a {\n  font-size: 12px;\n  line-height: 20px;\n  display: block;\n  float: left;\n  padding: 0 16px; }\n/**\r\n * Carets\r\n */\n.toolbar div ul li i.icon-sort {\n  display: none; }\n.toolbar div ul li:hover i.icon-sort {\n  display: inline; }\n.toolbar div ul li:hover i.icon-caret-down {\n  display: none; }\n.toolbar .dropdown i {\n  margin: 0px; }\n.toolbar div > ul > li > a:hover {\n  background-color: #fff;\n  color: #333; }\n.dropdown {\n  float: left; }\n/**\r\n * Sub navigaton\r\n **/\n.sub {\n  min-width: 180px;\n  margin: 20px;\n  display: none;\n  position: absolute;\n  border-left: 1px solid #ebebeb;\n  border-right: 1px solid #ebebeb;\n  border-bottom: 1px solid #ebebeb; }\n.sub li a {\n  display: block;\n  background-color: #fff;\n  color: #333 !important;\n  border-left: 4px solid #fff;\n  padding: 4px 12px;\n  font-size: 12px;\n  line-height: 26px; }\n.sub li a:hover {\n  border-left: 4px solid #ff0000;\n  float: top; }\n.toolbar div > ul > li:hover .sub {\n  display: block; }\n.sub li a {\n  -webkit-transition: all .5s linear;\n  transition: all .5s linear;\n  overflow: hidden; }\n#toolwindow {\n  position: relative;\n  background-color: slategrey; }\n.sidebar {\n  position: absolute;\n  top: 0px;\n  right: 0px;\n  height: 100%; }\n.tool-form {\n  padding-top: 10px;\n  padding-left: 10px;\n  color: white; }\n.tool-form-heading {\n  border-bottom: 2px solid #ddd;\n  margin: 0px;\n  padding-bottom: 3px; }\n.tool-form label {\n  font-family: 'Open Sans', sans-serif;\n  font-size: 13px;\n  color: black;\n  display: block;\n  margin: 0px 0px 15px 0px; }\n.tool-form label > span {\n  width: 150px;\n  font-family: 'Open Sans', sans-serif;\n  font-size: 13px;\n  float: left;\n  padding-top: 4px;\n  padding-right: 5px; }\n.tool-form span.required {\n  color: red; }\n.tool-form .tel-number-field {\n  width: 30px;\n  text-align: center; }\n.tool-form input.input-field {\n  width: 30px; }\n.tool-form input.file-input-field {\n  border: 1px solid #ccc;\n  height: 20px;\n  display: inline-block;\n  padding: 6px 6px;\n  cursor: pointer;\n  background-color: #888888; }\n.tool-form input.input-field,\n.tool-form .tel-number-field,\n.tool-form .textarea-field,\n.tool-form .select-field {\n  height: 20px;\n  overflow: hidden;\n  width: 240px;\n  background-color: #888888;\n  border-radius: 5px;\n  color: #ffffff; }\n.tool-form .input-field:focus,\n.tool-form .tel-number-field:focus,\n.tool-form .textarea-field:focus,\n.tool-form .select-field:focus {\n  border: 1px solid #0C0; }\n.tool-form .textarea-field {\n  height: 100px;\n  width: 55%; }\n.tool-form input[type=submit],\n.tool-form input[type=button] {\n  height: 25px;\n  border: none;\n  padding: 2px 8px 2px 8px;\n  background: #444466;\n  color: #fff;\n  box-shadow: 1px 1px 4px #DADADA;\n  -moz-box-shadow: 1px 1px 4px #DADADA;\n  -webkit-box-shadow: 1px 1px 4px #DADADA;\n  border-radius: 3px;\n  -webkit-border-radius: 3px;\n  -moz-border-radius: 3px;\n  color: #ffffff; }\n.tool-form input[type=submit]:hover,\n.tool-form input[type=button]:hover {\n  background: #333377;\n  color: #fff; }\n.rightstyle {\n  width: 30px;\n  height: 100%;\n  float: right;\n  background: #FFFFFF;\n  background-repeat: repeat;\n  background-attachment: scroll;\n  overflow: auto; }\n.leftstyle {\n  background: #e6e6e6;\n  height: 100%; }\n.slider {\n  width: 0;\n  height: 0;\n  border-top: 30px solid transparent;\n  border-right: 10px solid black;\n  border-bottom: 30px solid transparent; }\n", ""]);
+exports.push([module.i, "@font-face {\n  font-family: \"FontAwesome\"; }\n\n.font-awesome-hand {\n  font-family: FontAwesome; }\n\n.font-awesome-hand::after {\n  font-family: FontAwesome; }\n\nhtml, body {\n  font-family: 'Open Sans', sans-serif;\n  text-align: justify;\n  margin: 0px;\n  padding: 0px; }\n\n#appdiv {\n  position: absolute;\n  width: 99%;\n  height: 98%;\n  background-color: white;\n  overflow: hidden; }\n\na {\n  text-decoration: none;\n  color: #fff;\n  text-transform: uppercase; }\n\n.toolbar {\n  background-color: #333; }\n\n.toolbar ul {\n  list-style: none;\n  overflow: hidden;\n  margin-bottom: 0px;\n  z-index: 1; }\n\n.toolbar div > ul > li {\n  display: inline-block;\n  float: left; }\n\n.toolbar div > ul > li:hover {\n  background-color: #fff; }\n\n.toolbar div > ul > li:hover a {\n  color: #333; }\n\n.toolbar div > ul > li > a {\n  font-size: 12px;\n  line-height: 20px;\n  display: block;\n  float: left;\n  padding: 0 16px; }\n\n/**\r\n * Carets\r\n */\n.toolbar div ul li i.icon-sort {\n  display: none; }\n\n.toolbar div ul li:hover i.icon-sort {\n  display: inline; }\n\n.toolbar div ul li:hover i.icon-caret-down {\n  display: none; }\n\n.toolbar .dropdown i {\n  margin: 0px; }\n\n.toolbar div > ul > li > a:hover {\n  background-color: #fff;\n  color: #333; }\n\n.dropdown {\n  float: left; }\n\n/**\r\n * Sub navigaton\r\n **/\n.sub {\n  min-width: 180px;\n  margin: 20px;\n  display: none;\n  position: absolute;\n  border-left: 1px solid #ebebeb;\n  border-right: 1px solid #ebebeb;\n  border-bottom: 1px solid #ebebeb; }\n\n.sub li a {\n  display: block;\n  background-color: #fff;\n  color: #333 !important;\n  border-left: 4px solid #fff;\n  padding: 4px 12px;\n  font-size: 12px;\n  line-height: 26px; }\n\n.sub li a:hover {\n  border-left: 4px solid #ff0000;\n  float: top; }\n\n.toolbar div > ul > li:hover .sub {\n  display: block; }\n\n.sub li a {\n  transition: all .5s linear;\n  overflow: hidden; }\n\n#toolwindow {\n  position: relative;\n  background-color: slategrey; }\n\n.sidebar {\n  position: absolute;\n  top: 0px;\n  right: 0px;\n  height: 100%; }\n\n.tool-form {\n  padding-top: 10px;\n  padding-left: 10px;\n  color: white; }\n\n.tool-form-heading {\n  border-bottom: 2px solid #ddd;\n  margin: 0px;\n  padding-bottom: 3px; }\n\n.tool-form label {\n  font-family: 'Open Sans', sans-serif;\n  font-size: 13px;\n  color: black;\n  display: block;\n  margin: 0px 0px 15px 0px; }\n\n.tool-form label > span {\n  width: 150px;\n  font-family: 'Open Sans', sans-serif;\n  font-size: 13px;\n  float: left;\n  padding-top: 4px;\n  padding-right: 5px; }\n\n.tool-form span.required {\n  color: red; }\n\n.tool-form .tel-number-field {\n  width: 30px;\n  text-align: center; }\n\n.tool-form input.input-field {\n  width: 30px; }\n\n.tool-form input.file-input-field {\n  border: 1px solid #ccc;\n  height: 20px;\n  display: inline-block;\n  padding: 6px 6px;\n  cursor: pointer;\n  background-color: #888888; }\n\n.tool-form input.input-field,\n.tool-form .tel-number-field,\n.tool-form .textarea-field,\n.tool-form .select-field {\n  height: 20px;\n  overflow: hidden;\n  width: 240px;\n  background-color: #888888;\n  border-radius: 5px;\n  color: #ffffff; }\n\n.tool-form .input-field:focus,\n.tool-form .tel-number-field:focus,\n.tool-form .textarea-field:focus,\n.tool-form .select-field:focus {\n  border: 1px solid #0C0; }\n\n.tool-form .textarea-field {\n  height: 100px;\n  width: 55%; }\n\n.tool-form input[type=submit],\n.tool-form input[type=button] {\n  height: 25px;\n  border: none;\n  padding: 2px 8px 2px 8px;\n  background: #444466;\n  color: #fff;\n  box-shadow: 1px 1px 4px #DADADA;\n  -moz-box-shadow: 1px 1px 4px #DADADA;\n  -webkit-box-shadow: 1px 1px 4px #DADADA;\n  border-radius: 3px;\n  -webkit-border-radius: 3px;\n  -moz-border-radius: 3px;\n  color: #ffffff; }\n\n.tool-form input[type=submit]:hover,\n.tool-form input[type=button]:hover {\n  background: #333377;\n  color: #fff; }\n\n.rightstyle {\n  width: 30px;\n  height: 100%;\n  float: right;\n  background: #FFFFFF;\n  background-repeat: repeat;\n  background-attachment: scroll;\n  overflow: auto; }\n\n.leftstyle {\n  background: #e6e6e6;\n  height: 100%; }\n\n.slider {\n  width: 0;\n  height: 0;\n  border-top: 30px solid transparent;\n  border-right: 10px solid black;\n  border-bottom: 30px solid transparent; }\n", ""]);
 
 // exports
 
@@ -3192,7 +3279,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "#settingview{\r\n  position:absolute;\r\n  background-color: rgba(0, 0, 0, 0.5);\r\n  top:0px;\r\n  right:30px;\r\n  color:white;\r\n  width:380px;\r\n  height:200px;\r\n}\r\n#grid{\r\n  margin-left: 20px;\r\n}\r\n#axis{\r\n  margin-left: 30px;\r\n}\r\n#shadow{\r\n  margin-left: 30px;\r\n}\r\n#frame{\r\n  margin-left: 30px;\r\n}\r\n#huerange{\r\n  margin-left: 41px;\r\n  width: 60%;\r\n}\r\n#satrange{\r\n  margin-left: 18px;\r\n  width: 60%;\r\n}\r\n#lirange{\r\n  margin-left: 20px;\r\n  width: 60%;\r\n}", ""]);
+exports.push([module.i, "#settingview{\r\n  position:absolute;\r\n  background-color: white;\r\n  top:0px;\r\n  right:30px;\r\n  color:#395d73;\r\n  width:400px;\r\n  height:430px;\r\n}\r\n#grid{\r\n  margin-left: 20px;\r\n  font-family:sans-serif;\r\n}\r\n#axis{\r\n  margin-left: 30px;\r\n  font-family:sans-serif;\r\n}\r\n#shadow{\r\n  margin-left: 30px;\r\n  font-family:sans-serif;\r\n}\r\n#frame{\r\n  margin-left: 30px;\r\n  font-family:sans-serif;\r\n}\r\n#huerange{\r\n  margin-left: 41px;\r\n  width: 60%;\r\n  font-family:sans-serif;\r\n}\r\n#satrange{\r\n  margin-left: 18px;\r\n  width: 60%;\r\n  font-family:sans-serif;\r\n}\r\n#lirange{\r\n  margin-left: 20px;\r\n  width: 60%;\r\n  font-family:sans-serif;\r\n}\r\n#oprange{\r\n  margin-left: 20px;\r\n  width: 60%;\r\n  font-family:sans-serif;\r\n}\r\n\r\n#name{\r\n  font-family:sans-serif;\r\n}\r\n#redrange{\r\n  margin-left: 60px;\r\n  width: 60%;\r\n  font-family:sans-serif;\r\n}\r\n#greenrange{\r\n  margin-left: 60px;\r\n  width: 60%;\r\n  font-family:sans-serif;\r\n}\r\n#bluerange{\r\n  margin-left: 60px;\r\n  width: 60%;\r\n  font-family:sans-serif;\r\n}\r\n\r\n::ng-deep .mat-accent .mat-slider-thumb {\r\n    background-color: #395d73;\r\n    font-family:sans-serif;\r\n} \r\n::ng-deep .mat-accent .mat-slider-thumb-label {\r\n    background-color: #395d73;\r\n    font-family:sans-serif;\r\n} \r\n::ng-deep .mat-accent .mat-slider-track-fill {\r\n    background-color: #395d73;\r\n    font-family:sans-serif;\r\n} ", ""]);
 
 // exports
 
@@ -3205,7 +3292,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/gs-viewer/setting/setting.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"settingview\" (click)=\"setting($event)\">\r\n  <input id=\"grid\" type=\"checkbox\" (click)=\"changegrid()\"> <label id=\"gridname\" value=\"gridVisible\">grid</label>\r\n  <input id=\"axis\"  type=\"checkbox\" (click)=\"changeaxis()\"> <label id=\"axisname\" value=\"axisVisible\">axis</label>\r\n  <input id=\"shadow\"  type=\"checkbox\" (click)=\"changeshadow()\"> <label id=\"fogname\" value=\"shadowVisible\">shadow</label>\r\n  <input id=\"frame\"  type=\"checkbox\" (click)=\"changeframe()\"> <label id=\"framename\" value=\"frameVisible\">frame</label><br/><hr/>&nbsp;&nbsp;&nbsp;&nbsp;Hemisphere Light&nbsp;&nbsp;<br/>\r\n  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hue\r\n  <mat-slider name=\"range\" id=\"huerange\" min=0 max=360 step=1  value={{hue}} #slider (change)=\"changelight(slider.value,slider1.value,slider2.value)\" ></mat-slider>{{slider.value.toPrecision(2)}}<br/>\r\n  &nbsp;&nbsp;&nbsp;saturation\r\n  <mat-slider name=\"range\" id=\"satrange\" min=0 max=1 step=0.01 value={{saturation}} #slider1 (change)=\"changelight(slider.value,slider1.value,slider2.value)\" ></mat-slider>{{slider1.value.toPrecision(2)}}<br/>\r\n  &nbsp;&nbsp;&nbsp;&nbsp;lightness\r\n  <mat-slider name=\"range\" id=\"lirange\" min=0 max=1 step=0.01 value={{lightness}} #slider2 (change)=\"changelight(slider.value,slider1.value,slider2.value)\" ></mat-slider>{{slider2.value.toPrecision(2)}}<br/>\r\n</div>"
+module.exports = "<div id=\"settingview\" (click)=\"setting($event)\">\r\n  <input id=\"grid\" #grid type=\"checkbox\" [checked]=\"gridVisible\" (click)=\"changegrid()\"> <label id=\"name\" value=\"gridVisible\">grid</label>\r\n  <input id=\"axis\"  type=\"checkbox\" [checked]=\"axisVisible\" (click)=\"changeaxis()\"> <label id=\"name\" value=\"axisVisible\">axis</label>\r\n  <input id=\"shadow\"  type=\"checkbox\" [checked]=\"shadowVisible\" (click)=\"changeshadow()\"> <label id=\"name\" value=\"shadowVisible\">shadow</label>\r\n  <input id=\"frame\"  type=\"checkbox\" [checked]=\"frameVisible\" (click)=\"changeframe()\"> <label id=\"name\" value=\"frameVisible\">frame</label><br/><hr/>&nbsp;&nbsp;&nbsp;&nbsp;<label id=\"name\" >Hemisphere Light</label>&nbsp;&nbsp;<br/>\r\n  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label id=\"name\" >hue</label>\r\n  <mat-slider class=\"slider\" name=\"range\" id=\"huerange\" min=0 max=360 step=1  value={{hue}} #slider (change)=\"changelight(slider.value,slider1.value,slider2.value)\" ></mat-slider><label id=\"name\" >{{slider.value.toPrecision(2)}}</label><br/>\r\n  &nbsp;&nbsp;&nbsp;<label id=\"name\" >saturation</label>\r\n  <mat-slider name=\"range\" id=\"satrange\" min=0 max=1 step=0.01 value={{saturation}} #slider1 (change)=\"changelight(slider.value,slider1.value,slider2.value)\" ></mat-slider><label id=\"name\" >{{slider1.value.toPrecision(2)}}</label><br/>\r\n  &nbsp;&nbsp;&nbsp;&nbsp;<label id=\"name\" >lightness</label>\r\n  <mat-slider name=\"range\" id=\"lirange\" min=0 max=1 step=0.01 value={{lightness}} #slider2 (change)=\"changelight(slider.value,slider1.value,slider2.value)\" ></mat-slider><label id=\"name\" >{{slider2.value.toPrecision(2)}}</label><br/>\r\n  <!-- &nbsp;&nbsp;&nbsp;&nbsp;<label id=\"name\" >opacity</label>&nbsp;&nbsp;&nbsp;\r\n  <mat-slider name=\"range\" id=\"oprange\" min=0 max=1 step=0.01 value={{opacity}} #slider3 (change)=\"changeopa(slider3.value)\" ></mat-slider><label id=\"name\" >{{slider3.value.toPrecision(2)}}</label><br/> -->\r\n  <hr/>&nbsp;&nbsp;&nbsp;&nbsp;<label id=\"name\" >Backeground Color</label>&nbsp;&nbsp;<br/>\r\n  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label id=\"name\" >R</label>\r\n  <mat-slider  name=\"range\" id=\"redrange\" min=0 max=1 step=0.01  value={{red}} #slider4 (change)=\"changeback(slider4.value,slider5.value,slider6.value)\" ></mat-slider><label id=\"name\" >{{slider4.value.toPrecision(2)}}</label><br/>\r\n  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label id=\"name\" >G</label>\r\n  <mat-slider name=\"range\" id=\"greenrange\" min=0 max=1 step=0.01 value={{green}} #slider5 (change)=\"changeback(slider4.value,slider5.value,slider6.value)\" ></mat-slider><label id=\"name\" >{{slider5.value.toPrecision(2)}}</label><br/>\r\n  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label id=\"name\" >B</label>\r\n  <mat-slider name=\"range\" id=\"bluerange\" min=0 max=1 step=0.01 value={{blue}} #slider6 (change)=\"changeback(slider4.value,slider5.value,slider6.value)\" ></mat-slider><label id=\"name\" >{{slider6.value.toPrecision(2)}}</label><br/>\r\n</div>"
 
 /***/ }),
 
@@ -3240,6 +3327,10 @@ let SettingComponent = class SettingComponent {
         this.hue = this.dataService.hue;
         this.saturation = this.dataService.saturation;
         this.lightness = this.dataService.lightness;
+        this.opacity = this.dataService.opacity;
+        this.red = this.dataService.red;
+        this.green = this.dataService.green;
+        this.blue = this.dataService.blue;
     }
     ngOnInit() {
         if (this.hue == undefined) {
@@ -3260,35 +3351,64 @@ let SettingComponent = class SettingComponent {
         else {
             this.lightness = this.dataService.lightness;
         }
+        if (this.opacity == undefined) {
+            this.opacity = 1;
+        }
+        else {
+            this.opacity = this.dataService.opacity;
+        }
         this.gridVisible = this.dataService.grid;
-        if (this.gridVisible == true) {
-            document.getElementById("grid").setAttribute('checked', 'checked');
-        }
         this.axisVisible = this.dataService.axis;
-        if (this.axisVisible == true) {
-            document.getElementById("axis").setAttribute('checked', 'checked');
-        }
         this.shadowVisible = this.dataService.shadow;
-        if (this.shadowVisible == true) {
-            document.getElementById("shadow").setAttribute('checked', 'checked');
-        }
         this.frameVisible = this.dataService.frame;
-        if (this.frameVisible == true) {
-            document.getElementById("frame").setAttribute('checked', 'checked');
+        if (this.red == undefined) {
+            this.red = 0.8;
+        }
+        else {
+            this.red = this.dataService.red;
+        }
+        if (this.green == undefined) {
+            this.green = 0.8;
+        }
+        else {
+            this.green = this.dataService.green;
+        }
+        if (this.blue == undefined) {
+            this.blue = 0.8;
+        }
+        else {
+            this.blue = this.dataService.blue;
         }
     }
     changegrid() {
         this.gridVisible = !this.gridVisible;
-        var maxX = 2;
-        var maxY = 2;
-        for (var i = 0; i < this.scene.children[1].children.length; i++) {
-            maxX = Math.max(maxX, Math.abs(this.scene.children[1].children[i].children[0]["geometry"].boundingBox.max.x));
-            maxY = Math.max(maxY, Math.abs(this.scene.children[1].children[i].children[0]["geometry"].boundingBox.max.y));
+        var maxX = 4;
+        var maxY = 4;
+        /*for(var j=0;j<this.scene.children.length;j++){
+          if(this.scene.children[j].type==="Scene"){
+            for(var i=0;i<this.scene.children[j].children.length;i++){
+              maxX=Math.max(maxX,Math.abs(this.scene.children[j].children[i].children[0]["geometry"].boundingBox.max.x));
+              maxY=Math.max(maxY,Math.abs(this.scene.children[j].children[i].children[0]["geometry"].boundingBox.max.y));
+            }
+          }
+        }*/
+        for (var i = 0; i < this.scene.children.length; i++) {
+            if (this.scene.children[i].type === "Scene") {
+                for (var j = 0; j < this.scene.children[i].children.length; j++) {
+                    if (this.scene.children[i].children[j]["geometry"].boundingSphere.radius !== 0) {
+                        maxX = Math.max(maxX, Math.abs(this.scene.children[i].children[j]["geometry"].boundingBox.max.x));
+                        maxY = Math.max(maxY, Math.abs(this.scene.children[i].children[j]["geometry"].boundingBox.max.y));
+                        break;
+                    }
+                }
+            }
         }
         var max = Math.ceil(Math.max(maxX, maxY) * 1.3) * 2;
         if (this.gridVisible) {
             var gridhelper = new __WEBPACK_IMPORTED_MODULE_0_three__["GridHelper"](max, max);
             gridhelper.name = "GridHelper";
+            var vector = new __WEBPACK_IMPORTED_MODULE_0_three__["Vector3"](0, 1, 0);
+            gridhelper.lookAt(vector);
             this.scene.add(gridhelper);
         }
         else {
@@ -3298,13 +3418,20 @@ let SettingComponent = class SettingComponent {
     }
     changeaxis() {
         this.axisVisible = !this.axisVisible;
-        var maxX = 2;
-        var maxY = 2;
-        var maxZ = 2;
-        for (var i = 0; i < this.scene.children[1].children.length; i++) {
-            maxX = Math.max(maxX, Math.abs(this.scene.children[1].children[i].children[0]["geometry"].boundingBox.max.x));
-            maxY = Math.max(maxY, Math.abs(this.scene.children[1].children[i].children[0]["geometry"].boundingBox.max.y));
-            maxZ = Math.max(maxZ, Math.abs(this.scene.children[1].children[i].children[0]["geometry"].boundingBox.max.z));
+        var maxX = 4;
+        var maxY = 4;
+        var maxZ = 4;
+        for (var i = 0; i < this.scene.children.length; i++) {
+            if (this.scene.children[i].type === "Scene") {
+                for (var j = 0; j < this.scene.children[i].children.length; j++) {
+                    if (this.scene.children[i].children[j]["geometry"].boundingSphere.radius !== 0) {
+                        maxX = Math.max(maxX, Math.abs(this.scene.children[i].children[j]["geometry"].boundingBox.max.x));
+                        maxY = Math.max(maxY, Math.abs(this.scene.children[i].children[j]["geometry"].boundingBox.max.y));
+                        maxZ = Math.max(maxZ, Math.abs(this.scene.children[i].children[j]["geometry"].boundingBox.max.z));
+                        break;
+                    }
+                }
+            }
         }
         var max = Math.ceil(Math.max(maxX, maxY, maxZ) * 1.2);
         if (this.axisVisible) {
@@ -3347,16 +3474,44 @@ let SettingComponent = class SettingComponent {
     changeframe() {
         this.frameVisible = !this.frameVisible;
         if (this.frameVisible) {
-            for (var i = 0; i < this.scene.children[1].children.length; i++) {
-                this.scene.children[1].children[i].children[0]["material"].wireframe = true;
+            for (var i = 0; i < this.scene.children.length; i++) {
+                if (this.scene.children[i].type === "Scene") {
+                    if (this.scene.children[i].children[0].type === "Mesh") {
+                        this.scene.children[i].children[0].visible = false;
+                    }
+                }
             }
         }
         else {
-            for (var i = 0; i < this.scene.children[1].children.length; i++) {
-                this.scene.children[1].children[i].children[0]["material"].wireframe = false;
+            for (var i = 0; i < this.scene.children.length; i++) {
+                if (this.scene.children[i].type === "Scene") {
+                    if (this.scene.children[i].children[0].type === "Mesh") {
+                        this.scene.children[i].children[0].visible = true;
+                    }
+                }
             }
         }
         this.dataService.addframe(this.frameVisible);
+    }
+    changeopa(_opacity) {
+        this.opacity = _opacity;
+        this.dataService.getopacity(_opacity);
+        for (var i = 0; i < this.scene.children.length; i++) {
+            if (this.scene.children[i].type === "Scene") {
+                if (this.scene.children[i].children[0].type === "Mesh") {
+                    this.scene.children[i].children[0]["material"].opacity = _opacity;
+                }
+            }
+        }
+    }
+    changeback(_red, _green, _blue) {
+        this.red = _red;
+        this.green = _green;
+        this.blue = _blue;
+        this.dataService.getred(_red);
+        this.dataService.getgreen(_green);
+        this.dataService.getblue(_blue);
+        this.scene.background = new __WEBPACK_IMPORTED_MODULE_0_three__["Color"](_red, _green, _blue);
     }
     setting(event) {
         event.stopPropagation();
@@ -3437,7 +3592,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "#toolwindow{\r\n  background-color:white;\r\n}\r\n#toolbar{\r\n  background-color: #E6E6E6;\r\n  height: 28px;\r\n}\r\n#point{\r\n  margin-left:25px;\r\n  font-size:20px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n#vertice{\r\n  font-size:22px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n#edge{\r\n  font-size:22px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n#wire{\r\n  font-size:22px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n#face{\r\n  font-size:22px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n#object{\r\n  font-size:20px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n#selected{\r\n  margin-left:30px;\r\n}\r\n.visible{\r\n  color: grey;\r\n}\r\n#table{\r\n  width:100% ;\r\n  height: 15px;\r\n}\r\n#tablename{\r\n  width:100% ;\r\n  height: 15px;\r\n  color:grey;\r\n}\r\n#numberbutton{\r\n  width:100%;\r\n  border:0;\r\n}\r\n.selectid{\r\n  background-color:#66CCFF;\r\n}\r\n", ""]);
+exports.push([module.i, "#toolwindow{\r\n  background-color:white;\r\n}\r\n#toolbar{\r\n  background-color: #E6E6E6;\r\n  height: 28px;\r\n}\r\n#point{\r\n  margin-left:25px;\r\n  font-size:20px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n#vertice{\r\n  font-size:22px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n#edge{\r\n  font-size:22px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n#wire{\r\n  font-size:22px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n#face{\r\n  font-size:22px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n#object{\r\n  font-size:20px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n#selected{\r\n  margin-left:30px;\r\n}\r\n.visible{\r\n  color: grey;\r\n}\r\n.selectvisible{\r\n  color: grey;\r\n}\r\n#table{\r\n  width:100% ;\r\n  height: 15px;\r\n}\r\n#tablename{\r\n  width:100% ;\r\n  height: 15px;\r\n  color:grey;\r\n}\r\n#numberbutton{\r\n  width:100%;\r\n  border:0;\r\n}\r\n.selectid{\r\n  background-color:#66CCFF;\r\n}\r\n#select{\r\n  position: relative;\r\n  float:right;\r\n  margin-right: 30px;\r\n}", ""]);
 
 // exports
 
@@ -3450,7 +3605,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/gs-viewer/toolwindow/toolwindow.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"toolwindow\">\r\n  <div id=\"toolbar\">\r\n    <button id=\"point\" [class.visible]=\"Visible === 'point'\" (click)=\"point(Visible)\"><i class=\"fa fa-dot-circle-o\"></i></button>\r\n    <button id=\"vertice\" [class.visible]=\"Visible === 'vertice'\" (click)=\"vertice(Visible)\">V</button>\r\n    <button id=\"edge\" [class.visible]=\"Visible === 'edge'\" (click)=\"edge(Visible)\">E</button>\r\n    <button id=\"wire\" [class.visible]=\"Visible === 'wire'\" (click)=\"wire(Visible)\">W</button>\r\n    <button id=\"face\" [class.visible]=\"Visible === 'face'\" (click)=\"face(Visible)\">F</button>\r\n    <button id=\"object\" [class.visible]=\"Visible === 'object'\" (click)=\"object(Visible)\"><i class=\"fa fa-map\"></i></button>\r\n    <input id=\"selected\" type=\"checkbox\" (click)=\"changeselected()\">\r\n    <label id=\"selectedname\" value=\"selected\">Show selected only</label>\r\n  </div>\r\n  <div id=\"toolview\">\r\n    <div *ngIf=\"Visible === 'point'\">\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\" id=\"table\" name=\"table\" bordercolor=\"#d0d0d0\">\r\n        <tr>\r\n          <td name=\"Number\" align=center width=\"40%\" align=center>ID</td>\r\n          <td width=\"20%\" align=center>X</td>\r\n          <td width=\"20%\" align=center>Y</td>\r\n          <td width=\"20%\" align=center>Z</td>\r\n        </tr>\r\n      </table>\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\" id=\"tablename\" name=\"table\" bordercolor=\"#d0d0d0\" *ngFor=\"let datascale of attribute; \">\r\n        <tr>\r\n          <button id=\"numberbutton\">{{datascale.id}}</button>\r\n          <td width=\"20%\" align=center>{{datascale.x}}</td>\r\n          <td width=\"20%\" align=center>{{datascale.y}}</td>\r\n          <td width=\"20%\" align=center>{{datascale.z}}</td>\r\n        </tr>\r\n      </table>\r\n    </div>\r\n    <div *ngIf=\"Visible === 'vertice'\">\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\" bordercolor=\"#d0d0d0\" width=\"40%\">\r\n        <tr>\r\n          <td  align=center >Vertices Lable</td>\r\n        </tr>\r\n      </table>\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\" bordercolor=\"#d0d0d0\" *ngFor=\"let datascale of attribute\" width=\"40%\">\r\n        <tr>\r\n          <button id=\"numberbutton\">{{datascale.id}}</button>\r\n        </tr>\r\n      </table>\r\n    </div>\r\n    <div *ngIf=\"Visible === 'edge'\">\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" width=\"40%\">\r\n        <tr>\r\n          <td  align=center>Edge ID</td>\r\n        </tr>\r\n      </table>\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" *ngFor=\"let datascale of attribute\" width=\"40%\">\r\n        <tr>\r\n          <button id=\"numberbutton\" >{{datascale.id}}</button>\r\n        </tr>\r\n      </table>\r\n    </div>\r\n    <div *ngIf=\"Visible === 'wire'\">\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" width=\"40%\">\r\n        <tr>\r\n          <td  align=center>Wire ID</td>\r\n        </tr>\r\n      </table>\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" *ngFor=\"let datascale of attribute\" width=\"40%\">\r\n        <tr>\r\n          <button id=\"numberbutton\" >{{datascale.id}}</button>\r\n        </tr>\r\n      </table>\r\n    </div>\r\n    <div *ngIf=\"Visible === 'face'\">\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" width=\"40%\">\r\n        <tr>\r\n          <td  align=center>Face ID</td>\r\n        </tr>\r\n      </table>\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" *ngFor=\"let datascale of attribute\" width=\"40%\">\r\n        <tr>\r\n          <button id=\"numberbutton\" >{{datascale.id}}</button>\r\n        </tr>\r\n      </table>\r\n    </div>\r\n    <div *ngIf=\"Visible === 'object'\">\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" width=\"40%\">\r\n        <tr>\r\n          <td name=\"Number\" align=center  align=center>Object ID</td>\r\n        </tr>\r\n      </table>\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" *ngFor=\"let datascale of attribute \" width=\"40%\">\r\n        <tr>\r\n          <button  id=\"numberbutton\" >{{ datascale.id}}</button>\r\n        </tr>\r\n      </table>\r\n    </div>\r\n  </div>\r\n"
+module.exports = "<div id=\"toolwindow\">\r\n  <div id=\"toolbar\">\r\n    <button id=\"point\" [class.visible]=\"Visible === 'Points'\" (click)=\"point(Visible)\"><i class=\"fa fa-dot-circle-o\"></i></button>\r\n    <button id=\"vertice\" [class.visible]=\"Visible === 'Vertices'\" (click)=\"vertice(Visible)\">V</button>\r\n    <button id=\"edge\" [class.visible]=\"Visible === 'Edges'\" (click)=\"edge(Visible)\">E</button>\r\n    <button id=\"wire\" [class.visible]=\"Visible === 'Wires'\" (click)=\"wire(Visible)\">W</button>\r\n    <button id=\"face\" [class.visible]=\"Visible === 'Faces'\" (click)=\"face(Visible)\">F</button>\r\n    <button id=\"object\" [class.visible]=\"Visible === 'Objs'\" (click)=\"object(Visible)\"><i class=\"fa fa-map\"></i></button>\r\n    <input id=\"selected\" type=\"checkbox\" (click)=\"changeselected()\">\r\n    <label id=\"selectedname\" value=\"selected\">Show selected only</label>\r\n    <div id=\"select\">\r\n      <button id=\"vertice\" [class.selectvisible]=\"SelectVisible === 'Vertices'\" (click)=\"verticeselect(SelectVisible)\">V</button>\r\n      <button id=\"edge\" [class.selectvisible]=\"SelectVisible === 'Edges'\" (click)=\"edgeselect(SelectVisible)\">E</button>\r\n      <button id=\"wire\" [class.selectvisible]=\"SelectVisible === 'Wires'\" (click)=\"wireselect(SelectVisible)\">W</button>\r\n      <button id=\"face\" [class.selectvisible]=\"SelectVisible === 'Faces'\" (click)=\"faceselect(SelectVisible)\">F</button>\r\n    </div>\r\n  </div>\r\n  <div id=\"toolview\">\r\n    <div *ngIf=\"Visible === 'Points'\">\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\" id=\"table\" name=\"table\" bordercolor=\"#d0d0d0\">\r\n        <tr>\r\n          <td name=\"Number\" align=center width=\"40%\" align=center>ID</td>\r\n          <td width=\"20%\" align=center>X</td>\r\n          <td width=\"20%\" align=center>Y</td>\r\n          <td width=\"20%\" align=center>Z</td>\r\n        </tr>\r\n      </table>\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\" id=\"tablename\" name=\"table\" bordercolor=\"#d0d0d0\" *ngFor=\"let datascale of attribute; \">\r\n        <tr>\r\n          <button id=\"numberbutton\">{{datascale.id}}</button>\r\n          <td width=\"20%\" align=center>{{datascale.x}}</td>\r\n          <td width=\"20%\" align=center>{{datascale.y}}</td>\r\n          <td width=\"20%\" align=center>{{datascale.z}}</td>\r\n        </tr>\r\n      </table>\r\n    </div>\r\n    <div *ngIf=\"Visible === 'Vertices'\">\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\" bordercolor=\"#d0d0d0\" width=\"50%\">\r\n        <tr>\r\n          <td  align=center width=\"25%\">Vertices Lable</td>\r\n          <td  align=center width=\"25%\">Points ID</td>\r\n        </tr>\r\n      </table>\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\" bordercolor=\"#d0d0d0\" *ngFor=\"let datascale of attribute\" width=\"50%\">\r\n        <tr>\r\n          <button id=\"numberbutton\" [class.selectid]=\"ID == datascale.id\" (click)=clicktoshow(datascale.id)>{{datascale.id}}</button>\r\n          <td  align=center  width=\"50%\">{{datascale.pointid}}</td>\r\n        </tr>\r\n      </table>\r\n    </div>\r\n    <div *ngIf=\"Visible === 'Edges'\">\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" width=\"40%\">\r\n        <tr>\r\n          <td  align=center>Edge ID</td>\r\n        </tr>\r\n      </table>\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" *ngFor=\"let datascale of attribute\" width=\"40%\">\r\n        <tr>\r\n          <!-- <button id=\"numberbutton\"[class.selectid]=\"ID == datascale.id\" (click)=clicktoshow(datascale.id) >{{datascale.id}}</button> -->\r\n          <button id=\"numberbutton\">{{datascale}}</button>\r\n        </tr>\r\n      </table>\r\n    </div>\r\n    <div *ngIf=\"Visible === 'Wires'\">\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" width=\"40%\">\r\n        <tr>\r\n          <td  align=center>Wire ID</td>\r\n        </tr>\r\n      </table>\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" *ngFor=\"let datascale of attribute\" width=\"40%\">\r\n        <tr>\r\n          <button id=\"numberbutton\" >{{datascale}}</button>\r\n        </tr>\r\n      </table>\r\n    </div>\r\n    <div *ngIf=\"Visible === 'Faces'\">\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" width=\"40%\">\r\n        <tr>\r\n          <td  align=center>Face ID</td>\r\n        </tr>\r\n      </table>\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" *ngFor=\"let datascale of attribute\" width=\"40%\">\r\n        <tr>\r\n          <button id=\"numberbutton\" >{{datascale}}</button>\r\n        </tr>\r\n      </table>\r\n    </div>\r\n    <div *ngIf=\"Visible === 'Objs'\">\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" width=\"40%\">\r\n        <tr>\r\n          <td name=\"Number\" align=center  align=center>Object ID</td>\r\n        </tr>\r\n      </table>\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" *ngFor=\"let datascale of attribute \" width=\"40%\">\r\n        <tr>\r\n          <button  id=\"numberbutton\"  >{{datascale}}</button>\r\n        </tr>\r\n      </table>\r\n    </div>\r\n  </div>\r\n"
 
 /***/ }),
 
@@ -3475,9 +3630,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 let ToolwindowComponent = class ToolwindowComponent extends __WEBPACK_IMPORTED_MODULE_1__data_DataSubscriber__["a" /* DataSubscriber */] {
     constructor(injector, myElement) {
         super(injector);
-        this.Visible = "object";
-        this.selectedVisible = false;
+        this.Visible = "Objs";
+        this.SelectVisible = "Faces";
         this.scene = this.dataService.getScene();
+        this.selectedVisible = false;
         this.attribute = [];
         this.num = [];
         this.collection = [];
@@ -3487,98 +3643,330 @@ let ToolwindowComponent = class ToolwindowComponent extends __WEBPACK_IMPORTED_M
     ngOnInit() {
         this.model = this.dataService.getGsModel();
         this.object(this.Visible);
+        this.Visible = this.dataService.visible;
+        this.scene_and_maps = this.dataService.updateModel();
+        this.getoject();
+        this.getcolor();
+        this.faceselect(this.SelectVisible);
     }
     notify() {
-        if (this.selectedVisible == true) {
-            this.objectcheck();
-        }
-        /*for(var i=0;i<this.dataService.selecting.length;i++){
-          for(var j=0;j<this.scene.children[1].children.length;j++){
-            if(this.dataService.selecting[i].uuid===this.scene.children[1].children[j].children[0].uuid){
-               console.log(this.scene.children[1].children[j].children[0].parent);
-               this.selectObj.push(this.scene.children[1].children[j].children[0].parent);
+        this.selectObj = [];
+        for (var i = 0; i < this.dataService.selecting.length; i++) {
+            for (var n = 0; n < this.scene.children.length; n++) {
+                if (this.scene.children[n].type === "Scene") {
+                    if (this.dataService.selecting[i].uuid === this.scene.children[n].children[0].uuid) {
+                        this.selectObj.push(this.scene.children[n].children[0].parent);
+                    }
+                }
             }
-          }
-        }*/
+        }
+        if (this.selectedVisible == true) {
+            if (this.Visible === "Objs")
+                this.objectcheck();
+            if (this.Visible === "Faces")
+                this.facecheck();
+            if (this.Visible === "Wires")
+                this.wirecheck();
+            if (this.Visible === "Edges")
+                this.edgecheck();
+            if (this.Visible === "Vertices")
+                this.verticecheck();
+        }
         this.dataService.visible = this.Visible;
+        ;
     }
-    point(Visible) {
-        this.Visible = "point";
-        this.attribute = [];
-        for (var i = 0; i < this.model.getGeom().getAllPoints().length; i++) {
-            var attributepoints = [];
-            attributepoints.id = this.model.getGeom().getAllPoints()[i].getID();
-            attributepoints.x = this.model.getGeom().getAllPoints()[i].getPosition()[0];
-            attributepoints.y = this.model.getGeom().getAllPoints()[i].getPosition()[1];
-            attributepoints.z = this.model.getGeom().getAllPoints()[i].getPosition()[2];
-            this.attribute.push(attributepoints);
+    getvertice() {
+        var attributeedge = [];
+        for (var i = 0; i < this.scene_and_maps.faces_map.size; i++) {
+            const face = this.model.getGeom().getTopo(this.scene_and_maps.faces_map.get(i));
+            const verts = face.getVertices();
+            const verts_xyz = verts.map((v) => v.getPoint().getPosition());
+            console.log(verts_xyz);
         }
     }
-    pointcheck() {
-        this.attribute = [];
-        for (var i = 0; i < this.model.getGeom().getAllPoints().length; i++) {
-            var attributepoints = [];
-            attributepoints.id = this.model.getGeom().getAllPoints()[i].getID();
-            attributepoints.x = this.model.getGeom().getAllPoints()[i].getPosition()[0];
-            attributepoints.y = this.model.getGeom().getAllPoints()[i].getPosition()[1];
-            attributepoints.z = this.model.getGeom().getAllPoints()[i].getPosition()[2];
-            this.attribute.push(attributepoints);
+    getedges() {
+        var attributeedge = [];
+        for (var i = 0; i < this.scene_and_maps.edges_map.size; i++) {
+            var attribute = [];
+            attribute = this.scene_and_maps.edges_map.get(i);
+            if (attribute["tt"] != undefined) {
+                if (attribute["tt"] == 1) {
+                    var edge = "o" + attribute["id"] + ":" + "f" + attribute["ti"] + ":" + "e" + attribute["si"];
+                    attributeedge.push(edge);
+                }
+            }
+        }
+        return attributeedge;
+    }
+    getwires() {
+        var attributewire = [];
+        for (var i = 0; i < this.scene_and_maps.wires_map.size; i++) {
+            var attribute = [];
+            attribute = this.scene_and_maps.wires_map.get(i);
+            if (attribute["tt"] != undefined) {
+                if (attribute["tt"] == 0) {
+                    var edge = "o" + attribute["id"] + ":" + "w" + attribute["ti"];
+                    attributewire.push(edge);
+                }
+            }
+        }
+        return attributewire;
+    }
+    getfaces() {
+        var attributeface = [];
+        for (var i = 0; i < this.scene_and_maps.faces_map.size; i++) {
+            var attribute = [];
+            attribute = this.scene_and_maps.faces_map.get(i);
+            if (attribute["tt"] != undefined) {
+                if (attribute["tt"] == 1) {
+                    var edge = "o" + attribute["id"] + ":" + "f" + attribute["ti"];
+                    attributeface.push(edge);
+                }
+            }
+        }
+        return attributeface;
+    }
+    getoject() {
+        var attributeobject = [];
+        var objectlable = [];
+        /*for(var i =0;i<this.scene_and_maps.faces_map.size;i++){
+          var attribute:any=[]
+          attribute=this.scene_and_maps.faces_map.get(i);
+          if(attribute["id"]!=undefined){
+            if(objectlable.length!=0){
+              for(var j=0;j<objectlable.length;j++){
+                if(objectlable[j]!=attribute["id"]){
+                  objectlable.push(attribute["id"]);
+                }
+              }
+            }else{objectlable.push(attribute["id"]);}
+          }
+        }
+        for(var n=0;n<objectlable.length;n++){
+          var object:string="o"+objectlable[n];
+          attributeobject.push(object);
+        }*/
+        return attributeobject;
+    }
+    getchildren() {
+        var children;
+        for (var i = 0; i < this.scene.children.length; i++) {
+            if (this.scene.children[i].name == "Scene") {
+                children = this.scene.children[i].children;
+                break;
+            }
+            if (i == this.scene.children.length - 1) {
+                return [];
+            }
+        }
+        return children;
+    }
+    getcolor() {
+        var children = this.getchildren();
+        for (var i = 0; i < children.length; i++) {
+            if (children[i].name === "All faces") {
+                this.FaceColor = children[i]["material"].color;
+            }
+            if (children[i].name === "All wires") {
+                this.WireColor = children[i]["material"].color;
+            }
+            if (children[i].name === "All edges") {
+                this.EdgeColor = children[i]["material"].color;
+            }
         }
     }
-    vertice(Visible) {
-        this.Visible = "vertice";
-        this.attribute = [];
+    faceselect(SelectVisible) {
+        this.SelectVisible = "Faces";
+        var scenechildren = [];
+        var children = this.getchildren();
+        for (var i = 0; i < children.length; i++) {
+            if (children[i].name === "All wires")
+                children[i]["material"].opacity = 0;
+            if (children[i].name === "All edges")
+                children[i]["material"].opacity = 0;
+            if (children[i].name === "All points")
+                children[i]["material"].opacity = 0;
+            if (children[i].name === "All faces") {
+                children[i]["material"].opacity = 0.8;
+                scenechildren.push(children[i]);
+            }
+        }
+        this.dataService.addscenechild(scenechildren);
+    }
+    wireselect(SelectVisible) {
+        this.SelectVisible = "Wires";
+        var scenechildren = [];
+        var children = this.getchildren();
+        for (var i = 0; i < children.length; i++) {
+            if (children[i].name == "All faces")
+                children[i]["material"].opacity = 0.1;
+            if (children[i].name === "All edges")
+                children[i]["material"].opacity = 0;
+            if (children[i].name === "All points")
+                children[i]["material"].opacity = 0;
+            if (children[i].name === "All wires") {
+                children[i]["material"].opacity = 0.6;
+                scenechildren.push(children[i]);
+            }
+        }
+        this.dataService.addscenechild(scenechildren);
+    }
+    edgeselect(SelectVisible) {
+        this.SelectVisible = "Edges";
+        var scenechildren = [];
+        var children = this.getchildren();
+        for (var i = 0; i < children.length; i++) {
+            if (children[i].name == "All faces")
+                children[i]["material"].opacity = 0.1;
+            if (children[i].name === "All wires")
+                children[i]["material"].opacity = 0;
+            if (children[i].name === "All points")
+                children[i]["material"].opacity = 0;
+            if (children[i].name === "All edges") {
+                children[i]["material"].opacity = 0.4;
+                scenechildren.push(children[i]);
+            }
+        }
+        this.dataService.addscenechild(scenechildren);
+    }
+    verticeselect(SelectVisible) {
+        this.SelectVisible = "Vertices";
+        var scenechildren = [];
+        var children = this.getchildren();
+        for (var i = 0; i < children.length; i++) {
+            if (children[i].name == "All faces")
+                children[i]["material"].opacity = 0.1;
+            if (children[i].name === "All wires")
+                children[i]["material"].opacity = 0;
+            if (children[i].name === "All edges")
+                children[i]["material"].opacity = 0;
+            if (children[i].name === "All points") {
+                children[i]["material"].opacity = 1;
+                scenechildren.push(children[i]);
+            }
+        }
+        this.dataService.addscenechild(scenechildren);
+    }
+    getscenechildren() {
+        var scenechildren = [];
         for (var n = 0; n < this.scene.children.length; n++) {
             if (this.scene.children[n].type === "Scene") {
                 for (var i = 0; i < this.scene.children[n].children.length; i++) {
-                    for (var j = 0; j < this.scene.children[n].children[i].children.length; j++) {
-                        if (this.scene.children[n].children[i].children[j].name === "Vertices") {
-                            for (var m = 0; m < this.scene.children[n].children[i].children[j].children.length; m++) {
-                                var attributeface = [];
-                                attributeface.id = this.scene.children[n].children[i].children[j].children[m].name;
-                                this.attribute.push(attributeface);
-                            }
+                    //for(var j=0;j<this.scene.children[n].children[i].children.length;j++){
+                    scenechildren.push(this.scene.children[n].children[i]);
+                    //}
+                }
+            }
+        }
+        return scenechildren;
+    }
+    clearsprite() {
+        this.dataService.visible = this.Visible;
+        for (var i = 0; i < this.dataService.sprite.length; i++) {
+            this.dataService.sprite[i].visible = false;
+        }
+        var sprite = [];
+        this.dataService.pushsprite(sprite);
+    }
+    getpoints() {
+        var attrubtepoints = [];
+        for (var i = 0; i < this.model.getGeom().getAllPoints().length; i++) {
+            var attributepoint = [];
+            attributepoint.id = this.model.getGeom().getAllPoints()[i].getID();
+            attributepoint.x = this.model.getGeom().getAllPoints()[i].getPosition()[0];
+            attributepoint.y = this.model.getGeom().getAllPoints()[i].getPosition()[1];
+            attributepoint.z = this.model.getGeom().getAllPoints()[i].getPosition()[2];
+            attrubtepoints.push(attributepoint);
+        }
+        return attrubtepoints;
+    }
+    getvertices() {
+        var points = this.getpoints();
+        var attributes = [];
+        for (var i = 0; i < this.scenechildren.length; i++) {
+            if (this.scenechildren[i].name === "All points") {
+                for (var j = 0; j < this.scenechildren[i].children.length; j++) {
+                    for (var n = 0; n < points.length; n++) {
+                        if (points[n].x === this.scenechildren[i].children[j].position.x &&
+                            points[n].y === this.scenechildren[i].children[j].position.y &&
+                            points[n].z === this.scenechildren[i].children[j].position.z) {
+                            var attributevertice = [];
+                            attributevertice.id = this.scenechildren[i].children[j].name;
+                            attributevertice.pointid = points[n].id;
+                            attributes.push(attributevertice);
                         }
                     }
                 }
-                break;
             }
         }
+        return attributes;
     }
-    verticecheck() {
-        this.attribute = [];
+    getverticescheck() {
+        var points = this.getpoints();
+        var attributes = [];
         for (var i = 0; i < this.selectObj.length; i++) {
             for (var j = 0; j < this.selectObj[i].children.length; j++) {
                 if (this.selectObj[i].children[j].name === "Vertices") {
                     for (var n = 0; n < this.selectObj[i].children[j].children.length; n++) {
-                        var attributevertice = [];
-                        attributevertice.id = this.selectObj[i].children[j].children[n].name;
-                        this.attribute.push(attributevertice);
-                    }
-                }
-            }
-        }
-    }
-    edge(Visible) {
-        this.Visible = "edge";
-        this.attribute = [];
-        for (var n = 0; n < this.scene.children.length; n++) {
-            if (this.scene.children[n].type === "Scene") {
-                for (var i = 0; i < this.scene.children[n].children.length; i++) {
-                    for (var j = 0; j < this.scene.children[n].children[i].children.length; j++) {
-                        if (this.scene.children[n].children[i].children[j].name === "Edges") {
-                            for (var m = 0; m < this.scene.children[n].children[i].children[j].children.length; m++) {
-                                var attributeedge = [];
-                                attributeedge.id = this.scene.children[n].children[i].children[j].children[m].name;
-                                this.attribute.push(attributeedge);
+                        for (var m = 0; m < points.length; m++) {
+                            if (points[m].x === this.selectObj[i].children[j].children[n].position.x &&
+                                points[m].y === this.selectObj[i].children[j].children[n].position.y &&
+                                points[m].z === this.selectObj[i].children[j].children[n].position.z) {
+                                var attributevertice = [];
+                                attributevertice.id = this.selectObj[i].children[j].children[n].name;
+                                attributevertice.pointid = points[m].id;
+                                attributes.push(attributevertice);
                             }
-                            break;
                         }
                     }
                 }
-                break;
             }
         }
+        return attributes;
+    }
+    point(Visible) {
+        this.Visible = "Points";
+        this.attribute = [];
+        this.attribute = this.getpoints();
+        this.dataService.visible = this.Visible;
+        this.clearsprite();
+    }
+    pointcheck() {
+        this.attribute = [];
+        this.attribute = this.getpoints();
+    }
+    vertice(Visible) {
+        this.Visible = "Vertices";
+        this.attribute = this.getvertices();
+        if (this.selectedVisible == true) {
+            this.verticecheck();
+        }
+        this.dataService.visible = this.Visible;
+        this.clearsprite();
+    }
+    verticecheck() {
+        this.attribute = [];
+        this.attribute = this.getverticescheck();
+    }
+    edge(Visible) {
+        this.Visible = "Edges";
+        this.attribute = [];
+        /*this.scenechildren=this.getscenechildren();
+        for(var i=0;i<this.scenechildren.length;i++){
+          if(this.scenechildren[i].name==="Edges"){
+            for(var j=0;j<this.scenechildren[i].children.length;j++){
+              var attributeface:any=[];
+              attributeface.id=this.scenechildren[i].children[j].name;
+              this.attribute.push(attributeface);
+            }
+          }
+        }*/
+        this.attribute = this.getedges();
+        if (this.selectedVisible == true) {
+            this.edgecheck();
+        }
+        this.dataService.visible = this.Visible;
+        this.clearsprite();
     }
     edgecheck() {
         this.attribute = [];
@@ -3596,24 +3984,24 @@ let ToolwindowComponent = class ToolwindowComponent extends __WEBPACK_IMPORTED_M
         }
     }
     wire(Visible) {
-        this.Visible = "wire";
+        this.Visible = "Wires";
         this.attribute = [];
-        for (var n = 0; n < this.scene.children.length; n++) {
-            if (this.scene.children[n].type === "Scene") {
-                for (var i = 0; i < this.scene.children[n].children.length; i++) {
-                    for (var j = 0; j < this.scene.children[n].children[i].children.length; j++) {
-                        if (this.scene.children[n].children[i].children[j].name === "Wires") {
-                            for (var m = 0; m < this.scene.children[n].children[i].children[j].children.length; m++) {
-                                var attributeface = [];
-                                attributeface.id = this.scene.children[n].children[i].children[j].children[m].name;
-                                this.attribute.push(attributeface);
-                            }
-                        }
-                    }
-                }
-                break;
+        /*this.scenechildren=this.getscenechildren();
+        for(var i=0;i<this.scenechildren.length;i++){
+          if(this.scenechildren[i].name==="Wires"){
+            for(var j=0;j<this.scenechildren[i].children.length;j++){
+              var attributeface:any=[];
+              attributeface.id=this.scenechildren[i].children[j].name;
+              this.attribute.push(attributeface);
             }
+          }
+        }*/
+        this.attribute = this.getwires();
+        if (this.selectedVisible == true) {
+            this.wirecheck();
         }
+        this.dataService.visible = this.Visible;
+        this.clearsprite();
     }
     wirecheck() {
         this.attribute = [];
@@ -3630,22 +4018,36 @@ let ToolwindowComponent = class ToolwindowComponent extends __WEBPACK_IMPORTED_M
         }
     }
     face(Visible) {
-        this.Visible = "face";
+        this.Visible = "Faces";
         this.attribute = [];
-        for (var n = 0; n < this.scene.children.length; n++) {
-            if (this.scene.children[n].type === "Scene") {
-                for (var i = 0; i < this.scene.children[n].children.length; i++) {
-                    for (var j = 0; j < this.scene.children[n].children[i].children.length; j++) {
-                        if (this.scene.children[n].children[i].children[j].name === "Faces") {
-                            for (var m = 0; m < this.scene.children[n].children[i].children[j].children.length; m++) {
-                                var attributeface = [];
-                                attributeface.id = this.scene.children[n].children[i].children[j].children[m].name;
-                                this.attribute.push(attributeface);
-                            }
+        /*this.scenechildren=this.getscenechildren();
+        for(var i=0;i<this.scenechildren.length;i++){
+          if(this.scenechildren[i].name==="Faces"){
+            for(var j=0;j<this.scenechildren[i].children.length;j++){
+              var attributeface:any=[];
+              attributeface.id=this.scenechildren[i].children[j].name;
+              this.attribute.push(attributeface);
+            }
+          }
+        }*/
+        this.attribute = this.getfaces();
+        if (this.selectedVisible == true) {
+            this.facecheck();
+        }
+        this.clearsprite();
+    }
+    clicktoshow(id) {
+        this.ID = id;
+        for (var i = 0; i < this.scenechildren.length; i++) {
+            if (this.scenechildren[i].name === this.Visible) {
+                if (this.selectObj.length !== 0) {
+                    for (var j = 0; j < this.scenechildren[i].children.length; j++) {
+                        if (this.scenechildren[i].children[j].name === id) {
+                            this.scenechildren[i].children[j].visible = true;
+                            this.dataService.addsprite(this.scenechildren[i].children[j]);
                         }
                     }
                 }
-                break;
             }
         }
     }
@@ -3664,95 +4066,93 @@ let ToolwindowComponent = class ToolwindowComponent extends __WEBPACK_IMPORTED_M
         }
     }
     object(Visible) {
-        this.Visible = "object";
+        this.Visible = "Objs";
         this.attribute = [];
-        for (var n = 0; n < this.scene.children.length; n++) {
-            if (this.scene.children[n].type === "Scene") {
-                for (var i = 0; i < this.scene.children[n].children.length; i++) {
-                    for (var j = 0; j < this.scene.children[n].children[i].children[this.scene.children[n].children[i].children.length - 1].children.length; j++) {
-                        var attributeobj = [];
-                        attributeobj.id = this.scene.children[n].children[i].children[this.scene.children[n].children[i].children.length - 1].children[j].name;
-                        this.attribute.push(attributeobj);
-                    }
-                }
-                break;
+        /*this.scenechildren=this.getscenechildren();
+        for(var i=0;i<this.scenechildren.length;i++){
+          if(this.scenechildren[i].name==="Objs"){
+            for(var j=0;j<this.scenechildren[i].children.length;j++){
+              var attributeface:any=[];
+              attributeface.id=this.scenechildren[i].children[j].name;
+              this.attribute.push(attributeface);
             }
+          }
+        }*/
+        //this.attribute=this.getoject();
+        if (this.selectedVisible == true) {
+            this.objectcheck();
         }
+        this.dataService.visible = this.Visible;
+        this.clearsprite();
     }
     objectcheck() {
         this.attribute = [];
         for (var i = 0; i < this.selectObj.length; i++) {
-            for (var j = 0; j < this.selectObj[i].children[this.selectObj[i].children.length - 1].children.length; j++) {
-                var attributeobj = [];
-                attributeobj.id = this.selectObj[i].children[this.selectObj[i].children.length - 1].children[j].name;
-                this.attribute.push(attributeobj);
+            for (var j = 0; j < this.selectObj[i].children.length; j++) {
+                if (this.selectObj[i].children[j].name === "Objs") {
+                    for (var n = 0; n < this.selectObj[i].children[j].children.length; n++) {
+                        var attributeface = [];
+                        attributeface.id = this.selectObj[i].children[j].children[n].name;
+                        this.attribute.push(attributeface);
+                    }
+                }
             }
         }
     }
     changeselected() {
         this.selectedVisible = !this.selectedVisible;
-        this.selectObj = [];
-        for (var i = 0; i < this.dataService.selecting.length; i++) {
-            for (var n = 0; n < this.scene.children.length; n++) {
-                if (this.scene.children[n].type === "Scene") {
-                    for (var j = 0; j < this.scene.children[n].children.length; j++) {
-                        if (this.dataService.selecting[i].uuid === this.scene.children[n].children[j].children[0].uuid) {
-                            this.selectObj.push(this.scene.children[n].children[j].children[0].parent);
-                        }
-                    }
-                }
-            }
-        }
         if (this.selectedVisible) {
-            if (this.Visible === "point") {
+            if (this.Visible === "Points")
                 this.pointcheck();
-            }
-            if (this.Visible === "vertice") {
+            if (this.Visible === "Vertices")
                 this.verticecheck();
-            }
-            if (this.Visible === "edge") {
+            if (this.Visible === "Edges")
                 this.edgecheck();
-            }
-            if (this.Visible === "wire") {
+            if (this.Visible === "Wires")
                 this.wirecheck();
-            }
-            if (this.Visible === "face") {
+            if (this.Visible === "Faces")
                 this.facecheck();
-            }
-            if (this.Visible === "object") {
+            if (this.Visible === "Objs")
                 this.objectcheck();
-            }
         }
         else {
-            if (this.Visible === "point") {
+            if (this.Visible === "Points")
                 this.point(this.Visible);
-            }
-            if (this.Visible === "vertice") {
+            if (this.Visible === "Vertices")
                 this.vertice(this.Visible);
-            }
-            if (this.Visible === "edge") {
+            if (this.Visible === "Edges")
                 this.edge(this.Visible);
-            }
-            if (this.Visible === "wire") {
+            if (this.Visible === "Wires")
                 this.wire(this.Visible);
-            }
-            if (this.Visible === "face") {
+            if (this.Visible === "Faces")
                 this.face(this.Visible);
-            }
-            if (this.Visible === "object") {
+            if (this.Visible === "Objs")
                 this.object(this.Visible);
-            }
         }
     }
     Onselect(i) {
         var select;
-        for (var j = 0; j < this.attribute.length; j++) {
-            if (this.attribute[j].original == i) {
-                select = this.attribute[j].mesh;
-                this.dataService.pushselecting(select);
-                select.material.color.setHex(0x2E9AFE);
+        for (var n = 0; n < this.scene.children.length; n++) {
+            if (this.scene.children[n].type === "Scene") {
+                console.log(this.scene.children[n].children.length);
+                for (var m = 0; m < this.scene.children[n].children.length; m++) {
+                    var sprite = this.scene.children[n].children[m].children[this.scene.children[n].children[m].children.length - 1].children;
+                    for (var j = 0; j < sprite.length; j++) {
+                        if (sprite[j].name === i) {
+                        }
+                    }
+                }
+                //this.scene.children[n].children
             }
         }
+        // for(var j=0;j<this.attribute.length;j++){
+        //   if(this.attribute[j].id==i){
+        //   	select=this.attribute[j].mesh;
+        //   	this.dataService.pushselecting(select);
+        //   	select.material.color.setHex(0x2E9AFE);
+        //      console.log(this.attribute[j]);
+        //   }
+        // }
     }
 };
 ToolwindowComponent = __decorate([
@@ -3776,7 +4176,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "#container {\r\n  position: relative;\r\n  height:100%;\r\n  width: 100%;\r\n  margin:0px;\r\n  overflow: hidden;\r\n  color: white;\r\n}\r\n\r\n#rotating{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:15px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  top: 0px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n\r\n#paning{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:15px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  top: 25px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n\r\n#zooming{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:15px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 50px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n\r\n#zoomingfit{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:15px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 75px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n\r\n#selecting{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:15px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 100px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n\r\n#setting{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:15px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 125px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n\r\n.selected{\r\n  color: grey;\r\n\r\n}\r\n\r\n.visible{\r\n  color: grey;\r\n}\r\n\r\n.cursor {\r\n\r\n}", ""]);
+exports.push([module.i, "#container {\r\n  position: relative;\r\n  height:100%;\r\n  width: 100%;\r\n  margin:0px;\r\n  overflow: hidden;\r\n  color: white;\r\n}\r\n\r\n/*#rotating{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:15px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  top: 0px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n\r\n#paning{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:15px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  top: 25px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n\r\n#zooming{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:15px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 50px;\r\n  background-color:transparent;\r\n  border:0;\r\n}*/\r\n\r\n#zoomingfit{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:15px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 10px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n\r\n/*#selecting{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:15px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 100px;\r\n  background-color:transparent;\r\n  border:0;\r\n}*/\r\n\r\n#setting{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:15px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  top: 35px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n\r\n\r\n.selected{\r\n  color: grey;\r\n\r\n}\r\n.visible{\r\n  color: grey;\r\n}\r\n\r\n.cursor {\r\n\r\n}", ""]);
 
 // exports
 
@@ -3789,7 +4189,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/gs-viewer/viewer/viewer.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"container\"  \r\n\t\t(mousemove)=\"onDocumentMouseMove($event)\" \r\n\t\t(click)=\"Mousedown($event)\">\r\n\t\r\n  \t\t<!-- <button id=\"rotating\" \r\n  \t\t\t[class.visible]=\"Visible === 'rotate'\" \r\n  \t\t\t(click)=\"rotate()\">\r\n  \t\t\t<i class=\"fa fa-refresh\"></i>\r\n  \t\t</button>\r\n\r\n  \t\t<button id=\"paning\"  \r\n  \t\t\t[class.visible]=\"Visible === 'pan'\" \r\n  \t\t\t(click)=\"pan()\">\r\n  \t\t\t<i class=\"fa fa-hand-paper-o\"></i>\r\n  \t\t</button>\r\n\r\n  \t\t<button id=\"zooming\"  \r\n  \t\t\t[class.visible]=\"Visible === 'zoom'\" \r\n  \t\t\t(click)=\"Visible='zoom'\">\r\n  \t\t\t<i class=\"fa fa-search\"></i>\r\n  \t\t</button>\r\n  \t\t\r\n  \t\t<button id=\"zoomingfit\"  \r\n  \t\t\t[class.visible]=\"Visible === 'zoomfit'\" \r\n  \t\t\t(click)=\"zoomfit()\">\r\n  \t\t\t<i class=\"fa fa-arrows-alt\"></i>\r\n  \t\t</button> -->\r\n  \t\t\r\n  \t\t<button id=\"selecting\" [class.visible]=\"Visible === 'select'\" (click)= \"select($event)\" ><i class=\"fa fa-mouse-pointer\"></i></button>\r\n  \t\t\r\n  \t\t<button id=\"setting\" [class.selected]=\"settingVisible\" (click)= \"settingVisible = !settingVisible\">\r\n      \t\r\n      \t<!--setting-->\r\n      \t<i class=\"fa fa-cog\"></i></button>\r\n \t\t<app-setting *ngIf=\"settingVisible == true\"></app-setting>\r\n</div>\r\n\r\n\r\n\t\r\n\r\n\r\n"
+module.exports = "<div id=\"container\"  \r\n    (mousemove)=\"onDocumentMouseMove($event)\" \r\n    (mousedown)=\"mousedown($event)\"\r\n    (mouseup)=\"mouseup($event)\"\r\n\t\t(click)=\"onDocumentMouseDown($event)\">\r\n\t\r\n  \t\t<!-- <button id=\"rotating\" \r\n  \t\t\t[class.visible]=\"Visible === 'rotate'\" \r\n  \t\t\t(click)=\"rotate()\">\r\n  \t\t\t<i class=\"fa fa-refresh\"></i>\r\n  \t\t</button>\r\n\r\n  \t\t<button id=\"paning\"  \r\n  \t\t\t[class.visible]=\"Visible === 'pan'\" \r\n  \t\t\t(click)=\"pan()\">\r\n  \t\t\t<i class=\"fa fa-hand-paper-o\"></i>\r\n  \t\t</button>\r\n\r\n  \t\t<button id=\"zooming\"  \r\n  \t\t\t[class.visible]=\"Visible === 'zoom'\" \r\n  \t\t\t(click)=\"Visible='zoom'\">\r\n  \t\t\t<i class=\"fa fa-search\"></i>\r\n  \t\t</button>-->\r\n  \t\t\r\n  \t\t<button id=\"zoomingfit\"  \r\n  \t\t\t[class.visible]=\"Visible === 'zoomfit'\" \r\n  \t\t\t(click)=\"zoomfit()\">\r\n  \t\t\t<i class=\"fa fa-arrows-alt\"></i>\r\n  \t\t</button> \r\n  \t\t\r\n  \t\t<!-- <button id=\"selecting\" [class.visible]=\"Visible === 'select'\" (click)= \"select($event, Visible)\" ><i class=\"fa fa-mouse-pointer\"></i></button> -->\r\n  \t\t\r\n  \t\t<button id=\"setting\" [class.selected]=\"settingVisible\" (click)= \"settingVisible = !settingVisible\">\r\n      \t\r\n      \t<!--setting-->\r\n      \t<i class=\"fa fa-cog\"></i></button>\r\n \t\t<app-setting *ngIf=\"settingVisible == true\"></app-setting>\r\n</div>\r\n\r\n\r\n\t\r\n\r\n\r\n"
 
 /***/ }),
 
@@ -3800,8 +4200,7 @@ module.exports = "<div id=\"container\"  \r\n\t\t(mousemove)=\"onDocumentMouseMo
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ViewerComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm2015/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_three__ = __webpack_require__("../../../../three/build/three.module.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_gs_json__ = __webpack_require__("../../../../gs-json/dist/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__data_DataSubscriber__ = __webpack_require__("../../../../../src/app/gs-viewer/data/DataSubscriber.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__data_DataSubscriber__ = __webpack_require__("../../../../../src/app/gs-viewer/data/DataSubscriber.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -3814,16 +4213,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-
-let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_3__data_DataSubscriber__["a" /* DataSubscriber */] {
+let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2__data_DataSubscriber__["a" /* DataSubscriber */] {
     constructor(injector, myElement) {
         super(injector);
-        this.settingVisible = false;
-        this.Visible = "rotate";
-        // ???
-        this.selMaterial = new __WEBPACK_IMPORTED_MODULE_1_three__["MeshBasicMaterial"]({ color: 0xaaaaFF, side: __WEBPACK_IMPORTED_MODULE_1_three__["DoubleSide"] });
-        this.basicColHex = new __WEBPACK_IMPORTED_MODULE_1_three__["MeshBasicMaterial"]({ color: 0xFFFFFF, side: __WEBPACK_IMPORTED_MODULE_1_three__["DoubleSide"] });
-        this.mouseHovHex = new __WEBPACK_IMPORTED_MODULE_1_three__["MeshBasicMaterial"]({ color: 0xFFaaaa, side: __WEBPACK_IMPORTED_MODULE_1_three__["DoubleSide"] });
+        this.Visible = "Objs";
+        this.mySprites = [];
+        this.textlabels = [];
+        this.starsGeometry = new __WEBPACK_IMPORTED_MODULE_1_three__["Geometry"]();
         this.myElement = myElement;
     }
     ngOnInit() {
@@ -3848,22 +4244,91 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_3_
         this.width = width;
         this.height = height;
         this.updateModel();
+        // todo: check and refactor what is required?
+        this.selecting = this.dataService.getselecting(); // todo: should this be in the data service??
+        this.mouse = new __WEBPACK_IMPORTED_MODULE_1_three__["Vector2"]();
+        this.raycaster = new __WEBPACK_IMPORTED_MODULE_1_three__["Raycaster"]();
+        this.scenechildren = this.dataService.getscenechild();
+        this.scenechild = new __WEBPACK_IMPORTED_MODULE_1_three__["Scene"]();
+        var geometry = new __WEBPACK_IMPORTED_MODULE_1_three__["SphereGeometry"](0.05);
+        var material = new __WEBPACK_IMPORTED_MODULE_1_three__["MeshBasicMaterial"]({ color: 0xff0000 });
+        this.sphere = new __WEBPACK_IMPORTED_MODULE_1_three__["Mesh"](geometry, material);
+        this.sphere.visible = false;
+        this.sphere.name = "sphereInter";
+        this.scene.add(this.sphere);
+        /*for(var i=0;i<this.scene.children.length;i++){
+          if(this.scene.children[i].type==="Scene"){
+            if(this.scene.children[i].children[0].type==="Mesh"){
+              this.scene.children[i].children[0]["material"].opacity=this.dataService.opacity;
+            }
+          }
+        }*/
+        //console.log(this.scene);
+        //Material of select and basic;
+        /*for(var i=0;i<this.scene.children.length;i++){
+          if(this.scene.children[i].type==="Scene"){
+            this.basicMat=this.scene.children[i].children[0].children[0]["material"];
+            break;
+          }
+        }*/
+        ///One Mesh
+        for (var i = 0; i < this.scene.children.length; i++) {
+            if (this.scene.children[i].type === "Scene") {
+                for (var j = 0; j < this.scene.children[i].children.length; j++) {
+                    if (this.scene.children[i].children[j].name == "All faces") {
+                        this.basicMat = this.scene.children[i].children[j]["material"];
+                        this.scene.children[i].children[j]["material"].blending = 1;
+                    }
+                    if (this.scene.children[i].children[j].name == "All edges") {
+                        this.basiclineMat = this.scene.children[i].children[j]["material"];
+                        this.scene.children[i].children[j]["material"].blending = 1;
+                    }
+                    if (this.scene.children[i].children[j].name == "All wires") {
+                        this.basicwireMat = this.scene.children[i].children[j]["material"];
+                        this.scene.children[i].children[j]["material"].blending = 1;
+                    }
+                }
+            }
+        }
         // render loop
         let self = this;
         function animate() {
+            self.raycaster.setFromCamera(self.mouse, self.camera);
+            self.raycaster.linePrecision = 0.05;
+            self.scenechildren = self.dataService.getscenechild();
+            var intersects = self.raycaster.intersectObjects(self.scenechildren);
+            for (var i = 0; i < self.scenechildren.length; i++) {
+                var currObj = self.scenechildren[i];
+                if (self.dataService.getSelectingIndex(currObj.uuid) < 0) {
+                    if (intersects[0] != undefined && intersects[0].object.uuid == currObj.uuid) {
+                        //if(currObj.name==="All edges"){
+                        self.sphere.visible = true;
+                        self.sphere.position.copy(intersects[0].point);
+                        //}
+                        /*if(currObj.name==="All faces") currObj.material=self.mousehovMat;
+                        if(currObj.name==="All edges")  currObj.material=self.mousehovlineMat;
+                        if(currObj.name==="All wires")  currObj.material=self.mousehovwireMat;*/
+                    }
+                    else {
+                        self.sphere.visible = false;
+                        /*if(currObj.name==="All faces") currObj.material=self.basicMat;
+                        if(currObj.name==="All edges")  currObj.material=self.basiclineMat;
+                        if(currObj.name==="All wires")  currObj.material=self.basicwireMat;*/
+                    }
+                }
+            }
+            for (var i = 0; i < self.textlabels.length; i++) {
+                self.textlabels[i].updatePosition();
+            }
+            if (self.dataService.selecting.length != 0) {
+                self.updateview();
+            }
             requestAnimationFrame(animate);
             self.renderer.render(self.scene, self.camera);
         }
         ;
         animate();
-        // todo: check and refactor what is required?
-        this.selecting = [];
-        this.mouse = new __WEBPACK_IMPORTED_MODULE_1_three__["Vector2"]();
-        this.raycaster = new __WEBPACK_IMPORTED_MODULE_1_three__["Raycaster"]();
-        this.spritey = [];
-        document.body.style.cursor = " pointer";
-        // this.geometry = new THREE.Geometry();
-        // this.dataService.addGeom(this.geometry);
+        this.zoomfit();
     }
     //
     //  checks if the flowchart service has a flowchart and calls update function for the viewer
@@ -3893,18 +4358,46 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_3_
             return;
         }
         try {
-            const scene_data = __WEBPACK_IMPORTED_MODULE_2_gs_json__["e" /* genThreeModel */](this._model);
+            //this.scene_and_maps= gs.genThreeOptModelAndMaps( this._model );
+            this.scene_and_maps = this.dataService.updateModel();
+            const scene_data = this.scene_and_maps.scene;
+            //[three_mode, egde_map, tri_map] = genThreeModelandMaps()
+            //[three_mode, label_data] = gs.getThreeWire(labels)
+            //gs.getThreeFace(label)
+            //gs.getThreeObj
             this.clearScene();
             let loader = new __WEBPACK_IMPORTED_MODULE_1_three__["ObjectLoader"]();
             let objectData = loader.parse(scene_data);
-            for (var i = 0; i < objectData.children.length; i++) {
-                if (objectData.children[i].children !== undefined) {
-                    for (var j = 0; j < objectData.children[i].children.length; j++) {
-                        if (objectData.children[i].children[j].type === "Mesh") {
-                            objectData.children[i].children[j]["geometry"].computeVertexNormals();
-                            objectData.children[i].children[j]["geometry"].computeBoundingBox();
-                            objectData.children[i].children[j]["geometry"].computeBoundingSphere();
-                        }
+            /*for(var i =0;i< objectData.children.length;i++){
+              if( objectData.children[i].children!==undefined){
+                for(var j=0;j< objectData.children[i].children.length;j++){
+                  let chd = objectData.children[i].children[j];
+                  if( chd.type==="Mesh"||chd.type==="LineLoop"||chd.type==="LineSegments"||chd.type==="Line"){
+                     objectData.children[i].children[j]["geometry"].computeVertexNormals();
+                     objectData.children[i].children[j]["geometry"].computeBoundingBox();
+                     objectData.children[i].children[j]["geometry"].computeBoundingSphere();
+                  }
+                  ///
+                  if( chd.children.length > 0){
+                    for(let s=0; s < chd.children.length; s++ ){
+                      let spr: any = chd.children[s];
+                      this.mySprites.push(spr);
+                      spr.material = this.getMaterial(spr.name);
+                    }
+                  }
+                }
+              }
+            }*/
+            //One Mesh
+            if (objectData.children !== undefined) {
+                for (var i = 0; i < objectData.children.length; i++) {
+                    let chd = objectData.children[i];
+                    chd["material"].needsUpdate = true;
+                    chd["material"].transparent = true;
+                    if (chd.type === "Mesh" || chd.type === "LineLoop" || chd.type === "LineSegments" || chd.type === "Line") {
+                        chd["geometry"].computeVertexNormals();
+                        chd["geometry"].computeBoundingBox();
+                        chd["geometry"].computeBoundingSphere();
                     }
                 }
             }
@@ -3914,187 +4407,400 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_3_
             console.error("Error displaying model:", ex);
         }
     }
-    //
-    //  events
-    //
-    onDocumentMouseMove(event) {
-        event.preventDefault();
-        this.mouse = new __WEBPACK_IMPORTED_MODULE_1_three__["Vector2"]();
-        this.mouse.x = (event.offsetX / this.width) * 2 - 1;
-        this.mouse.y = -(event.clientY / this.height) * 2 + 1;
-    }
-    Mousedown(event) {
-        if (this.Visible == "select") {
-            var e = event;
-            this.onDocumentMouseDown(e);
-        }
-    }
-    onDocumentMouseDown(event) {
-        var selectedObj, intersects;
-        var scenechildren = [];
-        var children;
-        for (var i = 0; i < this.scene.children.length; i++) {
-            if (this.scene.children[i].name == "Scene") {
-                children = this.scene.children[i].children;
-                break;
-            }
-            if (i == this.scene.children.length - 1) {
-                return;
-            }
-        }
-        for (var i = 0; i < children.length; i++) {
-            for (var j = 0; j < children[i].children.length; j++) {
-                if (children[i].children[j].type === "Mesh") {
-                    scenechildren.push(children[i].children[j]);
-                }
-            }
-        }
-        this.raycaster.setFromCamera(this.mouse, this.camera);
-        intersects = this.raycaster.intersectObjects(scenechildren);
-        if (intersects.length > 0) {
-            selectedObj = intersects[0].object;
-            var index = this.dataService.getSelectingIndex(selectedObj.uuid);
-            if (index < 0) {
-                selectedObj.material = this.selMaterial;
-                this.dataService.selecting.push(selectedObj);
-            }
-            else {
-                selectedObj.material = this.basicColHex;
-                this.dataService.selecting.splice(index, 1);
-            }
-        }
-        else {
-            for (var i = 0; i < this.dataService.selecting.length; i++) {
-                this.dataService.selecting[i].material = this.basicColHex;
-            }
-            this.dataService.selecting = [];
-        }
-        this.updateViewer();
-    }
-    //
-    //  related to sprites??
-    //
-    updateViewer() {
-        this.updateSprite();
-    }
-    updateSprite() {
-        for (var i = this.spritey.length - 1; i >= 0; i--) {
-            this.scene.remove(this.spritey[i]);
-        }
-        this.spritey = [];
-        for (var i = 0; i < this.dataService.selecting.length; i++) {
-            var obj = this.dataService.selecting[i];
-            var childArray = obj.parent.children;
-            var sprit;
-            var position;
-            console.log(childArray);
-            if (childArray[childArray.length - 1].type == this.dataService.visible) {
-                sprit = this.sprite(childArray[childArray.length - 1].children[0].name, { fontsize: 70 });
-                position = obj.geometry.boundingBox.max;
-                sprit.position.set(position.x, position.y, position.z);
-                this.scene.add(sprit);
-                this.spritey.push(sprit);
-            }
-            else {
-                for (var j = 0; j < childArray.length - 1; j++) {
-                    if (childArray[j].type == "Group" && this.dataService.visible == childArray[j].name) {
-                        this.addSprites(childArray[j]);
-                        break;
-                    }
-                }
-                if (j == childArray.length - 1) {
-                    sprit = this.sprite(childArray[j].children[0].name, { fontsize: 30 });
-                    position = obj.geometry.boundingBox.max;
-                    sprit.position.set(position.x, position.y, position.z);
-                    this.scene.add(sprit);
-                    this.spritey.push(sprit);
-                }
-            }
-        }
-    }
-    addSprites(childArray) {
-        var sprit;
-        var position;
-        console.log(childArray);
-        for (var i = 0; i < childArray.children.length; i++) {
-            sprit = this.sprite(childArray.children[i].name, { fontsize: 30 });
-            position = childArray.children[i].position;
-            sprit.position.set(position.x, position.y, position.z);
-            this.scene.add(sprit);
-            this.spritey.push(sprit);
-        }
-    }
-    sprite(message, parameters) {
-        if (parameters === undefined)
-            parameters = {};
-        var fontface = parameters.hasOwnProperty("fontface") ? parameters["fontface"] : "Arial";
-        var fontsize = parameters.hasOwnProperty("fontsize") ? parameters["fontsize"] : 30;
-        var borderThickness = parameters.hasOwnProperty("borderThickness") ? parameters["borderThickness"] : 0.1;
-        var borderColor = parameters.hasOwnProperty("borderColor") ? parameters["borderColor"] : { r: 0, g: 0, b: 0, a: 1.0 };
-        var backgroundColor = parameters.hasOwnProperty("backgroundColor") ? parameters["backgroundColor"] : { r: 0, g: 0, b: 0, a: 1.0 };
-        var textColor = parameters.hasOwnProperty("textColor") ? parameters["textColor"] : { r: 0, g: 0, b: 255, a: 1.0 };
+    getMaterial(name) {
         var canvas = document.createElement('canvas');
+        canvas.width = 256;
+        canvas.height = 256;
         var context = canvas.getContext('2d');
-        context.font = "Bold " + fontsize + "px " + fontface;
-        var metrics = context.measureText(message);
-        var textWidth = metrics.width;
-        context.fillStyle = "rgba(" + backgroundColor.r + "," + backgroundColor.g + "," + backgroundColor.b + "," + backgroundColor.a + ")";
-        context.strokeStyle = "rgba(" + borderColor.r + "," + borderColor.g + "," + borderColor.b + "," + borderColor.a + ")";
-        context.lineWidth = borderThickness;
-        context.fillStyle = "rgba(" + textColor.r + ", " + textColor.g + ", " + textColor.b + ", 1.0)";
-        context.fillText(message, borderThickness, fontsize + borderThickness);
+        context.textAlign = "center";
+        context.fillText(name, canvas.width / 2, canvas.height / 2);
+        context.font = "Bold  100px Arial";
         var texture = new __WEBPACK_IMPORTED_MODULE_1_three__["Texture"](canvas);
         texture.needsUpdate = true;
         var spriteMaterial = new __WEBPACK_IMPORTED_MODULE_1_three__["SpriteMaterial"]({ map: texture, color: 0xffffff });
-        var sprite = new __WEBPACK_IMPORTED_MODULE_1_three__["Sprite"](spriteMaterial);
-        return sprite;
+        return spriteMaterial;
     }
     //
-    //  used for anything?
+    //  events
     //
-    render() {
-        let self = this;
-        (function render() {
-            if (self.Visible == "select") {
-                var scenechildren = new __WEBPACK_IMPORTED_MODULE_1_three__["Scene"]();
-                for (var i = 0; i < self.scene.children[1].children.length; i++) {
-                    for (var j = 0; j < self.scene.children[1].children[i].children.length; j++) {
-                        if (self.scene.children[1].children[i].children[j].type === "Mesh") {
-                            var children = self.scene.children[1].children[i].children[j];
-                            scenechildren.children.push(children);
+    mousedown($event) {
+        this.mDownTime = (new Date()).getTime();
+    }
+    mouseup($event) {
+        this.mUpTime = (new Date()).getTime();
+    }
+    onDocumentMouseMove(event) {
+        event.preventDefault();
+        this.mouse.x = (event.offsetX / this.width) * 2 - 1;
+        this.mouse.y = -(event.clientY / this.height) * 2 + 1;
+    }
+    /// selects object from three.js scene
+    onDocumentMouseDown(event) {
+        let threshold = 100;
+        if (Math.abs(this.mDownTime - this.mUpTime) > threshold) {
+            this.mDownTime = 0;
+            this.mUpTime = 0;
+            return;
+        }
+        event.preventDefault();
+        var selectedObj, intersects;
+        var select = false;
+        //this.selection_setting=this.dataService.getSelectionSetting();
+        this.scenechildren = this.dataService.getscenechild();
+        this.raycaster.setFromCamera(this.mouse, this.camera);
+        var linePre = Math.round(this.scene.children[2].children[0]["geometry"].boundingSphere.radius) / 10;
+        this.raycaster.linePrecision = 0.05;
+        intersects = this.raycaster.intersectObjects(this.scenechildren);
+        if (intersects.length > 0) {
+            selectedObj = intersects[0].object;
+            if (this.scenechildren[0].name === "All faces") {
+                const path = this.scene_and_maps.faces_map.get(Math.floor(intersects[0].faceIndex / 2));
+                const face = this._model.getGeom().getTopo(path);
+                //const faces: gs.IFace[] = face.getObj().getFaces();
+                //const wires: gs.IWire[] = wire.getObj().getWires();
+                const label = face.getLabel();
+                const label_xyz = face.getLabelCentroid();
+                const verts = face.getVertices();
+                const verts_xyz = verts.map((v) => v.getPoint().getPosition());
+                if (this.textlabels.length === 0) {
+                    var geometry = new __WEBPACK_IMPORTED_MODULE_1_three__["Geometry"]();
+                    for (var i = 0; i < verts_xyz.length; i++) {
+                        geometry.vertices.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](verts_xyz[i][0], verts_xyz[i][1], verts_xyz[i][2]));
+                    }
+                    geometry.faces.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Face3"](0, 2, 1));
+                    geometry.faces.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Face3"](0, 3, 2));
+                    var mesh = new __WEBPACK_IMPORTED_MODULE_1_three__["Mesh"](geometry, new __WEBPACK_IMPORTED_MODULE_1_three__["MeshPhongMaterial"]({ color: 0xFF0000, side: __WEBPACK_IMPORTED_MODULE_1_three__["DoubleSide"] }));
+                    mesh.userData.id = Math.floor(intersects[0].faceIndex / 2);
+                    mesh["geometry"].computeVertexNormals();
+                    mesh.name = "selects";
+                    this.scene.add(mesh);
+                    this.addTextLabel(label, label_xyz, Math.floor(intersects[0].faceIndex / 2));
+                }
+                else {
+                    for (var j = 0; j < this.scene.children.length; j++) {
+                        if (Math.floor(intersects[0].faceIndex / 2) === this.scene.children[j].userData.id) {
+                            select = true;
+                            this.scene.remove(this.scene.children[j]);
+                        }
+                    }
+                    for (var j = 0; j < this.textlabels.length; j++) {
+                        if (Math.floor(intersects[0].faceIndex / 2) === this.textlabels[j]["id"]) {
+                            select = true;
+                            this.removeTextLabel(this.textlabels[j]["id"]);
+                        }
+                    }
+                    if (select == false) {
+                        var geometry = new __WEBPACK_IMPORTED_MODULE_1_three__["Geometry"]();
+                        for (var i = 0; i < verts_xyz.length; i++) {
+                            geometry.vertices.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](verts_xyz[i][0], verts_xyz[i][1], verts_xyz[i][2]));
+                        }
+                        geometry.faces.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Face3"](0, 2, 1));
+                        geometry.faces.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Face3"](0, 3, 2));
+                        var mesh = new __WEBPACK_IMPORTED_MODULE_1_three__["Mesh"](geometry, new __WEBPACK_IMPORTED_MODULE_1_three__["MeshPhongMaterial"]({ color: 0xFF0000, side: __WEBPACK_IMPORTED_MODULE_1_three__["DoubleSide"] }));
+                        mesh.userData.id = Math.floor(intersects[0].faceIndex / 2);
+                        mesh["geometry"].computeVertexNormals();
+                        mesh.name = "selects";
+                        this.scene.add(mesh);
+                        this.addTextLabel(label, label_xyz, Math.floor(intersects[0].faceIndex / 2));
+                    }
+                }
+            }
+            if (this.scenechildren[0].name == "All wires") {
+                const path = this.scene_and_maps.wires_map.get(Math.floor(intersects[0].index / 2));
+                const wire = this._model.getGeom().getTopo(path);
+                const label = wire.getLabel();
+                const label_xyz = wire.getLabelCentroid();
+                const verts = wire.getVertices();
+                const verts_xyz = verts.map((v) => v.getPoint().getPosition());
+                if (wire.isClosed()) {
+                    verts_xyz.push(verts_xyz[0]);
+                }
+                if (this.textlabels.length === 0) {
+                    var geometry = new __WEBPACK_IMPORTED_MODULE_1_three__["Geometry"]();
+                    for (var i = 0; i < verts_xyz.length; i++) {
+                        geometry.vertices.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](verts_xyz[i][0], verts_xyz[i][1], verts_xyz[i][2]));
+                    }
+                    var material = new __WEBPACK_IMPORTED_MODULE_1_three__["LineBasicMaterial"]({ color: 0xff0000, side: __WEBPACK_IMPORTED_MODULE_1_three__["DoubleSide"] });
+                    const line = new __WEBPACK_IMPORTED_MODULE_1_three__["Line"](geometry, material);
+                    line.userData.id = Math.floor(intersects[0].index / 2);
+                    line["material"].needsUpdate = true;
+                    line.name = "selects";
+                    this.scene.add(line);
+                    this.addTextLabel(label, label_xyz, Math.floor(intersects[0].index / 2));
+                }
+                else {
+                    for (var j = 0; j < this.scene.children.length; j++) {
+                        if (Math.floor(intersects[0].index / 2) === this.scene.children[j].userData.id) {
+                            select = true;
+                            this.scene.remove(this.scene.children[j]);
+                        }
+                    }
+                    for (var j = 0; j < this.textlabels.length; j++) {
+                        if (Math.floor(intersects[0].index / 2) === this.textlabels[j]["id"]) {
+                            select = true;
+                            this.removeTextLabel(this.textlabels[j]["id"]);
+                        }
+                    }
+                    if (select == false) {
+                        var geometry = new __WEBPACK_IMPORTED_MODULE_1_three__["Geometry"]();
+                        for (var i = 0; i < verts_xyz.length; i++) {
+                            geometry.vertices.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](verts_xyz[i][0], verts_xyz[i][1], verts_xyz[i][2]));
+                        }
+                        var material = new __WEBPACK_IMPORTED_MODULE_1_three__["LineBasicMaterial"]({ color: 0xff0000, side: __WEBPACK_IMPORTED_MODULE_1_three__["DoubleSide"] });
+                        const line = new __WEBPACK_IMPORTED_MODULE_1_three__["Line"](geometry, material);
+                        line.userData.id = Math.floor(intersects[0].index / 2);
+                        line["material"].needsUpdate = true;
+                        line.name = "selects";
+                        this.scene.add(line);
+                        this.addTextLabel(label, label_xyz, Math.floor(intersects[0].index / 2));
+                    }
+                }
+            }
+            if (this.scenechildren[0].name == "All edges") {
+                const path = this.scene_and_maps.edges_map.get(Math.floor(intersects[0].index / 2));
+                const edge = this._model.getGeom().getTopo(path);
+                const label = edge.getLabel();
+                const label_xyz = edge.getLabelCentroid();
+                const verts = edge.getVertices();
+                const verts_xyz = verts.map((v) => v.getPoint().getPosition());
+                if (this.textlabels.length === 0) {
+                    var geometry = new __WEBPACK_IMPORTED_MODULE_1_three__["Geometry"]();
+                    for (var i = 0; i < verts_xyz.length; i++) {
+                        geometry.vertices.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](verts_xyz[i][0], verts_xyz[i][1], verts_xyz[i][2]));
+                    }
+                    var material = new __WEBPACK_IMPORTED_MODULE_1_three__["LineBasicMaterial"]({ color: 0xff0000, side: __WEBPACK_IMPORTED_MODULE_1_three__["DoubleSide"] });
+                    const line = new __WEBPACK_IMPORTED_MODULE_1_three__["Line"](geometry, material);
+                    line.userData.id = Math.floor(intersects[0].index / 2);
+                    line["material"].needsUpdate = true;
+                    line.name = "selects";
+                    this.scene.add(line);
+                    this.addTextLabel(label, label_xyz, Math.floor(intersects[0].index / 2));
+                }
+                else {
+                    for (var j = 0; j < this.scene.children.length; j++) {
+                        if (Math.floor(intersects[0].index / 2) === this.scene.children[j].userData.id) {
+                            select = true;
+                            this.scene.remove(this.scene.children[j]);
+                        }
+                    }
+                    for (var j = 0; j < this.textlabels.length; j++) {
+                        if (Math.floor(intersects[0].index / 2) === this.textlabels[j]["id"]) {
+                            select = true;
+                            this.removeTextLabel(this.textlabels[j]["id"]);
+                        }
+                    }
+                    if (select == false) {
+                        var geometry = new __WEBPACK_IMPORTED_MODULE_1_three__["Geometry"]();
+                        for (var i = 0; i < verts_xyz.length; i++) {
+                            geometry.vertices.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](verts_xyz[i][0], verts_xyz[i][1], verts_xyz[i][2]));
+                        }
+                        var material = new __WEBPACK_IMPORTED_MODULE_1_three__["LineBasicMaterial"]({ color: 0xff0000, side: __WEBPACK_IMPORTED_MODULE_1_three__["DoubleSide"] });
+                        const line = new __WEBPACK_IMPORTED_MODULE_1_three__["Line"](geometry, material);
+                        line.userData.id = Math.floor(intersects[0].index / 2);
+                        line.name = "selects";
+                        this.scene.add(line);
+                        this.addTextLabel(label, label_xyz, Math.floor(intersects[0].index / 2));
+                    }
+                }
+            }
+        }
+        else {
+            for (var i = 0; i < this.dataService.sprite.length; i++) {
+                this.dataService.sprite[i].visible = false;
+            }
+            for (var i = 0; i < this.scene.children.length; i++) {
+                if (this.scene.children[i].name == "selects") {
+                    this.scene.remove(this.scene.children[i]);
+                    i = i - 1;
+                }
+            }
+            for (var i = 0; i < this.textlabels.length; i++) {
+                this.removeTextLabel(this.textlabels[i]["id"]);
+                i = i - 1;
+            }
+            //var sprite=[];
+            //this.dataService.pushsprite(sprite);
+            //var select=[];
+            //this.dataService.addselecting(select);
+        }
+        //this.updateview();
+    }
+    updateview() {
+        this.Visible = this.dataService.visible;
+        var intersects = this.raycaster.intersectObjects(this.scenechildren);
+        if (intersects.length > 0) {
+            if (this.dataService.selecting.length != 0) {
+                for (var i = 0; i < this.mySprites.length; i++) {
+                    if (this.mySprites[i].parent.name === this.Visible) {
+                        let spr = this.mySprites[i];
+                        if (Math.abs(intersects[0].point.x - this.mySprites[i].position.x) < 0.05
+                            && Math.abs(intersects[0].point.y - this.mySprites[i].position.y) < 0.05
+                            && Math.abs(intersects[0].point.z - this.mySprites[i].position.z) < 0.05) {
+                            //let spr: THREE.Sprite =this.mySprites[i];
+                            spr.visible = true;
+                        }
+                        else {
+                            //let spr: THREE.Sprite =this.mySprites[i];
+                            spr.visible = false;
                         }
                     }
                 }
             }
-            requestAnimationFrame(render);
-            self.renderer.render(self.scene, self.camera);
-        }());
-        this.renderer.render(this.scene, this.camera);
+        } /*else{
+          this.Visible=this.dataService.visible;
+          for(var i=0;i<this.mySprites.length;i++){
+            if(this.mySprites[i].parent.name===this.Visible){
+              let spr: THREE.Sprite =this.mySprites[i];
+              spr.visible = false;
+            }
+          }
+        }*/
+        for (var i = 0; i < this.dataService.sprite.length; i++) {
+            let spr = this.dataService.sprite[i];
+            spr.visible = true;
+        }
     }
-    //
-    //  viewer functionality
-    //
+    //To add text labels just provide label text, label position[x,y,z] and its id
+    addTextLabel(label, label_xyz, id) {
+        let container = this.myElement.nativeElement.children.namedItem("container");
+        let star = this.creatStarGeometry(label_xyz);
+        let textLabel = this.createTextLabel(label, star, id);
+        this.starsGeometry.vertices.push(star);
+        this.textlabels.push(textLabel);
+        container.appendChild(textLabel.element);
+    }
+    //To remove text labels just provide its id
+    removeTextLabel(id) {
+        let i = 0;
+        for (i = 0; i < this.textlabels.length; i++) {
+            if (this.textlabels[i].id == id) {
+                let container = this.myElement.nativeElement.children.namedItem("container");
+                container.removeChild(this.textlabels[i].element);
+                let index = this.starsGeometry.vertices.indexOf(this.textlabels[i].parent);
+                if (index !== -1) {
+                    this.starsGeometry.vertices.splice(index, 1);
+                }
+                break;
+            }
+        }
+        if (i < this.textlabels.length) {
+            this.textlabels.splice(i, 1);
+        }
+    }
+    creatStarGeometry(label_xyz) {
+        let star = new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"]();
+        star.x = label_xyz[0];
+        star.y = label_xyz[1];
+        star.z = label_xyz[2];
+        return star;
+    }
+    createTextLabel(label, star, id) {
+        let div = this.createLabelDiv();
+        var self = this;
+        let textLabel = {
+            id: id,
+            element: div,
+            parent: false,
+            position: new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](0, 0, 0),
+            setHTML: function (html) {
+                this.element.innerHTML = html;
+            },
+            setParent: function (threejsobj) {
+                this.parent = threejsobj;
+            },
+            updatePosition: function () {
+                if (parent) {
+                    this.position.copy(this.parent);
+                }
+                var coords2d = this.get2DCoords(this.position, self.camera);
+                this.element.style.left = coords2d.x + 'px';
+                this.element.style.top = coords2d.y + 'px';
+            },
+            get2DCoords: function (position, camera) {
+                var vector = position.project(camera);
+                vector.x = (vector.x + 1) / 2 * self.width;
+                vector.y = -(vector.y - 1) / 2 * self.height;
+                return vector;
+            }
+        };
+        textLabel.setHTML(label);
+        textLabel.setParent(star);
+        return textLabel;
+    }
+    createLabelDiv() {
+        var div = document.createElement("div");
+        div.style.color = '#00f';
+        div.style.fontFamily = '"Fira Mono", Monaco, "Andale Mono", "Lucida Console", "Bitstream Vera Sans Mono", "Courier New", Courier, monospace';
+        div.style.margin = '-5px 0 0 15px';
+        div.style.pointerEvents = 'none';
+        div.style.position = 'absolute';
+        div.style.width = '100';
+        div.style.height = '100';
+        div.style.top = '-1000';
+        div.style.left = '-1000';
+        div.style.textShadow = "0px 0px 3px white";
+        div.style.color = "black";
+        return div;
+    }
+    /*getSceneChildren() {
+      var scenechildren=[];
+      var children;
+      for (var i = 0; i<this.scene.children.length; i++) {
+        if(this.scene.children[i].name=="Scene") {
+          children=this.scene.children[i].children;
+          break;
+        }
+        if(i==this.scene.children.length-1) {
+          return [];
+        }
+      }
+      for(var i=0;i<children.length;i++){
+        for(var j=0;j<children[i].children.length;j++){
+          if(children[i].children[j].type==="Mesh"||children[i].children[j].type==="LineSegments"||children[i].children[j].type==="LineLoop"){
+            scenechildren.push(children[i].children[j]);
+          }
+        }
+      }
+      return scenechildren;
+    }*/
+    //One Mesh
+    /*getSceneChildren() {
+      var scenechildren=[];
+      var children;
+      for (var i = 0; i<this.scene.children.length; i++) {
+        if(this.scene.children[i].name=="Scene") {
+          children=this.scene.children[i].children;
+          break;
+        }
+        if(i==this.scene.children.length-1) {
+          return [];
+        }
+      }
+      for(var i=0;i<children.length;i++){
+          if(children[i].type==="Mesh"||children[i].type==="LineSegments"||children[i].type==="LineLoop"){
+            scenechildren.push(children[i]);
+          }
+        }
+      return scenechildren;
+    }*/
     zoomfit() {
-        // todo: fix
-        document.body.style.cursor = "no-drop";
-        // enable zoom; disable everything else
-        this.controls.enabled = true;
-        this.controls.enableZoom = true;
-        this.controls.enableRotate = false;
-        this.controls.enablePan = false;
-        this.Visible = "zoomfit";
-        // repeat??
         if (this.selecting.length === 0) {
-            var obj = new __WEBPACK_IMPORTED_MODULE_1_three__["Object3D"]();
-            obj = this.scene;
+            const obj = new __WEBPACK_IMPORTED_MODULE_1_three__["Object3D"]();
+            for (var i = 0; i < this.scene.children.length; i++) {
+                if (this.scene.children[i].name !== "GridHelper") {
+                    obj.children.push(this.scene.children[i]);
+                }
+            }
             var boxHelper = new __WEBPACK_IMPORTED_MODULE_1_three__["BoxHelper"](obj);
-            var boundingSphere = boxHelper.geometry.boundingSphere;
+            boxHelper["geometry"].computeBoundingBox();
+            boxHelper["geometry"].computeBoundingSphere();
+            var boundingSphere = boxHelper["geometry"].boundingSphere;
             var center = boundingSphere.center;
             var radius = boundingSphere.radius;
             var fov = this.camera.fov * (Math.PI / 180);
             var vec_centre_to_pos = new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"]();
             vec_centre_to_pos.subVectors(this.camera.position, center);
-            var tmp_vec = new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](Math.abs(radius / Math.sin(fov / 2)), Math.abs(radius / Math.sin(fov / 2)), Math.abs(radius / Math.sin(fov / 2)));
+            var tmp_vec = new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](center.x + Math.abs(radius / Math.sin(fov / 2)), center.y + Math.abs(radius / Math.sin(fov / 2)), center.z + Math.abs(radius / Math.sin(fov / 2)));
             vec_centre_to_pos.setLength(tmp_vec.length());
             var perspectiveNewPos = new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"]();
             perspectiveNewPos.addVectors(center, vec_centre_to_pos);
@@ -4105,6 +4811,7 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_3_
             this.controls.target.set(newLookAt.x, newLookAt.y, newLookAt.z);
         }
         else {
+            event.preventDefault();
             var axisX, axisY, axisZ, centerX, centerY, centerZ = 0;
             var radius = 0;
             for (var i = 0; i < this.selecting.length; i++) {
@@ -4120,7 +4827,7 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_3_
             var fov = this.camera.fov * (Math.PI / 180);
             var vec_centre_to_pos = new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"]();
             vec_centre_to_pos.subVectors(this.camera.position, center);
-            var tmp_vec = new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](Math.abs(radius / Math.sin(fov / 2)), Math.abs(radius / Math.sin(fov / 2)), Math.abs(radius / Math.sin(fov / 2)));
+            var tmp_vec = new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](center.x + Math.abs(radius / Math.sin(fov / 2)), center.y + Math.abs(radius / Math.sin(fov / 2)), center.z + Math.abs(radius / Math.sin(fov / 2)));
             vec_centre_to_pos.setLength(tmp_vec.length());
             var perspectiveNewPos = new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"]();
             perspectiveNewPos.addVectors(center, vec_centre_to_pos);
@@ -4130,66 +4837,6 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_3_
             this.camera.updateProjectionMatrix();
             this.controls.target.set(newLookAt.x, newLookAt.y, newLookAt.z);
         }
-    }
-    pan() {
-        this.camera.updateProjectionMatrix();
-        this.controls.enabled = true;
-        this.controls.enableZoom = false;
-        this.controls.enableRotate = false;
-        this.controls.enablePan = true;
-        //todo: remove
-        document.body.style.cursor = "-webkit-grab";
-        this.Visible = "pan";
-    }
-    rotate() {
-        document.body.style.cursor = " pointer";
-        // reset controls
-        this.controls.enabled = true;
-        this.controls.enableZoom = false;
-        this.controls.enableRotate = true;
-        this.controls.enablePan = false;
-        if (this.selecting.length === 0) {
-            var centerX = 0;
-            var centerY = 0;
-            var centerZ = 0;
-            for (var i = 0; i < this.scene.children[1].children.length; i++) {
-                centerX += this.scene.children[1].children[i].children[0]["geometry"].boundingSphere.center.x;
-                centerY += this.scene.children[1].children[i].children[0]["geometry"].boundingSphere.center.y;
-                centerZ += this.scene.children[1].children[i].children[0]["geometry"].boundingSphere.center.z;
-            }
-            centerX = centerX / this.scene.children[1].children.length;
-            centerY = centerY / this.scene.children[1].children.length;
-            centerZ = centerZ / this.scene.children[1].children.length;
-            //this.controls.target.set(centerX,centerY,centerZ);
-        }
-        else {
-            var axisX = 0;
-            var axisY = 0;
-            var axisZ = 0;
-            var centerX = 0;
-            var centerY = 0;
-            var centerZ = 0;
-            for (var i = 0; i < this.selecting.length; i++) {
-                axisX += this.selecting[i].geometry.boundingSphere.center.x;
-                axisY += this.selecting[i].geometry.boundingSphere.center.y;
-                axisZ += this.selecting[i].geometry.boundingSphere.center.z;
-            }
-            centerX = axisX / this.scene.children[1].children.length;
-            centerY = axisY / this.scene.children[1].children.length;
-            centerZ = axisY / this.scene.children[1].children.length;
-            //this.controls.target.set(centerX,centerY,centerZ);
-        }
-        this.Visible = "rotate";
-    }
-    select(event) {
-        event.stopPropagation();
-        document.body.style.cursor = "default";
-        // reset controls
-        this.controls.enabled = false;
-        this.controls.enableZoom = false;
-        this.controls.enableRotate = false;
-        this.controls.enablePan = false;
-        this.Visible = "select";
     }
 };
 ViewerComponent = __decorate([
@@ -4220,7 +4867,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".reset {\n  margin: 0px;\n  padding: 0px; }\n\n.default {\n  font-size: 12px;\n  color: #8AA8C0;\n  line-height: 150px;\n  text-align: center; }\n\n.viewer {\n  /* \twidth: 100%; \r\noverflow: auto;\r\n\r\npadding: 0px;\r\nmargin: 0px;\r\n\r\n.header{\r\n\r\n\tdisplay: flex; \r\n\tflex-direction: row; \r\n\tjustify-content: space-between;\r\n\r\n\tposition: relative;\r\n\tfont-size: 14px; \r\n\tfont-weight: 600; \r\n\tline-height: $header-height;\r\n\ttext-transform: uppercase;\r\n\tletter-spacing: 1.5px;\r\n\theight: $header-height;\r\n\r\n\tcolor: #ADADAD;\r\n\r\n\t.btn-group{\r\n\t\theight: $header-height; \r\n\r\n\t\tbutton{\r\n\t\t\twidth: 0.9*$header-height; \r\n\t\t\theight: 0.9*$header-height; \r\n\t\t\tmargin: 0px;\r\n\t\t\tborder: 1px solid #B4B1B1;\r\n\t\t\tbox-shadow: none;\r\n\r\n\t\t\t&:focus{\r\n\t\t\t\t\r\n\t\t\t}\r\n\t\t}\r\n\t\t\r\n\t}\r\n\r\n}\r\n\r\n.container{\r\n}\r\n\r\nbutton{\r\n\t&:focus{\r\n\t\t\r\n\t}\r\n} */ }\n\n.viewer .container {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    height: 100%; }\n\n.viewer .container .view-container {\n      -webkit-box-sizing: border-box;\n              box-sizing: border-box;\n      height: 100%;\n      width: 100%;\n      padding-bottom: 30px;\n      overflow: auto; }\n\n.container {\n  position: relative;\n  height: 100%;\n  overflow-y: auto !important;\n  -webkit-box-sizing: border-box !important;\n          box-sizing: border-box !important;\n  padding: 15px;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-flow: column nowrap;\n          flex-flow: column nowrap; }\n\n.container .message-container {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-flow: column wrap;\n            flex-flow: column wrap;\n    margin: 7.5px;\n    -webkit-box-pack: justify;\n        -ms-flex-pack: justify;\n            justify-content: space-between;\n    -webkit-box-flex: 0;\n        -ms-flex-positive: 0;\n            flex-grow: 0;\n    -ms-flex-negative: 0;\n        flex-shrink: 0;\n    padding: 0 5 0 0 !important;\n    border-bottom: 1px solid #8AA8C0;\n    font-family: 'Ubuntu Mono', monospace; }\n\n.container .message-container .time {\n      min-width: 50%;\n      font-size: 10px;\n      white-space: nowrap;\n      color: grey !important; }\n\n.container .message-container .message {\n      min-width: auto;\n      font-size: 12px;\n      color: #395D73 !important; }\n\n.container .message-container .message .error {\n        color: red; }\n\n.container button {\n    max-width: 30px;\n    height: 30px;\n    min-width: 30px;\n    padding: 0px !important;\n    border-radius: 50%;\n    border: 1px solid #395D73;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center; }\n\n.container button .fa-eraser {\n      height: 15px;\n      font-size: 15px !important;\n      color: #395D73;\n      padding: 0;\n      display: -webkit-box;\n      display: -ms-flexbox;\n      display: flex;\n      -webkit-box-align: center;\n          -ms-flex-align: center;\n              align-items: center;\n      -webkit-box-pack: center;\n          -ms-flex-pack: center;\n              justify-content: center; }\n\n.container button:hover {\n      background-color: #F1F1F1 !important; }\n\n.container button:hover .fa-eraser {\n        color: #F07A79 !important; }\n\n.btn-container {\n  position: absolute;\n  right: 60px;\n  top: 15px; }\n\n.btn-container button {\n    position: fixed; }\n", ""]);
+exports.push([module.i, ".reset {\n  margin: 0px;\n  padding: 0px; }\n\n.default {\n  font-size: 12px;\n  color: #8AA8C0;\n  line-height: 150px;\n  text-align: center; }\n\n.viewer {\n  /* \twidth: 100%; \r\noverflow: auto;\r\n\r\npadding: 0px;\r\nmargin: 0px;\r\n\r\n.header{\r\n\r\n\tdisplay: flex; \r\n\tflex-direction: row; \r\n\tjustify-content: space-between;\r\n\r\n\tposition: relative;\r\n\tfont-size: 14px; \r\n\tfont-weight: 600; \r\n\tline-height: $header-height;\r\n\ttext-transform: uppercase;\r\n\tletter-spacing: 1.5px;\r\n\theight: $header-height;\r\n\r\n\tcolor: #ADADAD;\r\n\r\n\t.btn-group{\r\n\t\theight: $header-height; \r\n\r\n\t\tbutton{\r\n\t\t\twidth: 0.9*$header-height; \r\n\t\t\theight: 0.9*$header-height; \r\n\t\t\tmargin: 0px;\r\n\t\t\tborder: 1px solid #B4B1B1;\r\n\t\t\tbox-shadow: none;\r\n\r\n\t\t\t&:focus{\r\n\t\t\t\t\r\n\t\t\t}\r\n\t\t}\r\n\t\t\r\n\t}\r\n\r\n}\r\n\r\n.container{\r\n}\r\n\r\nbutton{\r\n\t&:focus{\r\n\t\t\r\n\t}\r\n} */ }\n  .viewer .container {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    height: 100%; }\n    .viewer .container .view-container {\n      box-sizing: border-box;\n      height: 100%;\n      width: 100%;\n      padding-bottom: 30px;\n      overflow: auto; }\n\n.container {\n  position: relative;\n  height: 100%;\n  overflow-y: auto !important;\n  box-sizing: border-box !important;\n  padding: 15px;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-flow: column nowrap;\n          flex-flow: column nowrap; }\n  .container .message-container {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-flow: column wrap;\n            flex-flow: column wrap;\n    margin: 7.5px;\n    -webkit-box-pack: justify;\n        -ms-flex-pack: justify;\n            justify-content: space-between;\n    -webkit-box-flex: 0;\n        -ms-flex-positive: 0;\n            flex-grow: 0;\n    -ms-flex-negative: 0;\n        flex-shrink: 0;\n    padding: 0 5 0 0 !important;\n    border-bottom: 1px solid #8AA8C0;\n    font-family: 'Ubuntu Mono', monospace; }\n    .container .message-container .time {\n      min-width: 50%;\n      font-size: 10px;\n      white-space: nowrap;\n      color: grey !important; }\n    .container .message-container .message {\n      min-width: auto;\n      font-size: 12px;\n      color: #395D73 !important; }\n      .container .message-container .message .error {\n        color: red; }\n  .container button {\n    max-width: 30px;\n    height: 30px;\n    min-width: 30px;\n    padding: 0px !important;\n    border-radius: 50%;\n    border: 1px solid #395D73;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center; }\n    .container button .fa-eraser {\n      height: 15px;\n      font-size: 15px !important;\n      color: #395D73;\n      padding: 0;\n      display: -webkit-box;\n      display: -ms-flexbox;\n      display: flex;\n      -webkit-box-align: center;\n          -ms-flex-align: center;\n              align-items: center;\n      -webkit-box-pack: center;\n          -ms-flex-pack: center;\n              justify-content: center; }\n    .container button:hover {\n      background-color: #F1F1F1 !important; }\n      .container button:hover .fa-eraser {\n        color: #F07A79 !important; }\n\n.btn-container {\n  position: absolute;\n  right: 60px;\n  top: 15px; }\n  .btn-container button {\n    position: fixed; }\n", ""]);
 
 // exports
 
@@ -4294,7 +4941,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".reset {\n  margin: 0px;\n  padding: 0px; }\n\n.default {\n  font-size: 12px;\n  color: #8AA8C0;\n  line-height: 150px;\n  text-align: center; }\n\n.viewer {\n  /* \twidth: 100%; \r\noverflow: auto;\r\n\r\npadding: 0px;\r\nmargin: 0px;\r\n\r\n.header{\r\n\r\n\tdisplay: flex; \r\n\tflex-direction: row; \r\n\tjustify-content: space-between;\r\n\r\n\tposition: relative;\r\n\tfont-size: 14px; \r\n\tfont-weight: 600; \r\n\tline-height: $header-height;\r\n\ttext-transform: uppercase;\r\n\tletter-spacing: 1.5px;\r\n\theight: $header-height;\r\n\r\n\tcolor: #ADADAD;\r\n\r\n\t.btn-group{\r\n\t\theight: $header-height; \r\n\r\n\t\tbutton{\r\n\t\t\twidth: 0.9*$header-height; \r\n\t\t\theight: 0.9*$header-height; \r\n\t\t\tmargin: 0px;\r\n\t\t\tborder: 1px solid #B4B1B1;\r\n\t\t\tbox-shadow: none;\r\n\r\n\t\t\t&:focus{\r\n\t\t\t\t\r\n\t\t\t}\r\n\t\t}\r\n\t\t\r\n\t}\r\n\r\n}\r\n\r\n.container{\r\n}\r\n\r\nbutton{\r\n\t&:focus{\r\n\t\t\r\n\t}\r\n} */ }\n\n.viewer .container {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    height: 100%; }\n\n.viewer .container .view-container {\n      -webkit-box-sizing: border-box;\n              box-sizing: border-box;\n      height: 100%;\n      width: 100%;\n      padding-bottom: 30px;\n      overflow: auto; }\n", ""]);
+exports.push([module.i, ".reset {\n  margin: 0px;\n  padding: 0px; }\n\n.default {\n  font-size: 12px;\n  color: #8AA8C0;\n  line-height: 150px;\n  text-align: center; }\n\n.viewer {\n  /* \twidth: 100%; \r\noverflow: auto;\r\n\r\npadding: 0px;\r\nmargin: 0px;\r\n\r\n.header{\r\n\r\n\tdisplay: flex; \r\n\tflex-direction: row; \r\n\tjustify-content: space-between;\r\n\r\n\tposition: relative;\r\n\tfont-size: 14px; \r\n\tfont-weight: 600; \r\n\tline-height: $header-height;\r\n\ttext-transform: uppercase;\r\n\tletter-spacing: 1.5px;\r\n\theight: $header-height;\r\n\r\n\tcolor: #ADADAD;\r\n\r\n\t.btn-group{\r\n\t\theight: $header-height; \r\n\r\n\t\tbutton{\r\n\t\t\twidth: 0.9*$header-height; \r\n\t\t\theight: 0.9*$header-height; \r\n\t\t\tmargin: 0px;\r\n\t\t\tborder: 1px solid #B4B1B1;\r\n\t\t\tbox-shadow: none;\r\n\r\n\t\t\t&:focus{\r\n\t\t\t\t\r\n\t\t\t}\r\n\t\t}\r\n\t\t\r\n\t}\r\n\r\n}\r\n\r\n.container{\r\n}\r\n\r\nbutton{\r\n\t&:focus{\r\n\t\t\r\n\t}\r\n} */ }\n  .viewer .container {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    height: 100%; }\n    .viewer .container .view-container {\n      box-sizing: border-box;\n      height: 100%;\n      width: 100%;\n      padding-bottom: 30px;\n      overflow: auto; }\n", ""]);
 
 // exports
 
@@ -4374,7 +5021,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".reset, .menu-bar ul.menu {\n  margin: 0px;\n  padding: 0px; }\n\n.default {\n  font-size: 12px;\n  color: #8AA8C0;\n  line-height: 150px;\n  text-align: center; }\n\n.viewer {\n  /* \twidth: 100%; \r\noverflow: auto;\r\n\r\npadding: 0px;\r\nmargin: 0px;\r\n\r\n.header{\r\n\r\n\tdisplay: flex; \r\n\tflex-direction: row; \r\n\tjustify-content: space-between;\r\n\r\n\tposition: relative;\r\n\tfont-size: 14px; \r\n\tfont-weight: 600; \r\n\tline-height: $header-height;\r\n\ttext-transform: uppercase;\r\n\tletter-spacing: 1.5px;\r\n\theight: $header-height;\r\n\r\n\tcolor: #ADADAD;\r\n\r\n\t.btn-group{\r\n\t\theight: $header-height; \r\n\r\n\t\tbutton{\r\n\t\t\twidth: 0.9*$header-height; \r\n\t\t\theight: 0.9*$header-height; \r\n\t\t\tmargin: 0px;\r\n\t\t\tborder: 1px solid #B4B1B1;\r\n\t\t\tbox-shadow: none;\r\n\r\n\t\t\t&:focus{\r\n\t\t\t\t\r\n\t\t\t}\r\n\t\t}\r\n\t\t\r\n\t}\r\n\r\n}\r\n\r\n.container{\r\n}\r\n\r\nbutton{\r\n\t&:focus{\r\n\t\t\r\n\t}\r\n} */ }\n\n.viewer .container {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    height: 100%; }\n\n.viewer .container .view-container {\n      -webkit-box-sizing: border-box;\n              box-sizing: border-box;\n      height: 100%;\n      width: 100%;\n      padding-bottom: 30px;\n      overflow: auto; }\n\n.menu-bar {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-flow: row wrap;\n          flex-flow: row wrap;\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n  background-color: #F7F7F7;\n  height: 45px;\n  line-height: 45px;\n  padding: 5px 15px; }\n\n.menu-bar .section {\n    width: auto;\n    display: inline-block; }\n\n.menu-bar #branding {\n    font-weight: bolder;\n    cursor: pointer;\n    font-size: 14px; }\n\n.menu-bar ul.menu {\n    list-style: none; }\n\n.menu-bar ul.menu .menu {\n      margin-left: 10px;\n      width: 200px; }\n\n.menu-bar ul.menu li {\n      display: inline;\n      font-size: 16px;\n      margin-right: 10px; }\n\n.menu-bar ul.menu li:hover {\n        color: #5D5959;\n        cursor: pointer; }\n", ""]);
+exports.push([module.i, ".reset, .menu-bar ul.menu {\n  margin: 0px;\n  padding: 0px; }\n\n.default {\n  font-size: 12px;\n  color: #8AA8C0;\n  line-height: 150px;\n  text-align: center; }\n\n.viewer {\n  /* \twidth: 100%; \r\noverflow: auto;\r\n\r\npadding: 0px;\r\nmargin: 0px;\r\n\r\n.header{\r\n\r\n\tdisplay: flex; \r\n\tflex-direction: row; \r\n\tjustify-content: space-between;\r\n\r\n\tposition: relative;\r\n\tfont-size: 14px; \r\n\tfont-weight: 600; \r\n\tline-height: $header-height;\r\n\ttext-transform: uppercase;\r\n\tletter-spacing: 1.5px;\r\n\theight: $header-height;\r\n\r\n\tcolor: #ADADAD;\r\n\r\n\t.btn-group{\r\n\t\theight: $header-height; \r\n\r\n\t\tbutton{\r\n\t\t\twidth: 0.9*$header-height; \r\n\t\t\theight: 0.9*$header-height; \r\n\t\t\tmargin: 0px;\r\n\t\t\tborder: 1px solid #B4B1B1;\r\n\t\t\tbox-shadow: none;\r\n\r\n\t\t\t&:focus{\r\n\t\t\t\t\r\n\t\t\t}\r\n\t\t}\r\n\t\t\r\n\t}\r\n\r\n}\r\n\r\n.container{\r\n}\r\n\r\nbutton{\r\n\t&:focus{\r\n\t\t\r\n\t}\r\n} */ }\n  .viewer .container {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    height: 100%; }\n    .viewer .container .view-container {\n      box-sizing: border-box;\n      height: 100%;\n      width: 100%;\n      padding-bottom: 30px;\n      overflow: auto; }\n\n.menu-bar {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-flow: row wrap;\n          flex-flow: row wrap;\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n  background-color: #F7F7F7;\n  height: 45px;\n  line-height: 45px;\n  padding: 5px 15px; }\n  .menu-bar .section {\n    width: auto;\n    display: inline-block; }\n  .menu-bar #branding {\n    font-weight: bolder;\n    cursor: pointer;\n    font-size: 14px; }\n  .menu-bar ul.menu {\n    list-style: none; }\n    .menu-bar ul.menu .menu {\n      margin-left: 10px;\n      width: 200px; }\n    .menu-bar ul.menu li {\n      display: inline;\n      font-size: 16px;\n      margin-right: 10px; }\n      .menu-bar ul.menu li:hover {\n        color: #5D5959;\n        cursor: pointer; }\n", ""]);
 
 // exports
 
@@ -4470,7 +5117,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".reset {\n  margin: 0px;\n  padding: 0px; }\n\n.default {\n  font-size: 12px;\n  color: #8AA8C0;\n  line-height: 150px;\n  text-align: center; }\n\n.viewer {\n  /* \twidth: 100%; \r\noverflow: auto;\r\n\r\npadding: 0px;\r\nmargin: 0px;\r\n\r\n.header{\r\n\r\n\tdisplay: flex; \r\n\tflex-direction: row; \r\n\tjustify-content: space-between;\r\n\r\n\tposition: relative;\r\n\tfont-size: 14px; \r\n\tfont-weight: 600; \r\n\tline-height: $header-height;\r\n\ttext-transform: uppercase;\r\n\tletter-spacing: 1.5px;\r\n\theight: $header-height;\r\n\r\n\tcolor: #ADADAD;\r\n\r\n\t.btn-group{\r\n\t\theight: $header-height; \r\n\r\n\t\tbutton{\r\n\t\t\twidth: 0.9*$header-height; \r\n\t\t\theight: 0.9*$header-height; \r\n\t\t\tmargin: 0px;\r\n\t\t\tborder: 1px solid #B4B1B1;\r\n\t\t\tbox-shadow: none;\r\n\r\n\t\t\t&:focus{\r\n\t\t\t\t\r\n\t\t\t}\r\n\t\t}\r\n\t\t\r\n\t}\r\n\r\n}\r\n\r\n.container{\r\n}\r\n\r\nbutton{\r\n\t&:focus{\r\n\t\t\r\n\t}\r\n} */ }\n\n.viewer .container {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    height: 100%; }\n\n.viewer .container .view-container {\n      -webkit-box-sizing: border-box;\n              box-sizing: border-box;\n      height: 100%;\n      width: 100%;\n      padding-bottom: 30px;\n      overflow: auto; }\n\n.disabled {\n  color: #8AA8C0 !important; }\n\n.disabled:hover {\n    color: #8AA8C0 !important; }\n\n.toolbox {\n  height: 100%;\n  background-color: #F1F1F1;\n  position: relative;\n  -webkit-box-sizing: border-box;\n          box-sizing: border-box;\n  font-size: 12px;\n  line-height: 14px;\n  color: #395D73;\n  cursor: pointer; }\n\n.toolbox .inOutBtns {\n    padding-left: 15px;\n    padding-top: 5px;\n    padding-bottom: 5px;\n    border-bottom: 1px solid #8AA8C0; }\n\n.toolbox .inOutBtns span {\n      display: block; }\n\n.toolbox .toolbox-content {\n    height: 100%;\n    overflow-y: auto;\n    overflow-x: hidden; }\n\n.toolbox .toolbox-content .fn_name {\n      height: auto;\n      font-size: 12px;\n      line-height: 14px;\n      color: #395D73;\n      cursor: pointer;\n      white-space: nowrap; }\n\n.toolbox .toolbox-content .fn_name:hover {\n        color: #F0BFA0; }\n\n.toolbox .toolbox-content mat-expansion-panel {\n      margin: 0 !important; }\n\n.toolbox .toolbox-content mat-expansion-panel-header {\n      background-color: #F1F1F1 !important;\n      border-top: 1px solid #8AA8C0 !important;\n      border-bottom: 1px solid #8AA8C0 !important;\n      padding-left: 15px !important; }\n\n.toolbox .toolbox-content mat-expansion-panel-header mat-panel-title {\n        color: #395D73 !important;\n        font-weight: bold !important;\n        font-size: 12px !important;\n        display: -webkit-box;\n        display: -ms-flexbox;\n        display: flex;\n        -webkit-box-align: center;\n            -ms-flex-align: center;\n                align-items: center; }\n\n.toolbox .toolbox-content mat-expansion-panel-header mat-icon {\n        display: -webkit-box;\n        display: -ms-flexbox;\n        display: flex;\n        -webkit-box-align: center;\n            -ms-flex-align: center;\n                align-items: center; }\n\n.toolbox .toolbox-content mat-expansion-panel-header:hover {\n        background-color: #F1F1F1 !important; }\n\n.toolbox .toolbox-content mat-list {\n      background-color: #F1F1F1 !important;\n      padding-top: 5px;\n      padding-bottom: 5px; }\n\n.toolbox span.module {\n    color: #F3A32A !important;\n    font-weight: bold; }\n\n.toolbox span.function {\n    color: #7B52AB !important;\n    font-weight: bold; }\n", ""]);
+exports.push([module.i, ".reset {\n  margin: 0px;\n  padding: 0px; }\n\n.default {\n  font-size: 12px;\n  color: #8AA8C0;\n  line-height: 150px;\n  text-align: center; }\n\n.viewer {\n  /* \twidth: 100%; \r\noverflow: auto;\r\n\r\npadding: 0px;\r\nmargin: 0px;\r\n\r\n.header{\r\n\r\n\tdisplay: flex; \r\n\tflex-direction: row; \r\n\tjustify-content: space-between;\r\n\r\n\tposition: relative;\r\n\tfont-size: 14px; \r\n\tfont-weight: 600; \r\n\tline-height: $header-height;\r\n\ttext-transform: uppercase;\r\n\tletter-spacing: 1.5px;\r\n\theight: $header-height;\r\n\r\n\tcolor: #ADADAD;\r\n\r\n\t.btn-group{\r\n\t\theight: $header-height; \r\n\r\n\t\tbutton{\r\n\t\t\twidth: 0.9*$header-height; \r\n\t\t\theight: 0.9*$header-height; \r\n\t\t\tmargin: 0px;\r\n\t\t\tborder: 1px solid #B4B1B1;\r\n\t\t\tbox-shadow: none;\r\n\r\n\t\t\t&:focus{\r\n\t\t\t\t\r\n\t\t\t}\r\n\t\t}\r\n\t\t\r\n\t}\r\n\r\n}\r\n\r\n.container{\r\n}\r\n\r\nbutton{\r\n\t&:focus{\r\n\t\t\r\n\t}\r\n} */ }\n  .viewer .container {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    height: 100%; }\n    .viewer .container .view-container {\n      box-sizing: border-box;\n      height: 100%;\n      width: 100%;\n      padding-bottom: 30px;\n      overflow: auto; }\n\n.disabled {\n  color: #8AA8C0 !important; }\n  .disabled:hover {\n    color: #8AA8C0 !important; }\n\n.toolbox {\n  height: 100%;\n  background-color: #F1F1F1;\n  position: relative;\n  box-sizing: border-box;\n  font-size: 12px;\n  line-height: 14px;\n  color: #395D73;\n  cursor: pointer; }\n  .toolbox .inOutBtns {\n    padding-left: 15px;\n    padding-top: 5px;\n    padding-bottom: 5px;\n    border-bottom: 1px solid #8AA8C0; }\n    .toolbox .inOutBtns span {\n      display: block; }\n  .toolbox .toolbox-content {\n    height: 100%;\n    overflow-y: auto;\n    overflow-x: hidden; }\n    .toolbox .toolbox-content .fn_name {\n      height: auto;\n      font-size: 12px;\n      line-height: 14px;\n      color: #395D73;\n      cursor: pointer;\n      white-space: nowrap; }\n      .toolbox .toolbox-content .fn_name:hover {\n        color: #F0BFA0; }\n    .toolbox .toolbox-content mat-expansion-panel {\n      margin: 0 !important; }\n    .toolbox .toolbox-content mat-expansion-panel-header {\n      background-color: #F1F1F1 !important;\n      border-top: 1px solid #8AA8C0 !important;\n      border-bottom: 1px solid #8AA8C0 !important;\n      padding-left: 15px !important; }\n      .toolbox .toolbox-content mat-expansion-panel-header mat-panel-title {\n        color: #395D73 !important;\n        font-weight: bold !important;\n        font-size: 12px !important;\n        display: -webkit-box;\n        display: -ms-flexbox;\n        display: flex;\n        -webkit-box-align: center;\n            -ms-flex-align: center;\n                align-items: center; }\n      .toolbox .toolbox-content mat-expansion-panel-header mat-icon {\n        display: -webkit-box;\n        display: -ms-flexbox;\n        display: flex;\n        -webkit-box-align: center;\n            -ms-flex-align: center;\n                align-items: center; }\n      .toolbox .toolbox-content mat-expansion-panel-header:hover {\n        background-color: #F1F1F1 !important; }\n    .toolbox .toolbox-content mat-list {\n      background-color: #F1F1F1 !important;\n      padding-top: 5px;\n      padding-bottom: 5px; }\n  .toolbox span.module {\n    color: #F3A32A !important;\n    font-weight: bold; }\n  .toolbox span.function {\n    color: #7B52AB !important;\n    font-weight: bold; }\n", ""]);
 
 // exports
 
@@ -4638,7 +5285,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".reset {\n  margin: 0px;\n  padding: 0px; }\n\n.default {\n  font-size: 12px;\n  color: #8AA8C0;\n  line-height: 150px;\n  text-align: center; }\n\n.viewer, .editor {\n  /* \twidth: 100%; \r\noverflow: auto;\r\n\r\npadding: 0px;\r\nmargin: 0px;\r\n\r\n.header{\r\n\r\n\tdisplay: flex; \r\n\tflex-direction: row; \r\n\tjustify-content: space-between;\r\n\r\n\tposition: relative;\r\n\tfont-size: 14px; \r\n\tfont-weight: 600; \r\n\tline-height: $header-height;\r\n\ttext-transform: uppercase;\r\n\tletter-spacing: 1.5px;\r\n\theight: $header-height;\r\n\r\n\tcolor: #ADADAD;\r\n\r\n\t.btn-group{\r\n\t\theight: $header-height; \r\n\r\n\t\tbutton{\r\n\t\t\twidth: 0.9*$header-height; \r\n\t\t\theight: 0.9*$header-height; \r\n\t\t\tmargin: 0px;\r\n\t\t\tborder: 1px solid #B4B1B1;\r\n\t\t\tbox-shadow: none;\r\n\r\n\t\t\t&:focus{\r\n\t\t\t\t\r\n\t\t\t}\r\n\t\t}\r\n\t\t\r\n\t}\r\n\r\n}\r\n\r\n.container{\r\n}\r\n\r\nbutton{\r\n\t&:focus{\r\n\t\t\r\n\t}\r\n} */ }\n\n.viewer .container, .editor .container {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    height: 100%; }\n\n.viewer .container .view-container, .editor .container .view-container {\n      -webkit-box-sizing: border-box;\n              box-sizing: border-box;\n      height: 100%;\n      width: 100%;\n      padding-bottom: 30px;\n      overflow: auto; }\n\n.default {\n  text-align: center; }\n\n.editor {\n  background-color: white;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  height: 100%;\n  width: 100%;\n  padding-bottom: 30px;\n  -webkit-box-sizing: border-box;\n          box-sizing: border-box; }\n\n.editor .view-container {\n    width: 100%; }\n\n.editor split-area {\n    overflow-y: auto !important; }\n", ""]);
+exports.push([module.i, ".reset {\n  margin: 0px;\n  padding: 0px; }\n\n.default {\n  font-size: 12px;\n  color: #8AA8C0;\n  line-height: 150px;\n  text-align: center; }\n\n.viewer, .editor {\n  /* \twidth: 100%; \r\noverflow: auto;\r\n\r\npadding: 0px;\r\nmargin: 0px;\r\n\r\n.header{\r\n\r\n\tdisplay: flex; \r\n\tflex-direction: row; \r\n\tjustify-content: space-between;\r\n\r\n\tposition: relative;\r\n\tfont-size: 14px; \r\n\tfont-weight: 600; \r\n\tline-height: $header-height;\r\n\ttext-transform: uppercase;\r\n\tletter-spacing: 1.5px;\r\n\theight: $header-height;\r\n\r\n\tcolor: #ADADAD;\r\n\r\n\t.btn-group{\r\n\t\theight: $header-height; \r\n\r\n\t\tbutton{\r\n\t\t\twidth: 0.9*$header-height; \r\n\t\t\theight: 0.9*$header-height; \r\n\t\t\tmargin: 0px;\r\n\t\t\tborder: 1px solid #B4B1B1;\r\n\t\t\tbox-shadow: none;\r\n\r\n\t\t\t&:focus{\r\n\t\t\t\t\r\n\t\t\t}\r\n\t\t}\r\n\t\t\r\n\t}\r\n\r\n}\r\n\r\n.container{\r\n}\r\n\r\nbutton{\r\n\t&:focus{\r\n\t\t\r\n\t}\r\n} */ }\n  .viewer .container, .editor .container {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    height: 100%; }\n    .viewer .container .view-container, .editor .container .view-container {\n      box-sizing: border-box;\n      height: 100%;\n      width: 100%;\n      padding-bottom: 30px;\n      overflow: auto; }\n\n.default {\n  text-align: center; }\n\n.editor {\n  background-color: white;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  height: 100%;\n  width: 100%;\n  padding-bottom: 30px;\n  box-sizing: border-box; }\n  .editor .view-container {\n    width: 100%; }\n  .editor split-area {\n    overflow-y: auto !important; }\n", ""]);
 
 // exports
 
@@ -4727,7 +5374,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".reset {\n  margin: 0px;\n  padding: 0px; }\n\n.default {\n  font-size: 12px;\n  color: #8AA8C0;\n  line-height: 150px;\n  text-align: center; }\n\n.viewer {\n  /* \twidth: 100%; \r\noverflow: auto;\r\n\r\npadding: 0px;\r\nmargin: 0px;\r\n\r\n.header{\r\n\r\n\tdisplay: flex; \r\n\tflex-direction: row; \r\n\tjustify-content: space-between;\r\n\r\n\tposition: relative;\r\n\tfont-size: 14px; \r\n\tfont-weight: 600; \r\n\tline-height: $header-height;\r\n\ttext-transform: uppercase;\r\n\tletter-spacing: 1.5px;\r\n\theight: $header-height;\r\n\r\n\tcolor: #ADADAD;\r\n\r\n\t.btn-group{\r\n\t\theight: $header-height; \r\n\r\n\t\tbutton{\r\n\t\t\twidth: 0.9*$header-height; \r\n\t\t\theight: 0.9*$header-height; \r\n\t\t\tmargin: 0px;\r\n\t\t\tborder: 1px solid #B4B1B1;\r\n\t\t\tbox-shadow: none;\r\n\r\n\t\t\t&:focus{\r\n\t\t\t\t\r\n\t\t\t}\r\n\t\t}\r\n\t\t\r\n\t}\r\n\r\n}\r\n\r\n.container{\r\n}\r\n\r\nbutton{\r\n\t&:focus{\r\n\t\t\r\n\t}\r\n} */ }\n\n.viewer .container {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    height: 100%; }\n\n.viewer .container .view-container {\n      -webkit-box-sizing: border-box;\n              box-sizing: border-box;\n      height: 100%;\n      width: 100%;\n      padding-bottom: 30px;\n      overflow: auto; }\n\nsplit-area {\n  overflow: auto !important; }\n\n.viewer {\n  position: relative;\n  height: 100%;\n  width: 100%;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  background-image: repeating-linear-gradient(0deg, transparent, transparent 70px, #F1F1F1 70px, #F1F1F1 71px), repeating-linear-gradient(-90deg, transparent, transparent 70px, #F1F1F1 70px, #F1F1F1 71px);\n  background-size: 71px 71px;\n  background-color: white;\n  -webkit-box-sizing: border-box;\n          box-sizing: border-box;\n  height: 100%;\n  width: 100%;\n  padding-bottom: 30px; }\n\n.viewer .container {\n    position: relative;\n    height: 100%;\n    overflow: hidden; }\n\n.viewer .container .disabled {\n      color: #8AA8C0; }\n\n.viewer .container .disabled:hover {\n        color: #8AA8C0 !important; }\n\n.viewer .container .sidebar {\n      font-size: 12px;\n      background-color: #F1F1F1;\n      color: #395D73;\n      white-space: nowrap;\n      overflow-x: hidden !important; }\n\n.viewer .container .sidebar section {\n        padding-left: 15px;\n        padding-bottom: 5px;\n        padding-top: 5px;\n        border-bottom: 1px solid #8AA8C0; }\n\n.viewer .container .sidebar section div {\n          cursor: pointer; }\n\n.viewer .container .sidebar section div:hover {\n            color: #F0BFA0; }\n\n.viewer .graph-container {\n    position: absolute;\n    height: 100%;\n    width: 100%; }\n\n.viewer .graph-container #graph-edges {\n      background-color: transparent;\n      z-index: 1; }\n\n.viewer .graph-container #graph-edges #temporary-edge .hidden {\n        display: none; }\n\n.viewer .graph-container #graph-nodes {\n      background-color: transparent;\n      overflow: hidden;\n      z-index: 1; }\n\n.viewer .node-container {\n    position: relative; }\n\n.viewer .node-container .node {\n      position: absolute;\n      z-index: 3;\n      margin: 0px;\n      color: #395D73;\n      /* .port-container{\r\n\t\t\t\t\tdisplay: flex; \r\n\t\t\t\t\tflex-direction: row; \r\n\t\t\t\t\tjustify-content: space-around;\r\n\t\t\t\t\r\n\t\t\t\t\tposition: relative;\r\n\t\t\t\t\theight: 10px;\r\n\t\t\t\t\twidth: 100%;\r\n\t\t\t\t\tz-index: 1;\r\n\t\t\t\t\r\n\t\t\t\t\tmargin-top: -2px;\r\n\t\t\t\t\t\r\n\t\t\t\t\t&.input{\r\n\t\t\t\t\r\n\t\t\t\t\t\t.port{\r\n\t\t\t\t\t\t\tborder-top-right-radius: 15px;\r\n\t\t\t\t\t\t\tborder-top-left-radius: 15px;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t}\r\n\t\t\t\t\r\n\t\t\t\t\t&.output{\r\n\t\t\t\t\r\n\t\t\t\t\t\t.port{\r\n\t\t\t\t\t\t\tborder-bottom-right-radius: 15px;\r\n\t\t\t\t\t\t\tborder-bottom-left-radius: 15px;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\r\n\t\t\t\t\t}\r\n\t\t\t\t\r\n\t\t\t\t\t.port{\r\n\t\t\t\t\t\theight: 7.5px;\r\n\t\t\t\t\t\twidth: 15px;\r\n\t\t\t\t\t\tborder: 2px solid black;\r\n\t\t\t\t\t\tborder-radius: 50%;\r\n\t\t\t\t\t\tdisplay: inline-block;\r\n\t\t\t\t\t\tbackground-color: black;\r\n\t\t\t\t\t\tmargin: 0px 2px;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tz-index: 3;\r\n\t\t\t\t\r\n\t\t\t\t\t\t&:hover{\r\n\t\t\t\t\t\t\tbackground-color: orange;\r\n\t\t\t\t\t\t\tcursor: pointer;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\r\n\t\t\t\t\t\t&.connected{\r\n\t\t\t\t\t\t\tbackground-color: green;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t}\r\n\t\t\t\t\r\n\t\t\t\t\t.btn-sm{\r\n\t\t\t\t\t\tposition: absolute; \r\n\t\t\t\t\t\tright: -15px;\r\n\t\t\t\t\t\tborder: 2px solid gray;\r\n\t\t\t\t\t\tcolor: gray;\r\n\t\t\t\t\t\theight: 15px; \r\n\t\t\t\t\t\twidth: 15px;\r\n\t\t\t\t\t\tfont-size: 10px; \r\n\t\t\t\t\t\tline-height: 15px;\r\n\t\t\t\t\t\tcursor: pointer;\r\n\t\t\t\t\r\n\t\t\t\t\t\tbackground: url('../../../../assets/img/plus.png');\r\n\t\t\t\t\t\tbackground-size: cover;\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t\t\t&.input{\r\n\t\t\t\t\t\t\ttop: -5px; \r\n\t\t\t\t\t\t}\r\n\t\t\t\t\r\n\t\t\t\t\t\t&.output{\r\n\t\t\t\t\t\t\tbottom: 0px; \r\n\t\t\t\t\t\t\tleft: -15px;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t}\r\n\t\t\t\t\r\n\t\t\t\t} */ }\n\n.viewer .node-container .node .btn-container {\n        position: absolute;\n        right: -30px;\n        display: -webkit-box;\n        display: -ms-flexbox;\n        display: flex;\n        -webkit-box-orient: vertical;\n        -webkit-box-direction: normal;\n            -ms-flex-direction: column;\n                flex-direction: column;\n        -webkit-box-pack: justify;\n            -ms-flex-pack: justify;\n                justify-content: space-between;\n        height: 100px; }\n\n.viewer .node-container .node .btn-container .btn-group {\n          position: relative;\n          display: -webkit-box;\n          display: -ms-flexbox;\n          display: flex;\n          -webkit-box-orient: vertical;\n          -webkit-box-direction: normal;\n              -ms-flex-direction: column;\n                  flex-direction: column;\n          -webkit-box-pack: center;\n              -ms-flex-pack: center;\n                  justify-content: center;\n          background: none; }\n\n.viewer .node-container .node .btn-container .btn-group .action-button {\n            position: relative;\n            width: 25px;\n            height: 24px;\n            cursor: pointer;\n            font-size: 9px;\n            text-align: center; }\n\n.viewer .node-container .node .btn-container .btn-group .action-button .material-icons {\n              font-size: 18px;\n              line-height: 24px;\n              color: #8AA8C0; }\n\n.viewer .node-container .node .btn-container .btn-group .action-button:hover {\n              color: white; }\n\n.viewer .node-container .node .btn-container .btn-group .action-button:hover .mat-icon {\n                color: #F0BFA0; }\n\n.viewer .node-container .node .node-body {\n        display: -webkit-box;\n        display: -ms-flexbox;\n        display: flex;\n        -webkit-box-orient: vertical;\n        -webkit-box-direction: normal;\n            -ms-flex-direction: column;\n                flex-direction: column;\n        -webkit-box-pack: center;\n            -ms-flex-pack: center;\n                justify-content: center;\n        position: relative;\n        min-height: 30px;\n        min-width: 70px;\n        width: auto;\n        border: 1px solid #395D73;\n        background-color: white;\n        cursor: move; }\n\n.viewer .node-container .node .node-body.disabled {\n          opacity: 0.4; }\n\n.viewer .node-container .node .node-body.selected {\n          border-width: 5px; }\n\n.viewer .node-container .node .node-body.library {\n          border-color: #395D73;\n          border-style: solid; }\n\n.viewer .node-container .node .node-body.error {\n          background-color: #E94858; }\n\n.viewer .node-container .node .node-body .node-name {\n          font-family: sans-serif;\n          font-size: 12px;\n          border-bottom: 1px solid #395D73;\n          text-align: center;\n          background-color: #F1F1F1; }\n\n.viewer .node-container .node .node-body .node-name input {\n            background-color: inherit;\n            border: 0px;\n            color: #395D73;\n            text-align: center; }\n\n.viewer .node-container .node .node-body .node-name.selected {\n            background-color: #8AA8C0; }\n\n.viewer .node-container .node .node-body .node-name.selected input {\n              color: white;\n              font-weight: bold; }\n\n.viewer .node-container .node .node-body .node-name.selected input:focus {\n                color: #395D73;\n                background-color: #F0BFA0; }\n\n.viewer .node-container .node .node-body .port-container {\n          display: -webkit-box;\n          display: -ms-flexbox;\n          display: flex;\n          -webkit-box-orient: vertical;\n          -webkit-box-direction: normal;\n              -ms-flex-direction: column;\n                  flex-direction: column;\n          margin-top: 10px;\n          margin-bottom: 10px; }\n\n.viewer .node-container .node .node-body .port-container .divider {\n            height: 2px;\n            width: 100%;\n            background-color: #8AA8C0; }\n\n.viewer .node-container .node .node-body .port-container .port {\n            display: -webkit-box;\n            display: -ms-flexbox;\n            display: flex;\n            -webkit-box-orient: horizontal;\n            -webkit-box-direction: normal;\n                -ms-flex-direction: row;\n                    flex-direction: row;\n            margin: 5px 0px; }\n\n.viewer .node-container .node .node-body .port-container .port .port-grip {\n              width: 15px;\n              height: 15px;\n              border-radius: 50%;\n              background-color: #F1F1F1;\n              border: 1px solid #395D73;\n              cursor: pointer; }\n\n.viewer .node-container .node .node-body .port-container .port .port-grip.selected {\n                border: 2px solid #8AA8C0; }\n\n.viewer .node-container .node .node-body .port-container .port .port-grip:hover {\n                background-color: #F0BFA0; }\n\n.viewer .node-container .node .node-body .port-container .port .port-name {\n              font-size: 12px;\n              margin: 0px 5px; }\n\n.viewer .node-container .node .node-body .port-container .port.input {\n              -webkit-box-pack: start;\n                  -ms-flex-pack: start;\n                      justify-content: flex-start;\n              margin-left: -7.5px; }\n\n.viewer .node-container .node .node-body .port-container .port.output {\n              -webkit-box-pack: end;\n                  -ms-flex-pack: end;\n                      justify-content: flex-end;\n              margin-right: -7.5px; }\n\n.viewer .node-container .node:active {\n        cursor: none; }\n", ""]);
+exports.push([module.i, ".reset {\n  margin: 0px;\n  padding: 0px; }\n\n.default {\n  font-size: 12px;\n  color: #8AA8C0;\n  line-height: 150px;\n  text-align: center; }\n\n.viewer {\n  /* \twidth: 100%; \r\noverflow: auto;\r\n\r\npadding: 0px;\r\nmargin: 0px;\r\n\r\n.header{\r\n\r\n\tdisplay: flex; \r\n\tflex-direction: row; \r\n\tjustify-content: space-between;\r\n\r\n\tposition: relative;\r\n\tfont-size: 14px; \r\n\tfont-weight: 600; \r\n\tline-height: $header-height;\r\n\ttext-transform: uppercase;\r\n\tletter-spacing: 1.5px;\r\n\theight: $header-height;\r\n\r\n\tcolor: #ADADAD;\r\n\r\n\t.btn-group{\r\n\t\theight: $header-height; \r\n\r\n\t\tbutton{\r\n\t\t\twidth: 0.9*$header-height; \r\n\t\t\theight: 0.9*$header-height; \r\n\t\t\tmargin: 0px;\r\n\t\t\tborder: 1px solid #B4B1B1;\r\n\t\t\tbox-shadow: none;\r\n\r\n\t\t\t&:focus{\r\n\t\t\t\t\r\n\t\t\t}\r\n\t\t}\r\n\t\t\r\n\t}\r\n\r\n}\r\n\r\n.container{\r\n}\r\n\r\nbutton{\r\n\t&:focus{\r\n\t\t\r\n\t}\r\n} */ }\n  .viewer .container {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    height: 100%; }\n    .viewer .container .view-container {\n      box-sizing: border-box;\n      height: 100%;\n      width: 100%;\n      padding-bottom: 30px;\n      overflow: auto; }\n\nsplit-area {\n  overflow: auto !important; }\n\n.viewer {\n  position: relative;\n  height: 100%;\n  width: 100%;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  background-image: repeating-linear-gradient(0deg, transparent, transparent 70px, #F1F1F1 70px, #F1F1F1 71px), repeating-linear-gradient(-90deg, transparent, transparent 70px, #F1F1F1 70px, #F1F1F1 71px);\n  background-size: 71px 71px;\n  background-color: white;\n  box-sizing: border-box;\n  height: 100%;\n  width: 100%;\n  padding-bottom: 30px; }\n  .viewer .container {\n    position: relative;\n    height: 100%;\n    overflow: hidden; }\n    .viewer .container .disabled {\n      color: #8AA8C0; }\n      .viewer .container .disabled:hover {\n        color: #8AA8C0 !important; }\n    .viewer .container .sidebar {\n      font-size: 12px;\n      background-color: #F1F1F1;\n      color: #395D73;\n      white-space: nowrap;\n      overflow-x: hidden !important; }\n      .viewer .container .sidebar section {\n        padding-left: 15px;\n        padding-bottom: 5px;\n        padding-top: 5px;\n        border-bottom: 1px solid #8AA8C0; }\n        .viewer .container .sidebar section div {\n          cursor: pointer; }\n          .viewer .container .sidebar section div:hover {\n            color: #F0BFA0; }\n  .viewer .graph-container {\n    position: absolute;\n    height: 100%;\n    width: 100%; }\n    .viewer .graph-container #graph-edges {\n      background-color: transparent;\n      z-index: 1; }\n      .viewer .graph-container #graph-edges #temporary-edge .hidden {\n        display: none; }\n    .viewer .graph-container #graph-nodes {\n      background-color: transparent;\n      overflow: hidden;\n      z-index: 1; }\n  .viewer .node-container {\n    position: relative; }\n    .viewer .node-container .node {\n      position: absolute;\n      z-index: 3;\n      margin: 0px;\n      color: #395D73;\n      /* .port-container{\r\n\t\t\t\t\tdisplay: flex; \r\n\t\t\t\t\tflex-direction: row; \r\n\t\t\t\t\tjustify-content: space-around;\r\n\t\t\t\t\r\n\t\t\t\t\tposition: relative;\r\n\t\t\t\t\theight: 10px;\r\n\t\t\t\t\twidth: 100%;\r\n\t\t\t\t\tz-index: 1;\r\n\t\t\t\t\r\n\t\t\t\t\tmargin-top: -2px;\r\n\t\t\t\t\t\r\n\t\t\t\t\t&.input{\r\n\t\t\t\t\r\n\t\t\t\t\t\t.port{\r\n\t\t\t\t\t\t\tborder-top-right-radius: 15px;\r\n\t\t\t\t\t\t\tborder-top-left-radius: 15px;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t}\r\n\t\t\t\t\r\n\t\t\t\t\t&.output{\r\n\t\t\t\t\r\n\t\t\t\t\t\t.port{\r\n\t\t\t\t\t\t\tborder-bottom-right-radius: 15px;\r\n\t\t\t\t\t\t\tborder-bottom-left-radius: 15px;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\r\n\t\t\t\t\t}\r\n\t\t\t\t\r\n\t\t\t\t\t.port{\r\n\t\t\t\t\t\theight: 7.5px;\r\n\t\t\t\t\t\twidth: 15px;\r\n\t\t\t\t\t\tborder: 2px solid black;\r\n\t\t\t\t\t\tborder-radius: 50%;\r\n\t\t\t\t\t\tdisplay: inline-block;\r\n\t\t\t\t\t\tbackground-color: black;\r\n\t\t\t\t\t\tmargin: 0px 2px;\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tz-index: 3;\r\n\t\t\t\t\r\n\t\t\t\t\t\t&:hover{\r\n\t\t\t\t\t\t\tbackground-color: orange;\r\n\t\t\t\t\t\t\tcursor: pointer;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\r\n\t\t\t\t\t\t&.connected{\r\n\t\t\t\t\t\t\tbackground-color: green;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t}\r\n\t\t\t\t\r\n\t\t\t\t\t.btn-sm{\r\n\t\t\t\t\t\tposition: absolute; \r\n\t\t\t\t\t\tright: -15px;\r\n\t\t\t\t\t\tborder: 2px solid gray;\r\n\t\t\t\t\t\tcolor: gray;\r\n\t\t\t\t\t\theight: 15px; \r\n\t\t\t\t\t\twidth: 15px;\r\n\t\t\t\t\t\tfont-size: 10px; \r\n\t\t\t\t\t\tline-height: 15px;\r\n\t\t\t\t\t\tcursor: pointer;\r\n\t\t\t\t\r\n\t\t\t\t\t\tbackground: url('../../../../assets/img/plus.png');\r\n\t\t\t\t\t\tbackground-size: cover;\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t\t\t&.input{\r\n\t\t\t\t\t\t\ttop: -5px; \r\n\t\t\t\t\t\t}\r\n\t\t\t\t\r\n\t\t\t\t\t\t&.output{\r\n\t\t\t\t\t\t\tbottom: 0px; \r\n\t\t\t\t\t\t\tleft: -15px;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t}\r\n\t\t\t\t\r\n\t\t\t\t} */ }\n      .viewer .node-container .node .btn-container {\n        position: absolute;\n        right: -30px;\n        display: -webkit-box;\n        display: -ms-flexbox;\n        display: flex;\n        -webkit-box-orient: vertical;\n        -webkit-box-direction: normal;\n            -ms-flex-direction: column;\n                flex-direction: column;\n        -webkit-box-pack: justify;\n            -ms-flex-pack: justify;\n                justify-content: space-between;\n        height: 100px; }\n        .viewer .node-container .node .btn-container .btn-group {\n          position: relative;\n          display: -webkit-box;\n          display: -ms-flexbox;\n          display: flex;\n          -webkit-box-orient: vertical;\n          -webkit-box-direction: normal;\n              -ms-flex-direction: column;\n                  flex-direction: column;\n          -webkit-box-pack: center;\n              -ms-flex-pack: center;\n                  justify-content: center;\n          background: none; }\n          .viewer .node-container .node .btn-container .btn-group .action-button {\n            position: relative;\n            width: 25px;\n            height: 24px;\n            cursor: pointer;\n            font-size: 9px;\n            text-align: center; }\n            .viewer .node-container .node .btn-container .btn-group .action-button .material-icons {\n              font-size: 18px;\n              line-height: 24px;\n              color: #8AA8C0; }\n            .viewer .node-container .node .btn-container .btn-group .action-button:hover {\n              color: white; }\n              .viewer .node-container .node .btn-container .btn-group .action-button:hover .mat-icon {\n                color: #F0BFA0; }\n      .viewer .node-container .node .node-body {\n        display: -webkit-box;\n        display: -ms-flexbox;\n        display: flex;\n        -webkit-box-orient: vertical;\n        -webkit-box-direction: normal;\n            -ms-flex-direction: column;\n                flex-direction: column;\n        -webkit-box-pack: center;\n            -ms-flex-pack: center;\n                justify-content: center;\n        position: relative;\n        min-height: 30px;\n        min-width: 70px;\n        width: auto;\n        border: 1px solid #395D73;\n        background-color: white;\n        cursor: move; }\n        .viewer .node-container .node .node-body.disabled {\n          opacity: 0.4; }\n        .viewer .node-container .node .node-body.selected {\n          border-width: 5px; }\n        .viewer .node-container .node .node-body.library {\n          border-color: #395D73;\n          border-style: solid; }\n        .viewer .node-container .node .node-body.error {\n          background-color: #E94858; }\n        .viewer .node-container .node .node-body .node-name {\n          font-family: sans-serif;\n          font-size: 12px;\n          border-bottom: 1px solid #395D73;\n          text-align: center;\n          background-color: #F1F1F1; }\n          .viewer .node-container .node .node-body .node-name input {\n            background-color: inherit;\n            border: 0px;\n            color: #395D73;\n            text-align: center; }\n          .viewer .node-container .node .node-body .node-name.selected {\n            background-color: #8AA8C0; }\n            .viewer .node-container .node .node-body .node-name.selected input {\n              color: white;\n              font-weight: bold; }\n              .viewer .node-container .node .node-body .node-name.selected input:focus {\n                color: #395D73;\n                background-color: #F0BFA0; }\n        .viewer .node-container .node .node-body .port-container {\n          display: -webkit-box;\n          display: -ms-flexbox;\n          display: flex;\n          -webkit-box-orient: vertical;\n          -webkit-box-direction: normal;\n              -ms-flex-direction: column;\n                  flex-direction: column;\n          margin-top: 10px;\n          margin-bottom: 10px; }\n          .viewer .node-container .node .node-body .port-container .divider {\n            height: 2px;\n            width: 100%;\n            background-color: #8AA8C0; }\n          .viewer .node-container .node .node-body .port-container .port {\n            display: -webkit-box;\n            display: -ms-flexbox;\n            display: flex;\n            -webkit-box-orient: horizontal;\n            -webkit-box-direction: normal;\n                -ms-flex-direction: row;\n                    flex-direction: row;\n            margin: 5px 0px; }\n            .viewer .node-container .node .node-body .port-container .port .port-grip {\n              width: 15px;\n              height: 15px;\n              border-radius: 50%;\n              background-color: #F1F1F1;\n              border: 1px solid #395D73;\n              cursor: pointer; }\n              .viewer .node-container .node .node-body .port-container .port .port-grip.selected {\n                border: 2px solid #8AA8C0; }\n              .viewer .node-container .node .node-body .port-container .port .port-grip:hover {\n                background-color: #F0BFA0; }\n            .viewer .node-container .node .node-body .port-container .port .port-name {\n              font-size: 12px;\n              margin: 0px 5px; }\n            .viewer .node-container .node .node-body .port-container .port.input {\n              -webkit-box-pack: start;\n                  -ms-flex-pack: start;\n                      justify-content: flex-start;\n              margin-left: -7.5px; }\n            .viewer .node-container .node .node-body .port-container .port.output {\n              -webkit-box-pack: end;\n                  -ms-flex-pack: end;\n                      justify-content: flex-end;\n              margin-right: -7.5px; }\n      .viewer .node-container .node:active {\n        cursor: none; }\n", ""]);
 
 // exports
 
@@ -4989,7 +5636,7 @@ let FlowchartViewerComponent = class FlowchartViewerComponent extends __WEBPACK_
         if (port instanceof __WEBPACK_IMPORTED_MODULE_1__base_classes_port_PortModule__["a" /* InputPort */]) {
             type = "pi";
         }
-        else if (port instanceof __WEBPACK_IMPORTED_MODULE_1__base_classes_port_PortModule__["c" /* OutputPort */]) {
+        if (port instanceof __WEBPACK_IMPORTED_MODULE_1__base_classes_port_PortModule__["c" /* OutputPort */]) {
             type = "po";
         }
         let port_position = this.getPortPosition(address[0], address[1], type);
@@ -5191,7 +5838,7 @@ FlowchartViewerComponent = __decorate([
 /***/ "../../../../../src/app/ui-components/editors/parameter-editor/parameter-editor.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"viewer\">\r\n\r\n\t<div class=\"container\">\r\n\t\t\r\n\t\t<!-- default -->\r\n\t\t<div class=\"default\" *ngIf=\"!isVisible\">No node selected</div>\r\n\r\n\t\t<!-- main -->\r\n\t\t<div class=\"view-container\" *ngIf=\"isVisible\">\r\n\t\t\t<mat-accordion multi=\"true\" [displayMode]=\"flat\">\r\n\r\n\t\t\t\t<!-- inputs -->\r\n\t\t\t\t<mat-expansion-panel [disabled]=\"_inputs.length == 0\" [expanded]=\"true\">\r\n\t\t\t\t\t\r\n\t\t\t\t\t<mat-expansion-panel-header>\r\n\t\t\t\t\t\t<mat-panel-title>\r\n\t\t\t\t\t\t  Inputs ({{ _inputs.length }})\r\n\t\t\t\t\t\t</mat-panel-title>\r\n\t\t\t\t\t\t<mat-panel-description>\r\n\t\t\t\t\t\t  <!-- This is a summary of the content -->\r\n\t\t\t\t\t\t</mat-panel-description>\r\n\t\t\t\t\t</mat-expansion-panel-header>\r\n\r\n\t\t\t\t\t<!-- <span class=\"addBtn\" (click)=\"addPort(node_index, 'in')\">Add Input</span> -->\r\n\r\n\t\t\t\t\t<div class='port input' *ngFor=\"let inp of _inputs; let i=index\">\r\n\t\t\t\t\t\t<div class=\"content\">\r\n\t\t\t\t\t\t\t<div class='row'>\r\n\t\t\t\t\t\t\t\t<!--<span class='label'>Name</span>-->\r\n\t\t\t\t\t\t\t\t<span class='content' contenteditable=\"true\" (blur)=\"updatePortName($event, inp)\" spellcheck=\"false\">\r\n\t\t\t\t\t\t\t\t\t{{ inp.getName() }}\r\n\t\t\t\t\t\t\t\t</span>\r\n\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t<div class='row'>\r\n\t\t\t\t\t\t\t\t<!--<span class='label'>Type</span>-->\r\n\t\t\t\t\t\t\t\t<span class='content'>\r\n\t\t\t\t\t\t\t\t\t<select (change)=\"updateType($event.target.value, inp)\">\r\n\t\t\t\t\t\t\t\t\t\t         \t    <option *ngFor=\"let x of inputPortOpts\" [value]=\"x\" [selected]=\"inp.getType() == x\">{{getInputTypeName(x)}}</option>\r\n\t\t\t\t\t\t\t\t\t\t            </select>\r\n\t\t\t\t\t\t\t\t</span>\r\n\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t<!-- <div class='row'>\r\n\t\t\t\t\t\t\t\t<span class='content' contenteditable=\"true\" (blur)=\"updateDefaultValue($event, inp)\">\r\n\t\t\t\t\t\t\t\t\t<span *ngIf=\"!inp.getDefaultValue()\"><i>Default Value</i></span>\r\n\t\t\t\t\t\t\t\t\t<span *ngIf=\"inp.getDefaultValue()\">{{inp.getDefaultValue()}}</span>\r\n\t\t\t\t\t\t\t\t</span>\r\n\t\t\t\t\t\t\t</div>\t -->\r\n\t\t\t\t\t\t</div>\t\t\t\r\n\t\t\t\t\t\t<div class=\"controls\">\r\n\t\t\t\t\t        <button mat-button (click)='deletePort($event, \"input\", i)'>\r\n\t\t\t\t\t    \t\t<mat-icon>delete</mat-icon>\r\n    \t\t\t\t\t    </button>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</mat-expansion-panel>\r\n\r\n\t\t\t\t<!-- outputs -->\r\n\t\t\t\t<mat-expansion-panel [disabled]=\"_outputs.length == 0\" [expanded]=\"true\">\r\n\t\t\t\t\t<mat-expansion-panel-header>\r\n\t\t\t\t\t\t<mat-panel-title>\r\n\t\t\t\t\t\t  Outputs ({{ _outputs.length }})\r\n\t\t\t\t\t\t</mat-panel-title>\r\n\t\t\t\t\t\t<mat-panel-description>\r\n\t\t\t\t\t\t  <!-- This is a summary of the content -->\r\n\t\t\t\t\t\t</mat-panel-description>\r\n\t\t\t\t\t</mat-expansion-panel-header>\r\n\r\n\t\t\t\t\t<!-- <span class =\"addBtn\" (click)=\"addPort(node_index, 'out')\">Add Output</span> -->\r\n\r\n\t\t\t\t\t<div class='port output' *ngFor=\"let output of _outputs; let o=index\"><div class=\"content\">\r\n\t\t\t\t\t\t<div class='row'>\r\n\t\t\t\t\t\t\t<!--<span class='label'>Name</span>-->\r\n\t\t\t\t\t\t\t<span class='content' contenteditable=\"true\" (blur)=\"updatePortName($event, output)\" spellcheck=\"false\">\r\n\t\t\t\t\t\t\t\t{{ output.getName() || \"undefined\" }}\r\n\t\t\t\t\t\t\t</span>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class='row'>\r\n\t\t\t\t\t\t\t<!--<span class='label'>Type</span>-->\r\n\t\t\t\t\t\t\t<span class='content'>\r\n\t\t\t\t\t\t\t\t<select (change)=\"updateType($event.target.value, output)\">\r\n\t\t\t\t\t         \t    <option *ngFor=\"let x of outputPortOpts\" [value]=\"x\" [selected]=\"output.getType() == x\">{{getOutputTypeName(x)}}</option>\r\n\t\t\t\t\t            </select>\r\n\t\t\t\t\t\t\t</span>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class='row hidden'>\r\n\t\t\t\t\t\t\t<!--<span class='label'>Default</span>-->\r\n\t\t\t\t\t\t\t<span class='content' contenteditable=\"true\" (blur)=\"updateDefaultValue($event, output)\">\r\n\t\t\t\t\t\t\t\t{{ output.getDefaultValue() || \"undefined\"}}\r\n\t\t\t\t\t\t\t</span>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class=\"controls\">\r\n\t\t\t\t\t        <button mat-button (click)='deletePort($event, \"output\", o)'>\r\n\t\t\t\t\t    \t\t<mat-icon>delete</mat-icon>\r\n    \t\t\t\t\t    </button>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</mat-expansion-panel>\r\n\r\n\t\t\t</mat-accordion>\r\n\t\t</div>\r\n\r\n\t</div>\r\n\r\n</div>\r\n\r\n"
+module.exports = "<div class=\"viewer\">\r\n\r\n\t<div class=\"container\">\r\n\t\t\r\n\t\t<!-- default -->\r\n\t\t<div class=\"default\" *ngIf=\"!isVisible\">No node selected</div>\r\n\r\n\t\t<!-- main -->\r\n\t\t<div class=\"view-container\" *ngIf=\"isVisible\">\r\n\t\t\t<mat-accordion multi=\"true\" [displayMode]=\"flat\">\r\n\r\n\t\t\t\t<!-- inputs -->\r\n\t\t\t\t<mat-expansion-panel [disabled]=\"_inputs.length == 0\" [expanded]=\"true\">\r\n\t\t\t\t\t\r\n\t\t\t\t\t<mat-expansion-panel-header>\r\n\t\t\t\t\t\t<mat-panel-title>\r\n\t\t\t\t\t\t  Inputs ({{ _inputs.length }})\r\n\t\t\t\t\t\t</mat-panel-title>\r\n\t\t\t\t\t\t<mat-panel-description>\r\n\t\t\t\t\t\t  <!-- This is a summary of the content -->\r\n\t\t\t\t\t\t</mat-panel-description>\r\n\t\t\t\t\t</mat-expansion-panel-header>\r\n\r\n\t\t\t\t\t<!-- <span class=\"addBtn\" (click)=\"addPort(node_index, 'in')\">Add Input</span> -->\r\n\r\n\t\t\t\t\t<div class='port input' *ngFor=\"let inp of _inputs; let i=index\">\r\n\t\t\t\t\t\t<div class=\"content\">\r\n\t\t\t\t\t\t\t<div class='row'>\r\n\t\t\t\t\t\t\t\t<!--<span class='label'>Name</span>-->\r\n\t\t\t\t\t\t\t\t<span class='content' contenteditable=\"true\" (blur)=\"updatePortName($event, inp)\" spellcheck=\"false\">\r\n\t\t\t\t\t\t\t\t\t{{ inp.getName() }}\r\n\t\t\t\t\t\t\t\t</span>\r\n\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t<div class='row'>\r\n\t\t\t\t\t\t\t\t<!--<span class='label'>Type</span>-->\r\n\t\t\t\t\t\t\t\t<span class='content'>\r\n\t\t\t\t\t\t\t\t\t<select (change)=\"updateType($event.target.value, inp)\">\r\n\t\t\t\t\t\t\t\t\t\t         \t    <option *ngFor=\"let x of inputPortOpts\" [value]=\"x\" [selected]=\"inp.getType() == x\">{{getInputTypeName(x)}}</option>\r\n\t\t\t\t\t\t\t\t\t\t            </select>\r\n\t\r\n\t\t\t\t\t\t\t\t</span>\r\n\r\n\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\r\n\r\n\t\t\t\t\t\t\t<!-- <div class='row'>\r\n\t\t\t\t\t\t\t\t<span class='content' contenteditable=\"true\" (blur)=\"updateDefaultValue($event, inp)\">\r\n\t\t\t\t\t\t\t\t\t<span *ngIf=\"!inp.getDefaultValue()\"><i>Default Value</i></span>\r\n\t\t\t\t\t\t\t\t\t<span *ngIf=\"inp.getDefaultValue()\">{{inp.getDefaultValue()}}</span>\r\n\t\t\t\t\t\t\t\t</span>\r\n\t\t\t\t\t\t\t</div>\t -->\r\n\t\t\t\t\t\t</div>\t\t\t\r\n\t\t\t\t\t\t<div class=\"controls\">\r\n\t\t\t\t\t\t\t<mat-icon (click)='openSettingsDialog(inp)'>settings</mat-icon>\r\n\t\t\t\t\t        <button mat-button (click)='deletePort($event, \"input\", i)'>\r\n\t\t\t\t\t    \t\t<mat-icon>delete</mat-icon>\r\n    \t\t\t\t\t    </button>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</mat-expansion-panel>\r\n\r\n\t\t\t\t<!-- outputs -->\r\n\t\t\t\t<mat-expansion-panel [disabled]=\"_outputs.length == 0\" [expanded]=\"true\">\r\n\t\t\t\t\t<mat-expansion-panel-header>\r\n\t\t\t\t\t\t<mat-panel-title>\r\n\t\t\t\t\t\t  Outputs ({{ _outputs.length }})\r\n\t\t\t\t\t\t</mat-panel-title>\r\n\t\t\t\t\t\t<mat-panel-description>\r\n\t\t\t\t\t\t  <!-- This is a summary of the content -->\r\n\t\t\t\t\t\t</mat-panel-description>\r\n\t\t\t\t\t</mat-expansion-panel-header>\r\n\r\n\t\t\t\t\t<!-- <span class =\"addBtn\" (click)=\"addPort(node_index, 'out')\">Add Output</span> -->\r\n\r\n\t\t\t\t\t<div class='port output' *ngFor=\"let output of _outputs; let o=index\"><div class=\"content\">\r\n\t\t\t\t\t\t<div class='row'>\r\n\t\t\t\t\t\t\t<!--<span class='label'>Name</span>-->\r\n\t\t\t\t\t\t\t<span class='content' contenteditable=\"true\" (blur)=\"updatePortName($event, output)\" spellcheck=\"false\">\r\n\t\t\t\t\t\t\t\t{{ output.getName() || \"undefined\" }}\r\n\t\t\t\t\t\t\t</span>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class='row'>\r\n\t\t\t\t\t\t\t<!--<span class='label'>Type</span>-->\r\n\t\t\t\t\t\t\t<span class='content'>\r\n\t\t\t\t\t\t\t\t<select (change)=\"updateType($event.target.value, output)\">\r\n\t\t\t\t\t         \t    <option *ngFor=\"let x of outputPortOpts\" [value]=\"x\" [selected]=\"output.getType() == x\">{{getOutputTypeName(x)}}</option>\r\n\t\t\t\t\t            </select>\r\n\t\t\t\t\t\t\t</span>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class='row hidden'>\r\n\t\t\t\t\t\t\t<!--<span class='label'>Default</span>-->\r\n\t\t\t\t\t\t\t<span class='content' contenteditable=\"true\" (blur)=\"updateDefaultValue($event, output)\">\r\n\t\t\t\t\t\t\t\t{{ output.getDefaultValue() || \"undefined\"}}\r\n\t\t\t\t\t\t\t</span>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class=\"controls\">\r\n\t\t\t\t\t        <button mat-button (click)='deletePort($event, \"output\", o)'>\r\n\t\t\t\t\t    \t\t<mat-icon>delete</mat-icon>\r\n    \t\t\t\t\t    </button>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</mat-expansion-panel>\r\n\r\n\t\t\t</mat-accordion>\r\n\t\t</div>\r\n\r\n\t</div>\r\n\r\n</div>\r\n\r\n"
 
 /***/ }),
 
@@ -5203,7 +5850,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".reset {\n  margin: 0px;\n  padding: 0px; }\n\n.default {\n  font-size: 12px;\n  color: #8AA8C0;\n  line-height: 150px;\n  text-align: center; }\n\n.viewer {\n  /* \twidth: 100%; \r\noverflow: auto;\r\n\r\npadding: 0px;\r\nmargin: 0px;\r\n\r\n.header{\r\n\r\n\tdisplay: flex; \r\n\tflex-direction: row; \r\n\tjustify-content: space-between;\r\n\r\n\tposition: relative;\r\n\tfont-size: 14px; \r\n\tfont-weight: 600; \r\n\tline-height: $header-height;\r\n\ttext-transform: uppercase;\r\n\tletter-spacing: 1.5px;\r\n\theight: $header-height;\r\n\r\n\tcolor: #ADADAD;\r\n\r\n\t.btn-group{\r\n\t\theight: $header-height; \r\n\r\n\t\tbutton{\r\n\t\t\twidth: 0.9*$header-height; \r\n\t\t\theight: 0.9*$header-height; \r\n\t\t\tmargin: 0px;\r\n\t\t\tborder: 1px solid #B4B1B1;\r\n\t\t\tbox-shadow: none;\r\n\r\n\t\t\t&:focus{\r\n\t\t\t\t\r\n\t\t\t}\r\n\t\t}\r\n\t\t\r\n\t}\r\n\r\n}\r\n\r\n.container{\r\n}\r\n\r\nbutton{\r\n\t&:focus{\r\n\t\t\r\n\t}\r\n} */ }\n\n.viewer .container {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    height: 100%; }\n\n.viewer .container .view-container {\n      -webkit-box-sizing: border-box;\n              box-sizing: border-box;\n      height: 100%;\n      width: 100%;\n      padding-bottom: 30px;\n      overflow: auto; }\n\n.addBtn {\n  font-size: 12px; }\n\n.viewer {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  /*.port-heading{\r\n\t\tfont-size: $fsize2;\r\n\t\tline-height: $header-height;\r\n\t\tpadding: 0px 4px;\r\n\t\ttext-align: center;\r\n\t}*/ }\n\n.viewer .port {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-flow: row nowrap;\n            flex-flow: row nowrap;\n    -webkit-box-pack: justify !important;\n        -ms-flex-pack: justify !important;\n            justify-content: space-between !important;\n    padding-left: 15px;\n    height: auto;\n    min-height: 24px;\n    border-bottom: 1px solid #8AA8C0;\n    background-color: white; }\n\n.viewer .port:hover .content {\n      -webkit-box-orient: horizontal;\n      -webkit-box-direction: normal;\n          -ms-flex-flow: row wrap;\n              flex-flow: row wrap;\n      height: auto !important; }\n\n.viewer .port:hover .controls {\n      display: -webkit-box;\n      display: -ms-flexbox;\n      display: flex; }\n\n.viewer .port span {\n      width: 100px;\n      height: 12px; }\n\n.viewer .port .content {\n      display: -webkit-box;\n      display: -ms-flexbox;\n      display: flex;\n      -webkit-box-orient: horizontal;\n      -webkit-box-direction: normal;\n          -ms-flex-flow: row nowrap;\n              flex-flow: row nowrap;\n      height: 15px;\n      font-size: 12px;\n      line-height: 15px;\n      -webkit-box-pack: justify;\n          -ms-flex-pack: justify;\n              justify-content: space-between;\n      padding: 0;\n      margin: 2px 0px;\n      /*.row{\t\t\t\t\r\n\t\t\t\tdisplay: flex; \r\n\t\t\t\tflex-direction: row;\r\n\r\n\t\t\t\t.label{\r\n\t\t\t\t\tdisplay: inline-block;\r\n\t\t\t\t\ttext-transform: uppercase;\r\n\t\t\t\t\tfont-size: 10px; \r\n\t\t\t\t\tcolor: gray; \r\n\t\t\t\t\twidth: 100px;\r\n\t\t\t\t}\r\n\r\n\t\t\t\t.content{\r\n\t\t\t\t\tmin-width: 50px;\r\n\r\n\t\t\t\t\t&.undefined{\r\n\t\t\t\t\t\tborder-bottom: 1px dashed blue;\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t}*/ }\n\n.viewer .port .content .row {\n        height: 20px !important; }\n\n.viewer .port .content span {\n        padding: 0 !important;\n        text-align: center !important;\n        border-bottom: 1px solid #8AA8C0;\n        margin-right: 5px; }\n\n.viewer .port .content select {\n        font-size: 12px;\n        width: 100px;\n        border: 0px !important;\n        color: #395D73; }\n\n.viewer .port .controls {\n      margin: 0 !important;\n      display: none; }\n\n.viewer .port .controls button {\n        max-width: 15px !important;\n        height: 15px;\n        min-width: 15px !important;\n        padding: 0px !important;\n        -webkit-box-flex: 0 !important;\n            -ms-flex-positive: 0 !important;\n                flex-grow: 0 !important;\n        -ms-flex-negative: 0 !important;\n            flex-shrink: 0 !important; }\n\n.viewer .port .controls button mat-icon {\n          height: 12px;\n          vertical-align: top !important;\n          font-size: 15px !important;\n          text-align: left !important; }\n\n.viewer .port .controls button:hover {\n          background-color: #F1F1F1 !important; }\n\n.viewer .port .controls button:hover mat-icon {\n            color: #F07A79 !important; }\n\n.hidden {\n  display: inline-block !important;\n  visibility: hidden !important; }\n\n.container {\n  overflow: hidden !important; }\n\n.container mat-expansion-panel-header {\n    background-color: #F1F1F1 !important;\n    border-top: 1px solid #8AA8C0 !important;\n    border-bottom: 1px solid #8AA8C0 !important;\n    padding-left: 15px !important; }\n\n.container mat-expansion-panel-header mat-panel-title {\n      color: #395D73 !important;\n      font-weight: bold !important;\n      font-size: 12px !important; }\n\n.container mat-expansion-panel-header:hover {\n      background-color: #F1F1F1 !important; }\n\n.view-container {\n  padding: 0 !important;\n  overflow: hidden !important; }\n", ""]);
+exports.push([module.i, ".reset {\n  margin: 0px;\n  padding: 0px; }\n\n.default {\n  font-size: 12px;\n  color: #8AA8C0;\n  line-height: 150px;\n  text-align: center; }\n\n.viewer {\n  /* \twidth: 100%; \r\noverflow: auto;\r\n\r\npadding: 0px;\r\nmargin: 0px;\r\n\r\n.header{\r\n\r\n\tdisplay: flex; \r\n\tflex-direction: row; \r\n\tjustify-content: space-between;\r\n\r\n\tposition: relative;\r\n\tfont-size: 14px; \r\n\tfont-weight: 600; \r\n\tline-height: $header-height;\r\n\ttext-transform: uppercase;\r\n\tletter-spacing: 1.5px;\r\n\theight: $header-height;\r\n\r\n\tcolor: #ADADAD;\r\n\r\n\t.btn-group{\r\n\t\theight: $header-height; \r\n\r\n\t\tbutton{\r\n\t\t\twidth: 0.9*$header-height; \r\n\t\t\theight: 0.9*$header-height; \r\n\t\t\tmargin: 0px;\r\n\t\t\tborder: 1px solid #B4B1B1;\r\n\t\t\tbox-shadow: none;\r\n\r\n\t\t\t&:focus{\r\n\t\t\t\t\r\n\t\t\t}\r\n\t\t}\r\n\t\t\r\n\t}\r\n\r\n}\r\n\r\n.container{\r\n}\r\n\r\nbutton{\r\n\t&:focus{\r\n\t\t\r\n\t}\r\n} */ }\n  .viewer .container {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    height: 100%; }\n    .viewer .container .view-container {\n      box-sizing: border-box;\n      height: 100%;\n      width: 100%;\n      padding-bottom: 30px;\n      overflow: auto; }\n\n.addBtn {\n  font-size: 12px; }\n\n.viewer {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  /*.port-heading{\r\n\t\tfont-size: $fsize2;\r\n\t\tline-height: $header-height;\r\n\t\tpadding: 0px 4px;\r\n\t\ttext-align: center;\r\n\t}*/ }\n  .viewer .port {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-flow: row nowrap;\n            flex-flow: row nowrap;\n    -webkit-box-pack: justify !important;\n        -ms-flex-pack: justify !important;\n            justify-content: space-between !important;\n    padding-left: 15px;\n    height: auto;\n    min-height: 24px;\n    border-bottom: 1px solid #8AA8C0;\n    background-color: white; }\n    .viewer .port:hover .content {\n      -webkit-box-orient: horizontal;\n      -webkit-box-direction: normal;\n          -ms-flex-flow: row wrap;\n              flex-flow: row wrap;\n      height: auto !important; }\n    .viewer .port:hover .controls {\n      display: -webkit-box;\n      display: -ms-flexbox;\n      display: flex; }\n    .viewer .port span {\n      width: 100px;\n      height: 12px; }\n    .viewer .port .content {\n      display: -webkit-box;\n      display: -ms-flexbox;\n      display: flex;\n      -webkit-box-orient: horizontal;\n      -webkit-box-direction: normal;\n          -ms-flex-flow: row nowrap;\n              flex-flow: row nowrap;\n      height: 15px;\n      font-size: 12px;\n      line-height: 15px;\n      -webkit-box-pack: justify;\n          -ms-flex-pack: justify;\n              justify-content: space-between;\n      padding: 0;\n      margin: 2px 0px;\n      /*.row{\t\t\t\t\r\n\t\t\t\tdisplay: flex; \r\n\t\t\t\tflex-direction: row;\r\n\r\n\t\t\t\t.label{\r\n\t\t\t\t\tdisplay: inline-block;\r\n\t\t\t\t\ttext-transform: uppercase;\r\n\t\t\t\t\tfont-size: 10px; \r\n\t\t\t\t\tcolor: gray; \r\n\t\t\t\t\twidth: 100px;\r\n\t\t\t\t}\r\n\r\n\t\t\t\t.content{\r\n\t\t\t\t\tmin-width: 50px;\r\n\r\n\t\t\t\t\t&.undefined{\r\n\t\t\t\t\t\tborder-bottom: 1px dashed blue;\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t}*/ }\n      .viewer .port .content .row {\n        height: 20px !important; }\n      .viewer .port .content span {\n        padding: 0 !important;\n        text-align: center !important;\n        border-bottom: 1px solid #8AA8C0;\n        margin-right: 5px; }\n      .viewer .port .content select {\n        font-size: 12px;\n        width: 100px;\n        border: 0px !important;\n        color: #395D73; }\n    .viewer .port .controls {\n      margin: 0 !important;\n      display: none; }\n      .viewer .port .controls button {\n        max-width: 15px !important;\n        height: 15px;\n        min-width: 15px !important;\n        padding: 0px !important;\n        -webkit-box-flex: 0 !important;\n            -ms-flex-positive: 0 !important;\n                flex-grow: 0 !important;\n        -ms-flex-negative: 0 !important;\n            flex-shrink: 0 !important; }\n        .viewer .port .controls button mat-icon {\n          height: 12px;\n          vertical-align: top !important;\n          font-size: 15px !important;\n          text-align: left !important; }\n        .viewer .port .controls button:hover {\n          background-color: #F1F1F1 !important; }\n          .viewer .port .controls button:hover mat-icon {\n            color: #F07A79 !important; }\n\n.hidden {\n  display: inline-block !important;\n  visibility: hidden !important; }\n\n.container {\n  overflow: hidden !important; }\n  .container mat-expansion-panel-header {\n    background-color: #F1F1F1 !important;\n    border-top: 1px solid #8AA8C0 !important;\n    border-bottom: 1px solid #8AA8C0 !important;\n    padding-left: 15px !important; }\n    .container mat-expansion-panel-header mat-panel-title {\n      color: #395D73 !important;\n      font-weight: bold !important;\n      font-size: 12px !important; }\n    .container mat-expansion-panel-header:hover {\n      background-color: #F1F1F1 !important; }\n\n.view-container {\n  padding: 0 !important;\n  overflow: hidden !important; }\n", ""]);
 
 // exports
 
@@ -5221,6 +5868,8 @@ module.exports = module.exports.toString();
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm2015/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__base_classes_port_PortModule__ = __webpack_require__("../../../../../src/app/base-classes/port/PortModule.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__base_classes_viz_Viewer__ = __webpack_require__("../../../../../src/app/base-classes/viz/Viewer.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_material__ = __webpack_require__("../../../material/esm2015/material.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__parameter_settings_dialog_component__ = __webpack_require__("../../../../../src/app/ui-components/editors/parameter-editor/parameter-settings-dialog.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -5233,19 +5882,23 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
+
 let ParameterEditorComponent = class ParameterEditorComponent extends __WEBPACK_IMPORTED_MODULE_2__base_classes_viz_Viewer__["a" /* Viewer */] {
-    constructor(injector) {
+    constructor(injector, dialog) {
         super(injector, "parameter-editor");
+        this.dialog = dialog;
         this.isVisible = false;
         // shift to iport
         this.inputPortOpts = [
-            __WEBPACK_IMPORTED_MODULE_1__base_classes_port_PortModule__["b" /* InputPortTypes */].Input //, 
+            __WEBPACK_IMPORTED_MODULE_1__base_classes_port_PortModule__["b" /* InputPortTypes */].Input,
+            __WEBPACK_IMPORTED_MODULE_1__base_classes_port_PortModule__["b" /* InputPortTypes */].Slider
             // InputPortTypes.ColorPicker, 
             // InputPortTypes.FilePicker, 
             // InputPortTypes.Dropdown
         ];
         this.outputPortOpts = [
-            // OutputPortTypes.Three, 
+            __WEBPACK_IMPORTED_MODULE_1__base_classes_port_PortModule__["d" /* OutputPortTypes */].Three,
             __WEBPACK_IMPORTED_MODULE_1__base_classes_port_PortModule__["d" /* OutputPortTypes */].Text,
             __WEBPACK_IMPORTED_MODULE_1__base_classes_port_PortModule__["d" /* OutputPortTypes */].Code,
             __WEBPACK_IMPORTED_MODULE_1__base_classes_port_PortModule__["d" /* OutputPortTypes */].Console
@@ -5286,18 +5939,23 @@ let ParameterEditorComponent = class ParameterEditorComponent extends __WEBPACK_
     }
     updateType(type, port) {
         port.setType(type);
-    }
-    updateDefaultValue($event, port) {
-        let value = $event.srcElement.innerText;
-        if (value.trim().length > 0) {
-            port.setDefaultValue(value);
-            // put a timeout on this update or something similar to solve jumpiness
+        //defaults
+        if (type == __WEBPACK_IMPORTED_MODULE_1__base_classes_port_PortModule__["b" /* InputPortTypes */].Slider) {
+            port.setOpts({ min: 0, max: 100, step: 1 });
+            port.setDefaultValue(50);
         }
-        else {
-            port.setDefaultValue(undefined);
-        }
-        this.flowchartService.update();
     }
+    // updateDefaultValue($event, port: InputPort|OutputPort): void{
+    //   let value: string = $event.srcElement.innerText;
+    //   if(value.trim().length > 0){
+    //     port.setDefaultValue(value)
+    //     // put a timeout on this update or something similar to solve jumpiness
+    //   }
+    //   else{
+    //     port.setDefaultValue(undefined)
+    //   }
+    //   this.flowchartService.update();
+    // }
     getInputTypeName(type) {
         if (type == __WEBPACK_IMPORTED_MODULE_1__base_classes_port_PortModule__["b" /* InputPortTypes */].ColorPicker) {
             return "Color";
@@ -5310,6 +5968,9 @@ let ParameterEditorComponent = class ParameterEditorComponent extends __WEBPACK_
         }
         else if (type == __WEBPACK_IMPORTED_MODULE_1__base_classes_port_PortModule__["b" /* InputPortTypes */].FilePicker) {
             return "File";
+        }
+        else if (type == __WEBPACK_IMPORTED_MODULE_1__base_classes_port_PortModule__["b" /* InputPortTypes */].Slider) {
+            return "Slider";
         }
         else {
             return "Not Identifiable";
@@ -5348,6 +6009,19 @@ let ParameterEditorComponent = class ParameterEditorComponent extends __WEBPACK_
             this.isVisible = false;
         }
     }
+    openSettingsDialog(input) {
+        let dialogRef = this.dialog.open(__WEBPACK_IMPORTED_MODULE_4__parameter_settings_dialog_component__["a" /* ParameterSettingsDialogComponent */], {
+            height: '400px',
+            width: '600px',
+            data: {
+                inputPortTypes: this.inputPortOpts,
+                input: input
+            }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed');
+        });
+    }
 };
 ParameterEditorComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
@@ -5355,10 +6029,104 @@ ParameterEditorComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/ui-components/editors/parameter-editor/parameter-editor.component.html"),
         styles: [__webpack_require__("../../../../../src/app/ui-components/editors/parameter-editor/parameter-editor.component.scss")]
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* Injector */]])
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* Injector */], __WEBPACK_IMPORTED_MODULE_3__angular_material__["e" /* MatDialog */]])
 ], ParameterEditorComponent);
 
 
+
+/***/ }),
+
+/***/ "../../../../../src/app/ui-components/editors/parameter-editor/parameter-settings-dialog.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ParameterSettingsDialogComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm2015/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_material__ = __webpack_require__("../../../material/esm2015/material.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__base_classes_port_PortModule__ = __webpack_require__("../../../../../src/app/base-classes/port/PortModule.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+
+
+
+//
+// Component for Parameter Settings
+//
+let ParameterSettingsDialogComponent = class ParameterSettingsDialogComponent {
+    constructor(dialogRef, data) {
+        this.dialogRef = dialogRef;
+        this.data = data;
+        this.inputPortTypes = __WEBPACK_IMPORTED_MODULE_2__base_classes_port_PortModule__["b" /* InputPortTypes */];
+        this.type = data.input.getType();
+        this.input = data.input;
+        this.opts = this.input.getOpts();
+    }
+    updateDefaultValue($event) {
+        let value = $event.srcElement.value;
+        console.log("update");
+        if (value.trim().length > 0) {
+            if (this.type == __WEBPACK_IMPORTED_MODULE_2__base_classes_port_PortModule__["b" /* InputPortTypes */].Slider) {
+                if (isNaN(parseInt(value))) {
+                    alert("Slider values can only be numbers");
+                    return;
+                }
+            }
+            this.input.setDefaultValue(value);
+        }
+        else {
+            this.input.setDefaultValue(undefined);
+        }
+    }
+    updateSliderOpts($event, prop) {
+        let value = $event.srcElement.value;
+        if (value.trim().length > 0) {
+            if (isNaN(parseInt(value))) {
+                alert("Slider values can only be numbers");
+                return;
+            }
+            else {
+                this.opts[prop] = value;
+            }
+        }
+        else {
+            this.opts[prop] = 0;
+        }
+        this.input.setOpts(this.opts);
+    }
+    default(input) {
+        return input.getDefaultValue();
+    }
+    onNoClick() {
+        this.dialogRef.close();
+    }
+};
+ParameterSettingsDialogComponent = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
+        selector: 'parameter-settings-dialog',
+        template: __webpack_require__("../../../../../src/app/ui-components/editors/parameter-editor/parameter-settings-dialog.html"),
+    }),
+    __param(1, Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["z" /* Inject */])(__WEBPACK_IMPORTED_MODULE_1__angular_material__["a" /* MAT_DIALOG_DATA */])),
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_material__["g" /* MatDialogRef */], Object])
+], ParameterSettingsDialogComponent);
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/ui-components/editors/parameter-editor/parameter-settings-dialog.html":
+/***/ (function(module, exports) {
+
+module.exports = "<h2>Input Name: {{input.getName()}}</h2>\r\n<h3>Input Type: {{input.getType()}}</h3>\r\n\r\n<div *ngIf='type == inputPortTypes.Input'>\r\n\r\n\t<form class=\"example-form\">\r\n\t  <mat-form-field class=\"example-full-width\">\r\n\t    <textarea matInput \r\n\t    \t\tmatTextareaAutosize \r\n\t\t\t\tmatAutosizeMinRows=\"2\"\r\n    \t\t\tmatAutosizeMaxRows=\"8\" \r\n    \t\t\tplaceholder=\"Default Value\" \r\n    \t\t\tvalue=\"{{ default(input) }}\"\r\n    \t\t\t(change)=\"updateDefaultValue($event, input)\">\r\n\t\t</textarea>\r\n\t  </mat-form-field>\r\n\t</form>\r\n\t\r\n</div>\r\n\r\n<div *ngIf='type == inputPortTypes.Slider'>\r\n\t<form class=\"example-form\"\r\n\t\t\tstyle=\"display: flex; flex-direction: column;\">\r\n\t\t  <mat-form-field class=\"example-full-width\" style=\"height: 45px;\">\r\n\t\t    <input matInput placeholder=\"Minimum Value\" \r\n\t\t    \t(change)=\"updateSliderOpts($event, 'min')\" \r\n\t\t    \tvalue=\"{{ opts.min }}\">\r\n\t\t    <!-- <mat-hint>Enter the minimum slider value</mat-hint> -->\r\n\t\t  </mat-form-field>\r\n\r\n\t\t  <mat-form-field class=\"example-full-width\"  style=\"height: 45px;\">\r\n\t\t    <input matInput placeholder=\"Maximum Value\" \r\n\t\t    \t(change)=\"updateSliderOpts($event, 'max')\" \r\n\t\t    \tvalue=\"{{ opts.max }}\">\r\n\t\t  \t<!-- <mat-hint>Enter the maximum slider value</mat-hint> -->\r\n\t\t  </mat-form-field>\r\n\r\n\t\t  <mat-form-field class=\"example-full-width\"  style=\"height: 45px;\">\r\n\t\t    <input matInput placeholder=\"Step\" \r\n\t\t    \t(change)=\"updateSliderOpts($event, 'step')\" \r\n\t\t    \tvalue=\"{{ opts.step }}\">\r\n\t\t  \t<!-- <mat-hint>Enter the step size value</mat-hint> -->\r\n\t\t  </mat-form-field>\r\n\r\n\t\t  <mat-form-field class=\"example-full-width\"  style=\"height: 45px;\">\r\n\t\t    <input matInput placeholder=\"Default Value\" \r\n\t\t    (change)=\"updateDefaultValue($event, input)\" \r\n\t\t    value=\"{{ default(input) }}\">\r\n\t\t  \t<!-- <mat-hint>Enter the default value</mat-hint> -->\r\n\t\t  </mat-form-field>\r\n\r\n\t</form>\r\n</div>\r\n\r\n<!-- <div *ngIf='type == inputPortTypes.File'>\r\n\tSunt dolor in officia veniam id tempor occaecat sint ea exercitation ut aliqua esse eu laborum elit commodo ea amet magna id consequat dolor occaecat esse id tempor labore nulla nisi velit mollit voluptate.\r\n</div>\r\n\r\n<div *ngIf='type == inputPortTypes.Input'>\r\n\tSunt dolor in officia veniam id tempor occaecat sint ea exercitation ut aliqua esse eu laborum elit commodo ea amet magna id consequat dolor occaecat esse id tempor labore nulla nisi velit mollit voluptate.\r\n</div> -->\r\n<!-- \r\n<div class=\"options\" style=\"width: 100%\" *ngIf='inp.getType() == inputPortOpts[1]'>\r\n\tMin: <input/><br>\r\n\tMax: <input/><br>\r\n\tStep: <input/><br>\r\n\tvalue: <input/><br>\r\n</div> -->"
 
 /***/ }),
 
@@ -5377,7 +6145,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".reset {\n  margin: 0px;\n  padding: 0px; }\n\n.default {\n  font-size: 12px;\n  color: #8AA8C0;\n  line-height: 150px;\n  text-align: center; }\n\n.viewer {\n  /* \twidth: 100%; \r\noverflow: auto;\r\n\r\npadding: 0px;\r\nmargin: 0px;\r\n\r\n.header{\r\n\r\n\tdisplay: flex; \r\n\tflex-direction: row; \r\n\tjustify-content: space-between;\r\n\r\n\tposition: relative;\r\n\tfont-size: 14px; \r\n\tfont-weight: 600; \r\n\tline-height: $header-height;\r\n\ttext-transform: uppercase;\r\n\tletter-spacing: 1.5px;\r\n\theight: $header-height;\r\n\r\n\tcolor: #ADADAD;\r\n\r\n\t.btn-group{\r\n\t\theight: $header-height; \r\n\r\n\t\tbutton{\r\n\t\t\twidth: 0.9*$header-height; \r\n\t\t\theight: 0.9*$header-height; \r\n\t\t\tmargin: 0px;\r\n\t\t\tborder: 1px solid #B4B1B1;\r\n\t\t\tbox-shadow: none;\r\n\r\n\t\t\t&:focus{\r\n\t\t\t\t\r\n\t\t\t}\r\n\t\t}\r\n\t\t\r\n\t}\r\n\r\n}\r\n\r\n.container{\r\n}\r\n\r\nbutton{\r\n\t&:focus{\r\n\t\t\r\n\t}\r\n} */ }\n\n.viewer .container {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    height: 100%; }\n\n.viewer .container .view-container {\n      -webkit-box-sizing: border-box;\n              box-sizing: border-box;\n      height: 100%;\n      width: 100%;\n      padding-bottom: 30px;\n      overflow: auto; }\n\n.procedure-item span.module {\n  color: #F3A32A !important;\n  font-weight: bold; }\n\n.procedure-item span.function {\n  color: #7B52AB !important;\n  font-weight: bold; }\n\n.procedure-item span.equal {\n  text-align: center;\n  width: 15px; }\n\n.seg1.disabled {\n  opacity: 0.4; }\n\n.seg1.print {\n  background-color: #A5F3A5; }\n\nmat-expansion-panel-header {\n  background-color: #F1F1F1 !important;\n  border-top: 1px solid #8AA8C0 !important;\n  border-bottom: 1px solid #8AA8C0 !important;\n  padding-left: 15px !important; }\n\nmat-expansion-panel-header mat-panel-title {\n    color: #395D73 !important;\n    font-weight: bold !important;\n    font-size: 12px !important; }\n\nmat-expansion-panel-header:hover {\n    background-color: #F1F1F1 !important; }\n\n/*\r\n.viewer{\r\n\t@extend .viewer;\r\n\t.container{\r\n\t\tposition: relative;\r\n\r\n\t\tpadding: 15px; \r\n\r\n\t\tdisplay: flex; \r\n\t\tflex-direction: column;\r\n\r\n\t\t.tree{\r\n\t\t\tmargin-top: 20px; \r\n\t\t\tmin-height: 150px;\r\n\t\t\theight: 100%;\r\n\t\t\twidth: 100%; \r\n\t\t}\r\n\r\n\t\t.tree-node-wrapper{\r\n\t\t\tinput.tree-input{\r\n\t\t\t\twidth: auto;\r\n\t\t\t\tdisplay: inline-block;\r\n\t\t\t\ttext-align: center;\r\n\t\t\t}\r\n\r\n\t\t\t/*.param-container{\r\n\t\t\t\tdisplay: inline-block;\r\n\t\t\t\tbackground-color: $color3;\r\n\t\t\t}*/\n\n/*\r\n\t\t\t.procedure-item{\r\n\t\t\t\tmargin: 3px; \r\n\t\t\t\tpadding: 3px;\r\n\r\n\t\t\t\tfont-size: 12px; \r\n\t\t\t\tline-height: 14px;\r\n\t\t\t\t\r\n\t\t\t\twidth: 100%;\r\n\t\t\t\tborder: 1px solid $color2;\r\n\t\t\t\tbackground-color: $color2;\r\n\t\t\t\tcursor: move;\r\n\r\n\t\t\t\t.btn-group{\r\n\t\t\t\t\tdisplay: none;\r\n\t\t\t\t\tmargin: 5px 0px;\r\n\t\t\t\t\tdisplay: flex; \r\n\t\t\t\t\tflex-direction: row; \r\n\t\t\t\t\tjustify-content: space-between;\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}*/\n\n/*.toolbox{\r\n\t\t\tmax-height: 600px;\r\n\t\t\tbackground-color:$color1;\r\n\t\t\t.fn_name{\r\n\t\t\t\tfont-size: 12px;\r\n\t\t\t}\r\n\t\t}\r\n\t}*/\n\n/* \t.container{\r\n\tposition: relative;\r\n\r\n\t.procedure{\r\n\r\n\t\tpadding: 4px; \r\n\t\twidth: 100%;\r\n\r\n\t\t[contenteditable=\"true\"]:active,\r\n\t\t[contenteditable=\"true\"]:focus{\r\n\t\tborder:none;\r\n\t\toutline:none;\r\n\t\t}\r\n\r\n\t\t[contenteditable=\"true\"]{\r\n\t\t\tcolor: blue;\r\n\t\t\tborder-bottom: 1px dashed blue;\r\n\t\t}\r\n\r\n\r\n\t\t&.disabled{\r\n\t\t\tbackground-color: red;\r\n\t\t}\r\n\r\n\t}\r\n\r\n\t.btn-container{\r\n\t\tposition: absolute;\r\n\t\tbottom: 0px; \r\n\t\tleft: 30%;\r\n\r\n\t\tbutton{\r\n\t\t\theight: 30px; \r\n\t\t\twidth: 30px;\r\n\t\t}\r\n\t}\r\n\r\n}\r\n\r\ninput.tree-input{\r\n\tbackground-color: transparent;\r\n\twidth: auto;\r\n\tborder: 0px; \r\n\theight: 18px; \r\n\tfont-size: 14px;\r\n\tpadding: 5px; \r\n\tdisplay: inline;\r\n\tfont-family: sans-serif;\r\n\tline-height: 18px;\r\n\ttext-align: center;\r\n\tvertical-align: middle;\r\n\tborder-bottom: 1px dashed blue;\r\n} \t\r\n\r\n}\r\n\r\n\r\n/* .dialog{\r\n\tposition: absolute;\r\n\ttop: 100px;\r\n\tleft: 0px;\r\n\tborder: 1px solid black;\r\n\tpadding: 10px;\r\n\tbackground-color: white;\r\n\tz-index: 14;\r\n\tfont-size: 12px;\r\n\r\n\t.close{\r\n\t\tcursor: pointer;\r\n\t}\r\n\r\n\t.toolbox{\r\n\t\t.fn_container{\r\n\t\t\t.fn_name{\r\n\t\t\t\t\r\n\t\t\t\tcursor: pointer;\r\n\t\t\t\t\r\n\t\t\t\t&:hover{\r\n\t\t\t\t\tbackground-color: gray;\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n}\r\n */\n", ""]);
+exports.push([module.i, ".reset {\n  margin: 0px;\n  padding: 0px; }\n\n.default {\n  font-size: 12px;\n  color: #8AA8C0;\n  line-height: 150px;\n  text-align: center; }\n\n.viewer {\n  /* \twidth: 100%; \r\noverflow: auto;\r\n\r\npadding: 0px;\r\nmargin: 0px;\r\n\r\n.header{\r\n\r\n\tdisplay: flex; \r\n\tflex-direction: row; \r\n\tjustify-content: space-between;\r\n\r\n\tposition: relative;\r\n\tfont-size: 14px; \r\n\tfont-weight: 600; \r\n\tline-height: $header-height;\r\n\ttext-transform: uppercase;\r\n\tletter-spacing: 1.5px;\r\n\theight: $header-height;\r\n\r\n\tcolor: #ADADAD;\r\n\r\n\t.btn-group{\r\n\t\theight: $header-height; \r\n\r\n\t\tbutton{\r\n\t\t\twidth: 0.9*$header-height; \r\n\t\t\theight: 0.9*$header-height; \r\n\t\t\tmargin: 0px;\r\n\t\t\tborder: 1px solid #B4B1B1;\r\n\t\t\tbox-shadow: none;\r\n\r\n\t\t\t&:focus{\r\n\t\t\t\t\r\n\t\t\t}\r\n\t\t}\r\n\t\t\r\n\t}\r\n\r\n}\r\n\r\n.container{\r\n}\r\n\r\nbutton{\r\n\t&:focus{\r\n\t\t\r\n\t}\r\n} */ }\n  .viewer .container {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    height: 100%; }\n    .viewer .container .view-container {\n      box-sizing: border-box;\n      height: 100%;\n      width: 100%;\n      padding-bottom: 30px;\n      overflow: auto; }\n\n.procedure-item span.module {\n  color: #F3A32A !important;\n  font-weight: bold; }\n\n.procedure-item span.function {\n  color: #7B52AB !important;\n  font-weight: bold; }\n\n.procedure-item span.equal {\n  text-align: center;\n  width: 15px; }\n\n.seg1.disabled {\n  opacity: 0.4; }\n\n.seg1.print {\n  background-color: #A5F3A5; }\n\nmat-expansion-panel-header {\n  background-color: #F1F1F1 !important;\n  border-top: 1px solid #8AA8C0 !important;\n  border-bottom: 1px solid #8AA8C0 !important;\n  padding-left: 15px !important; }\n  mat-expansion-panel-header mat-panel-title {\n    color: #395D73 !important;\n    font-weight: bold !important;\n    font-size: 12px !important; }\n  mat-expansion-panel-header:hover {\n    background-color: #F1F1F1 !important; }\n\n/*\r\n.viewer{\r\n\t@extend .viewer;\r\n\t.container{\r\n\t\tposition: relative;\r\n\r\n\t\tpadding: 15px; \r\n\r\n\t\tdisplay: flex; \r\n\t\tflex-direction: column;\r\n\r\n\t\t.tree{\r\n\t\t\tmargin-top: 20px; \r\n\t\t\tmin-height: 150px;\r\n\t\t\theight: 100%;\r\n\t\t\twidth: 100%; \r\n\t\t}\r\n\r\n\t\t.tree-node-wrapper{\r\n\t\t\tinput.tree-input{\r\n\t\t\t\twidth: auto;\r\n\t\t\t\tdisplay: inline-block;\r\n\t\t\t\ttext-align: center;\r\n\t\t\t}\r\n\r\n\t\t\t/*.param-container{\r\n\t\t\t\tdisplay: inline-block;\r\n\t\t\t\tbackground-color: $color3;\r\n\t\t\t}*/\n/*\r\n\t\t\t.procedure-item{\r\n\t\t\t\tmargin: 3px; \r\n\t\t\t\tpadding: 3px;\r\n\r\n\t\t\t\tfont-size: 12px; \r\n\t\t\t\tline-height: 14px;\r\n\t\t\t\t\r\n\t\t\t\twidth: 100%;\r\n\t\t\t\tborder: 1px solid $color2;\r\n\t\t\t\tbackground-color: $color2;\r\n\t\t\t\tcursor: move;\r\n\r\n\t\t\t\t.btn-group{\r\n\t\t\t\t\tdisplay: none;\r\n\t\t\t\t\tmargin: 5px 0px;\r\n\t\t\t\t\tdisplay: flex; \r\n\t\t\t\t\tflex-direction: row; \r\n\t\t\t\t\tjustify-content: space-between;\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}*/\n/*.toolbox{\r\n\t\t\tmax-height: 600px;\r\n\t\t\tbackground-color:$color1;\r\n\t\t\t.fn_name{\r\n\t\t\t\tfont-size: 12px;\r\n\t\t\t}\r\n\t\t}\r\n\t}*/\n/* \t.container{\r\n\tposition: relative;\r\n\r\n\t.procedure{\r\n\r\n\t\tpadding: 4px; \r\n\t\twidth: 100%;\r\n\r\n\t\t[contenteditable=\"true\"]:active,\r\n\t\t[contenteditable=\"true\"]:focus{\r\n\t\tborder:none;\r\n\t\toutline:none;\r\n\t\t}\r\n\r\n\t\t[contenteditable=\"true\"]{\r\n\t\t\tcolor: blue;\r\n\t\t\tborder-bottom: 1px dashed blue;\r\n\t\t}\r\n\r\n\r\n\t\t&.disabled{\r\n\t\t\tbackground-color: red;\r\n\t\t}\r\n\r\n\t}\r\n\r\n\t.btn-container{\r\n\t\tposition: absolute;\r\n\t\tbottom: 0px; \r\n\t\tleft: 30%;\r\n\r\n\t\tbutton{\r\n\t\t\theight: 30px; \r\n\t\t\twidth: 30px;\r\n\t\t}\r\n\t}\r\n\r\n}\r\n\r\ninput.tree-input{\r\n\tbackground-color: transparent;\r\n\twidth: auto;\r\n\tborder: 0px; \r\n\theight: 18px; \r\n\tfont-size: 14px;\r\n\tpadding: 5px; \r\n\tdisplay: inline;\r\n\tfont-family: sans-serif;\r\n\tline-height: 18px;\r\n\ttext-align: center;\r\n\tvertical-align: middle;\r\n\tborder-bottom: 1px dashed blue;\r\n} \t\r\n\r\n}\r\n\r\n\r\n/* .dialog{\r\n\tposition: absolute;\r\n\ttop: 100px;\r\n\tleft: 0px;\r\n\tborder: 1px solid black;\r\n\tpadding: 10px;\r\n\tbackground-color: white;\r\n\tz-index: 14;\r\n\tfont-size: 12px;\r\n\r\n\t.close{\r\n\t\tcursor: pointer;\r\n\t}\r\n\r\n\t.toolbox{\r\n\t\t.fn_container{\r\n\t\t\t.fn_name{\r\n\t\t\t\t\r\n\t\t\t\tcursor: pointer;\r\n\t\t\t\t\r\n\t\t\t\t&:hover{\r\n\t\t\t\t\tbackground-color: gray;\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n}\r\n */\n", ""]);
 
 // exports
 
@@ -5647,8 +6415,297 @@ ProcedureEditorComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/ui-components/editors/procedure-editor/procedure-editor.component.html"),
         styles: [__webpack_require__("../../../../../src/app/ui-components/editors/procedure-editor/procedure-editor.component.scss")]
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* Injector */], __WEBPACK_IMPORTED_MODULE_4__angular_material__["d" /* MatDialog */], __WEBPACK_IMPORTED_MODULE_3__global_services_layout_service__["a" /* LayoutService */]])
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* Injector */], __WEBPACK_IMPORTED_MODULE_4__angular_material__["e" /* MatDialog */], __WEBPACK_IMPORTED_MODULE_3__global_services_layout_service__["a" /* LayoutService */]])
 ], ProcedureEditorComponent);
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/ui-components/help/help-viewer/help-viewer.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"viewer\">\r\n\t\r\n\t<h1>Möbius Functions</h1>\r\n\r\n\t<mat-accordion *ngIf='!fnObj'>\r\n\r\n\t\t<!-- functions -->\r\n\t \t<mat-expansion-panel \r\n\t \t\t*ngFor=\"let m of _helpMods\"\r\n\t \t\t[expanded]=\"getModName(m.name) ==_activeMod\">\r\n\t    \t<mat-expansion-panel-header>\r\n\t    \t\t<mat-panel-title>\r\n\t\t\t      {{ getModName(m.name) }} \r\n\t\t\t    </mat-panel-title>\r\n\t    \t</mat-expansion-panel-header>\r\n\r\n\t\t\t<mat-list id=\"{{getModName(m.name)}}\" \r\n\t\t\t\tstyle=\"max-height: 500px; overflow: auto;\">\r\n\t\t\t\t<!-- <h3 mat-subheader>{{m.comment.shortText}}</h3> -->\r\n\r\n\t\t\t\t<h3 mat-subheader>Functions</h3>\r\n\t\t\t \t<mat-list-item *ngFor=\"let fn of m.children\">\r\n\t\t\t \t\t<div class = \"content\">\r\n\t\t\t\t \t\t<h4 mat-line>{{fn.name}}</h4>\r\n\t    \t\t\t\t<p class=\"head-descr\" mat-line>{{fn.signatures[0].comment.shortText}}</p>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<!-- @derek: parameters-->\r\n\t\t\t\t\t\t<div  class=\"parameters\" mat-line *ngIf='fn.signatures[0].parameters'>\r\n\t\t\t\t\t\t\t<div *ngFor=\"let pa of fn.signatures[0].parameters\">\r\n\t\t\t\t\t\t\t\t<!--<span class=\"topic\">Name: </span>-->\r\n\t\t\t\t\t\t\t\t<span class=\"topic\">{{pa.name}}: </span>\r\n\t\t\t\t\t\t\t\t<!-- <span *ngIf=\"pa.type\">Type: {{pa.type.type}}</span> -->\r\n\t\t\t\t\t\t\t\t<!--<span class=\"topic\">Description: </span>-->\r\n\t\t\t\t\t\t\t\t<span class=\"descr\" *ngIf=\"pa.comment\">{{pa.comment.text}}</span>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t<div class=\"return-block\">\r\n\t\t    \t\t\t\t<span class=\"topic\">Returns: </span>\r\n\t\t    \t\t\t\t<span class=\"descr\">{{fn.signatures[0].comment.returns}}</span>\r\n\t\t    \t\t\t</div>\r\n\r\n\t\t    \t\t\t\r\n\t    \t\t\t\t<p mat-line>\t\r\n\t    \t\t\t\t\t<a href=\"https://phtj.github.io/gs-modelling/docs/modules/{{getUrl(m.name, fn.name)}}\" target=\"_blank\">More</a>\r\n\t    \t\t\t\t</p>\r\n\r\n    \t\t\t\t</div>\r\n\t\t\t \t</mat-list-item>\r\n\t\t\t \t<mat-divider></mat-divider>\r\n\t\t\t</mat-list>\r\n\r\n\t \t</mat-expansion-panel>\r\n\t \t\r\n\t</mat-accordion>\r\n\r\n\t<!-- specific function -->\r\n\t<div *ngIf='fnObj && fnObj.name'>\r\n\t\t\r\n\t\t<h4>Module: {{fnObj.module}}</h4>\r\n\t\t<h3>{{fnObj.name}}</h3>\r\n\t\t\r\n\t\t<div>\r\n\t\t\t{{fnObj.content.signatures[0].comment.shortText}}\r\n\t\t\tReturns: {{fnObj.content.signatures[0].comment.returns}}\r\n\t\t\t\t<a href=\"https://phtj.github.io/gs-modelling/docs/modules/{{getUrl(fnObj.module, fnObj.name)}}\" target=\"_blank\">\r\n\t\t\t\tMore\r\n\t\t\t\t</a>\r\n\t\t</div>\r\n\t\r\n\t\t<hr>\r\n\t\t\r\n\t\t<div (click)=\"showAll()\" style=\"cursor: pointer;\">[Show All]</div>\r\n\t\r\n\t</div>\r\n\r\n</div>"
+
+/***/ }),
+
+/***/ "../../../../../src/app/ui-components/help/help-viewer/help-viewer.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, ".reset {\n  margin: 0px;\n  padding: 0px; }\n\n.default {\n  font-size: 12px;\n  color: #8AA8C0;\n  line-height: 150px;\n  text-align: center; }\n\n.viewer {\n  /* \twidth: 100%; \r\noverflow: auto;\r\n\r\npadding: 0px;\r\nmargin: 0px;\r\n\r\n.header{\r\n\r\n\tdisplay: flex; \r\n\tflex-direction: row; \r\n\tjustify-content: space-between;\r\n\r\n\tposition: relative;\r\n\tfont-size: 14px; \r\n\tfont-weight: 600; \r\n\tline-height: $header-height;\r\n\ttext-transform: uppercase;\r\n\tletter-spacing: 1.5px;\r\n\theight: $header-height;\r\n\r\n\tcolor: #ADADAD;\r\n\r\n\t.btn-group{\r\n\t\theight: $header-height; \r\n\r\n\t\tbutton{\r\n\t\t\twidth: 0.9*$header-height; \r\n\t\t\theight: 0.9*$header-height; \r\n\t\t\tmargin: 0px;\r\n\t\t\tborder: 1px solid #B4B1B1;\r\n\t\t\tbox-shadow: none;\r\n\r\n\t\t\t&:focus{\r\n\t\t\t\t\r\n\t\t\t}\r\n\t\t}\r\n\t\t\r\n\t}\r\n\r\n}\r\n\r\n.container{\r\n}\r\n\r\nbutton{\r\n\t&:focus{\r\n\t\t\r\n\t}\r\n} */ }\n  .viewer .container {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    height: 100%; }\n    .viewer .container .view-container {\n      box-sizing: border-box;\n      height: 100%;\n      width: 100%;\n      padding-bottom: 30px;\n      overflow: auto; }\n\n.viewer {\n  padding: 15px;\n  height: 100%;\n  box-sizing: border-box;\n  padding-bottom: 30px;\n  overflow: auto; }\n  .viewer h1 {\n    padding-left: 15px;\n    padding-bottom: 5px;\n    color: #395D73;\n    display: block;\n    border-bottom: 1px solid #F1F1F1; }\n\nmat-expansion-panel {\n  margin: 0 !important;\n  overflow: hidden !important; }\n  mat-expansion-panel mat-expansion-panel-header mat-panel-title {\n    color: #F3A32A !important; }\n\nmat-panel-description {\n  display: none; }\n\n.content {\n  width: 100%; }\n  .content .head-descr {\n    margin-bottom: 12px;\n    font-size: 12px; }\n\n/*\r\n.mat-list-item-content{\r\n\tpadding: 0;\r\n\tborder: 0;\r\n}\r\n\r\n.mat-line{\r\n\tpadding: 0;\r\n\tborder: 0;\r\n\tline-height: $fsize1;\r\n}*/\nmat-list .mat-subheader {\n  display: none;\n  font-size: 12px;\n  color: #395D73;\n  margin: 0;\n  padding: 0; }\n\nmat-list mat-list-item h4 {\n  color: #7B52AB;\n  font-size: 12px;\n  border-bottom: 1px solid #8AA8C0;\n  font-weight: bold;\n  display: block;\n  margin: 0; }\n\nmat-list mat-list-item p {\n  font-size: 12px;\n  color: #395D73;\n  margin: 0; }\n  mat-list mat-list-item p a {\n    color: #8AA8C0;\n    font-size: 12px; }\n\nmat-list div {\n  padding: 0 !important; }\n\n.topic {\n  color: #395D73;\n  cursor: default !important;\n  font-weight: bold;\n  font-size: 12px; }\n  .topic:hover {\n    color: #395D73; }\n\n.descr {\n  font-size: 12px;\n  color: #395D73;\n  cursor: default !important; }\n\n.return-block .topic {\n  text-decoration: underline; }\n", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/ui-components/help/help-viewer/help-viewer.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HelpViewerComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm2015/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__global_services_layout_service__ = __webpack_require__("../../../../../src/app/global-services/layout.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__global_services_flowchart_service__ = __webpack_require__("../../../../../src/app/global-services/flowchart.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_platform_browser__ = __webpack_require__("../../../platform-browser/esm2015/platform-browser.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__node_modules_gs_modelling_docs_json_gs_modelling_json__ = __webpack_require__("../../../../gs-modelling/docs_json/gs-modelling.json");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__node_modules_gs_modelling_docs_json_gs_modelling_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__node_modules_gs_modelling_docs_json_gs_modelling_json__);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+let HelpViewerComponent = class HelpViewerComponent {
+    //modules/_group_.html
+    constructor(layoutService, sanitizer, flowchartService) {
+        this.layoutService = layoutService;
+        this.sanitizer = sanitizer;
+        this.flowchartService = flowchartService;
+        this.sanitizer = sanitizer;
+        this._subscription = this.layoutService.getMessage().subscribe(message => {
+            if (message.text.startsWith("Module: ")) {
+                this.notify();
+            }
+        });
+        let mods = this.flowchartService.getModules().map(function (m) {
+            return m["_name"].toLowerCase();
+        });
+        this._helpMods = __WEBPACK_IMPORTED_MODULE_4__node_modules_gs_modelling_docs_json_gs_modelling_json___default.a.children.filter(function (child) {
+            let mod_name = child.name.substring(1, child.name.length - 1);
+            return mods.indexOf(mod_name) > -1;
+        });
+    }
+    notify() {
+        let url_segment = this.layoutService.getUrl();
+        let url = 'https://phtj.github.io/gs-modelling/docs/' + url_segment;
+        this._url = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+        let fnObj = this.layoutService.getObj();
+        if (fnObj && fnObj.name) {
+            this.fnObj = fnObj;
+            for (let m = 0; m < this._helpMods.length; m++) {
+                let mo = this._helpMods[m];
+                let mname = this.getModName(mo.name);
+                if (mname.toLowerCase() == fnObj.module.toLowerCase()) {
+                    for (let f = 0; f < mo.children.length; f++) {
+                        let child = mo.children[f];
+                        if (fnObj.name.toLowerCase() == child.name.toLowerCase()) {
+                            fnObj["content"] = child;
+                        }
+                    }
+                }
+            }
+        }
+        else if (fnObj && fnObj.module && !fnObj.name) {
+            this._activeMod = fnObj.module.toUpperCase();
+            this.fnObj = undefined;
+        }
+    }
+    getUrl(name, fn) {
+        if (name.startsWith("\"")) {
+            return "_" + name.substring(1, name.length - 1).toLowerCase() + "_.html#" + fn.toLowerCase();
+        }
+        else {
+            return "_" + name.toLowerCase() + "_.html#" + fn.toLowerCase();
+        }
+    }
+    getModName(name) {
+        return name.substring(1, name.length - 1).toUpperCase();
+    }
+    getHash(m, fn) {
+        return this.getModName(m.name) + "/" + fn.name;
+    }
+    showAll() {
+        this.fnObj = undefined;
+        this.layoutService.setObj();
+    }
+    ngOnInit() {
+        this.notify();
+    }
+    ;
+};
+HelpViewerComponent = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
+        selector: 'app-help-viewer',
+        template: __webpack_require__("../../../../../src/app/ui-components/help/help-viewer/help-viewer.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/ui-components/help/help-viewer/help-viewer.component.scss")]
+    }),
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__global_services_layout_service__["a" /* LayoutService */], __WEBPACK_IMPORTED_MODULE_3__angular_platform_browser__["c" /* DomSanitizer */], __WEBPACK_IMPORTED_MODULE_2__global_services_flowchart_service__["a" /* FlowchartService */]])
+], HelpViewerComponent);
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/ui-components/help/info-viewer/help.about.tpl.html":
+/***/ (function(module, exports) {
+
+module.exports = "    <h1>\r\n        Möbius Modeller\r\n    </h1>\r\n    <p>\r\n        Möbius Modeller is a free and open-source web-application for parametric\r\n        modelling. It runs in the Chrome browser.\r\n    </p>\r\n\r\n    <h3 style=\"text-align: center;\">\r\n       Getting started with Möbius\r\n    </h3>\r\n    <p style=\"text-align: center;\">\r\n        <iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/285M8St3WHQ\" frameborder=\"0\" allow=\"autoplay; encrypted-media\" allowfullscreen>\r\n        </iframe>\r\n    </p>\r\n\r\n    <h2>\r\n        Visual Programming\r\n    </h2>\r\n    <p>\r\n        In Möbius, users are provided with a set of visual programming tools to\r\n        define scripts for generating models. These tools integrate two types of\r\n        visual programming: flowcharts and procedures.\r\n    </p>\r\n    <p>\r\n        Flowcharts consist of nodes connected together with wires. Each node in the\r\n        flowchart has a set of input and output ports, and contains a small\r\n        procedure to perform some type of action.\r\n    </p>\r\n    <p>\r\n        Procedures consist of a sequence of lines of code. There are four types of\r\n        code lines: 1) variables assignments, 2) ‘for-each’ loops, 3) ‘if-else’\r\n        conditions, and 4) function calls.\r\n    </p>\r\n    <p>\r\n        Function calls are lines of code that call a particular function. Libraries\r\n        of different functions are provided. Additional libraries of functions can\r\n        be added at any stage.\r\n    </p>\r\n    <h2>\r\n        User Interface\r\n    </h2>\r\n    <p>\r\n        The Möbius Modeller user interface consists of four main viewports, with\r\n        one viewport on the left and three viewports on the right. The viewports\r\n        can be rearrange into any configuration. By default, the Output viewport is\r\n        on the right side, and the Flowchart, Procedure and Parameters viewports\r\n        are on the right side.\r\n    </p>\r\n    <p>\r\n        · The Flowchart viewports is for defining the flowcharts, consisting of\r\n        nodes connected with wires. Selecting one of the nodes in the Flowchart\r\n        viewport will change the contents of the other three viewports.\r\n    </p>\r\n    <p>\r\n        · The Procedure viewport is for defining the procedure inside each node.\r\n        The procedure that is shown is for the node selected in the Flowchart\r\n        viewport.\r\n    </p>\r\n    <p>\r\n        · The Parameters viewport is for setting the parameter values associated\r\n        with each node. The parameters that are shown are for the node selected in\r\n        the Flowchart viewport. This viewport also contain the green ‘Execute\r\n        Flowchart’ button, which will execute the flowchart using the specified\r\n        parameter values.\r\n    </p>\r\n    <p>\r\n        · The Output viewport is for viewing the output generated by executing the\r\n        script, as well as for viewing Help. The Output viewport has a number of\r\n        different viewers. The most basic viewer is the Text Viewer, which is for\r\n        viewing basic text. There is also an Output console, which is where various\r\n        messages (including error messages) get printed.\r\n    </p>\r\n    <p align=\"center\">\r\n        <img\r\n            width=\"600\"\r\n            height=\"310\"\r\n            src=\"./assets/img/info/image002.png\"\r\n        />\r\n    </p>\r\n    <h2>\r\n        Flowchart\r\n    </h2>\r\n    <p>\r\n        The Flowchart viewport allows you to create and delete nodes, and to wire\r\n        them together into a network. The flowchart flows from left to right, and\r\n        form a chain of execution. Nodes without wires attached to any of the\r\n        inputs are called “start nodes”, and nodes without wires attached to any of\r\n        the outputs are called “end nodes”. (An “isolated node” has neither.)\r\n    </p>\r\n    <p>\r\n        When a flowchart is executed, the first nodes to be executed are all the\r\n        start nodes. The data produced by the nodes will travel down the wires to\r\n        the next set of nodes, which are then executed. This continues until end\r\n        nodes are reached on the right hand side.\r\n    </p>\r\n    <p align=\"center\">\r\n        <img\r\n            width=\"249\"\r\n            height=\"91\"\r\n            src=\"./assets/img/info/image004.jpg\"\r\n        />\r\n    </p>\r\n    <p>\r\n        When a flowchart is executed, the data generated by each output of each\r\n        node is saved. This means that after execution, you can explore the data\r\n        generated by each node by clicking on its output ports and view the results\r\n        in one of the Output viewers. (See the section on Outputs.)\r\n    </p>\r\n    <p>\r\n        When wiring nodes together, inputs can only have a single wire attached.\r\n        However, outputs can have multiple wires attached. If an output has\r\n        multiple wires attached, then the data is copied and sent down each wire\r\n        separately.\r\n    </p>\r\n    <p align=\"center\">\r\n        <img\r\n            width=\"186\"\r\n            height=\"193\"\r\n            src=\"./assets/img/info/image006.jpg\"\r\n        />\r\n    </p>\r\n    <p>\r\n        If a node has multiple inputs, then it will not be executed until all the\r\n        data for all its inputs has been received.\r\n    </p>\r\n    <p align=\"center\">\r\n        <img\r\n            width=\"165\"\r\n            height=\"166\"\r\n            src=\"./assets/img/info/image008.jpg\"\r\n        />\r\n    </p>\r\n    <p>\r\n        The left sidebar allows you perform various operations:\r\n    </p>\r\n    <p>\r\n        · Save and Load Flowcharts as a file. These are saved as .mob files. It is\r\n        important to save often.\r\n    </p>\r\n    <p>\r\n        · Create new nodes and subnets. (Subnets are coming soon.)\r\n    </p>\r\n    <ul>\r\n        <li>\r\n            Save and Load Libraries of nodes as a file.\r\n        </li>\r\n    </ul>\r\n    <p>\r\n        Each node has three buttons (only displayed when the node is selected):\r\n    </p>\r\n    <p>\r\n        · Delete: Deletes the node. This cannot be undone, so be careful!\r\n    </p>\r\n    <p>\r\n        · Disable: Disables the node. When the network is executed, the network\r\n        behaves as if the node did not exist.\r\n    </p>\r\n    <p>\r\n        · Save: Saves the node to your library, stored in the browser cache.\r\n    </p>\r\n    <p>\r\n        Saving nodes allows you to use them multiple times in different Flowcharts.\r\n        It also allows you to share nodes with others. Note that the library is\r\n        stored in the browser cache. If you clear your cache, then you will lose\r\n        all your saved nodes. Therefore, if you have nodes that you want to keep,\r\n        it is a good idea to save them to file.\r\n    </p>\r\n    <h2>\r\n        Procedure\r\n    </h2>\r\n    <p>\r\n        The Procedure viewport allows you to define the procedure that gets\r\n        executed inside a node. The Procedure shown in this viewport is for the\r\n        node selected in the flowchart.\r\n    </p>\r\n    <p>\r\n        The procedure is basically a small script, but rather than typing the\r\n        script in a text editor, you create your Procedure by dragging and dropping\r\n        lines of code into the script.\r\n    </p>\r\n    <p>\r\n        The procedure consists of three sections, each of which can be expanded and\r\n        contracted. The Input and Outputs sections list the input and outputs for\r\n        the node. For each input and output, the name can be set, and the type can\r\n        be selected from a drop-down list. Based on the selection, other settings\r\n        can be set. Selecting an input or output line will show a ‘delete’ button\r\n        on the right hand side, allowing you to delete it.\r\n    </p>\r\n    <p>\r\n        The main procedure is define under the Procedure section. The procedure\r\n        consists of a sequence of lines of code that get executed one at a time.\r\n        These lines of code will read data from the inputs and write data to the\r\n        outputs. In the example below, the procedure has three lines of code that\r\n        do the following:\r\n    </p>\r\n    <p>\r\n        1. Creates a variable called ‘my_var’ and sets its value to the value from\r\n        the first input multiplied by 10.\r\n    </p>\r\n    <p>\r\n        2. Creates a second variable called ‘rand_num’ and uses a function call to\r\n        set its value to a random number between 0 and 1.\r\n    </p>\r\n    <p>\r\n        3. Set the value of the first output (named ‘out0’) to the value of\r\n        ‘my_var’ divided by the value of ‘rand_num’.\r\n    </p>\r\n    <p align=\"center\">\r\n        <img\r\n            width=\"201\"\r\n            height=\"152\"\r\n            src=\"./assets/img/info/image010.jpg\"\r\n        />\r\n    </p>\r\n    <p>\r\n        Procedures will typically include one or more function calls, and may also\r\n        include various variable assignments, for-each loops, and if-else\r\n        conditions. Clicking any of these items in the left sidebar will add them\r\n        to the procedure, underneath the currently selected line. The lines of code\r\n        can be repositioned by dragging and dropping.\r\n    </p>\r\n    <p>\r\n        There are four types of lines of code that can be inserted:\r\n    </p>\r\n    <p>\r\n        · Variable: Create a new variable or assigns a value to an existing\r\n        variable. Variables can have different data types. See Data Types for a\r\n        more detailed explanation.\r\n    </p>\r\n    <p>\r\n        · For-each loop: Create a loop that repeats the operations inside it,\r\n        multiple times. See For-Loop for a more detailed explanation.\r\n    </p>\r\n    <p>\r\n        · If-else condition: Create a conditional statement, and execute the\r\n        operations inside it based on whether the condition is true or false.\r\n    </p>\r\n    <p>\r\n        · Function: Call a function in the built the function library.\r\n    </p>\r\n    <p>\r\n        Selecting or hovering on a line in the procedure will show a set of buttons\r\n        on the right hand side.\r\n    </p>\r\n    <p>\r\n        · Help: Show the help for the particular function. The help will be\r\n        displayed in under the Output viewport.\r\n    </p>\r\n    <p>\r\n        · Print: Prints the value generated by that line of code to the console.\r\n        This is mainly used for debugging.\r\n    </p>\r\n    <p>\r\n        · Disable: Disables the line of code. When the code is executed, it will\r\n        simply ignore this line of code.\r\n    </p>\r\n    <ul>\r\n        <li>\r\n            Delete: Deletes the line of code.\r\n        </li>\r\n    </ul>\r\n    <p>\r\n        For more information about writing Procedures, see the Procedure help file.\r\n    </p>\r\n    <h2>\r\n        Parameters\r\n    </h2>\r\n    <p>\r\n        Each node can have zero or more parameters whose values can be set in the\r\n        Parameters viewport. The parameters shown in this viewport are for the node\r\n        selected in the flowchart.\r\n    </p>\r\n    <p>\r\n        The parameters are all node inputs for which no wires have been attached.\r\n        In the example below, the node has three inputs. The first input (‘in0’)\r\n        has a wire attached, so it does not appear as a parameter. The other two\r\n        parameters have no wires, so these will appear as Parameters whose values\r\n        you can set manually in the parameters viewport.\r\n    </p>\r\n    <p align=\"center\">\r\n        <img\r\n            width=\"82\"\r\n            height=\"117\"\r\n            src=\"./assets/img/info/image012.jpg\"\r\n        />\r\n        <img\r\n            width=\"294\"\r\n            height=\"112\"\r\n            src=\"./assets/img/info/image014.jpg\"\r\n        />\r\n    </p>\r\n    <p>\r\n        Clicking the execute button will execute the flowchart with the specified\r\n        parameters.\r\n    </p>\r\n    <h2>\r\n        Output\r\n    </h2>\r\n    <p>\r\n        Once a flowchart has been executed, the results can be viewed in the Output\r\n        viewport. The outputs that are shown in this viewport are for the node\r\n        selected in the flowchart.\r\n    </p>\r\n    <p>\r\n        The Output viewport has a number of different viewers.\r\n    </p>\r\n    <p>\r\n        The Console viewer shows messages resulting from the execution of the\r\n        flowchart. Each message has a time stamp and a short piece of text. If any\r\n        errors occurred, then an error message will also be shown. These outputs\r\n        are not linked to any particular node. As a result, selecting different\r\n        nodes in the flowchart has no effect on what is being displayed in the\r\n        Console. This is not the case with the other Output viewers.\r\n    </p>\r\n    <p>\r\n        The Console is an important viewer when debugging. For example, in the\r\n        example below, the ‘print’ on the variable called ‘rand_num’ was enabled,\r\n        which resulted in the value being printed out as a console message. This\r\n        allows you to see that variable was set to a value of ‘0.154…’.\r\n    </p>\r\n    <p align=\"center\">\r\n        <img\r\n            width=\"202\"\r\n            height=\"189\"\r\n            src=\"./assets/img/info/image016.jpg\"\r\n        />\r\n    </p>\r\n    <p>\r\n        The Text viewer shows the output or all the outputs of the node selected in\r\n        the Viewport. This is the most basic was of looking at the output of the\r\n        node, and works for any type of output. If the output is actually a text\r\n        value, then it is directly printed in the text viewer. If the output is not\r\n        text, then it is first converted to text and shown in the viewer.\r\n    </p>\r\n    <p align=\"center\">\r\n        <img\r\n            width=\"132\"\r\n            height=\"219\"\r\n            src=\"./assets/img/info/image018.jpg\"\r\n        />\r\n        <img\r\n            width=\"77\"\r\n            height=\"100\"\r\n            src=\"./assets/img/info/image020.jpg\"\r\n        />\r\n    </p>\r\n    <p>\r\n        The 3D viewer shows the output for the selected output port for the\r\n        selected node in the flowchart. Selecting different nodes and different\r\n        output ports in the flowchart will change what is being displayed in the 3D\r\n        viewer. However, note that the 3D viewer will only be able to display the\r\n        output if the content is compatible. Thus, if an output port is outputting\r\n        some text, then there is little that the 3D viewer will be able to do with\r\n        this and as a result nothing will be displayed.\r\n    </p>\r\n    <p>\r\n        In order to make switching between viewers easier, each output port has a\r\n        default Viewer. When an output port is selected, and the Output window will\r\n        automatically switch to that default Viewer. In the example below, the\r\n        first output (‘out0’) is set to use the Console viewer is set to use the\r\n        Console Viewer, while the other two outputs (‘out1’ and ‘out2’) are set to\r\n        use the Text Viewer.\r\n    </p>\r\n    <p align=\"center\">\r\n        <img\r\n            width=\"217\"\r\n            height=\"70\"\r\n            src=\"./assets/img/info/image022.jpg\"\r\n        />\r\n    </p>"
+
+/***/ }),
+
+/***/ "../../../../../src/app/ui-components/help/info-viewer/help.about.tpl.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/ui-components/help/info-viewer/help.fundamentals.tpl.html":
+/***/ (function(module, exports) {
+
+module.exports = "<h1>Fundamentals</h1>\r\n\r\n<p>\r\n    In order to get a better understanding of creating procedures in Möbius, it will be helpful to review some of the fundamental constructs of programming.\r\n</p>\r\n\r\n<ul>\r\n    <li><a href=\"#execution\">Execution</a></li>\r\n    <li><a href=\"#variables\">Variables</a></li>\r\n    <li><a href=\"#primitive\">Primitive Data Types</a></li>\r\n    <li><a href=\"#list\">List Data Type</a></li>\r\n    <li><a href=\"#passing\">Passing Data: By Value and By Reference</a></li>\r\n    <li><a href=\"#expressions\">Expressions</a></li>\r\n    <li><a href=\"#if-else\"><i>If-else</i> Conditions</a></li>\r\n    <li><a href=\"#for-each\"><i>For-each</i> Loop</a></li>\r\n    <li><a href=\"#variable-scope\">Variable Scope</a></li>\r\n    <li><a href=\"#functions\">Functions</a></li>\r\n</ul>\r\n\r\n<a name=\"execution\"><h2>Execution</h2></a>\r\n\r\n<p>\r\n    A procedure consists of a sequence of lines of code. When you execute the procedure, your computer will execute the each line of code, one by one. It is like a sequence of instructions.\r\n</p>\r\n\r\n<code>\r\n    // code on line 1<br>\r\n    // code on line 2<br>\r\n    // code on line 3<br>\r\n</code>\r\n\r\n<p>\r\n    (Note that in the code example above, each line starts with a \"//\". This is actually a shorthand to indicate that this line consists of a comment. The computer will ignore such lines.)\r\n</p>\r\n\r\n<p>\r\n    (Note also that in this document, various code snippet are given as examples. The code that you create in Möbius of course looks a little different, but the structure is exactly the same. We are just writing the code snippets in this way in order to avoid having to do lots of screen captures. Each code snippet is assumed to be independent and stand alone.)\r\n</p>\r\n\r\n<p>\r\n    In general, the flow of the execution goes one line at a time, top to bottom. You can change this linear behaviour by using <i>if-else</i> conditions and <i>for-loops</i>. More on that later.\r\n</p>\r\n\r\n<p>\r\n    Each line of code can contain various types of statements. The most basic is a variable assignment.\r\n</p>\r\n\r\n<a name=\"variables\"><h2>Variables</h2></a>\r\n\r\n<p>\r\n    A variable can be thought of as a named container in which you can place some data. A variable is something like this:\r\n</p>\r\n\r\n<code>\r\n    x = 123<br>\r\n</code>\r\n\r\n<p>\r\n    In the above code, the variable named <code>x</code> contains the number <code>123</code>. We can say: \"the value of the variable is 123\". The first time you use a variable like this, it gets declared, which creates the container in memory. Once it is declared, you can change the value at any time.\r\n</p>\r\n\r\n<code>\r\n    x = 123<br>\r\n    x = 456<br>\r\n</code>\r\n\r\n<p>\r\n    In the above code, the variable named <code>x</code> was used for the first time, and value was set to <code>123</code>. Then, on the second line, the value <code>123</code> was discarded and replaced with the value <code>456</code>. We can say: \"the value of 456 was assigned to the variable x\". You can change the value as many times as you like.\r\n</p>\r\n\r\n<p>\r\n    By convention, variables are typically named using lowercase letters only. For example, \"my_variable\". The variable name should not contain spaces, or any special character. Also, it should not start with a number.\r\n</p>\r\n\r\n<a name=\"primitive\"><h2>Primitive Data Types</h2></a>\r\n\r\n<p>\r\n    The data that you assign to a variable can have different types. Möbius allows you to work with three primitive data types:\r\n</p>\r\n\r\n<ul>\r\n    <li>Numbers, eg. 123, 120.50 etc.</li>\r\n    <li>Strings of text e.g. \"This text string\" etc.</li>\r\n    <li>Boolean e.g. true or false.</li>\r\n</ul>\r\n\r\n<p>\r\n    Below is an example of some variable assignments for the three different primitive data types:\r\n</p>\r\n\r\n<code>\r\n    my_age = 47<br>\r\n    my_name = \"Patrick\"<br>\r\n    lives_in_sg = true<br>\r\n</code>\r\n\r\n<p>\r\n    There is also a special data type called <code>null</code>. When a value has already been assigned, and you want to clear it without assigning some other value, then you can assign <code>null</code>.\r\n</p>\r\n\r\n<code>\r\n    my_age = 47<br>\r\n    // do some other stuff<br>\r\n    my_age = null<br>\r\n</code>\r\n\r\n<p>\r\n    Strings can contain a lot of data. Here is an example of a longer string:\r\n</p>\r\n\r\n<code>\r\n    some_text = \"The Möbius Modeller is a 3D parametric modelling software. It has a visual programming interface that combines dataflow programming with blocks-based programming. Dataflow programming is used to define the overall structure of your code, using nodes connected by wires. Blocks-based programming is used to define the individual procedures in each of your nodes. Procedures contain fours main types if elements: 1) variables, 2) if-else conditions, 3) for loops, and 4) function calls.\"\r\n</code>\r\n\r\n<p>\r\n    In the example above, the variable called <code>some_text</code> is assigned a longer string. A string can also be much longer than that - for example, maybe a whole book.\r\n</p>\r\n\r\n<p>\r\n    Also, note also that strings can contain text that looks like a number, but that is actually not a number data type. Here is an example:\r\n</p>\r\n\r\n<code>\r\n    text_that_looks_like_number = \"123.456\"<br>\r\n    a_number = 123.456<br>\r\n</code>\r\n\r\n<p>\r\n    Note that characters in a string can also be accessed using the square bracket notation. For example:\r\n</p>\r\n\r\n<code>\r\n    my_name = \"patrick\"<br>\r\n    first_letter = my_name[0]<br>\r\n    last_letter = my_name[6]<br>\r\n</code>\r\n\r\n<p>\r\n    The square bracket notation for indexing will be explained in more detail in the section on lists.\r\n</p>\r\n\r\n<a name=\"list\"><h2>List Data Types</h2></a>\r\n\r\n<p>\r\n    The three primitive data types already allow many useful procedures to be written. However, there is one key problem: none of them allow you to handle collections of data items. When creating procedures, you will find that a lot of data needs to managed as a collection.\r\n</p>\r\n\r\n<p>\r\n    For example, lets say you have 10 people in your group, and you want to store their names. You could create 10 variables, named <code>person1=\"patrick\"</code>, <code>person2=\"kainwee\"</code>, <code>person3=\"akshata\"</code>,etc, and assign each one a different name. But that would get tedious. You could store them all in one string, for example: <code>people=\"patrick, kainwee, akshata\"</code>. But that is rather inflexible, since everything is stored in a single lump of text.\r\n</p>\r\n\r\n<p>\r\n    In order to be easily handle collections of data, Möbius allows you to use a list data type. A list lets you store multiple values in a single variable. A list is defined using square brackets, like this:\r\n</p>\r\n\r\n<code>\r\n    names_list = [\"patrick\", \"kianwee\", \"akshata\"]<br>\r\n    some_numbers = [1, 2, 3, 4.5, 6.7, 1000, 2000]<br>\r\n</code>\r\n\r\n<p>\r\n    In the first line of the above code, a variable called <code>names_list</code> has been created, and a value has been assigned to it that has a list data type. The list has three items inside it, each of which is a string. In the second line, a variable called <code>some_numbers</code> has been created, and the value is a list of various numbers.\r\n</p>\r\n\r\n<p>\r\n    The items in a list can be accessed using a zero based index. This index starts at zero, and counts up the list, one item at a time. So in the <code>names_list</code> above, <code>\"patrick\"</code> is at index 0, <code>\"kianwee\"</code> at 1, and <code>\"akshata\"</code> at 2. Below is an example of accessing items in names_list:\r\n</p>\r\n\r\n<code>\r\n    names_list = [\"patrick\", \"kianwee\", \"akshata\"]<br>\r\n    person = names_list[1]<br>\r\n</code>\r\n\r\n<p>\r\n    The variable called <code>person</code> is now assigned the value \"kianwee\". (This is because \"kainwee\" is at index position 1.) If you wanted to assign <code>\"patrick\"</code> to <code>person</code>, one would write <code>names_list[0]</code>, if you wanted \"akshata\", one would write <code>names_list[2]</code>. Note that for the first item, the index is 0, and for teh last item the index is the list length minus 1.\r\n</p>\r\n\r\n<p>\r\n    The same approach can be used in order to set the values of the items in a list. For example, we could change one of the names as follows:\r\n</p>\r\n\r\n<code>\r\n    names_list = [\"patrick\", \"kianwee\", \"akshata\"]<br>\r\n    names_list[0] = \"patrick_janssen\"<br>\r\n</code>\r\n\r\n<p>\r\n    The <code>names_list</code> would contain three items, namely <code>[\"patrick_janssen\", \"kianwee\", \"akshata\"]</code>. You can also add items to the list, like this.\r\n</p>\r\n\r\n<code>\r\n    names_list = [\"patrick\", \"kianwee\", \"akshata\"]<br>\r\n    names_list[3] = \"kamel\"<br>\r\n</code>\r\n\r\n<p>\r\n    The <code>names_list</code> would contain four items, namely <code>[\"patrick\", \"kianwee\", \"akshata\", \"kamel\"]</code>.\r\n</p>\r\n\r\n<p>\r\n    In some cases, rather than filling a list with items, we may instead need to create an empty list, that then gets filled later. Here is an example:\r\n</p>\r\n\r\n<code>\r\n    names_list = []<br>\r\n    // some other code<br>\r\n    names_list[0] = \"joie\"<br>\r\n    names_list[1] = \"derek\"<br>\r\n</code>\r\n\r\n<a name=\"passing\"><h2>Passing Data: By Value and By Reference</h2></a>\r\n\r\n<p>\r\n    Finally, the last thing to say about lists goes a little deeper into programming concepts. It may not be immediately relevant when you first get started, but still it s worth mentioning. It relates to how data is passed around. There are basically two ways that data can get passed: by value and by reference. Lets say you set <code>variable_a = variable_b</code>:\r\n</p>\r\n\r\n<ul>\r\n    <li>By Value: The data value in <code>variable_a</code> is copied, and assigned to <code>variable_b</code>. The two variables now have separate values stored in different locations in memory. The two values will currently be the same, but if you later change one, the other will not be affected.</li>\r\n    <li>By Reference: A reference to the data value in <code>variable_a</code> is copied, and the reference is assigned to <code>variable_b</code>. The two variables now have the same value stored in the same locations in memory. This means that is you change the value of one variable, the other will change as well.</li>\r\n\r\n</ul>\r\n\r\n<p>\r\n    The easiest way to understand this is with a pair of example. The first example will be using primitive data types (which are passed by value), and the second with a list data type (which is passed by reference).\r\n</p>\r\n\r\n<code>\r\n    a = 5<br>\r\n    b = a<br>\r\n    a = 6<br>\r\n</code>\r\n\r\n<p>\r\n    The question is, after executing all three lines of code, what is the value of <code>b</code>? The answer is 5. If we follow this line by line it makes sense.\r\n</p>\r\n\r\n<ul>\r\n    <li>Line 1) We set the value of <code>a</code> to 5. </li>\r\n    <li>Line 2) We set the value of <code>b</code> to <code>a</code>. This results in the value being passed <i>by value</i>.</li>\r\n    <li>Line 3) We change the value of a to 6. This does not affect b in any way,</li>\r\n</ul>\r\n\r\n<p>\r\n    Now lets look at a similar case using lists.\r\n</p>\r\n\r\n\r\n<code>\r\n    list_a = [1, 2, 3] <br>\r\n    list_b = list_a<br>\r\n    list_a[0] = 10<br>\r\n</code>\r\n\r\n<p>\r\n    The question again is, after executing all three lines of code, what is the value of <code>b</code>? The answer is [10, 2, 3]. This may be more surprising. Why is the first item now 10? In the third line, we change a, not b. Lets set through it line by line.\r\n</p>\r\n\r\n<ul>\r\n    <li>Line 1: We set the value of <code>list_a</code> to [1, 2, 3]. </li>\r\n    <li>Line 2: We set the value of <code>list_b</code> to <code>list_a</code>. This results in the value being passed <i>by reference</i>.</li>\r\n    <li>Line 3: We change the value of a to [10, 2, 3]. Since list_a and list_b are referencing the same value, this means that list_b now also has a value of [10, 2, 3]. </li>\r\n</ul>\r\n\r\n<a name=\"expressions\"><h2>Expressions</h2></a>\r\n\r\n<p>\r\n    As we have see above, a variable assignment has an \"=\" with something on the left and something on the right. The left hand side must specify a container in which the data will be stored. This can either be a variable name (for example <code>my_variable</code>), or, if the variable type is a list, then it can be a variable name with an index (for example, <code>my_list[1]</code>).\r\n</p>\r\n\r\n<p>\r\n    The right hand side of the assignment operator can be more interesting. So far, we have only been assigning a value. But on the right side you can write more complex expressions. For example:\r\n</p>\r\n\r\n<code>\r\n    my_variable = ((4 * 3) / 2) - 1<br>\r\n</code>\r\n\r\n<p>\r\n    Expressions can use arithmetic and comparison operators. For example, let us take a simple expression: 4 + 5 is equal to 9. Here 4 and 5 are called operands and ‘+’ is called the operator, which in this case is an arithmetic operator.\r\n</p>\r\n\r\n<p>\r\n    The arithmetic operators are as follows:\r\n</p>\r\n\r\n<ul>\r\n    <li>+ (Addition) Adds two operands</li>\r\n    <li>- (Subtraction) Subtracts the second operand from the first</li>\r\n    <li>* (Multiplication) Multiply both operands</li>\r\n    <li>/ (Division) Divide the numerator by the denominator</li>\r\n    <li>% (Modulus) Outputs the remainder of an integer division</li>\r\n    <li>++ (Increment) Increases an integer value by one</li>\r\n    <li>-- (Decrement) Decreases an integer value by one</li>\r\n</ul>\r\n\r\n<p>\r\n    The comparison operators are as follows:\r\n</p>\r\n\r\n<ul>\r\n    <li>(A == B) Checks if the value of two operands are equal or not, if yes, then the condition becomes true. </li>\r\n    <li>(A != B) Checks if the value of two operands are equal or not, if the values are not equal, then the condition becomes true.</li>\r\n    <li>(A > B) Checks if the value of the left operand is greater than the value of the right operand, if yes, then the condition becomes true.</li>\r\n    <li>(A < B) Checks if the value of the left operand is less than the value of the right operand, if yes, then the condition becomes true.</li>\r\n    <li>(A >= B) Checks if the value of the left operand is greater than or equal to the value of the right operand, if yes, then the condition becomes true.</li>\r\n    <li>(A <= B) Checks if the value of the left operand is less than or equal to the value of the right operand, if yes, then the condition becomes true.</li>\r\n</ul>\r\n\r\n<a name=\"if-else\"><h2><i>If-else</i> Conditions</h2></a>\r\n\r\n<p>\r\n    While creating a procedure, there may be a situation when you need to perform different actions based on different conditions.\r\n</p>\r\n\r\n<p>\r\n    Möbius supports an <code>if-else</code> conditional statements. Here is an example:\r\n</p>\r\n\r\n<code>\r\n    if (variable_a > 100)<br>\r\n    &nbsp;&nbsp;// execute the code that is inside the if, only if the condition is true<br>\r\n    else<br>\r\n    &nbsp;&nbsp;// execute the code that is inside the else, only if the condition is not true<br>\r\n</code>\r\n\r\n<p>\r\n    (In the Möbius procedure window, pay attention to the left indentation of the code. You can drag your lines of code into the if-else block, and they will become indented. This indicates that they are inside the if-condition, or the else condition.)\r\n</p>\r\n\r\n<p>\r\n    In this case, if <code>variable_a</code> is greater than <code>100</code>, then the first set of code is executed. Otherwise the second set of code is executed.\r\n</p>\r\n\r\n<a name=\"for-each\"><h2><i>For-each</i> Loops</h2></a>\r\n\r\n<p>\r\n    While creating a procedure, you may encounter a situation where you need to perform an action over and over again. In such situations, you would need to write loop statements.\r\n</p>\r\n\r\n<p>\r\n    Möbius provides a for-each loop that allows you to loop over a list of values.\r\n</p>\r\n\r\n<code>\r\n    list_of_items = [10, 20, 30, 40, 50]<br>\r\n    if (item in list_of_items)<br>\r\n    &nbsp;&nbsp;// execute the code that is inside the loop multiple times, using item<br>\r\n</code>\r\n\r\n<p>\r\n    (In the Möbius procedure window, pay attention to the left indentation of the code. You can drag your lines of code into the for-loop block, and they will become indented. This indicates that they are inside the loop.)\r\n</p>\r\n\r\n<p>\r\n    The example above shows the basic loop construct. The <code>list_of_items</code> contains five values, so the loop will execute five times. Each time, the a variable called <code>item</code> is created with a new value. The first time around the loop, <code>item</code> will have a value of 10, the second time, it will have a value of 20, and so forth. Each time around the loop, the code will most likely do something useful with this <code>item</code> variable.\r\n</p>\r\n\r\n<a name=\"variable-scope\"><h2>Variable Scope</h2></a>\r\n\r\n<p>\r\n    When using if-else conditions and for-each loops, it is important to look a little deeper at creating variables. If-else condition and for-each loops define inner blocks of code (shown graphically by the level of indentation). These blocks of code can have multiple lines, and these lines may include the creation of new variables. The are certain rules that define where variables are visible, referred to as the <i>variable scope</i>.\r\n</p>\r\n\r\n<p>\r\n    Lets assume you you create variable in your procedure called <code>variable_a</code>. Where can you use that variable name? Which is the same as asking, where is that variable \"in scope\"? (If you do it wrong, you will get a \"ReferenceError\" when you run your program.) To figure this out, you need to follow two basic rules (both rules need to be true).:\r\n</p>\r\n\r\n<ul>\r\n    <li>Rule 1: The line of code accessing the variable must come after the line of code that created the variable. </li>\r\n    <li>Rule 2: The line of code accessing the variable must be contained inside the code block that created the variable.</li>\r\n</ul>\r\n\r\n<p>\r\n    Lets look at an example, and analyse it line by line.\r\n</p>\r\n\r\n<code>\r\n    a = 2<br>\r\n    if (condition)<br>\r\n    &nbsp;&nbsp;b = a * 4<br>\r\n    c = b * 6 // ReferenceError<br>\r\n</code>\r\n\r\n<ul>\r\n    <li>Line 1:The variable <code>a</code> is created.</li>\r\n    <li>Line 2:The <i>if</i> creates a code sub-block, with a single line of code in it. There are now two code blocks, the main code block of the procedure, and nested inside that, this <i>if</i> code sub-block.</li>\r\n    <li>Line 3:This line is inside the <i>if</i> code block, which is inside the main code block. A new variable, <code>b</code> is created. The value is set to <code>a</code> multiplied by 4. In this cases, there is no problem accessing the variable <code>a</code>, because both rules are true. Rule 1: Line 3 come after line 1. Rule 2: Line 3 is inside the line 1 code block.</li>\r\n    <li>Line 4:This line is inside the <i>if</i> code block. This line generates an ReferenceError. A new variable, <code>c</code> is created, no problem here. But the problem occurs when the value is set to <code>b</code> multiplied by 6. In this cases, line 4 cannot access the variable <code>b</code> define on line 3. Rule 1 is still OK: Line 4 come after line 3. However, Rule 2 is not OK: Line 4 is not inside the line 3 code block. So, as far as this line is concerned, variable <code>b</code> does not exist.</li>\r\n</ul>\r\n\r\n<p>\r\n    Basically, anything you create in these inner code blocks is not visible to the code outside the block. To someone who is new to programming, this may seem annoying. However, it is actually a good thing, since it avoids many errors that are hard to catch. Furthermore, there is actually a simple way to fix this, as follows:\r\n</p>\r\n\r\n<code>\r\n    a = 2<br>\r\n    b = 0 // a default value<br>\r\n    if (condition)<br>\r\n    &nbsp;&nbsp;b = a * 4<br>\r\n    c = b * 6<br>\r\n</code>\r\n\r\n<p>\r\n    Since <code>b</code> is now created in the main code block, the last line no longer has an error.\r\n</p>\r\n\r\n<a name=\"functions\"><h2>Functions</h2></a>\r\n\r\n<p>\r\n    Finally, we get to the functions, which is where most of the useful operations can be performed. Möbius allow users to create procedures that call a set of predefined functions, organised into modules to make the easier to find. These functions are all called it the same way.\r\n</p>\r\n\r\n<ul>\r\n    <li>The function name species the function to be called.</li>\r\n    <li>The function inputs are called the \"arguments\", and are specified in round brackets after the function name. </li>\r\n    <li>The function may have an output, which is called the \"return value\". If it has a return value, then the return value will typically be assigned to a variable.</li>\r\n</ul>\r\n\r\n<p>\r\n    For example, consider the <code>string.len()</code> function that calculates the length of a string.\r\n</p>\r\n\r\n<code>\r\n    my_str = \"This is some text.\"<br>\r\n    result = string.len(my_str)<br>\r\n</code>\r\n\r\n<p>\r\n    In this case, the module name is <code>string</code>, and the function name is <code>len</code>. The function takes one argument as input, which is the string whose length needs to be calculated, which in this case is <code>my_str</code>. The function returns a number (the length of the string), which gets assigned to the variable called <code>result</code>.\r\n</p>\r\n\r\n<p>\r\n    The sections below give help documentation on all the functions available in Möbius.\r\n</p>\r\n\r\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/ui-components/help/info-viewer/help.fundamentals.tpl.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/ui-components/help/info-viewer/help.template.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return MobiusAbout; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HelpFundamentals; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm2015/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+let MobiusAbout = class MobiusAbout {
+    constructor() { }
+    ngOnInit() {
+    }
+};
+MobiusAbout = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
+        selector: 'app-help-about',
+        template: __webpack_require__("../../../../../src/app/ui-components/help/info-viewer/help.about.tpl.html"),
+        styles: [__webpack_require__("../../../../../src/app/ui-components/help/info-viewer/help.about.tpl.scss")]
+    }),
+    __metadata("design:paramtypes", [])
+], MobiusAbout);
+
+let HelpFundamentals = class HelpFundamentals {
+    constructor() { }
+    ngOnInit() {
+    }
+};
+HelpFundamentals = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
+        selector: 'app-help-fundamentals',
+        template: __webpack_require__("../../../../../src/app/ui-components/help/info-viewer/help.fundamentals.tpl.html"),
+        styles: [__webpack_require__("../../../../../src/app/ui-components/help/info-viewer/help.fundamentals.tpl.scss")]
+    }),
+    __metadata("design:paramtypes", [])
+], HelpFundamentals);
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/ui-components/help/info-viewer/info-viewer.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"viewer\">\r\n\r\n    <!-- <h1>Möbius Procedures</h1> -->\r\n\r\n    <mat-accordion *ngIf='!fnObj'>\r\n\r\n        <mat-expansion-panel [expanded]='true' class=\"panel\">\r\n            <mat-expansion-panel-header>\r\n                <mat-panel-title>\r\n                    ABOUT\r\n                </mat-panel-title>\r\n            </mat-expansion-panel-header>\r\n            \r\n            <div class=\"panel-content\"> \r\n                <app-help-about></app-help-about>\r\n            </div>\r\n            \r\n        </mat-expansion-panel>\r\n\r\n        <!-- fundamentals -->\r\n        <mat-expansion-panel class=\"panel\">\r\n            <mat-expansion-panel-header>\r\n                <mat-panel-title>\r\n                    FUNDAMENTALS\r\n                </mat-panel-title>\r\n            </mat-expansion-panel-header>\r\n            \r\n            <div class=\"panel-content\"> \r\n                <app-help-fundamentals></app-help-fundamentals>\r\n            </div>\r\n\r\n        </mat-expansion-panel>\r\n\r\n    </mat-accordion>\r\n\r\n</div>"
+
+/***/ }),
+
+/***/ "../../../../../src/app/ui-components/help/info-viewer/info-viewer.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, ".reset {\n  margin: 0px;\n  padding: 0px; }\n\n.default {\n  font-size: 12px;\n  color: #8AA8C0;\n  line-height: 150px;\n  text-align: center; }\n\n.viewer {\n  /* \twidth: 100%; \r\noverflow: auto;\r\n\r\npadding: 0px;\r\nmargin: 0px;\r\n\r\n.header{\r\n\r\n\tdisplay: flex; \r\n\tflex-direction: row; \r\n\tjustify-content: space-between;\r\n\r\n\tposition: relative;\r\n\tfont-size: 14px; \r\n\tfont-weight: 600; \r\n\tline-height: $header-height;\r\n\ttext-transform: uppercase;\r\n\tletter-spacing: 1.5px;\r\n\theight: $header-height;\r\n\r\n\tcolor: #ADADAD;\r\n\r\n\t.btn-group{\r\n\t\theight: $header-height; \r\n\r\n\t\tbutton{\r\n\t\t\twidth: 0.9*$header-height; \r\n\t\t\theight: 0.9*$header-height; \r\n\t\t\tmargin: 0px;\r\n\t\t\tborder: 1px solid #B4B1B1;\r\n\t\t\tbox-shadow: none;\r\n\r\n\t\t\t&:focus{\r\n\t\t\t\t\r\n\t\t\t}\r\n\t\t}\r\n\t\t\r\n\t}\r\n\r\n}\r\n\r\n.container{\r\n}\r\n\r\nbutton{\r\n\t&:focus{\r\n\t\t\r\n\t}\r\n} */ }\n  .viewer .container {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    height: 100%; }\n    .viewer .container .view-container {\n      box-sizing: border-box;\n      height: 100%;\n      width: 100%;\n      padding-bottom: 30px;\n      overflow: auto; }\n\n.viewer {\n  padding: 15px;\n  height: auto;\n  overflow: auto; }\n  .viewer .panel-content {\n    max-height: 700px;\n    overflow: auto; }\n", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/ui-components/help/info-viewer/info-viewer.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return InfoViewerComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm2015/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+let InfoViewerComponent = class InfoViewerComponent {
+    constructor() { }
+    ngOnInit() {
+    }
+};
+InfoViewerComponent = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
+        selector: 'app-info-viewer',
+        template: __webpack_require__("../../../../../src/app/ui-components/help/info-viewer/info-viewer.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/ui-components/help/info-viewer/info-viewer.component.scss")]
+    }),
+    __metadata("design:paramtypes", [])
+], InfoViewerComponent);
 
 
 
@@ -5669,7 +6726,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".reset {\n  margin: 0px;\n  padding: 0px; }\n\n.default {\n  font-size: 12px;\n  color: #8AA8C0;\n  line-height: 150px;\n  text-align: center; }\n\n.viewer {\n  /* \twidth: 100%; \r\noverflow: auto;\r\n\r\npadding: 0px;\r\nmargin: 0px;\r\n\r\n.header{\r\n\r\n\tdisplay: flex; \r\n\tflex-direction: row; \r\n\tjustify-content: space-between;\r\n\r\n\tposition: relative;\r\n\tfont-size: 14px; \r\n\tfont-weight: 600; \r\n\tline-height: $header-height;\r\n\ttext-transform: uppercase;\r\n\tletter-spacing: 1.5px;\r\n\theight: $header-height;\r\n\r\n\tcolor: #ADADAD;\r\n\r\n\t.btn-group{\r\n\t\theight: $header-height; \r\n\r\n\t\tbutton{\r\n\t\t\twidth: 0.9*$header-height; \r\n\t\t\theight: 0.9*$header-height; \r\n\t\t\tmargin: 0px;\r\n\t\t\tborder: 1px solid #B4B1B1;\r\n\t\t\tbox-shadow: none;\r\n\r\n\t\t\t&:focus{\r\n\t\t\t\t\r\n\t\t\t}\r\n\t\t}\r\n\t\t\r\n\t}\r\n\r\n}\r\n\r\n.container{\r\n}\r\n\r\nbutton{\r\n\t&:focus{\r\n\t\t\r\n\t}\r\n} */ }\n\n.viewer .container {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    height: 100%; }\n\n.viewer .container .view-container {\n      -webkit-box-sizing: border-box;\n              box-sizing: border-box;\n      height: 100%;\n      width: 100%;\n      padding-bottom: 30px;\n      overflow: auto; }\n\n.header {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: row;\n          flex-direction: row;\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n  border-bottom: 1px solid #8AA8C0;\n  background-color: #395D73;\n  color: white;\n  height: 30px;\n  line-height: 30px;\n  font-size: 14px;\n  padding: 0px 15px; }\n\n.header .btn-group {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row; }\n\n.header .btn-group span {\n      color: #F1F1F1; }\n\n.header .btn-group span mat-icon {\n        font-size: 14px;\n        cursor: pointer; }\n\n.header .btn-group span mat-icon.disabled {\n          color: #8AA8C0 !important; }\n\n.header .btn-group span mat-icon:hover {\n          color: #F0BFA0; }\n", ""]);
+exports.push([module.i, ".reset {\n  margin: 0px;\n  padding: 0px; }\n\n.default {\n  font-size: 12px;\n  color: #8AA8C0;\n  line-height: 150px;\n  text-align: center; }\n\n.viewer {\n  /* \twidth: 100%; \r\noverflow: auto;\r\n\r\npadding: 0px;\r\nmargin: 0px;\r\n\r\n.header{\r\n\r\n\tdisplay: flex; \r\n\tflex-direction: row; \r\n\tjustify-content: space-between;\r\n\r\n\tposition: relative;\r\n\tfont-size: 14px; \r\n\tfont-weight: 600; \r\n\tline-height: $header-height;\r\n\ttext-transform: uppercase;\r\n\tletter-spacing: 1.5px;\r\n\theight: $header-height;\r\n\r\n\tcolor: #ADADAD;\r\n\r\n\t.btn-group{\r\n\t\theight: $header-height; \r\n\r\n\t\tbutton{\r\n\t\t\twidth: 0.9*$header-height; \r\n\t\t\theight: 0.9*$header-height; \r\n\t\t\tmargin: 0px;\r\n\t\t\tborder: 1px solid #B4B1B1;\r\n\t\t\tbox-shadow: none;\r\n\r\n\t\t\t&:focus{\r\n\t\t\t\t\r\n\t\t\t}\r\n\t\t}\r\n\t\t\r\n\t}\r\n\r\n}\r\n\r\n.container{\r\n}\r\n\r\nbutton{\r\n\t&:focus{\r\n\t\t\r\n\t}\r\n} */ }\n  .viewer .container {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    height: 100%; }\n    .viewer .container .view-container {\n      box-sizing: border-box;\n      height: 100%;\n      width: 100%;\n      padding-bottom: 30px;\n      overflow: auto; }\n\n.header {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: row;\n          flex-direction: row;\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n  border-bottom: 1px solid #8AA8C0;\n  background-color: #395D73;\n  color: white;\n  height: 30px;\n  line-height: 30px;\n  font-size: 14px;\n  padding: 0px 15px; }\n  .header .btn-group {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row; }\n    .header .btn-group span {\n      color: #F1F1F1; }\n      .header .btn-group span mat-icon {\n        font-size: 14px;\n        cursor: pointer; }\n        .header .btn-group span mat-icon.disabled {\n          color: #8AA8C0 !important; }\n        .header .btn-group span mat-icon:hover {\n          color: #F0BFA0; }\n", ""]);
 
 // exports
 
@@ -5793,7 +6850,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".reset {\n  margin: 0px;\n  padding: 0px; }\n\n.default {\n  font-size: 12px;\n  color: #8AA8C0;\n  line-height: 150px;\n  text-align: center; }\n\n.viewer {\n  /* \twidth: 100%; \r\noverflow: auto;\r\n\r\npadding: 0px;\r\nmargin: 0px;\r\n\r\n.header{\r\n\r\n\tdisplay: flex; \r\n\tflex-direction: row; \r\n\tjustify-content: space-between;\r\n\r\n\tposition: relative;\r\n\tfont-size: 14px; \r\n\tfont-weight: 600; \r\n\tline-height: $header-height;\r\n\ttext-transform: uppercase;\r\n\tletter-spacing: 1.5px;\r\n\theight: $header-height;\r\n\r\n\tcolor: #ADADAD;\r\n\r\n\t.btn-group{\r\n\t\theight: $header-height; \r\n\r\n\t\tbutton{\r\n\t\t\twidth: 0.9*$header-height; \r\n\t\t\theight: 0.9*$header-height; \r\n\t\t\tmargin: 0px;\r\n\t\t\tborder: 1px solid #B4B1B1;\r\n\t\t\tbox-shadow: none;\r\n\r\n\t\t\t&:focus{\r\n\t\t\t\t\r\n\t\t\t}\r\n\t\t}\r\n\t\t\r\n\t}\r\n\r\n}\r\n\r\n.container{\r\n}\r\n\r\nbutton{\r\n\t&:focus{\r\n\t\t\r\n\t}\r\n} */ }\n\n.viewer .container {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    height: 100%; }\n\n.viewer .container .view-container {\n      -webkit-box-sizing: border-box;\n              box-sizing: border-box;\n      height: 100%;\n      width: 100%;\n      padding-bottom: 30px;\n      overflow: auto; }\n\n.viewer {\n  position: absolute;\n  height: 100%;\n  width: 100%;\n  -webkit-box-sizing: border-box !important;\n          box-sizing: border-box !important;\n  padding-bottom: 60px !important; }\n\n.viewer .ace-editor {\n    height: 100%; }\n", ""]);
+exports.push([module.i, ".reset {\n  margin: 0px;\n  padding: 0px; }\n\n.default {\n  font-size: 12px;\n  color: #8AA8C0;\n  line-height: 150px;\n  text-align: center; }\n\n.viewer {\n  /* \twidth: 100%; \r\noverflow: auto;\r\n\r\npadding: 0px;\r\nmargin: 0px;\r\n\r\n.header{\r\n\r\n\tdisplay: flex; \r\n\tflex-direction: row; \r\n\tjustify-content: space-between;\r\n\r\n\tposition: relative;\r\n\tfont-size: 14px; \r\n\tfont-weight: 600; \r\n\tline-height: $header-height;\r\n\ttext-transform: uppercase;\r\n\tletter-spacing: 1.5px;\r\n\theight: $header-height;\r\n\r\n\tcolor: #ADADAD;\r\n\r\n\t.btn-group{\r\n\t\theight: $header-height; \r\n\r\n\t\tbutton{\r\n\t\t\twidth: 0.9*$header-height; \r\n\t\t\theight: 0.9*$header-height; \r\n\t\t\tmargin: 0px;\r\n\t\t\tborder: 1px solid #B4B1B1;\r\n\t\t\tbox-shadow: none;\r\n\r\n\t\t\t&:focus{\r\n\t\t\t\t\r\n\t\t\t}\r\n\t\t}\r\n\t\t\r\n\t}\r\n\r\n}\r\n\r\n.container{\r\n}\r\n\r\nbutton{\r\n\t&:focus{\r\n\t\t\r\n\t}\r\n} */ }\n  .viewer .container {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    height: 100%; }\n    .viewer .container .view-container {\n      box-sizing: border-box;\n      height: 100%;\n      width: 100%;\n      padding-bottom: 30px;\n      overflow: auto; }\n\n.viewer {\n  position: absolute;\n  height: 100%;\n  width: 100%;\n  box-sizing: border-box !important;\n  padding-bottom: 60px !important; }\n  .viewer .ace-editor {\n    height: 100%; }\n", ""]);
 
 // exports
 
@@ -5864,7 +6921,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".reset {\n  margin: 0px;\n  padding: 0px; }\n\n.default {\n  font-size: 12px;\n  color: #8AA8C0;\n  line-height: 150px;\n  text-align: center; }\n\n.viewer {\n  /* \twidth: 100%; \r\noverflow: auto;\r\n\r\npadding: 0px;\r\nmargin: 0px;\r\n\r\n.header{\r\n\r\n\tdisplay: flex; \r\n\tflex-direction: row; \r\n\tjustify-content: space-between;\r\n\r\n\tposition: relative;\r\n\tfont-size: 14px; \r\n\tfont-weight: 600; \r\n\tline-height: $header-height;\r\n\ttext-transform: uppercase;\r\n\tletter-spacing: 1.5px;\r\n\theight: $header-height;\r\n\r\n\tcolor: #ADADAD;\r\n\r\n\t.btn-group{\r\n\t\theight: $header-height; \r\n\r\n\t\tbutton{\r\n\t\t\twidth: 0.9*$header-height; \r\n\t\t\theight: 0.9*$header-height; \r\n\t\t\tmargin: 0px;\r\n\t\t\tborder: 1px solid #B4B1B1;\r\n\t\t\tbox-shadow: none;\r\n\r\n\t\t\t&:focus{\r\n\t\t\t\t\r\n\t\t\t}\r\n\t\t}\r\n\t\t\r\n\t}\r\n\r\n}\r\n\r\n.container{\r\n}\r\n\r\nbutton{\r\n\t&:focus{\r\n\t\t\r\n\t}\r\n} */ }\n\n.viewer .container {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    height: 100%; }\n\n.viewer .container .view-container {\n      -webkit-box-sizing: border-box;\n              box-sizing: border-box;\n      height: 100%;\n      width: 100%;\n      padding-bottom: 30px;\n      overflow: auto; }\n\n.viewer {\n  height: 100%;\n  width: 100%; }\n\n.viewer .container {\n    height: 100%;\n    width: 100%; }\n\n.viewer .container #app-geometry-viewer {\n      height: 100%;\n      width: 100%; }\n\n.viewer .container #app-geometry-viewer canvas {\n        height: 100% !important;\n        width: 100% !important; }\n", ""]);
+exports.push([module.i, ".reset {\n  margin: 0px;\n  padding: 0px; }\n\n.default {\n  font-size: 12px;\n  color: #8AA8C0;\n  line-height: 150px;\n  text-align: center; }\n\n.viewer {\n  /* \twidth: 100%; \r\noverflow: auto;\r\n\r\npadding: 0px;\r\nmargin: 0px;\r\n\r\n.header{\r\n\r\n\tdisplay: flex; \r\n\tflex-direction: row; \r\n\tjustify-content: space-between;\r\n\r\n\tposition: relative;\r\n\tfont-size: 14px; \r\n\tfont-weight: 600; \r\n\tline-height: $header-height;\r\n\ttext-transform: uppercase;\r\n\tletter-spacing: 1.5px;\r\n\theight: $header-height;\r\n\r\n\tcolor: #ADADAD;\r\n\r\n\t.btn-group{\r\n\t\theight: $header-height; \r\n\r\n\t\tbutton{\r\n\t\t\twidth: 0.9*$header-height; \r\n\t\t\theight: 0.9*$header-height; \r\n\t\t\tmargin: 0px;\r\n\t\t\tborder: 1px solid #B4B1B1;\r\n\t\t\tbox-shadow: none;\r\n\r\n\t\t\t&:focus{\r\n\t\t\t\t\r\n\t\t\t}\r\n\t\t}\r\n\t\t\r\n\t}\r\n\r\n}\r\n\r\n.container{\r\n}\r\n\r\nbutton{\r\n\t&:focus{\r\n\t\t\r\n\t}\r\n} */ }\n  .viewer .container {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    height: 100%; }\n    .viewer .container .view-container {\n      box-sizing: border-box;\n      height: 100%;\n      width: 100%;\n      padding-bottom: 30px;\n      overflow: auto; }\n\n.viewer {\n  height: 100%;\n  width: 100%; }\n  .viewer .container {\n    height: 100%;\n    width: 100%; }\n    .viewer .container #app-geometry-viewer {\n      height: 100%;\n      width: 100%; }\n      .viewer .container #app-geometry-viewer canvas {\n        height: 100% !important;\n        width: 100% !important; }\n", ""]);
 
 // exports
 
@@ -6084,196 +7141,6 @@ GeometryViewerComponent = __decorate([
 
 /***/ }),
 
-/***/ "../../../../../src/app/ui-components/viewers/help-viewer/help-viewer.component.html":
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"viewer\">\r\n\t\r\n\t<h1>Möbius Procedures</h1>\r\n\r\n\t<mat-accordion *ngIf='!fnObj'>\r\n\r\n\t\t<!-- fundamentals -->\r\n\t\t<mat-expansion-panel>\r\n\t\t\t<mat-expansion-panel-header>\r\n\t    \t\t<mat-panel-title>\r\n\t\t\t      \tFUNDAMENTALS\r\n\t\t\t    </mat-panel-title>\r\n\t    \t</mat-expansion-panel-header>\r\n\r\n\t\t\t\t\t<h1>Fundamentals</h1>\r\n\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t    In order to get a better understanding of creating procedures in Möbius, it will be helpful to review some of the fundamental constructs of programming.\r\n\t\t\t\t\t</p>\r\n\r\n\t\t\t\t\t<ul>\r\n\t\t\t\t\t    <li><a href=\"#execution\">Execution</a></li>\r\n\t\t\t\t\t    <li><a href=\"#variables\">Variables</a></li>\r\n\t\t\t\t\t    <li><a href=\"#primitive\">Primitive Data Types</a></li>\r\n\t\t\t\t\t    <li><a href=\"#list\">List Data Type</a></li>\r\n\t\t\t\t\t    <li><a href=\"#passing\">Passing Data: By Value and By Reference</a></li>\r\n\t\t\t\t\t    <li><a href=\"#expressions\">Expressions</a></li>\r\n\t\t\t\t\t    <li><a href=\"#if-else\"><i>If-else</i> Conditions</a></li>\r\n\t\t\t\t\t    <li><a href=\"#for-each\"><i>For-each</i> Loop</a></li>\r\n\t\t\t\t\t    <li><a href=\"#variable-scope\">Variable Scope</a></li>\r\n\t\t\t\t\t    <li><a href=\"#functions\">Functions</a></li>\r\n\t\t\t\t\t</ul>\r\n\r\n\t\t\t\t\t<a name=\"execution\"><h2>Execution</h2></a>\r\n\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t    A procedure consists of a sequence of lines of code. When you execute the procedure, your computer will execute the each line of code, one by one. It is like a sequence of instructions.\r\n\t\t\t\t\t</p>\r\n\r\n\t\t\t\t\t<code>\r\n\t\t\t\t\t    // code on line 1<br>\r\n\t\t\t\t\t    // code on line 2<br>\r\n\t\t\t\t\t    // code on line 3<br>\r\n\t\t\t\t\t</code>\r\n\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t    (Note that in the code example above, each line starts with a \"//\". This is actually a shorthand to indicate that this line consists of a comment. The computer will ignore such lines.)\r\n\t\t\t\t\t</p>\r\n\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t    (Note also that in this document, various code snippet are given as examples. The code that you create in Möbius of course looks a little different, but the structure is exactly the same. We are just writing the code snippets in this way in order to avoid having to do lots of screen captures. Each code snippet is assumed to be independent and stand alone.)\r\n\t\t\t\t\t</p>\r\n\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t    In general, the flow of the execution goes one line at a time, top to bottom. You can change this linear behaviour by using <i>if-else</i> conditions and <i>for-loops</i>. More on that later.\r\n\t\t\t\t\t</p>\r\n\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t    Each line of code can contain various types of statements. The most basic is a variable assignment.\r\n\t\t\t\t\t</p>\r\n\r\n\t\t\t\t\t<a name=\"variables\"><h2>Variables</h2></a>\r\n\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t    A variable can be thought of as a named container in which you can place some data. A variable is something like this:\r\n\t\t\t\t\t</p>\r\n\r\n\t\t\t\t\t<code>\r\n\t\t\t\t\t    x = 123<br>\r\n\t\t\t\t\t</code>\r\n\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t    In the above code, the variable named <code>x</code> contains the number <code>123</code>. We can say: \"the value of the variable is 123\". The first time you use a variable like this, it gets declared, which creates the container in memory. Once it is declared, you can change the value at any time.\r\n\t\t\t\t\t</p>\r\n\r\n\t\t\t\t\t<code>\r\n\t\t\t\t\t    x = 123<br>\r\n\t\t\t\t\t    x = 456<br>\r\n\t\t\t\t\t</code>\r\n\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t    In the above code, the variable named <code>x</code> was used for the first time, and value was set to <code>123</code>. Then, on the second line, the value <code>123</code> was discarded and replaced with the value <code>456</code>. We can say: \"the value of 456 was assigned to the variable x\". You can change the value as many times as you like.\r\n\t\t\t\t\t</p>\r\n\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t    By convention, variables are typically named using lowercase letters only. For example, \"my_variable\". The variable name should not contain spaces, or any special character. Also, it should not start with a number.\r\n\t\t\t\t\t</p>\r\n\r\n\t\t\t\t\t<a name=\"primitive\"><h2>Primitive Data Types</h2></a>\r\n\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t    The data that you assign to a variable can have different types. Möbius allows you to work with three primitive data types:\r\n\t\t\t\t\t</p>\r\n\r\n\t\t\t\t\t<ul>\r\n\t\t\t\t\t    <li>Numbers, eg. 123, 120.50 etc.</li>\r\n\t\t\t\t\t    <li>Strings of text e.g. \"This text string\" etc.</li>\r\n\t\t\t\t\t    <li>Boolean e.g. true or false.</li>\r\n\t\t\t\t\t</ul>\r\n\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t    Below is an example of some variable assignments for the three different primitive data types:\r\n\t\t\t\t\t</p>\r\n\r\n\t\t\t\t\t<code>\r\n\t\t\t\t\t    my_age = 47<br>\r\n\t\t\t\t\t    my_name = \"Patrick\"<br>\r\n\t\t\t\t\t    lives_in_sg = true<br>\r\n\t\t\t\t\t</code>\r\n\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t    There is also a special data type called <code>null</code>. When a value has already been assigned, and you want to clear it without assigning some other value, then you can assign <code>null</code>.\r\n\t\t\t\t\t</p>\r\n\r\n\t\t\t\t\t<code>\r\n\t\t\t\t\t    my_age = 47<br>\r\n\t\t\t\t\t    // do some other stuff<br>\r\n\t\t\t\t\t    my_age = null<br>\r\n\t\t\t\t\t</code>\r\n\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t    Strings can contain a lot of data. Here is an example of a longer string:\r\n\t\t\t\t\t</p>\r\n\r\n\t\t\t\t\t<code>\r\n\t\t\t\t\t    some_text = \"The Möbius Modeller is a 3D parametric modelling software. It has a visual programming interface that combines dataflow programming with blocks-based programming. Dataflow programming is used to define the overall structure of your code, using nodes connected by wires. Blocks-based programming is used to define the individual procedures in each of your nodes. Procedures contain fours main types if elements: 1) variables, 2) if-else conditions, 3) for loops, and 4) function calls.\"\r\n\t\t\t\t\t</code>\r\n\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t    In the example above, the variable called <code>some_text</code> is assigned a longer string. A string can also be much longer than that - for example, maybe a whole book.\r\n\t\t\t\t\t</p>\r\n\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t    Also, note also that strings can contain text that looks like a number, but that is actually not a number data type. Here is an example:\r\n\t\t\t\t\t</p>\r\n\r\n\t\t\t\t\t<code>\r\n\t\t\t\t\t    text_that_looks_like_number = \"123.456\"<br>\r\n\t\t\t\t\t    a_number = 123.456<br>\r\n\t\t\t\t\t</code>\r\n\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t    Note that characters in a string can also be accessed using the square bracket notation. For example:\r\n\t\t\t\t\t</p>\r\n\r\n\t\t\t\t\t<code>\r\n\t\t\t\t\t    my_name = \"patrick\"<br>\r\n\t\t\t\t\t    first_letter = my_name[0]<br>\r\n\t\t\t\t\t    last_letter = my_name[6]<br>\r\n\t\t\t\t\t</code>\r\n\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t    The square bracket notation for indexing will be explained in more detail in the section on lists.\r\n\t\t\t\t\t</p>\r\n\r\n\t\t\t\t\t<a name=\"list\"><h2>List Data Types</h2></a>\r\n\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t    The three primitive data types already allow many useful procedures to be written. However, there is one key problem: none of them allow you to handle collections of data items. When creating procedures, you will find that a lot of data needs to managed as a collection.\r\n\t\t\t\t\t</p>\r\n\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t    For example, lets say you have 10 people in your group, and you want to store their names. You could create 10 variables, named <code>person1=\"patrick\"</code>, <code>person2=\"kainwee\"</code>, <code>person3=\"akshata\"</code>,etc, and assign each one a different name. But that would get tedious. You could store them all in one string, for example: <code>people=\"patrick, kainwee, akshata\"</code>. But that is rather inflexible, since everything is stored in a single lump of text.\r\n\t\t\t\t\t</p>\r\n\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t    In order to be easily handle collections of data, Möbius allows you to use a list data type. A list lets you store multiple values in a single variable. A list is defined using square brackets, like this:\r\n\t\t\t\t\t</p>\r\n\r\n\t\t\t\t\t<code>\r\n\t\t\t\t\t    names_list = [\"patrick\", \"kianwee\", \"akshata\"]<br>\r\n\t\t\t\t\t    some_numbers = [1, 2, 3, 4.5, 6.7, 1000, 2000]<br>\r\n\t\t\t\t\t</code>\r\n\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t    In the first line of the above code, a variable called <code>names_list</code> has been created, and a value has been assigned to it that has a list data type. The list has three items inside it, each of which is a string. In the second line, a variable called <code>some_numbers</code> has been created, and the value is a list of various numbers.\r\n\t\t\t\t\t</p>\r\n\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t    The items in a list can be accessed using a zero based index. This index starts at zero, and counts up the list, one item at a time. So in the <code>names_list</code> above, <code>\"patrick\"</code> is at index 0, <code>\"kianwee\"</code> at 1, and <code>\"akshata\"</code> at 2. Below is an example of accessing items in names_list:\r\n\t\t\t\t\t</p>\r\n\r\n\t\t\t\t\t<code>\r\n\t\t\t\t\t    names_list = [\"patrick\", \"kianwee\", \"akshata\"]<br>\r\n\t\t\t\t\t    person = names_list[1]<br>\r\n\t\t\t\t\t</code>\r\n\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t    The variable called <code>person</code> is now assigned the value \"kianwee\". (This is because \"kainwee\" is at index position 1.) If you wanted to assign <code>\"patrick\"</code> to <code>person</code>, one would write <code>names_list[0]</code>, if you wanted \"akshata\", one would write <code>names_list[2]</code>. Note that for the first item, the index is 0, and for teh last item the index is the list length minus 1.\r\n\t\t\t\t\t</p>\r\n\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t    The same approach can be used in order to set the values of the items in a list. For example, we could change one of the names as follows:\r\n\t\t\t\t\t</p>\r\n\r\n\t\t\t\t\t<code>\r\n\t\t\t\t\t    names_list = [\"patrick\", \"kianwee\", \"akshata\"]<br>\r\n\t\t\t\t\t    names_list[0] = \"patrick_janssen\"<br>\r\n\t\t\t\t\t</code>\r\n\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t    The <code>names_list</code> would contain three items, namely <code>[\"patrick_janssen\", \"kianwee\", \"akshata\"]</code>. You can also add items to the list, like this.\r\n\t\t\t\t\t</p>\r\n\r\n\t\t\t\t\t<code>\r\n\t\t\t\t\t    names_list = [\"patrick\", \"kianwee\", \"akshata\"]<br>\r\n\t\t\t\t\t    names_list[3] = \"kamel\"<br>\r\n\t\t\t\t\t</code>\r\n\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t    The <code>names_list</code> would contain four items, namely <code>[\"patrick\", \"kianwee\", \"akshata\", \"kamel\"]</code>.\r\n\t\t\t\t\t</p>\r\n\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t    In some cases, rather than filling a list with items, we may instead need to create an empty list, that then gets filled later. Here is an example:\r\n\t\t\t\t\t</p>\r\n\r\n\t\t\t\t\t<code>\r\n\t\t\t\t\t    names_list = []<br>\r\n\t\t\t\t\t    // some other code<br>\r\n\t\t\t\t\t    names_list[0] = \"joie\"<br>\r\n\t\t\t\t\t    names_list[1] = \"derek\"<br>\r\n\t\t\t\t\t</code>\r\n\r\n\t\t\t\t\t<a name=\"passing\"><h2>Passing Data: By Value and By Reference</h2></a>\r\n\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t    Finally, the last thing to say about lists goes a little deeper into programming concepts. It may not be immediately relevant when you first get started, but still it s worth mentioning. It relates to how data is passed around. There are basically two ways that data can get passed: by value and by reference. Lets say you set <code>variable_a = variable_b</code>:\r\n\t\t\t\t\t</p>\r\n\r\n\t\t\t\t\t<ul>\r\n\t\t\t\t\t    <li>By Value: The data value in <code>variable_a</code> is copied, and assigned to <code>variable_b</code>. The two variables now have separate values stored in different locations in memory. The two values will currently be the same, but if you later change one, the other will not be affected.</li>\r\n\t\t\t\t\t    <li>By Reference: A reference to the data value in <code>variable_a</code> is copied, and the reference is assigned to <code>variable_b</code>. The two variables now have the same value stored in the same locations in memory. This means that is you change the value of one variable, the other will change as well.</li>\r\n\r\n\t\t\t\t\t</ul>\r\n\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t    The easiest way to understand this is with a pair of example. The first example will be using primitive data types (which are passed by value), and the second with a list data type (which is passed by reference).\r\n\t\t\t\t\t</p>\r\n\r\n\t\t\t\t\t<code>\r\n\t\t\t\t\t    a = 5<br>\r\n\t\t\t\t\t    b = a<br>\r\n\t\t\t\t\t    a = 6<br>\r\n\t\t\t\t\t</code>\r\n\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t    The question is, after executing all three lines of code, what is the value of <code>b</code>? The answer is 5. If we follow this line by line it makes sense.\r\n\t\t\t\t\t</p>\r\n\r\n\t\t\t\t\t<ul>\r\n\t\t\t\t\t    <li>Line 1) We set the value of <code>a</code> to 5. </li>\r\n\t\t\t\t\t    <li>Line 2) We set the value of <code>b</code> to <code>a</code>. This results in the value being passed <i>by value</i>.</li>\r\n\t\t\t\t\t    <li>Line 3) We change the value of a to 6. This does not affect b in any way,</li>\r\n\t\t\t\t\t</ul>\r\n\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t    Now lets look at a similar case using lists.\r\n\t\t\t\t\t</p>\r\n\r\n\r\n\t\t\t\t\t<code>\r\n\t\t\t\t\t    list_a = [1, 2, 3] <br>\r\n\t\t\t\t\t    list_b = list_a<br>\r\n\t\t\t\t\t    list_a[0] = 10<br>\r\n\t\t\t\t\t</code>\r\n\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t    The question again is, after executing all three lines of code, what is the value of <code>b</code>? The answer is [10, 2, 3]. This may be more surprising. Why is the first item now 10? In the third line, we change a, not b. Lets set through it line by line.\r\n\t\t\t\t\t</p>\r\n\r\n\t\t\t\t\t<ul>\r\n\t\t\t\t\t    <li>Line 1: We set the value of <code>list_a</code> to [1, 2, 3]. </li>\r\n\t\t\t\t\t    <li>Line 2: We set the value of <code>list_b</code> to <code>list_a</code>. This results in the value being passed <i>by reference</i>.</li>\r\n\t\t\t\t\t    <li>Line 3: We change the value of a to [10, 2, 3]. Since list_a and list_b are referencing the same value, this means that list_b now also has a value of [10, 2, 3]. </li>\r\n\t\t\t\t\t</ul>\r\n\r\n\t\t\t\t\t<a name=\"expressions\"><h2>Expressions</h2></a>\r\n\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t    As we have see above, a variable assignment has an \"=\" with something on the left and something on the right. The left hand side must specify a container in which the data will be stored. This can either be a variable name (for example <code>my_variable</code>), or, if the variable type is a list, then it can be a variable name with an index (for example, <code>my_list[1]</code>).\r\n\t\t\t\t\t</p>\r\n\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t    The right hand side of the assignment operator can be more interesting. So far, we have only been assigning a value. But on the right side you can write more complex expressions. For example:\r\n\t\t\t\t\t</p>\r\n\r\n\t\t\t\t\t<code>\r\n\t\t\t\t\t    my_variable = ((4 * 3) / 2) - 1<br>\r\n\t\t\t\t\t</code>\r\n\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t    Expressions can use arithmetic and comparison operators. For example, let us take a simple expression: 4 + 5 is equal to 9. Here 4 and 5 are called operands and ‘+’ is called the operator, which in this case is an arithmetic operator.\r\n\t\t\t\t\t</p>\r\n\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t    The arithmetic operators are as follows:\r\n\t\t\t\t\t</p>\r\n\r\n\t\t\t\t\t<ul>\r\n\t\t\t\t\t    <li>+ (Addition) Adds two operands</li>\r\n\t\t\t\t\t    <li>- (Subtraction) Subtracts the second operand from the first</li>\r\n\t\t\t\t\t    <li>* (Multiplication) Multiply both operands</li>\r\n\t\t\t\t\t    <li>/ (Division) Divide the numerator by the denominator</li>\r\n\t\t\t\t\t    <li>% (Modulus) Outputs the remainder of an integer division</li>\r\n\t\t\t\t\t    <li>++ (Increment) Increases an integer value by one</li>\r\n\t\t\t\t\t    <li>-- (Decrement) Decreases an integer value by one</li>\r\n\t\t\t\t\t</ul>\r\n\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t    The comparison operators are as follows:\r\n\t\t\t\t\t</p>\r\n\r\n\t\t\t\t\t<ul>\r\n\t\t\t\t\t    <li>(A == B) Checks if the value of two operands are equal or not, if yes, then the condition becomes true. </li>\r\n\t\t\t\t\t    <li>(A != B) Checks if the value of two operands are equal or not, if the values are not equal, then the condition becomes true.</li>\r\n\t\t\t\t\t    <li>(A > B) Checks if the value of the left operand is greater than the value of the right operand, if yes, then the condition becomes true.</li>\r\n\t\t\t\t\t    <li>(A < B) Checks if the value of the left operand is less than the value of the right operand, if yes, then the condition becomes true.</li>\r\n\t\t\t\t\t    <li>(A >= B) Checks if the value of the left operand is greater than or equal to the value of the right operand, if yes, then the condition becomes true.</li>\r\n\t\t\t\t\t    <li>(A <= B) Checks if the value of the left operand is less than or equal to the value of the right operand, if yes, then the condition becomes true.</li>\r\n\t\t\t\t\t</ul>\r\n\r\n\t\t\t\t\t<a name=\"if-else\"><h2><i>If-else</i> Conditions</h2></a>\r\n\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t    While creating a procedure, there may be a situation when you need to perform different actions based on different conditions.\r\n\t\t\t\t\t</p>\r\n\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t    Möbius supports an <code>if-else</code> conditional statements. Here is an example:\r\n\t\t\t\t\t</p>\r\n\r\n\t\t\t\t\t<code>\r\n\t\t\t\t\t    if (variable_a > 100)<br>\r\n\t\t\t\t\t    &nbsp;&nbsp;// execute the code that is inside the if, only if the condition is true<br>\r\n\t\t\t\t\t    else<br>\r\n\t\t\t\t\t    &nbsp;&nbsp;// execute the code that is inside the else, only if the condition is not true<br>\r\n\t\t\t\t\t</code>\r\n\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t    (In the Möbius procedure window, pay attention to the left indentation of the code. You can drag your lines of code into the if-else block, and they will become indented. This indicates that they are inside the if-condition, or the else condition.)\r\n\t\t\t\t\t</p>\r\n\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t    In this case, if <code>variable_a</code> is greater than <code>100</code>, then the first set of code is executed. Otherwise the second set of code is executed.\r\n\t\t\t\t\t</p>\r\n\r\n\t\t\t\t\t<a name=\"for-each\"><h2><i>For-each</i> Loops</h2></a>\r\n\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t    While creating a procedure, you may encounter a situation where you need to perform an action over and over again. In such situations, you would need to write loop statements.\r\n\t\t\t\t\t</p>\r\n\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t    Möbius provides a for-each loop that allows you to loop over a list of values.\r\n\t\t\t\t\t</p>\r\n\r\n\t\t\t\t\t<code>\r\n\t\t\t\t\t    list_of_items = [10, 20, 30, 40, 50]<br>\r\n\t\t\t\t\t    if (item in list_of_items)<br>\r\n\t\t\t\t\t    &nbsp;&nbsp;// execute the code that is inside the loop multiple times, using item<br>\r\n\t\t\t\t\t</code>\r\n\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t    (In the Möbius procedure window, pay attention to the left indentation of the code. You can drag your lines of code into the for-loop block, and they will become indented. This indicates that they are inside the loop.)\r\n\t\t\t\t\t</p>\r\n\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t    The example above shows the basic loop construct. The <code>list_of_items</code> contains five values, so the loop will execute five times. Each time, the a variable called <code>item</code> is created with a new value. The first time around the loop, <code>item</code> will have a value of 10, the second time, it will have a value of 20, and so forth. Each time around the loop, the code will most likely do something useful with this <code>item</code> variable.\r\n\t\t\t\t\t</p>\r\n\r\n\t\t\t\t\t<a name=\"variable-scope\"><h2>Variable Scope</h2></a>\r\n\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t    When using if-else conditions and for-each loops, it is important to look a little deeper at creating variables. If-else condition and for-each loops define inner blocks of code (shown graphically by the level of indentation). These blocks of code can have multiple lines, and these lines may include the creation of new variables. The are certain rules that define where variables are visible, referred to as the <i>variable scope</i>.\r\n\t\t\t\t\t</p>\r\n\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t    Lets assume you you create variable in your procedure called <code>variable_a</code>. Where can you use that variable name? Which is the same as asking, where is that variable \"in scope\"? (If you do it wrong, you will get a \"ReferenceError\" when you run your program.) To figure this out, you need to follow two basic rules (both rules need to be true).:\r\n\t\t\t\t\t</p>\r\n\r\n\t\t\t\t\t<ul>\r\n\t\t\t\t\t    <li>Rule 1: The line of code accessing the variable must come after the line of code that created the variable. </li>\r\n\t\t\t\t\t    <li>Rule 2: The line of code accessing the variable must be contained inside the code block that created the variable.</li>\r\n\t\t\t\t\t</ul>\r\n\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t    Lets look at an example, and analyse it line by line.\r\n\t\t\t\t\t</p>\r\n\r\n\t\t\t\t\t<code>\r\n\t\t\t\t\t    a = 2<br>\r\n\t\t\t\t\t    if (condition)<br>\r\n\t\t\t\t\t    &nbsp;&nbsp;b = a * 4<br>\r\n\t\t\t\t\t    c = b * 6 // ReferenceError<br>\r\n\t\t\t\t\t</code>\r\n\r\n\t\t\t\t\t<ul>\r\n\t\t\t\t\t    <li>Line 1:The variable <code>a</code> is created.</li>\r\n\t\t\t\t\t    <li>Line 2:The <i>if</i> creates a code sub-block, with a single line of code in it. There are now two code blocks, the main code block of the procedure, and nested inside that, this <i>if</i> code sub-block.</li>\r\n\t\t\t\t\t    <li>Line 3:This line is inside the <i>if</i> code block, which is inside the main code block. A new variable, <code>b</code> is created. The value is set to <code>a</code> multiplied by 4. In this cases, there is no problem accessing the variable <code>a</code>, because both rules are true. Rule 1: Line 3 come after line 1. Rule 2: Line 3 is inside the line 1 code block.</li>\r\n\t\t\t\t\t    <li>Line 4:This line is inside the <i>if</i> code block. This line generates an ReferenceError. A new variable, <code>c</code> is created, no problem here. But the problem occurs when the value is set to <code>b</code> multiplied by 6. In this cases, line 4 cannot access the variable <code>b</code> define on line 3. Rule 1 is still OK: Line 4 come after line 3. However, Rule 2 is not OK: Line 4 is not inside the line 3 code block. So, as far as this line is concerned, variable <code>b</code> does not exist.</li>\r\n\t\t\t\t\t</ul>\r\n\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t    Basically, anything you create in these inner code blocks is not visible to the code outside the block. To someone who is new to programming, this may seem annoying. However, it is actually a good thing, since it avoids many errors that are hard to catch. Furthermore, there is actually a simple way to fix this, as follows:\r\n\t\t\t\t\t</p>\r\n\r\n\t\t\t\t\t<code>\r\n\t\t\t\t\t    a = 2<br>\r\n\t\t\t\t\t    b = 0 // a default value<br>\r\n\t\t\t\t\t    if (condition)<br>\r\n\t\t\t\t\t    &nbsp;&nbsp;b = a * 4<br>\r\n\t\t\t\t\t    c = b * 6<br>\r\n\t\t\t\t\t</code>\r\n\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t    Since <code>b</code> is now created in the main code block, the last line no longer has an error.\r\n\t\t\t\t\t</p>\r\n\r\n\t\t\t\t\t<a name=\"functions\"><h2>Functions</h2></a>\r\n\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t    Finally, we get to the functions, which is where most of the useful operations can be performed. Möbius allow users to create procedures that call a set of predefined functions, organised into modules to make the easier to find. These functions are all called it the same way.\r\n\t\t\t\t\t</p>\r\n\r\n\t\t\t\t\t<ul>\r\n\t\t\t\t\t    <li>The function name species the function to be called.</li>\r\n\t\t\t\t\t    <li>The function inputs are called the \"arguments\", and are specified in round brackets after the function name. </li>\r\n\t\t\t\t\t    <li>The function may have an output, which is called the \"return value\". If it has a return value, then the return value will typically be assigned to a variable.</li>\r\n\t\t\t\t\t</ul>\r\n\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t    For example, consider the <code>string.len()</code> function that calculates the length of a string.\r\n\t\t\t\t\t</p>\r\n\r\n\t\t\t\t\t<code>\r\n\t\t\t\t\t    my_str = \"This is some text.\"<br>\r\n\t\t\t\t\t    result = string.len(my_str)<br>\r\n\t\t\t\t\t</code>\r\n\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t    In this case, the module name is <code>string</code>, and the function name is <code>len</code>. The function takes one argument as input, which is the string whose length needs to be calculated, which in this case is <code>my_str</code>. The function returns a number (the length of the string), which gets assigned to the variable called <code>result</code>.\r\n\t\t\t\t\t</p>\r\n\r\n\t\t\t\t\t<p>\r\n\t\t\t\t\t    The sections below give help documentation on all the functions available in Möbius.\r\n\t\t\t\t\t</p>\r\n\r\n\t\t</mat-expansion-panel>\r\n\r\n\t\t<!-- functions -->\r\n\t \t<mat-expansion-panel \r\n\t \t\t*ngFor=\"let m of _helpMods\"\r\n\t \t\t[expanded]=\"getModName(m.name) ==_activeMod\">\r\n\t    \t<mat-expansion-panel-header>\r\n\t    \t\t<mat-panel-title>\r\n\t\t\t      {{ getModName(m.name) }} \r\n\t\t\t    </mat-panel-title>\r\n\t    \t</mat-expansion-panel-header>\r\n\r\n\t\t\t<mat-list id=\"{{getModName(m.name)}}\" \r\n\t\t\t\tstyle=\"max-height: 500px; overflow: auto;\">\r\n\t\t\t\t<!-- <h3 mat-subheader>{{m.comment.shortText}}</h3> -->\r\n\r\n\t\t\t\t<h3 mat-subheader>Functions</h3>\r\n\t\t\t \t<mat-list-item *ngFor=\"let fn of m.children\">\r\n\t\t\t \t\t<div class = \"content\">\r\n\t\t\t\t \t\t<h4 mat-line>{{fn.name}}</h4>\r\n\t    \t\t\t\t<p class=\"head-descr\" mat-line>{{fn.signatures[0].comment.shortText}}</p>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<!-- @derek: parameters-->\r\n\t\t\t\t\t\t<div  class=\"parameters\" mat-line *ngIf='fn.signatures[0].parameters'>\r\n\t\t\t\t\t\t\t<div *ngFor=\"let pa of fn.signatures[0].parameters\">\r\n\t\t\t\t\t\t\t\t<!--<span class=\"topic\">Name: </span>-->\r\n\t\t\t\t\t\t\t\t<span class=\"topic\">{{pa.name}}: </span>\r\n\t\t\t\t\t\t\t\t<!-- <span *ngIf=\"pa.type\">Type: {{pa.type.type}}</span> -->\r\n\t\t\t\t\t\t\t\t<!--<span class=\"topic\">Description: </span>-->\r\n\t\t\t\t\t\t\t\t<span class=\"descr\" *ngIf=\"pa.comment\">{{pa.comment.text}}</span>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t<div class=\"return-block\">\r\n\t\t    \t\t\t\t<span class=\"topic\">Returns: </span>\r\n\t\t    \t\t\t\t<span class=\"descr\">{{fn.signatures[0].comment.returns}}</span>\r\n\t\t    \t\t\t</div>\r\n\r\n\t\t    \t\t\t\r\n\t    \t\t\t\t<p mat-line>\t\r\n\t    \t\t\t\t\t<a href=\"https://phtj.github.io/gs-modelling/docs/modules/{{getUrl(m.name, fn.name)}}\" target=\"_blank\">More</a>\r\n\t    \t\t\t\t</p>\r\n\r\n    \t\t\t\t</div>\r\n\t\t\t \t</mat-list-item>\r\n\t\t\t \t<mat-divider></mat-divider>\r\n\t\t\t</mat-list>\r\n\r\n\t \t</mat-expansion-panel>\r\n\t \t\r\n\t</mat-accordion>\r\n\r\n\t<!-- specific function -->\r\n\t<div *ngIf='fnObj && fnObj.name'>\r\n\t\t\r\n\t\t<h4>Module: {{fnObj.module}}</h4>\r\n\t\t<h3>{{fnObj.name}}</h3>\r\n\t\t\r\n\t\t<div>\r\n\t\t\t{{fnObj.content.signatures[0].comment.shortText}}\r\n\t\t\tReturns: {{fnObj.content.signatures[0].comment.returns}}\r\n\t\t\t\t<a href=\"https://phtj.github.io/gs-modelling/docs/modules/{{getUrl(fnObj.module, fnObj.name)}}\" target=\"_blank\">\r\n\t\t\t\tMore\r\n\t\t\t\t</a>\r\n\t\t</div>\r\n\t\r\n\t\t<hr>\r\n\t\t\r\n\t\t<div (click)=\"showAll()\" style=\"cursor: pointer;\">[Show All]</div>\r\n\t\r\n\t</div>\r\n\r\n</div>"
-
-/***/ }),
-
-/***/ "../../../../../src/app/ui-components/viewers/help-viewer/help-viewer.component.scss":
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, ".reset {\n  margin: 0px;\n  padding: 0px; }\n\n.default {\n  font-size: 12px;\n  color: #8AA8C0;\n  line-height: 150px;\n  text-align: center; }\n\n.viewer {\n  /* \twidth: 100%; \r\noverflow: auto;\r\n\r\npadding: 0px;\r\nmargin: 0px;\r\n\r\n.header{\r\n\r\n\tdisplay: flex; \r\n\tflex-direction: row; \r\n\tjustify-content: space-between;\r\n\r\n\tposition: relative;\r\n\tfont-size: 14px; \r\n\tfont-weight: 600; \r\n\tline-height: $header-height;\r\n\ttext-transform: uppercase;\r\n\tletter-spacing: 1.5px;\r\n\theight: $header-height;\r\n\r\n\tcolor: #ADADAD;\r\n\r\n\t.btn-group{\r\n\t\theight: $header-height; \r\n\r\n\t\tbutton{\r\n\t\t\twidth: 0.9*$header-height; \r\n\t\t\theight: 0.9*$header-height; \r\n\t\t\tmargin: 0px;\r\n\t\t\tborder: 1px solid #B4B1B1;\r\n\t\t\tbox-shadow: none;\r\n\r\n\t\t\t&:focus{\r\n\t\t\t\t\r\n\t\t\t}\r\n\t\t}\r\n\t\t\r\n\t}\r\n\r\n}\r\n\r\n.container{\r\n}\r\n\r\nbutton{\r\n\t&:focus{\r\n\t\t\r\n\t}\r\n} */ }\n\n.viewer .container {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    height: 100%; }\n\n.viewer .container .view-container {\n      -webkit-box-sizing: border-box;\n              box-sizing: border-box;\n      height: 100%;\n      width: 100%;\n      padding-bottom: 30px;\n      overflow: auto; }\n\n.viewer {\n  padding: 15px;\n  height: 100%;\n  -webkit-box-sizing: border-box;\n          box-sizing: border-box;\n  padding-bottom: 30px;\n  overflow: auto; }\n\n.viewer h1 {\n    padding-left: 15px;\n    padding-bottom: 5px;\n    color: #395D73;\n    display: block;\n    border-bottom: 1px solid #F1F1F1; }\n\nmat-expansion-panel {\n  margin: 0 !important;\n  overflow: hidden !important; }\n\nmat-expansion-panel mat-expansion-panel-header mat-panel-title {\n    color: #F3A32A !important; }\n\nmat-panel-description {\n  display: none; }\n\n.content {\n  width: 100%; }\n\n.content .head-descr {\n    margin-bottom: 12px;\n    font-size: 12px; }\n\n/*\r\n.mat-list-item-content{\r\n\tpadding: 0;\r\n\tborder: 0;\r\n}\r\n\r\n.mat-line{\r\n\tpadding: 0;\r\n\tborder: 0;\r\n\tline-height: $fsize1;\r\n}*/\n\nmat-list .mat-subheader {\n  display: none;\n  font-size: 12px;\n  color: #395D73;\n  margin: 0;\n  padding: 0; }\n\nmat-list mat-list-item h4 {\n  color: #7B52AB;\n  font-size: 12px;\n  border-bottom: 1px solid #8AA8C0;\n  font-weight: bold;\n  display: block;\n  margin: 0; }\n\nmat-list mat-list-item p {\n  font-size: 12px;\n  color: #395D73;\n  margin: 0; }\n\nmat-list mat-list-item p a {\n    color: #8AA8C0;\n    font-size: 12px; }\n\nmat-list div {\n  padding: 0 !important; }\n\n.topic {\n  color: #395D73;\n  cursor: default !important;\n  font-weight: bold;\n  font-size: 12px; }\n\n.topic:hover {\n    color: #395D73; }\n\n.descr {\n  font-size: 12px;\n  color: #395D73;\n  cursor: default !important; }\n\n.return-block .topic {\n  text-decoration: underline; }\n", ""]);
-
-// exports
-
-
-/*** EXPORTS FROM exports-loader ***/
-module.exports = module.exports.toString();
-
-/***/ }),
-
-/***/ "../../../../../src/app/ui-components/viewers/help-viewer/help-viewer.component.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HelpViewerComponent; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm2015/core.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__global_services_layout_service__ = __webpack_require__("../../../../../src/app/global-services/layout.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__global_services_flowchart_service__ = __webpack_require__("../../../../../src/app/global-services/flowchart.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_platform_browser__ = __webpack_require__("../../../platform-browser/esm2015/platform-browser.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__node_modules_gs_modelling_docs_json_gs_modelling_json__ = __webpack_require__("../../../../gs-modelling/docs_json/gs-modelling.json");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__node_modules_gs_modelling_docs_json_gs_modelling_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__node_modules_gs_modelling_docs_json_gs_modelling_json__);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-let HelpViewerComponent = class HelpViewerComponent {
-    //modules/_group_.html
-    constructor(layoutService, sanitizer, flowchartService) {
-        this.layoutService = layoutService;
-        this.sanitizer = sanitizer;
-        this.flowchartService = flowchartService;
-        this.sanitizer = sanitizer;
-        this._subscription = this.layoutService.getMessage().subscribe(message => {
-            if (message.text.startsWith("Module: ")) {
-                this.notify();
-            }
-        });
-        let mods = this.flowchartService.getModules().map(function (m) {
-            return m["_name"].toLowerCase();
-        });
-        this._helpMods = __WEBPACK_IMPORTED_MODULE_4__node_modules_gs_modelling_docs_json_gs_modelling_json___default.a.children.filter(function (child) {
-            let mod_name = child.name.substring(1, child.name.length - 1);
-            return mods.indexOf(mod_name) > -1;
-        });
-    }
-    notify() {
-        let url_segment = this.layoutService.getUrl();
-        let url = 'https://phtj.github.io/gs-modelling/docs/' + url_segment;
-        this._url = this.sanitizer.bypassSecurityTrustResourceUrl(url);
-        let fnObj = this.layoutService.getObj();
-        if (fnObj && fnObj.name) {
-            this.fnObj = fnObj;
-            for (let m = 0; m < this._helpMods.length; m++) {
-                let mo = this._helpMods[m];
-                let mname = this.getModName(mo.name);
-                if (mname.toLowerCase() == fnObj.module.toLowerCase()) {
-                    for (let f = 0; f < mo.children.length; f++) {
-                        let child = mo.children[f];
-                        if (fnObj.name.toLowerCase() == child.name.toLowerCase()) {
-                            fnObj["content"] = child;
-                        }
-                    }
-                }
-            }
-        }
-        else if (fnObj && fnObj.module && !fnObj.name) {
-            this._activeMod = fnObj.module.toUpperCase();
-            this.fnObj = undefined;
-        }
-    }
-    getUrl(name, fn) {
-        if (name.startsWith("\"")) {
-            return "_" + name.substring(1, name.length - 1).toLowerCase() + "_.html#" + fn.toLowerCase();
-        }
-        else {
-            return "_" + name.toLowerCase() + "_.html#" + fn.toLowerCase();
-        }
-    }
-    getModName(name) {
-        return name.substring(1, name.length - 1).toUpperCase();
-    }
-    getHash(m, fn) {
-        return this.getModName(m.name) + "/" + fn.name;
-    }
-    showAll() {
-        this.fnObj = undefined;
-        this.layoutService.setObj();
-    }
-    ngOnInit() {
-        this.notify();
-    }
-    ;
-};
-HelpViewerComponent = __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-        selector: 'app-help-viewer',
-        template: __webpack_require__("../../../../../src/app/ui-components/viewers/help-viewer/help-viewer.component.html"),
-        styles: [__webpack_require__("../../../../../src/app/ui-components/viewers/help-viewer/help-viewer.component.scss")]
-    }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__global_services_layout_service__["a" /* LayoutService */], __WEBPACK_IMPORTED_MODULE_3__angular_platform_browser__["c" /* DomSanitizer */], __WEBPACK_IMPORTED_MODULE_2__global_services_flowchart_service__["a" /* FlowchartService */]])
-], HelpViewerComponent);
-
-
-
-/***/ }),
-
-/***/ "../../../../../src/app/ui-components/viewers/info-viewer/info-viewer.component.html":
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"viewer\">\r\n    <h1>\r\n        Möbius Modeller\r\n    </h1>\r\n    <p>\r\n        Möbius Modeller is a free and open-source web-application for parametric\r\n        modelling. It runs in the Chrome browser.\r\n    </p>\r\n\r\n    <h3 style=\"text-align: center;\">\r\n       Getting started with Möbius\r\n    </h3>\r\n    <p style=\"text-align: center;\">\r\n        <iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/285M8St3WHQ\" frameborder=\"0\" allow=\"autoplay; encrypted-media\" allowfullscreen>\r\n        </iframe>\r\n    </p>\r\n\r\n    <h2>\r\n        Visual Programming\r\n    </h2>\r\n    <p>\r\n        In Möbius, users are provided with a set of visual programming tools to\r\n        define scripts for generating models. These tools integrate two types of\r\n        visual programming: flowcharts and procedures.\r\n    </p>\r\n    <p>\r\n        Flowcharts consist of nodes connected together with wires. Each node in the\r\n        flowchart has a set of input and output ports, and contains a small\r\n        procedure to perform some type of action.\r\n    </p>\r\n    <p>\r\n        Procedures consist of a sequence of lines of code. There are four types of\r\n        code lines: 1) variables assignments, 2) ‘for-each’ loops, 3) ‘if-else’\r\n        conditions, and 4) function calls.\r\n    </p>\r\n    <p>\r\n        Function calls are lines of code that call a particular function. Libraries\r\n        of different functions are provided. Additional libraries of functions can\r\n        be added at any stage.\r\n    </p>\r\n    <h2>\r\n        User Interface\r\n    </h2>\r\n    <p>\r\n        The Möbius Modeller user interface consists of four main viewports, with\r\n        one viewport on the left and three viewports on the right. The viewports\r\n        can be rearrange into any configuration. By default, the Output viewport is\r\n        on the right side, and the Flowchart, Procedure and Parameters viewports\r\n        are on the right side.\r\n    </p>\r\n    <p>\r\n        · The Flowchart viewports is for defining the flowcharts, consisting of\r\n        nodes connected with wires. Selecting one of the nodes in the Flowchart\r\n        viewport will change the contents of the other three viewports.\r\n    </p>\r\n    <p>\r\n        · The Procedure viewport is for defining the procedure inside each node.\r\n        The procedure that is shown is for the node selected in the Flowchart\r\n        viewport.\r\n    </p>\r\n    <p>\r\n        · The Parameters viewport is for setting the parameter values associated\r\n        with each node. The parameters that are shown are for the node selected in\r\n        the Flowchart viewport. This viewport also contain the green ‘Execute\r\n        Flowchart’ button, which will execute the flowchart using the specified\r\n        parameter values.\r\n    </p>\r\n    <p>\r\n        · The Output viewport is for viewing the output generated by executing the\r\n        script, as well as for viewing Help. The Output viewport has a number of\r\n        different viewers. The most basic viewer is the Text Viewer, which is for\r\n        viewing basic text. There is also an Output console, which is where various\r\n        messages (including error messages) get printed.\r\n    </p>\r\n    <p align=\"center\">\r\n        <img\r\n            width=\"600\"\r\n            height=\"310\"\r\n            src=\"./assets/img/info/image002.png\"\r\n        />\r\n    </p>\r\n    <h2>\r\n        Flowchart\r\n    </h2>\r\n    <p>\r\n        The Flowchart viewport allows you to create and delete nodes, and to wire\r\n        them together into a network. The flowchart flows from left to right, and\r\n        form a chain of execution. Nodes without wires attached to any of the\r\n        inputs are called “start nodes”, and nodes without wires attached to any of\r\n        the outputs are called “end nodes”. (An “isolated node” has neither.)\r\n    </p>\r\n    <p>\r\n        When a flowchart is executed, the first nodes to be executed are all the\r\n        start nodes. The data produced by the nodes will travel down the wires to\r\n        the next set of nodes, which are then executed. This continues until end\r\n        nodes are reached on the right hand side.\r\n    </p>\r\n    <p align=\"center\">\r\n        <img\r\n            width=\"249\"\r\n            height=\"91\"\r\n            src=\"./assets/img/info/image004.jpg\"\r\n        />\r\n    </p>\r\n    <p>\r\n        When a flowchart is executed, the data generated by each output of each\r\n        node is saved. This means that after execution, you can explore the data\r\n        generated by each node by clicking on its output ports and view the results\r\n        in one of the Output viewers. (See the section on Outputs.)\r\n    </p>\r\n    <p>\r\n        When wiring nodes together, inputs can only have a single wire attached.\r\n        However, outputs can have multiple wires attached. If an output has\r\n        multiple wires attached, then the data is copied and sent down each wire\r\n        separately.\r\n    </p>\r\n    <p align=\"center\">\r\n        <img\r\n            width=\"186\"\r\n            height=\"193\"\r\n            src=\"./assets/img/info/image006.jpg\"\r\n        />\r\n    </p>\r\n    <p>\r\n        If a node has multiple inputs, then it will not be executed until all the\r\n        data for all its inputs has been received.\r\n    </p>\r\n    <p align=\"center\">\r\n        <img\r\n            width=\"165\"\r\n            height=\"166\"\r\n            src=\"./assets/img/info/image008.jpg\"\r\n        />\r\n    </p>\r\n    <p>\r\n        The left sidebar allows you perform various operations:\r\n    </p>\r\n    <p>\r\n        · Save and Load Flowcharts as a file. These are saved as .mob files. It is\r\n        important to save often.\r\n    </p>\r\n    <p>\r\n        · Create new nodes and subnets. (Subnets are coming soon.)\r\n    </p>\r\n    <ul>\r\n        <li>\r\n            Save and Load Libraries of nodes as a file.\r\n        </li>\r\n    </ul>\r\n    <p>\r\n        Each node has three buttons (only displayed when the node is selected):\r\n    </p>\r\n    <p>\r\n        · Delete: Deletes the node. This cannot be undone, so be careful!\r\n    </p>\r\n    <p>\r\n        · Disable: Disables the node. When the network is executed, the network\r\n        behaves as if the node did not exist.\r\n    </p>\r\n    <p>\r\n        · Save: Saves the node to your library, stored in the browser cache.\r\n    </p>\r\n    <p>\r\n        Saving nodes allows you to use them multiple times in different Flowcharts.\r\n        It also allows you to share nodes with others. Note that the library is\r\n        stored in the browser cache. If you clear your cache, then you will lose\r\n        all your saved nodes. Therefore, if you have nodes that you want to keep,\r\n        it is a good idea to save them to file.\r\n    </p>\r\n    <h2>\r\n        Procedure\r\n    </h2>\r\n    <p>\r\n        The Procedure viewport allows you to define the procedure that gets\r\n        executed inside a node. The Procedure shown in this viewport is for the\r\n        node selected in the flowchart.\r\n    </p>\r\n    <p>\r\n        The procedure is basically a small script, but rather than typing the\r\n        script in a text editor, you create your Procedure by dragging and dropping\r\n        lines of code into the script.\r\n    </p>\r\n    <p>\r\n        The procedure consists of three sections, each of which can be expanded and\r\n        contracted. The Input and Outputs sections list the input and outputs for\r\n        the node. For each input and output, the name can be set, and the type can\r\n        be selected from a drop-down list. Based on the selection, other settings\r\n        can be set. Selecting an input or output line will show a ‘delete’ button\r\n        on the right hand side, allowing you to delete it.\r\n    </p>\r\n    <p>\r\n        The main procedure is define under the Procedure section. The procedure\r\n        consists of a sequence of lines of code that get executed one at a time.\r\n        These lines of code will read data from the inputs and write data to the\r\n        outputs. In the example below, the procedure has three lines of code that\r\n        do the following:\r\n    </p>\r\n    <p>\r\n        1. Creates a variable called ‘my_var’ and sets its value to the value from\r\n        the first input multiplied by 10.\r\n    </p>\r\n    <p>\r\n        2. Creates a second variable called ‘rand_num’ and uses a function call to\r\n        set its value to a random number between 0 and 1.\r\n    </p>\r\n    <p>\r\n        3. Set the value of the first output (named ‘out0’) to the value of\r\n        ‘my_var’ divided by the value of ‘rand_num’.\r\n    </p>\r\n    <p align=\"center\">\r\n        <img\r\n            width=\"201\"\r\n            height=\"152\"\r\n            src=\"./assets/img/info/image010.jpg\"\r\n        />\r\n    </p>\r\n    <p>\r\n        Procedures will typically include one or more function calls, and may also\r\n        include various variable assignments, for-each loops, and if-else\r\n        conditions. Clicking any of these items in the left sidebar will add them\r\n        to the procedure, underneath the currently selected line. The lines of code\r\n        can be repositioned by dragging and dropping.\r\n    </p>\r\n    <p>\r\n        There are four types of lines of code that can be inserted:\r\n    </p>\r\n    <p>\r\n        · Variable: Create a new variable or assigns a value to an existing\r\n        variable. Variables can have different data types. See Data Types for a\r\n        more detailed explanation.\r\n    </p>\r\n    <p>\r\n        · For-each loop: Create a loop that repeats the operations inside it,\r\n        multiple times. See For-Loop for a more detailed explanation.\r\n    </p>\r\n    <p>\r\n        · If-else condition: Create a conditional statement, and execute the\r\n        operations inside it based on whether the condition is true or false.\r\n    </p>\r\n    <p>\r\n        · Function: Call a function in the built the function library.\r\n    </p>\r\n    <p>\r\n        Selecting or hovering on a line in the procedure will show a set of buttons\r\n        on the right hand side.\r\n    </p>\r\n    <p>\r\n        · Help: Show the help for the particular function. The help will be\r\n        displayed in under the Output viewport.\r\n    </p>\r\n    <p>\r\n        · Print: Prints the value generated by that line of code to the console.\r\n        This is mainly used for debugging.\r\n    </p>\r\n    <p>\r\n        · Disable: Disables the line of code. When the code is executed, it will\r\n        simply ignore this line of code.\r\n    </p>\r\n    <ul>\r\n        <li>\r\n            Delete: Deletes the line of code.\r\n        </li>\r\n    </ul>\r\n    <p>\r\n        For more information about writing Procedures, see the Procedure help file.\r\n    </p>\r\n    <h2>\r\n        Parameters\r\n    </h2>\r\n    <p>\r\n        Each node can have zero or more parameters whose values can be set in the\r\n        Parameters viewport. The parameters shown in this viewport are for the node\r\n        selected in the flowchart.\r\n    </p>\r\n    <p>\r\n        The parameters are all node inputs for which no wires have been attached.\r\n        In the example below, the node has three inputs. The first input (‘in0’)\r\n        has a wire attached, so it does not appear as a parameter. The other two\r\n        parameters have no wires, so these will appear as Parameters whose values\r\n        you can set manually in the parameters viewport.\r\n    </p>\r\n    <p align=\"center\">\r\n        <img\r\n            width=\"82\"\r\n            height=\"117\"\r\n            src=\"./assets/img/info/image012.jpg\"\r\n        />\r\n        <img\r\n            width=\"294\"\r\n            height=\"112\"\r\n            src=\"./assets/img/info/image014.jpg\"\r\n        />\r\n    </p>\r\n    <p>\r\n        Clicking the execute button will execute the flowchart with the specified\r\n        parameters.\r\n    </p>\r\n    <h2>\r\n        Output\r\n    </h2>\r\n    <p>\r\n        Once a flowchart has been executed, the results can be viewed in the Output\r\n        viewport. The outputs that are shown in this viewport are for the node\r\n        selected in the flowchart.\r\n    </p>\r\n    <p>\r\n        The Output viewport has a number of different viewers.\r\n    </p>\r\n    <p>\r\n        The Console viewer shows messages resulting from the execution of the\r\n        flowchart. Each message has a time stamp and a short piece of text. If any\r\n        errors occurred, then an error message will also be shown. These outputs\r\n        are not linked to any particular node. As a result, selecting different\r\n        nodes in the flowchart has no effect on what is being displayed in the\r\n        Console. This is not the case with the other Output viewers.\r\n    </p>\r\n    <p>\r\n        The Console is an important viewer when debugging. For example, in the\r\n        example below, the ‘print’ on the variable called ‘rand_num’ was enabled,\r\n        which resulted in the value being printed out as a console message. This\r\n        allows you to see that variable was set to a value of ‘0.154…’.\r\n    </p>\r\n    <p align=\"center\">\r\n        <img\r\n            width=\"202\"\r\n            height=\"189\"\r\n            src=\"./assets/img/info/image016.jpg\"\r\n        />\r\n    </p>\r\n    <p>\r\n        The Text viewer shows the output or all the outputs of the node selected in\r\n        the Viewport. This is the most basic was of looking at the output of the\r\n        node, and works for any type of output. If the output is actually a text\r\n        value, then it is directly printed in the text viewer. If the output is not\r\n        text, then it is first converted to text and shown in the viewer.\r\n    </p>\r\n    <p align=\"center\">\r\n        <img\r\n            width=\"132\"\r\n            height=\"219\"\r\n            src=\"./assets/img/info/image018.jpg\"\r\n        />\r\n        <img\r\n            width=\"77\"\r\n            height=\"100\"\r\n            src=\"./assets/img/info/image020.jpg\"\r\n        />\r\n    </p>\r\n    <p>\r\n        The 3D viewer shows the output for the selected output port for the\r\n        selected node in the flowchart. Selecting different nodes and different\r\n        output ports in the flowchart will change what is being displayed in the 3D\r\n        viewer. However, note that the 3D viewer will only be able to display the\r\n        output if the content is compatible. Thus, if an output port is outputting\r\n        some text, then there is little that the 3D viewer will be able to do with\r\n        this and as a result nothing will be displayed.\r\n    </p>\r\n    <p>\r\n        In order to make switching between viewers easier, each output port has a\r\n        default Viewer. When an output port is selected, and the Output window will\r\n        automatically switch to that default Viewer. In the example below, the\r\n        first output (‘out0’) is set to use the Console viewer is set to use the\r\n        Console Viewer, while the other two outputs (‘out1’ and ‘out2’) are set to\r\n        use the Text Viewer.\r\n    </p>\r\n    <p align=\"center\">\r\n        <img\r\n            width=\"217\"\r\n            height=\"70\"\r\n            src=\"./assets/img/info/image022.jpg\"\r\n        />\r\n    </p>\r\n</div>"
-
-/***/ }),
-
-/***/ "../../../../../src/app/ui-components/viewers/info-viewer/info-viewer.component.scss":
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, ".reset {\n  margin: 0px;\n  padding: 0px; }\n\n.default {\n  font-size: 12px;\n  color: #8AA8C0;\n  line-height: 150px;\n  text-align: center; }\n\n.viewer {\n  /* \twidth: 100%; \r\noverflow: auto;\r\n\r\npadding: 0px;\r\nmargin: 0px;\r\n\r\n.header{\r\n\r\n\tdisplay: flex; \r\n\tflex-direction: row; \r\n\tjustify-content: space-between;\r\n\r\n\tposition: relative;\r\n\tfont-size: 14px; \r\n\tfont-weight: 600; \r\n\tline-height: $header-height;\r\n\ttext-transform: uppercase;\r\n\tletter-spacing: 1.5px;\r\n\theight: $header-height;\r\n\r\n\tcolor: #ADADAD;\r\n\r\n\t.btn-group{\r\n\t\theight: $header-height; \r\n\r\n\t\tbutton{\r\n\t\t\twidth: 0.9*$header-height; \r\n\t\t\theight: 0.9*$header-height; \r\n\t\t\tmargin: 0px;\r\n\t\t\tborder: 1px solid #B4B1B1;\r\n\t\t\tbox-shadow: none;\r\n\r\n\t\t\t&:focus{\r\n\t\t\t\t\r\n\t\t\t}\r\n\t\t}\r\n\t\t\r\n\t}\r\n\r\n}\r\n\r\n.container{\r\n}\r\n\r\nbutton{\r\n\t&:focus{\r\n\t\t\r\n\t}\r\n} */ }\n\n.viewer .container {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    height: 100%; }\n\n.viewer .container .view-container {\n      -webkit-box-sizing: border-box;\n              box-sizing: border-box;\n      height: 100%;\n      width: 100%;\n      padding-bottom: 30px;\n      overflow: auto; }\n\n.viewer {\n  padding: 15px;\n  height: auto;\n  overflow: auto; }\n", ""]);
-
-// exports
-
-
-/*** EXPORTS FROM exports-loader ***/
-module.exports = module.exports.toString();
-
-/***/ }),
-
-/***/ "../../../../../src/app/ui-components/viewers/info-viewer/info-viewer.component.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return InfoViewerComponent; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm2015/core.js");
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-let InfoViewerComponent = class InfoViewerComponent {
-    constructor() { }
-    ngOnInit() {
-    }
-};
-InfoViewerComponent = __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-        selector: 'app-info-viewer',
-        template: __webpack_require__("../../../../../src/app/ui-components/viewers/info-viewer/info-viewer.component.html"),
-        styles: [__webpack_require__("../../../../../src/app/ui-components/viewers/info-viewer/info-viewer.component.scss")]
-    }),
-    __metadata("design:paramtypes", [])
-], InfoViewerComponent);
-
-
-
-/***/ }),
-
 /***/ "../../../../../src/app/ui-components/viewers/module-viewer/module-viewer.component.html":
 /***/ (function(module, exports) {
 
@@ -6289,7 +7156,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".reset {\n  margin: 0px;\n  padding: 0px; }\n\n.default {\n  font-size: 12px;\n  color: #8AA8C0;\n  line-height: 150px;\n  text-align: center; }\n\n.viewer {\n  /* \twidth: 100%; \r\noverflow: auto;\r\n\r\npadding: 0px;\r\nmargin: 0px;\r\n\r\n.header{\r\n\r\n\tdisplay: flex; \r\n\tflex-direction: row; \r\n\tjustify-content: space-between;\r\n\r\n\tposition: relative;\r\n\tfont-size: 14px; \r\n\tfont-weight: 600; \r\n\tline-height: $header-height;\r\n\ttext-transform: uppercase;\r\n\tletter-spacing: 1.5px;\r\n\theight: $header-height;\r\n\r\n\tcolor: #ADADAD;\r\n\r\n\t.btn-group{\r\n\t\theight: $header-height; \r\n\r\n\t\tbutton{\r\n\t\t\twidth: 0.9*$header-height; \r\n\t\t\theight: 0.9*$header-height; \r\n\t\t\tmargin: 0px;\r\n\t\t\tborder: 1px solid #B4B1B1;\r\n\t\t\tbox-shadow: none;\r\n\r\n\t\t\t&:focus{\r\n\t\t\t\t\r\n\t\t\t}\r\n\t\t}\r\n\t\t\r\n\t}\r\n\r\n}\r\n\r\n.container{\r\n}\r\n\r\nbutton{\r\n\t&:focus{\r\n\t\t\r\n\t}\r\n} */ }\n\n.viewer .container {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    height: 100%; }\n\n.viewer .container .view-container {\n      -webkit-box-sizing: border-box;\n              box-sizing: border-box;\n      height: 100%;\n      width: 100%;\n      padding-bottom: 30px;\n      overflow: auto; }\n\n.viewer .function {\n  border-bottom: 1px solid gray;\n  padding: 5px;\n  margin: 0px 5px 0px 5px; }\n\n.viewer .function:hover {\n    background-color: #BDBABA;\n    cursor: move; }\n", ""]);
+exports.push([module.i, ".reset {\n  margin: 0px;\n  padding: 0px; }\n\n.default {\n  font-size: 12px;\n  color: #8AA8C0;\n  line-height: 150px;\n  text-align: center; }\n\n.viewer {\n  /* \twidth: 100%; \r\noverflow: auto;\r\n\r\npadding: 0px;\r\nmargin: 0px;\r\n\r\n.header{\r\n\r\n\tdisplay: flex; \r\n\tflex-direction: row; \r\n\tjustify-content: space-between;\r\n\r\n\tposition: relative;\r\n\tfont-size: 14px; \r\n\tfont-weight: 600; \r\n\tline-height: $header-height;\r\n\ttext-transform: uppercase;\r\n\tletter-spacing: 1.5px;\r\n\theight: $header-height;\r\n\r\n\tcolor: #ADADAD;\r\n\r\n\t.btn-group{\r\n\t\theight: $header-height; \r\n\r\n\t\tbutton{\r\n\t\t\twidth: 0.9*$header-height; \r\n\t\t\theight: 0.9*$header-height; \r\n\t\t\tmargin: 0px;\r\n\t\t\tborder: 1px solid #B4B1B1;\r\n\t\t\tbox-shadow: none;\r\n\r\n\t\t\t&:focus{\r\n\t\t\t\t\r\n\t\t\t}\r\n\t\t}\r\n\t\t\r\n\t}\r\n\r\n}\r\n\r\n.container{\r\n}\r\n\r\nbutton{\r\n\t&:focus{\r\n\t\t\r\n\t}\r\n} */ }\n  .viewer .container {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    height: 100%; }\n    .viewer .container .view-container {\n      box-sizing: border-box;\n      height: 100%;\n      width: 100%;\n      padding-bottom: 30px;\n      overflow: auto; }\n\n.viewer .function {\n  border-bottom: 1px solid gray;\n  padding: 5px;\n  margin: 0px 5px 0px 5px; }\n  .viewer .function:hover {\n    background-color: #BDBABA;\n    cursor: move; }\n", ""]);
 
 // exports
 
@@ -6353,7 +7220,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".reset {\n  margin: 0px;\n  padding: 0px; }\n\n.default {\n  font-size: 12px;\n  color: #8AA8C0;\n  line-height: 150px;\n  text-align: center; }\n\n.viewer {\n  /* \twidth: 100%; \r\noverflow: auto;\r\n\r\npadding: 0px;\r\nmargin: 0px;\r\n\r\n.header{\r\n\r\n\tdisplay: flex; \r\n\tflex-direction: row; \r\n\tjustify-content: space-between;\r\n\r\n\tposition: relative;\r\n\tfont-size: 14px; \r\n\tfont-weight: 600; \r\n\tline-height: $header-height;\r\n\ttext-transform: uppercase;\r\n\tletter-spacing: 1.5px;\r\n\theight: $header-height;\r\n\r\n\tcolor: #ADADAD;\r\n\r\n\t.btn-group{\r\n\t\theight: $header-height; \r\n\r\n\t\tbutton{\r\n\t\t\twidth: 0.9*$header-height; \r\n\t\t\theight: 0.9*$header-height; \r\n\t\t\tmargin: 0px;\r\n\t\t\tborder: 1px solid #B4B1B1;\r\n\t\t\tbox-shadow: none;\r\n\r\n\t\t\t&:focus{\r\n\t\t\t\t\r\n\t\t\t}\r\n\t\t}\r\n\t\t\r\n\t}\r\n\r\n}\r\n\r\n.container{\r\n}\r\n\r\nbutton{\r\n\t&:focus{\r\n\t\t\r\n\t}\r\n} */ }\n\n.viewer .container {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    height: 100%; }\n\n.viewer .container .view-container {\n      -webkit-box-sizing: border-box;\n              box-sizing: border-box;\n      height: 100%;\n      width: 100%;\n      padding-bottom: 30px;\n      overflow: auto; }\n\n.node {\n  cursor: pointer; }\n\n.node:hover {\n    color: white; }\n\n.disabled {\n  color: #8AA8C0; }\n", ""]);
+exports.push([module.i, ".reset {\n  margin: 0px;\n  padding: 0px; }\n\n.default {\n  font-size: 12px;\n  color: #8AA8C0;\n  line-height: 150px;\n  text-align: center; }\n\n.viewer {\n  /* \twidth: 100%; \r\noverflow: auto;\r\n\r\npadding: 0px;\r\nmargin: 0px;\r\n\r\n.header{\r\n\r\n\tdisplay: flex; \r\n\tflex-direction: row; \r\n\tjustify-content: space-between;\r\n\r\n\tposition: relative;\r\n\tfont-size: 14px; \r\n\tfont-weight: 600; \r\n\tline-height: $header-height;\r\n\ttext-transform: uppercase;\r\n\tletter-spacing: 1.5px;\r\n\theight: $header-height;\r\n\r\n\tcolor: #ADADAD;\r\n\r\n\t.btn-group{\r\n\t\theight: $header-height; \r\n\r\n\t\tbutton{\r\n\t\t\twidth: 0.9*$header-height; \r\n\t\t\theight: 0.9*$header-height; \r\n\t\t\tmargin: 0px;\r\n\t\t\tborder: 1px solid #B4B1B1;\r\n\t\t\tbox-shadow: none;\r\n\r\n\t\t\t&:focus{\r\n\t\t\t\t\r\n\t\t\t}\r\n\t\t}\r\n\t\t\r\n\t}\r\n\r\n}\r\n\r\n.container{\r\n}\r\n\r\nbutton{\r\n\t&:focus{\r\n\t\t\r\n\t}\r\n} */ }\n  .viewer .container {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    height: 100%; }\n    .viewer .container .view-container {\n      box-sizing: border-box;\n      height: 100%;\n      width: 100%;\n      padding-bottom: 30px;\n      overflow: auto; }\n\n.node {\n  cursor: pointer; }\n  .node:hover {\n    color: white; }\n\n.disabled {\n  color: #8AA8C0; }\n", ""]);
 
 // exports
 
@@ -6428,7 +7295,7 @@ NodeLibraryComponent = __decorate([
 /***/ "../../../../../src/app/ui-components/viewers/parameter-viewer/parameter-viewer.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"viewer\">\r\n\r\n\t<div class=\"container\">\r\n\r\n\t\t<div class=\"default\" *ngIf='_inputs == undefined || _inputs.length == 0'>\r\n\t\t\tThis node has no inputs\r\n\t\t</div>\r\n \r\n\t\t<div class='paramater-container' *ngFor=\"let inp of _inputs\" >\r\n\t\t\t\r\n\t\t\t<div class=\"info\">\r\n\t\t\t\t<div class='param'>\r\n\t\t\t\t\t<!--<span class='label'>Name</span>-->\r\n\t\t\t\t\t<span class='content'>{{ inp.getName() }}</span>\r\n\t\t\t\t</div>\r\n\t\t\t</div>\r\n\r\n\t\t\t<div class=\"value\">\r\n\t\t\t\t<form  class='content'>\r\n\t\t\t\t\t<mat-form-field>\r\n\t\t\t\t\t\t<textarea matInput \r\n\t\t\t\t\t\t\tmatTextareaAutosize \r\n\t\t\t\t\t\t\tmatAutosizeMinRows=\"1\"\r\n\t            \t\t\tmatAutosizeMaxRows=\"5\" \r\n\t            \t\t\t(change)=\"updateComputedValue($event, inp)\"\r\n\t            \t\t\tvalue=\"{{ getValue(inp) }}\">\r\n\t            \t\t</textarea>\r\n\t\t\t\t\t</mat-form-field>\r\n\t\t\t\t</form>\r\n\t\t\t</div> \r\n\r\n\t\t</div>\r\n\r\n\t\t\t<!-- todo: disable if port is connected -->\r\n\t\t\t<!-- ui options based on type -->\r\n\t\t\t<!-- todo: -->\r\n\t</div>\r\n\t<button id=\"execute\" mat-raised-button color=\"accent\" (click)=\"executeFlowchart($event)\">Execute Flowchart</button>  \r\n\r\n</div>\r\n\r\n"
+module.exports = "<div class=\"viewer\">\r\n\r\n\t<div class=\"container\">\r\n\r\n\t\t<div class=\"default\" *ngIf='_inputs == undefined || _inputs.length == 0'>\r\n\t\t\tThis node has no inputs\r\n\t\t</div>\r\n \r\n\t\t<div class='paramater-container' *ngFor=\"let inp of _inputs\" >\r\n\t\t\t\r\n\t\t\t<div class=\"info\">\r\n\t\t\t\t<div class='param'>\r\n\t\t\t\t\t<!--<span class='label'>Name</span>-->\r\n\t\t\t\t\t<span class='content'>{{ inp.getName() }}</span>\r\n\t\t\t\t</div>\r\n\t\t\t</div>\r\n\t\r\n\r\n\t\t\t<!-- if input type == Input -->\r\n\t\t\t<div class=\"value\" *ngIf=\"inp.getType() == InputPortTypes.Input\">\r\n\t\t\t\t<form  class='content'>\r\n\t\t\t\t\t<mat-form-field>\r\n\t\t\t\t\t\t<textarea matInput \r\n\t\t\t\t\t\t\tmatTextareaAutosize \r\n\t\t\t\t\t\t\tmatAutosizeMinRows=\"1\"\r\n\t            \t\t\tmatAutosizeMaxRows=\"5\" \r\n\t            \t\t\t(change)=\"updateComputedValue($event, inp)\"\r\n\t            \t\t\tvalue=\"{{ getValue(inp) }}\">\r\n\t            \t\t</textarea>\r\n\t\t\t\t\t</mat-form-field>\r\n\t\t\t\t</form>\r\n\t\t\t</div> \r\n\r\n\t\t\t<!-- if input type == Slider -->\r\n\t\t\t<div class=\"value\" \r\n\t\t\t\t*ngIf=\"inp.getType() == InputPortTypes.Slider\">\r\n\t\t\t\t<mat-slider min=\"{{inp.getOpts().min}}\" \r\n\t\t\t\t\t\t\tmax=\"{{inp.getOpts().max}}\" \r\n\t\t\t\t\t\t\tstep=\"{{inp.getOpts().step}}\" \r\n\t\t\t\t\t\t\t[thumb-label]=\"true\"\r\n\t\t\t\t\t\t\t[(ngModel)]=\"value\"\r\n\t\t\t\t\t\t\t(change)=\"updateComputedValue($event, inp, value)\"\r\n\t\t\t\t\t\t\tvalue=\"{{ getValue(inp) }}\"></mat-slider>\r\n\t\t\t</div>\r\n\r\n\t\t</div>\r\n\r\n\t\t\t<!-- todo: disable if port is connected -->\r\n\t\t\t<!-- ui options based on type -->\r\n\t\t\t<!-- todo: -->\r\n\t</div>\r\n\t<button id=\"execute\" mat-raised-button color=\"accent\" (click)=\"executeFlowchart($event)\">Execute Flowchart</button>  \r\n\r\n</div>\r\n\r\n"
 
 /***/ }),
 
@@ -6440,7 +7307,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".reset {\n  margin: 0px;\n  padding: 0px; }\n\n.default {\n  font-size: 12px;\n  color: #8AA8C0;\n  line-height: 150px;\n  text-align: center; }\n\n.viewer {\n  /* \twidth: 100%; \r\noverflow: auto;\r\n\r\npadding: 0px;\r\nmargin: 0px;\r\n\r\n.header{\r\n\r\n\tdisplay: flex; \r\n\tflex-direction: row; \r\n\tjustify-content: space-between;\r\n\r\n\tposition: relative;\r\n\tfont-size: 14px; \r\n\tfont-weight: 600; \r\n\tline-height: $header-height;\r\n\ttext-transform: uppercase;\r\n\tletter-spacing: 1.5px;\r\n\theight: $header-height;\r\n\r\n\tcolor: #ADADAD;\r\n\r\n\t.btn-group{\r\n\t\theight: $header-height; \r\n\r\n\t\tbutton{\r\n\t\t\twidth: 0.9*$header-height; \r\n\t\t\theight: 0.9*$header-height; \r\n\t\t\tmargin: 0px;\r\n\t\t\tborder: 1px solid #B4B1B1;\r\n\t\t\tbox-shadow: none;\r\n\r\n\t\t\t&:focus{\r\n\t\t\t\t\r\n\t\t\t}\r\n\t\t}\r\n\t\t\r\n\t}\r\n\r\n}\r\n\r\n.container{\r\n}\r\n\r\nbutton{\r\n\t&:focus{\r\n\t\t\r\n\t}\r\n} */ }\n\n.viewer .container {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    height: 100%; }\n\n.viewer .container .view-container {\n      -webkit-box-sizing: border-box;\n              box-sizing: border-box;\n      height: 100%;\n      width: 100%;\n      padding-bottom: 30px;\n      overflow: auto; }\n\ndiv.mat-input-wrapper.mat-form-field-wrapper {\n  padding: 0; }\n\n.viewer {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  -ms-flex-wrap: no-wrap;\n      flex-wrap: no-wrap;\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n  background-color: white;\n  -webkit-box-sizing: border-box;\n          box-sizing: border-box;\n  height: 100%;\n  width: 100%;\n  padding-bottom: 30px;\n  /* \t.input{\r\n\tpadding: 0px 15px;\r\n\tborder-bottom: 1px solid gray;\r\n\r\n\t.row{\r\n\t\twidth: 100%; \r\n\r\n\t\t.label{\r\n\t\t\tdisplay: inline-block;\r\n\t\t\ttext-transform: uppercase;\r\n\t\t\tfont-size: 10px; \r\n\t\t\tcolor: gray; \r\n\t\t\twidth: 10%; \r\n\t\t\tmin-width: 50px;\r\n\t\t}\r\n\r\n\t\t.content{\r\n\t\t\twidth: 90%;\r\n\t\t\tmin-width: 50px;\r\n\r\n\r\n\t\t\t&.undefined{\r\n\t\t\t\tborder-bottom: 1px dashed blue;\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n} */ }\n\n.viewer .container {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column;\n    overflow: auto;\n    -webkit-box-sizing: border-box;\n            box-sizing: border-box;\n    height: auto;\n    padding-bottom: 36px; }\n\n.viewer .container .paramater-container {\n      -webkit-box-flex: 1;\n          -ms-flex-positive: 1;\n              flex-grow: 1;\n      -ms-flex-negative: 0;\n          flex-shrink: 0;\n      height: auto;\n      display: -webkit-box;\n      display: -ms-flexbox;\n      display: flex;\n      -webkit-box-orient: horizontal;\n      -webkit-box-direction: normal;\n          -ms-flex-direction: row;\n              flex-direction: row;\n      -webkit-box-pack: space-equally;\n          -ms-flex-pack: space-equally;\n              justify-content: space-equally;\n      font-size: 15px;\n      line-height: 18px;\n      border-bottom: 1px solid #8AA8C0;\n      width: 100%;\n      padding: 2px 0px;\n      /*.connection{\r\n\t\t\t\t\t//border-bottom: 1px solid $color2;\r\n\t\t\t\t\tpadding: 0 0 $default-side-padding 0;\r\n\t\t\t\t\tmargin: 0;\r\n\t\t\t}*/\n      /*border-top: 1px dashed $color1;\r\n\t\t\tborder-bottom: 1px dashed $color1;*/ }\n\n.viewer .container .paramater-container .info {\n        background-color: white;\n        padding: 0 15px;\n        color: #395D73;\n        width: 20%; }\n\n.viewer .container .paramater-container .info .param {\n          display: -webkit-box;\n          display: -ms-flexbox;\n          display: flex;\n          margin: 5px 0px;\n          height: 100%;\n          -webkit-box-align: center;\n              -ms-flex-align: center;\n                  align-items: center;\n          -webkit-box-pack: center;\n              -ms-flex-pack: center;\n                  justify-content: center; }\n\n.viewer .container .paramater-container .info .param .content {\n            font-size: 12px; }\n\n.viewer .container .paramater-container .value {\n        display: -webkit-box;\n        display: -ms-flexbox;\n        display: flex;\n        -webkit-box-align: center;\n            -ms-flex-align: center;\n                align-items: center;\n        -webkit-box-pack: center;\n            -ms-flex-pack: center;\n                justify-content: center; }\n\n.viewer .container .paramater-container .value .content {\n          /*input{\r\n\t\t\t\t\t\tcolor: $color1;\r\n\t\t\t\t\t\tborder:0;\r\n\t\t\t\t\t\tborder-style: solid !important;\r\n\t\t\t\t\t\tborder-bottom: 1px solid $color1;\r\n\t\t\t\t\t\t&:hover{\r\n\t\t\t\t\t\t\tbackground-color: $color4;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t&:focus{\r\n\t\t\t\t\t\t\tbackground-color: $color4;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t}*/ }\n\n#execute {\n  width: 100%;\n  background-color: #82BF6E;\n  color: white;\n  height: 36px;\n  -ms-flex-item-align: end;\n      align-self: flex-end;\n  -ms-flex-negative: 0;\n      flex-shrink: 0; }\n\n#execute:hover {\n    background-color: #F0BFA0;\n    color: #F07A79; }\n", ""]);
+exports.push([module.i, ".reset {\n  margin: 0px;\n  padding: 0px; }\n\n.default {\n  font-size: 12px;\n  color: #8AA8C0;\n  line-height: 150px;\n  text-align: center; }\n\n.viewer {\n  /* \twidth: 100%; \r\noverflow: auto;\r\n\r\npadding: 0px;\r\nmargin: 0px;\r\n\r\n.header{\r\n\r\n\tdisplay: flex; \r\n\tflex-direction: row; \r\n\tjustify-content: space-between;\r\n\r\n\tposition: relative;\r\n\tfont-size: 14px; \r\n\tfont-weight: 600; \r\n\tline-height: $header-height;\r\n\ttext-transform: uppercase;\r\n\tletter-spacing: 1.5px;\r\n\theight: $header-height;\r\n\r\n\tcolor: #ADADAD;\r\n\r\n\t.btn-group{\r\n\t\theight: $header-height; \r\n\r\n\t\tbutton{\r\n\t\t\twidth: 0.9*$header-height; \r\n\t\t\theight: 0.9*$header-height; \r\n\t\t\tmargin: 0px;\r\n\t\t\tborder: 1px solid #B4B1B1;\r\n\t\t\tbox-shadow: none;\r\n\r\n\t\t\t&:focus{\r\n\t\t\t\t\r\n\t\t\t}\r\n\t\t}\r\n\t\t\r\n\t}\r\n\r\n}\r\n\r\n.container{\r\n}\r\n\r\nbutton{\r\n\t&:focus{\r\n\t\t\r\n\t}\r\n} */ }\n  .viewer .container {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    height: 100%; }\n    .viewer .container .view-container {\n      box-sizing: border-box;\n      height: 100%;\n      width: 100%;\n      padding-bottom: 30px;\n      overflow: auto; }\n\ndiv.mat-input-wrapper.mat-form-field-wrapper {\n  padding: 0; }\n\n.viewer {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  -ms-flex-wrap: no-wrap;\n      flex-wrap: no-wrap;\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n  background-color: white;\n  box-sizing: border-box;\n  height: 100%;\n  width: 100%;\n  padding-bottom: 30px;\n  /* \t.input{\r\n\tpadding: 0px 15px;\r\n\tborder-bottom: 1px solid gray;\r\n\r\n\t.row{\r\n\t\twidth: 100%; \r\n\r\n\t\t.label{\r\n\t\t\tdisplay: inline-block;\r\n\t\t\ttext-transform: uppercase;\r\n\t\t\tfont-size: 10px; \r\n\t\t\tcolor: gray; \r\n\t\t\twidth: 10%; \r\n\t\t\tmin-width: 50px;\r\n\t\t}\r\n\r\n\t\t.content{\r\n\t\t\twidth: 90%;\r\n\t\t\tmin-width: 50px;\r\n\r\n\r\n\t\t\t&.undefined{\r\n\t\t\t\tborder-bottom: 1px dashed blue;\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n} */ }\n  .viewer .container {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column;\n    overflow: auto;\n    box-sizing: border-box;\n    height: auto;\n    padding-bottom: 36px; }\n    .viewer .container .paramater-container {\n      -webkit-box-flex: 1;\n          -ms-flex-positive: 1;\n              flex-grow: 1;\n      -ms-flex-negative: 0;\n          flex-shrink: 0;\n      height: auto;\n      display: -webkit-box;\n      display: -ms-flexbox;\n      display: flex;\n      -webkit-box-orient: horizontal;\n      -webkit-box-direction: normal;\n          -ms-flex-direction: row;\n              flex-direction: row;\n      -webkit-box-pack: space-equally;\n          -ms-flex-pack: space-equally;\n              justify-content: space-equally;\n      font-size: 15px;\n      line-height: 18px;\n      border-bottom: 1px solid #8AA8C0;\n      width: 100%;\n      padding: 2px 0px;\n      /*.connection{\r\n\t\t\t\t\t//border-bottom: 1px solid $color2;\r\n\t\t\t\t\tpadding: 0 0 $default-side-padding 0;\r\n\t\t\t\t\tmargin: 0;\r\n\t\t\t}*/\n      /*border-top: 1px dashed $color1;\r\n\t\t\tborder-bottom: 1px dashed $color1;*/ }\n      .viewer .container .paramater-container .info {\n        background-color: white;\n        padding: 0 15px;\n        color: #395D73;\n        width: 20%; }\n        .viewer .container .paramater-container .info .param {\n          display: -webkit-box;\n          display: -ms-flexbox;\n          display: flex;\n          margin: 5px 0px;\n          height: 100%;\n          -webkit-box-align: center;\n              -ms-flex-align: center;\n                  align-items: center;\n          -webkit-box-pack: center;\n              -ms-flex-pack: center;\n                  justify-content: center; }\n          .viewer .container .paramater-container .info .param .content {\n            font-size: 12px; }\n      .viewer .container .paramater-container .value {\n        display: -webkit-box;\n        display: -ms-flexbox;\n        display: flex;\n        -webkit-box-align: center;\n            -ms-flex-align: center;\n                align-items: center;\n        -webkit-box-pack: center;\n            -ms-flex-pack: center;\n                justify-content: center; }\n        .viewer .container .paramater-container .value .content {\n          /*input{\r\n\t\t\t\t\t\tcolor: $color1;\r\n\t\t\t\t\t\tborder:0;\r\n\t\t\t\t\t\tborder-style: solid !important;\r\n\t\t\t\t\t\tborder-bottom: 1px solid $color1;\r\n\t\t\t\t\t\t&:hover{\r\n\t\t\t\t\t\t\tbackground-color: $color4;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\t&:focus{\r\n\t\t\t\t\t\t\tbackground-color: $color4;\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t}*/ }\n\n#execute {\n  width: 100%;\n  background-color: #82BF6E;\n  color: white;\n  height: 36px;\n  -ms-flex-item-align: end;\n      align-self: flex-end;\n  -ms-flex-negative: 0;\n      flex-shrink: 0; }\n  #execute:hover {\n    background-color: #F0BFA0;\n    color: #F07A79; }\n", ""]);
 
 // exports
 
@@ -6457,6 +7324,7 @@ module.exports = module.exports.toString();
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ParameterViewerComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm2015/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__base_classes_viz_Viewer__ = __webpack_require__("../../../../../src/app/base-classes/viz/Viewer.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__base_classes_port_PortModule__ = __webpack_require__("../../../../../src/app/base-classes/port/PortModule.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -6468,10 +7336,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
+
 let ParameterViewerComponent = class ParameterViewerComponent extends __WEBPACK_IMPORTED_MODULE_1__base_classes_viz_Viewer__["a" /* Viewer */] {
     constructor(injector) {
         super(injector, "parameter-viewer");
         this.isVisible = false;
+        this.InputPortTypes = __WEBPACK_IMPORTED_MODULE_2__base_classes_port_PortModule__["b" /* InputPortTypes */];
     }
     ngOnInit() {
     }
@@ -6492,16 +7362,17 @@ let ParameterViewerComponent = class ParameterViewerComponent extends __WEBPACK_
     // updateInputType( type:string ){
     //   alert(type);
     // }
-    updateComputedValue($event, input) {
-        let value = $event.srcElement.value;
-        if (value.trim().length > 0) {
-            input.setComputedValue(value);
-            // put a timeout on this update or something similar to solve jumpiness
-            this.flowchartService.update();
+    updateComputedValue($event, input, value) {
+        if ($event.srcElement) {
+            value = $event.srcElement.value;
+            value = value.trim();
+            if (value.length == 0) {
+                input.setComputedValue(undefined);
+                return;
+            }
         }
-        else {
-            input.setComputedValue(undefined);
-        }
+        input.setComputedValue(value);
+        this.flowchartService.update();
     }
     getValue(port) {
         /*if(port.isConnected()){
@@ -6565,7 +7436,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".reset {\n  margin: 0px;\n  padding: 0px; }\n\n.default {\n  font-size: 12px;\n  color: #8AA8C0;\n  line-height: 150px;\n  text-align: center; }\n\n.viewer {\n  /* \twidth: 100%; \r\noverflow: auto;\r\n\r\npadding: 0px;\r\nmargin: 0px;\r\n\r\n.header{\r\n\r\n\tdisplay: flex; \r\n\tflex-direction: row; \r\n\tjustify-content: space-between;\r\n\r\n\tposition: relative;\r\n\tfont-size: 14px; \r\n\tfont-weight: 600; \r\n\tline-height: $header-height;\r\n\ttext-transform: uppercase;\r\n\tletter-spacing: 1.5px;\r\n\theight: $header-height;\r\n\r\n\tcolor: #ADADAD;\r\n\r\n\t.btn-group{\r\n\t\theight: $header-height; \r\n\r\n\t\tbutton{\r\n\t\t\twidth: 0.9*$header-height; \r\n\t\t\theight: 0.9*$header-height; \r\n\t\t\tmargin: 0px;\r\n\t\t\tborder: 1px solid #B4B1B1;\r\n\t\t\tbox-shadow: none;\r\n\r\n\t\t\t&:focus{\r\n\t\t\t\t\r\n\t\t\t}\r\n\t\t}\r\n\t\t\r\n\t}\r\n\r\n}\r\n\r\n.container{\r\n}\r\n\r\nbutton{\r\n\t&:focus{\r\n\t\t\r\n\t}\r\n} */ }\n\n.viewer .container {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    height: 100%; }\n\n.viewer .container .view-container {\n      -webkit-box-sizing: border-box;\n              box-sizing: border-box;\n      height: 100%;\n      width: 100%;\n      padding-bottom: 30px;\n      overflow: auto; }\n\n.container {\n  height: 100%;\n  width: 100%;\n  padding: 15px;\n  color: #395D73;\n  -webkit-box-sizing: border-box;\n          box-sizing: border-box;\n  overflow: auto;\n  font-family: 'Ubuntu Mono', monospace; }\n\n.container .nameLabel {\n    width: 100%; }\n\n.container .outputPort {\n    width: 100%; }\n\n.container .content {\n    margin-right: 15px;\n    width: 100%;\n    color: #F07A79;\n    font-size: 12px; }\n\n.container mat-expansion-panel-header {\n    background-color: #F1F1F1 !important;\n    border-top: 1px solid #8AA8C0 !important;\n    border-bottom: 1px solid #8AA8C0 !important;\n    padding-left: 15px !important; }\n\n.container mat-expansion-panel-header mat-panel-title {\n      color: #395D73 !important;\n      font-weight: bold !important;\n      font-size: 12px !important; }\n\n.container mat-expansion-panel-header:hover {\n      background-color: #F1F1F1 !important; }\n\nspan {\n  font-size: 15px;\n  display: block;\n  border-bottom: 1px solid #8AA8C0; }\n", ""]);
+exports.push([module.i, ".reset {\n  margin: 0px;\n  padding: 0px; }\n\n.default {\n  font-size: 12px;\n  color: #8AA8C0;\n  line-height: 150px;\n  text-align: center; }\n\n.viewer {\n  /* \twidth: 100%; \r\noverflow: auto;\r\n\r\npadding: 0px;\r\nmargin: 0px;\r\n\r\n.header{\r\n\r\n\tdisplay: flex; \r\n\tflex-direction: row; \r\n\tjustify-content: space-between;\r\n\r\n\tposition: relative;\r\n\tfont-size: 14px; \r\n\tfont-weight: 600; \r\n\tline-height: $header-height;\r\n\ttext-transform: uppercase;\r\n\tletter-spacing: 1.5px;\r\n\theight: $header-height;\r\n\r\n\tcolor: #ADADAD;\r\n\r\n\t.btn-group{\r\n\t\theight: $header-height; \r\n\r\n\t\tbutton{\r\n\t\t\twidth: 0.9*$header-height; \r\n\t\t\theight: 0.9*$header-height; \r\n\t\t\tmargin: 0px;\r\n\t\t\tborder: 1px solid #B4B1B1;\r\n\t\t\tbox-shadow: none;\r\n\r\n\t\t\t&:focus{\r\n\t\t\t\t\r\n\t\t\t}\r\n\t\t}\r\n\t\t\r\n\t}\r\n\r\n}\r\n\r\n.container{\r\n}\r\n\r\nbutton{\r\n\t&:focus{\r\n\t\t\r\n\t}\r\n} */ }\n  .viewer .container {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    height: 100%; }\n    .viewer .container .view-container {\n      box-sizing: border-box;\n      height: 100%;\n      width: 100%;\n      padding-bottom: 30px;\n      overflow: auto; }\n\n.container {\n  height: 100%;\n  width: 100%;\n  padding: 15px;\n  color: #395D73;\n  box-sizing: border-box;\n  overflow: auto;\n  font-family: 'Ubuntu Mono', monospace; }\n  .container .nameLabel {\n    width: 100%; }\n  .container .outputPort {\n    width: 100%; }\n  .container .content {\n    margin-right: 15px;\n    width: 100%;\n    color: #F07A79;\n    font-size: 12px; }\n  .container mat-expansion-panel-header {\n    background-color: #F1F1F1 !important;\n    border-top: 1px solid #8AA8C0 !important;\n    border-bottom: 1px solid #8AA8C0 !important;\n    padding-left: 15px !important; }\n    .container mat-expansion-panel-header mat-panel-title {\n      color: #395D73 !important;\n      font-weight: bold !important;\n      font-size: 12px !important; }\n    .container mat-expansion-panel-header:hover {\n      background-color: #F1F1F1 !important; }\n\nspan {\n  font-size: 15px;\n  display: block;\n  border-bottom: 1px solid #8AA8C0; }\n", ""]);
 
 // exports
 
@@ -6638,7 +7509,7 @@ TextViewerComponent = __decorate([
 /***/ "../../../../../src/app/ui-components/viewers/viewer-container/viewer-container.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"viewer-container\">     \r\n\t<mat-button-toggle-group class=\"viewer-toggle\" [(ngModel)]=\"group.value\" (change)=\"changed()\">\r\n\t\t<div class= \"btn-grp1\">\r\n\t\t\t<!-- <mat-button-toggle value=\"0\" class=\"viewer-toggle-btn\" matTooltip=\"3D Viewer\">\r\n\t\t\t  <mat-icon>3d_rotation</mat-icon>\r\n\t\t\t</mat-button-toggle> -->\r\n\t\t\t<mat-button-toggle value=\"2\" class=\"viewer-toggle-btn\" matTooltip=\"Text Viewer\">\r\n\t\t\t  <mat-icon>description</mat-icon>\r\n\t\t\t</mat-button-toggle>\r\n\t\t\t<!-- <mat-button-toggle value=\"3\" disabled class=\"viewer-toggle-btn\" matTooltip=\"??\">\r\n\t\t\t  <mat-icon>text_format</mat-icon>\r\n\t\t\t</mat-button-toggle> -->\r\n\t\t\t<mat-button-toggle value=\"3\" class=\"viewer-toggle-btn\" matTooltip=\"Console\">\r\n\t\t\t  <mat-icon>info_outline</mat-icon>\r\n\t\t\t</mat-button-toggle>\r\n\t\t\t<mat-button-toggle value=\"4\" class=\"viewer-toggle-btn\" matTooltip=\"Function Help\" >\r\n\t\t\t  <mat-icon>help_outline</mat-icon>\r\n\t\t\t</mat-button-toggle>\r\n\t\t\t<mat-button-toggle value=\"5\" class=\"viewer-toggle-btn\" matTooltip=\"About Mobius\" >\r\n\t\t\t  <mat-icon>info</mat-icon>\r\n\t\t\t</mat-button-toggle>\r\n\t\t</div>\r\n\t\t<div class = \"btn-grp2\">\r\n\t\t\t<mat-button-toggle value=\"1\" id=\"codeViewer\" class=\"viewer-toggle-btn\" matTooltip=\"Code Viewer\">\r\n\t\t\t  <mat-icon>code</mat-icon>\r\n\t\t\t</mat-button-toggle>\r\n\t\t</div>\r\n\t</mat-button-toggle-group>\r\n\r\n\t<!-- <button class=\"viewer-toggle-btn\" \r\n\t\tmatTooltip=\"Locked: {{this._lock}}\" (click)=\"lock()\" \r\n\t\tstyle=\"position: absolute;right: 0px; top:0px;\">\r\n\t\t<mat-icon>lock</mat-icon>\r\n\t</button>\r\n -->\r\n\t<!-- <app-geometry-viewer *ngIf=\"group.value == 0\"></app-geometry-viewer> -->\r\n\t<app-code-viewer *ngIf=\"group.value == 1\"></app-code-viewer>\r\n\t<app-text-viewer *ngIf=\"group.value == 2\"></app-text-viewer>\r\n\t<app-console *ngIf=\"group.value == 3\"></app-console>\r\n\t<app-help-viewer *ngIf=\"group.value == 4\"></app-help-viewer>\r\n\t<app-info-viewer *ngIf=\"group.value == 5\"></app-info-viewer>\r\n</div>"
+module.exports = "<div class=\"viewer-container\">     \r\n\t<mat-button-toggle-group class=\"viewer-toggle\" [(ngModel)]=\"group.value\" (change)=\"changed()\">\r\n\t\t<div class= \"btn-grp1\">\r\n\t\t\t<mat-button-toggle value=\"0\" class=\"viewer-toggle-btn\" matTooltip=\"3D Viewer\">\r\n\t\t\t  <mat-icon>3d_rotation</mat-icon>\r\n\t\t\t</mat-button-toggle>\r\n\t\t\t<mat-button-toggle value=\"2\" class=\"viewer-toggle-btn\" matTooltip=\"Text Viewer\">\r\n\t\t\t  <mat-icon>description</mat-icon>\r\n\t\t\t</mat-button-toggle>\r\n\t\t\t<!-- <mat-button-toggle value=\"3\" disabled class=\"viewer-toggle-btn\" matTooltip=\"??\">\r\n\t\t\t  <mat-icon>text_format</mat-icon>\r\n\t\t\t</mat-button-toggle> -->\r\n\t\t\t<mat-button-toggle value=\"3\" class=\"viewer-toggle-btn\" matTooltip=\"Console\">\r\n\t\t\t  <mat-icon>info_outline</mat-icon>\r\n\t\t\t</mat-button-toggle>\r\n\t\t\t<mat-button-toggle value=\"4\" class=\"viewer-toggle-btn\" matTooltip=\"Function Help\" >\r\n\t\t\t  <mat-icon>help_outline</mat-icon>\r\n\t\t\t</mat-button-toggle>\r\n\t\t\t<mat-button-toggle value=\"5\" class=\"viewer-toggle-btn\" matTooltip=\"About Mobius\" >\r\n\t\t\t  <mat-icon>info</mat-icon>\r\n\t\t\t</mat-button-toggle>\r\n\t\t</div>\r\n\t\t<div class = \"btn-grp2\">\r\n\t\t\t<mat-button-toggle value=\"1\" id=\"codeViewer\" class=\"viewer-toggle-btn\" matTooltip=\"Code Viewer\">\r\n\t\t\t  <mat-icon>code</mat-icon>\r\n\t\t\t</mat-button-toggle>\r\n\t\t</div>\r\n\t</mat-button-toggle-group>\r\n\r\n\t<!-- <button class=\"viewer-toggle-btn\" \r\n\t\tmatTooltip=\"Locked: {{this._lock}}\" (click)=\"lock()\" \r\n\t\tstyle=\"position: absolute;right: 0px; top:0px;\">\r\n\t\t<mat-icon>lock</mat-icon>\r\n\t</button>\r\n -->\r\n\t<app-geometry-viewer *ngIf=\"group.value == 0\"></app-geometry-viewer>\r\n\t<app-code-viewer *ngIf=\"group.value == 1\"></app-code-viewer>\r\n\t<app-text-viewer *ngIf=\"group.value == 2\"></app-text-viewer>\r\n\t<app-console *ngIf=\"group.value == 3\"></app-console>\r\n\t<app-help-viewer *ngIf=\"group.value == 4\"></app-help-viewer>\r\n\t<app-info-viewer *ngIf=\"group.value == 5\"></app-info-viewer>\r\n</div>"
 
 /***/ }),
 
@@ -6650,7 +7521,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".reset {\n  margin: 0px;\n  padding: 0px; }\n\n.default {\n  font-size: 12px;\n  color: #8AA8C0;\n  line-height: 150px;\n  text-align: center; }\n\n.viewer {\n  /* \twidth: 100%; \r\noverflow: auto;\r\n\r\npadding: 0px;\r\nmargin: 0px;\r\n\r\n.header{\r\n\r\n\tdisplay: flex; \r\n\tflex-direction: row; \r\n\tjustify-content: space-between;\r\n\r\n\tposition: relative;\r\n\tfont-size: 14px; \r\n\tfont-weight: 600; \r\n\tline-height: $header-height;\r\n\ttext-transform: uppercase;\r\n\tletter-spacing: 1.5px;\r\n\theight: $header-height;\r\n\r\n\tcolor: #ADADAD;\r\n\r\n\t.btn-group{\r\n\t\theight: $header-height; \r\n\r\n\t\tbutton{\r\n\t\t\twidth: 0.9*$header-height; \r\n\t\t\theight: 0.9*$header-height; \r\n\t\t\tmargin: 0px;\r\n\t\t\tborder: 1px solid #B4B1B1;\r\n\t\t\tbox-shadow: none;\r\n\r\n\t\t\t&:focus{\r\n\t\t\t\t\r\n\t\t\t}\r\n\t\t}\r\n\t\t\r\n\t}\r\n\r\n}\r\n\r\n.container{\r\n}\r\n\r\nbutton{\r\n\t&:focus{\r\n\t\t\r\n\t}\r\n} */ }\n\n.viewer .container {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    height: 100%; }\n\n.viewer .container .view-container {\n      -webkit-box-sizing: border-box;\n              box-sizing: border-box;\n      height: 100%;\n      width: 100%;\n      padding-bottom: 30px;\n      overflow: auto; }\n\n.viewer-toggle {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-flow: row nowrap;\n          flex-flow: row nowrap;\n  width: 100%;\n  background-color: #395D73; }\n\n.viewer-toggle span {\n    font-style: italic;\n    font-weight: bold; }\n\n.viewer-toggle mat-icon {\n    color: #8AA8C0;\n    height: 30px !important;\n    display: -webkit-box !important;\n    display: -ms-flexbox !important;\n    display: flex !important;\n    -webkit-box-align: center !important;\n        -ms-flex-align: center !important;\n            align-items: center !important;\n    -webkit-box-pack: center !important;\n        -ms-flex-pack: center !important;\n            justify-content: center !important;\n    font-size: 15px; }\n\n.viewer-toggle:hover .btn-grp1 {\n    -ms-flex-flow: wrap;\n        flex-flow: wrap; }\n\n.viewer-toggle .mat-button-toggle {\n    height: 30px !important; }\n\n.viewer-toggle .mat-button-toggle-disabled {\n    background-color: #395D73; }\n\n.viewer-toggle .mat-button-toggle-disabled mat-icon {\n      color: #F07A79 !important; }\n\n.viewer-toggle .btn-grp1 {\n    max-width: 100% !important;\n    -webkit-box-flex: 1 !important;\n        -ms-flex-positive: 1 !important;\n            flex-grow: 1 !important;\n    -ms-flex-negative: 1 !important;\n        flex-shrink: 1 !important;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-flow: row nowrap;\n            flex-flow: row nowrap; }\n\n.viewer-toggle .btn-grp2 {\n    width: 56px !important;\n    display: -webkit-box !important;\n    display: -ms-flexbox !important;\n    display: flex !important;\n    -webkit-box-orient: horizontal !important;\n    -webkit-box-direction: reverse !important;\n        -ms-flex-flow: row-reverse nowrap !important;\n            flex-flow: row-reverse nowrap !important;\n    -webkit-box-flex: 1 !important;\n        -ms-flex-positive: 1 !important;\n            flex-grow: 1 !important;\n    -ms-flex-negative: 0 !important;\n        flex-shrink: 0 !important; }\n\n.viewer-toggle-btn:hover mat-icon {\n  color: #F0BFA0; }\n\n.viewer-container {\n  position: relative;\n  height: 100%;\n  min-width: 56px !important;\n  margin: 0px !important;\n  overflow: hidden !important;\n  padding-bottom: 67.5px;\n  -webkit-box-sizing: border-box;\n          box-sizing: border-box; }\n", ""]);
+exports.push([module.i, ".reset {\n  margin: 0px;\n  padding: 0px; }\n\n.default {\n  font-size: 12px;\n  color: #8AA8C0;\n  line-height: 150px;\n  text-align: center; }\n\n.viewer {\n  /* \twidth: 100%; \r\noverflow: auto;\r\n\r\npadding: 0px;\r\nmargin: 0px;\r\n\r\n.header{\r\n\r\n\tdisplay: flex; \r\n\tflex-direction: row; \r\n\tjustify-content: space-between;\r\n\r\n\tposition: relative;\r\n\tfont-size: 14px; \r\n\tfont-weight: 600; \r\n\tline-height: $header-height;\r\n\ttext-transform: uppercase;\r\n\tletter-spacing: 1.5px;\r\n\theight: $header-height;\r\n\r\n\tcolor: #ADADAD;\r\n\r\n\t.btn-group{\r\n\t\theight: $header-height; \r\n\r\n\t\tbutton{\r\n\t\t\twidth: 0.9*$header-height; \r\n\t\t\theight: 0.9*$header-height; \r\n\t\t\tmargin: 0px;\r\n\t\t\tborder: 1px solid #B4B1B1;\r\n\t\t\tbox-shadow: none;\r\n\r\n\t\t\t&:focus{\r\n\t\t\t\t\r\n\t\t\t}\r\n\t\t}\r\n\t\t\r\n\t}\r\n\r\n}\r\n\r\n.container{\r\n}\r\n\r\nbutton{\r\n\t&:focus{\r\n\t\t\r\n\t}\r\n} */ }\n  .viewer .container {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    height: 100%; }\n    .viewer .container .view-container {\n      box-sizing: border-box;\n      height: 100%;\n      width: 100%;\n      padding-bottom: 30px;\n      overflow: auto; }\n\n.viewer-toggle {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-flow: row nowrap;\n          flex-flow: row nowrap;\n  width: 100%;\n  background-color: #395D73; }\n  .viewer-toggle span {\n    font-style: italic;\n    font-weight: bold; }\n  .viewer-toggle mat-icon {\n    color: #8AA8C0;\n    height: 30px !important;\n    display: -webkit-box !important;\n    display: -ms-flexbox !important;\n    display: flex !important;\n    -webkit-box-align: center !important;\n        -ms-flex-align: center !important;\n            align-items: center !important;\n    -webkit-box-pack: center !important;\n        -ms-flex-pack: center !important;\n            justify-content: center !important;\n    font-size: 15px; }\n  .viewer-toggle:hover .btn-grp1 {\n    -ms-flex-flow: wrap;\n        flex-flow: wrap; }\n  .viewer-toggle .mat-button-toggle {\n    height: 30px !important; }\n  .viewer-toggle .mat-button-toggle-disabled {\n    background-color: #395D73; }\n    .viewer-toggle .mat-button-toggle-disabled mat-icon {\n      color: #F07A79 !important; }\n  .viewer-toggle .btn-grp1 {\n    max-width: 100% !important;\n    -webkit-box-flex: 1 !important;\n        -ms-flex-positive: 1 !important;\n            flex-grow: 1 !important;\n    -ms-flex-negative: 1 !important;\n        flex-shrink: 1 !important;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-flow: row nowrap;\n            flex-flow: row nowrap; }\n  .viewer-toggle .btn-grp2 {\n    width: 56px !important;\n    display: -webkit-box !important;\n    display: -ms-flexbox !important;\n    display: flex !important;\n    -webkit-box-orient: horizontal !important;\n    -webkit-box-direction: reverse !important;\n        -ms-flex-flow: row-reverse nowrap !important;\n            flex-flow: row-reverse nowrap !important;\n    -webkit-box-flex: 1 !important;\n        -ms-flex-positive: 1 !important;\n            flex-grow: 1 !important;\n    -ms-flex-negative: 0 !important;\n        flex-shrink: 0 !important; }\n\n.viewer-toggle-btn:hover mat-icon {\n  color: #F0BFA0; }\n\n.viewer-container {\n  position: relative;\n  height: 100%;\n  min-width: 56px !important;\n  margin: 0px !important;\n  overflow: hidden !important;\n  padding-bottom: 67.5px;\n  box-sizing: border-box; }\n", ""]);
 
 // exports
 

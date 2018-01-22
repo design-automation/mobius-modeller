@@ -10,21 +10,21 @@ import * as OrbitControls from 'three-orbit-controls';
 @Injectable()
 export class DataService {
   
-  _OC: OrbitControls; 
+  private _OC: OrbitControls; 
 
   // gs-model that needs to be displayed
-  _gsModel: gs.IModel;
+  private _gsModel: gs.IModel;
 
   // three scene 
-  _scene:  THREE.Scene;
-  _renderer: THREE.WebGLRenderer;
-  _camera: THREE.PerspectiveCamera;
-  _orbitControls: THREE.OrbitControls;
+  private _scene:  THREE.Scene;
+  private _renderer: THREE.WebGLRenderer;
+  private _camera: THREE.PerspectiveCamera;
+  private _orbitControls: THREE.OrbitControls;
 
   // width and height
   // only set once the scene has been called
-  _width: number; 
-  _height: number;
+  private _width: number; 
+  private _height: number;
 
   _saturation:any;
   _lightness:any;
@@ -44,11 +44,22 @@ export class DataService {
   grid:boolean;
   shadow:boolean;
   frame:boolean;
+  opacity:number;
   selectcheck:boolean;
   mouse:THREE.Vector2;
   raycaster:THREE.Raycaster;
   visible:string;
-
+  sprite:THREE.Sprite[]=[];
+  selectedFaces:Array<any> = [];
+  scene_and_maps: {
+          scene: gs.IThreeScene, 
+          faces_map: Map<number, gs.ITopoPathData>, 
+          wires_map: Map<number, gs.ITopoPathData>, 
+          edges_map: Map<number, gs.ITopoPathData>} ;
+  scenechildren:Array<any>=[];
+  red:number;
+  green:number;
+  blue:number;
 
 
   // ---- 
@@ -73,7 +84,7 @@ export class DataService {
     // intializations
     // this only runs once
 
-    let default_width: number = 600, default_height: number = 600;
+    let default_width: number = 1510, default_height: number = 720;
 
     // scene
     let scene: THREE.Scene = new THREE.Scene();
@@ -88,21 +99,23 @@ export class DataService {
     // camera settings
     let aspect_ratio: number = this._width/this._height
     let camera = new THREE.PerspectiveCamera( 50, aspect_ratio, 0.01, 1000 );
-    camera.position.z = 10;
+    camera.position.y=10;
+    camera.up.set(0,0,1);
     camera.lookAt( scene.position );
     camera.updateProjectionMatrix();
 
     // orbit controls
     let _OC = OrbitControls(THREE);
     let controls: THREE.OrbitControls = new _OC( camera, renderer.domElement );
-    controls.mouseButtons = { ORBIT:0, ZOOM:null, PAN:null };
     controls.enableKeys = false;
-    controls.enabled = true;
 
     // default directional lighting
     let directional_light :THREE.DirectionalLight = new THREE.DirectionalLight( 0xffffff,0.5);
     directional_light.castShadow = false; 
     directional_light.position.copy( camera.position );
+    controls.addEventListener('change',function(){
+      directional_light.position.copy(camera.position);
+    });
     directional_light.target.position.set( 0, 0, 0 );
     
     scene.add( directional_light );
@@ -151,15 +164,23 @@ export class DataService {
     this._gsModel = model;
     this.sendMessage("model_update");
   }
+  updateModel():any{
+    var scene_and_maps: {
+          scene: gs.IThreeScene, 
+          faces_map: Map<number, gs.ITopoPathData>, 
+          wires_map: Map<number, gs.ITopoPathData>, 
+          edges_map: Map<number, gs.ITopoPathData>}= gs.genThreeOptModelAndMaps( this._gsModel );
+    return scene_and_maps;
+  }
 
 
   //
   // Getter and Setter for Scene
   //
-  addScene(scene: THREE.Scene): void{
-    console.warn("Three Scene is being reset");
-  	this._scene = scene;
-  }
+  // addScene(scene: THREE.Scene): void{
+  //   console.warn("Three Scene is being reset");
+  // 	this._scene = scene;
+  // }
 
   getScene(width?: number, height?: number): THREE.Scene{
     if(width && height){
@@ -199,6 +220,7 @@ export class DataService {
     this._lightnessValue=lightness;
   }
 
+
   gethue(_hue):any{
     this.hue = _hue;
   }
@@ -207,6 +229,23 @@ export class DataService {
   }
   getlightness(_lightness):any{
     this.lightness = _lightness;
+  }
+  getopacity(_opacity):any{
+    this.opacity = _opacity;
+  }
+  addbackvalue(red,green,blue){
+    this.red=red;
+    this.green=green;
+    this.blue=blue;
+  }
+  getred(red):any{
+    this.red=red;
+  }
+  getgreen(green):any{
+    this.green=green;
+  }
+  getblue(blue):any{
+    this.blue=blue;
   }
 
   addGeom(Geom): void{
@@ -240,6 +279,10 @@ export class DataService {
     this.selecting.push(selecting);
     this.sendMessage();
   }
+  spliceselecting(index,number){
+    this.selecting.splice(index,number);
+    this.sendMessage();
+  }
   getselecting(){
     return this.selecting;
   }
@@ -266,4 +309,29 @@ export class DataService {
    }
    return -1;
  }
+  getFaceIndex(name):number {
+   for(var i=0;i<this.selectedFaces.length;i++){
+     if(this.selectedFaces[i].name==name){
+       return i;
+     }
+   }
+   return -1;
+ }
+ addsprite(sprite){
+   this.sprite.push(sprite);
+   this.sendMessage();
+ }
+ pushsprite(sprite){
+   this.sprite=sprite;
+ }
+
+ addscenechild(scenechildren){
+   this.scenechildren=scenechildren;
+   this.sendMessage();
+ }
+ getscenechild(){
+   this.sendMessage();
+   return this.scenechildren;
+ }
+
 }
