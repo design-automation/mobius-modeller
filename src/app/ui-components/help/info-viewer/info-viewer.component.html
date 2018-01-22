@@ -1,0 +1,36 @@
+<div class="viewer">
+
+    <!-- <h1>Möbius Procedures</h1> -->
+
+    <mat-accordion *ngIf='!fnObj'>
+
+        <mat-expansion-panel [expanded]='true' class="panel">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    ABOUT
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            
+            <div class="panel-content"> 
+                <app-help-about></app-help-about>
+            </div>
+            
+        </mat-expansion-panel>
+
+        <!-- fundamentals -->
+        <mat-expansion-panel class="panel">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    FUNDAMENTALS
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            
+            <div class="panel-content"> 
+                <app-help-fundamentals></app-help-fundamentals>
+            </div>
+
+        </mat-expansion-panel>
+
+    </mat-accordion>
+
+</div>

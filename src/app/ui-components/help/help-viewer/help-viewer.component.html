@@ -1,0 +1,77 @@
+<div class="viewer">
+	
+	<h1>Möbius Functions</h1>
+
+	<mat-accordion *ngIf='!fnObj'>
+
+		<!-- functions -->
+	 	<mat-expansion-panel 
+	 		*ngFor="let m of _helpMods"
+	 		[expanded]="getModName(m.name) ==_activeMod">
+	    	<mat-expansion-panel-header>
+	    		<mat-panel-title>
+			      {{ getModName(m.name) }} 
+			    </mat-panel-title>
+	    	</mat-expansion-panel-header>
+
+			<mat-list id="{{getModName(m.name)}}" 
+				style="max-height: 500px; overflow: auto;">
+				<!-- <h3 mat-subheader>{{m.comment.shortText}}</h3> -->
+
+				<h3 mat-subheader>Functions</h3>
+			 	<mat-list-item *ngFor="let fn of m.children">
+			 		<div class = "content">
+				 		<h4 mat-line>{{fn.name}}</h4>
+	    				<p class="head-descr" mat-line>{{fn.signatures[0].comment.shortText}}</p>
+					
+						<!-- @derek: parameters-->
+						<div  class="parameters" mat-line *ngIf='fn.signatures[0].parameters'>
+							<div *ngFor="let pa of fn.signatures[0].parameters">
+								<!--<span class="topic">Name: </span>-->
+								<span class="topic">{{pa.name}}: </span>
+								<!-- <span *ngIf="pa.type">Type: {{pa.type.type}}</span> -->
+								<!--<span class="topic">Description: </span>-->
+								<span class="descr" *ngIf="pa.comment">{{pa.comment.text}}</span>
+							</div>
+						</div>
+
+						<div class="return-block">
+		    				<span class="topic">Returns: </span>
+		    				<span class="descr">{{fn.signatures[0].comment.returns}}</span>
+		    			</div>
+
+		    			
+	    				<p mat-line>	
+	    					<a href="https://phtj.github.io/gs-modelling/docs/modules/{{getUrl(m.name, fn.name)}}" target="_blank">More</a>
+	    				</p>
+
+    				</div>
+			 	</mat-list-item>
+			 	<mat-divider></mat-divider>
+			</mat-list>
+
+	 	</mat-expansion-panel>
+	 	
+	</mat-accordion>
+
+	<!-- specific function -->
+	<div *ngIf='fnObj && fnObj.name'>
+		
+		<h4>Module: {{fnObj.module}}</h4>
+		<h3>{{fnObj.name}}</h3>
+		
+		<div>
+			{{fnObj.content.signatures[0].comment.shortText}}
+			Returns: {{fnObj.content.signatures[0].comment.returns}}
+				<a href="https://phtj.github.io/gs-modelling/docs/modules/{{getUrl(fnObj.module, fnObj.name)}}" target="_blank">
+				More
+				</a>
+		</div>
+	
+		<hr>
+		
+		<div (click)="showAll()" style="cursor: pointer;">[Show All]</div>
+	
+	</div>
+
+</div>
