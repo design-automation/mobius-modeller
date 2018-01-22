@@ -135,7 +135,7 @@ export class DataService {
     //   self.light.position.copy( self._camera.position );
     // } );
     // self.light.target.position.set( 0, 0, 0 );
-    // this.scene.add( self.light );
+    // this._scene.add( self.light );
     
     this._scene = scene;
     this._renderer = renderer;
@@ -333,5 +333,64 @@ export class DataService {
    this.sendMessage();
    return this.scenechildren;
  }
+
+   zoomfit(){
+    if(this.selecting.length===0){
+      const obj=new THREE.Object3D();
+      for(var i=0;i<this._scene.children.length;i++){
+        if(this._scene.children[i].name!=="GridHelper"){
+          obj.children.push(this._scene.children[i]);
+        }
+      }
+      var boxHelper = new THREE.BoxHelper(obj);
+      boxHelper["geometry"].computeBoundingBox();
+      boxHelper["geometry"].computeBoundingSphere();
+      var boundingSphere=boxHelper["geometry"].boundingSphere;
+      var center = boundingSphere.center;
+      var radius = boundingSphere.radius;
+      var fov=this._camera.fov * ( Math.PI / 180 );
+      var vec_centre_to_pos: THREE.Vector3 = new THREE.Vector3();
+      vec_centre_to_pos.subVectors(this._camera.position, center);
+      var tmp_vec=new THREE.Vector3( center.x+Math.abs( radius / Math.sin( fov / 2 )),
+                                     center.y+Math.abs( radius / Math.sin( fov / 2 ) ),
+                                     center.z+Math.abs( radius / Math.sin( fov / 2 )));
+      vec_centre_to_pos.setLength(tmp_vec.length());
+      var perspectiveNewPos: THREE.Vector3 = new THREE.Vector3();
+      perspectiveNewPos.addVectors(center, vec_centre_to_pos);
+      var newLookAt = new THREE.Vector3(center.x,center.y,center.z)
+      this._camera.position.copy(perspectiveNewPos);
+      this._camera.lookAt(newLookAt);
+      this._camera.updateProjectionMatrix();
+      this._orbitControls.target.set(newLookAt.x, newLookAt.y,newLookAt.z);
+    }else{
+      event.preventDefault();
+      var axisX,axisY,axisZ,centerX,centerY,centerZ=0;
+      var radius=0;
+      for(var i=0;i<this.selecting.length;i++){
+        axisX+=this.selecting[i].geometry.boundingSphere.center.x;
+        axisY+=this.selecting[i].geometry.boundingSphere.center.y;
+        axisZ+=this.selecting[i].geometry.boundingSphere.center.z;
+        radius=Math.max(this.selecting[i].geometry.boundingSphere.radius,radius);
+      }
+      centerX=axisX/this._scene.children[1].children.length;
+      centerY=axisY/this._scene.children[1].children.length;
+      centerY=axisY/this._scene.children[1].children.length;
+      var center = new THREE.Vector3(centerX,centerY,centerZ);
+      var fov=this._camera.fov * ( Math.PI / 180 );
+      var vec_centre_to_pos: THREE.Vector3 = new THREE.Vector3();
+      vec_centre_to_pos.subVectors(this._camera.position, center);
+      var tmp_vec=new THREE.Vector3(center.x+Math.abs( radius / Math.sin( fov / 2 )),
+                                    center.y+Math.abs( radius / Math.sin( fov / 2 ) ),
+                                    center.z+Math.abs( radius / Math.sin( fov / 2 )));
+      vec_centre_to_pos.setLength(tmp_vec.length());
+      var perspectiveNewPos: THREE.Vector3 = new THREE.Vector3();
+      perspectiveNewPos.addVectors(center, vec_centre_to_pos);
+      var newLookAt = new THREE.Vector3(center.x,center.y,center.z)
+      this._camera.position.copy(perspectiveNewPos);
+      this._camera.lookAt(newLookAt);
+      this._camera.updateProjectionMatrix();
+      this._orbitControls.target.set(newLookAt.x, newLookAt.y,newLookAt.z);
+    }
+  }
 
 }

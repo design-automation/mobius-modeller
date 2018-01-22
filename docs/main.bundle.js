@@ -149,6 +149,7 @@ AppComponent = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__ui_components_help_info_viewer_help_template__ = __webpack_require__("../../../../../src/app/ui-components/help/info-viewer/help.template.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__gs_viewer_gs_viewer_module__ = __webpack_require__("../../../../../src/app/gs-viewer/gs-viewer.module.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_32__global_services_console_service__ = __webpack_require__("../../../../../src/app/global-services/console.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_33__ui_components_dialogs_file_load_dialog_component__ = __webpack_require__("../../../../../src/app/ui-components/dialogs/file-load-dialog.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -168,6 +169,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 /*import { ModuleService } from './global-services/module.service';
 */
+
 
 
 
@@ -216,11 +218,13 @@ AppModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_29__ui_components_help_help_viewer_help_viewer_component__["a" /* HelpViewerComponent */],
             __WEBPACK_IMPORTED_MODULE_28__ui_components_help_info_viewer_info_viewer_component__["a" /* InfoViewerComponent */],
             __WEBPACK_IMPORTED_MODULE_30__ui_components_help_info_viewer_help_template__["b" /* MobiusAbout */],
-            __WEBPACK_IMPORTED_MODULE_30__ui_components_help_info_viewer_help_template__["a" /* HelpFundamentals */]
+            __WEBPACK_IMPORTED_MODULE_30__ui_components_help_info_viewer_help_template__["a" /* HelpFundamentals */],
+            __WEBPACK_IMPORTED_MODULE_33__ui_components_dialogs_file_load_dialog_component__["a" /* FileLoadDialogComponent */]
         ],
         entryComponents: [
             __WEBPACK_IMPORTED_MODULE_21__ui_components_controls_modulebox_modulebox_component__["a" /* ModuleboxComponent */],
-            __WEBPACK_IMPORTED_MODULE_15__ui_components_editors_parameter_editor_parameter_settings_dialog_component__["a" /* ParameterSettingsDialogComponent */]
+            __WEBPACK_IMPORTED_MODULE_15__ui_components_editors_parameter_editor_parameter_settings_dialog_component__["a" /* ParameterSettingsDialogComponent */],
+            __WEBPACK_IMPORTED_MODULE_33__ui_components_dialogs_file_load_dialog_component__["a" /* FileLoadDialogComponent */]
         ],
         imports: [
             __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
@@ -751,6 +755,12 @@ class Flowchart {
         this._author = username;
     }
     ;
+    setSavedTime(date) {
+        this._lastSaved = date;
+    }
+    getSavedTime() {
+        return this._lastSaved;
+    }
     //	gets author of the flowchart
     getAuthor() {
         return this._author;
@@ -1211,6 +1221,9 @@ class GraphNode {
         this._outputs = node.getOutputs();
         this._procedure = node.getProcedure();
         return this._version++;
+    }
+    saved() {
+        this._type = this._id;
     }
     update(nodeData) {
         if (nodeData["lib"] == undefined) {
@@ -1829,6 +1842,7 @@ class Procedure {
         this._printToConsole = false;
         this.children = [];
         this._type = type;
+        this._level = 0;
         this.hasChildren = hasChildren;
         this.hasChildren = this.hasChildren;
         this.children = this.children;
@@ -1838,8 +1852,12 @@ class Procedure {
         this._leftComponent = prodData._leftComponent;
         this._rightComponent = prodData._rightComponent;
         this._parent = parent;
+        this._level = prodData._level;
         this.hasChildren = prodData.hasChildren;
         this.children = [];
+    }
+    getLevel() {
+        return this._level;
     }
     getType() {
         return this._type;
@@ -1893,6 +1911,13 @@ class Procedure {
         return this._parent;
     }
     setParent(parent) {
+        console.log(parent["_level"]);
+        if (parent && (parent["_level"] !== undefined)) {
+            this._level = parent["_level"] + 1;
+        }
+        else {
+            this._level = 0;
+        }
         this._parent = parent;
     }
     getChildren() {
@@ -2211,15 +2236,19 @@ ConsoleService = __decorate([
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return FlowchartService; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm2015/core.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_Subject__ = __webpack_require__("../../../../rxjs/_esm2015/Subject.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__base_classes_flowchart_FlowchartModule__ = __webpack_require__("../../../../../src/app/base-classes/flowchart/FlowchartModule.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__base_classes_node_NodeModule__ = __webpack_require__("../../../../../src/app/base-classes/node/NodeModule.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__base_classes_code_CodeModule__ = __webpack_require__("../../../../../src/app/base-classes/code/CodeModule.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_circular_json__ = __webpack_require__("../../../../circular-json/build/circular-json.node.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_circular_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_circular_json__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__assets_modules_AllModules__ = __webpack_require__("../../../../../src/assets/modules/AllModules.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__console_service__ = __webpack_require__("../../../../../src/app/global-services/console.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__layout_service__ = __webpack_require__("../../../../../src/app/global-services/layout.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs__ = __webpack_require__("../../../../rxjs/Rx.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_rxjs__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Subject__ = __webpack_require__("../../../../rxjs/_esm2015/Subject.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__base_classes_flowchart_FlowchartModule__ = __webpack_require__("../../../../../src/app/base-classes/flowchart/FlowchartModule.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__base_classes_node_NodeModule__ = __webpack_require__("../../../../../src/app/base-classes/node/NodeModule.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__base_classes_code_CodeModule__ = __webpack_require__("../../../../../src/app/base-classes/code/CodeModule.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_circular_json__ = __webpack_require__("../../../../circular-json/build/circular-json.node.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_circular_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_circular_json__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__assets_modules_AllModules__ = __webpack_require__("../../../../../src/assets/modules/AllModules.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__console_service__ = __webpack_require__("../../../../../src/app/global-services/console.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__layout_service__ = __webpack_require__("../../../../../src/app/global-services/layout.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__mobius_constants__ = __webpack_require__("../../../../../src/app/global-services/mobius.constants.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__angular_material__ = __webpack_require__("../../../material/esm2015/material.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2238,32 +2267,84 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
+
+
 let FlowchartService = class FlowchartService {
-    constructor(consoleService, layoutService) {
+    constructor(consoleService, layoutService, dialog) {
         this.consoleService = consoleService;
         this.layoutService = layoutService;
+        this.dialog = dialog;
         /*private _ffactory = new FlowchartFactory();
         private _fc = new FlowchartConverter();*/
         this._user = "AKM";
-        this.code_generator = __WEBPACK_IMPORTED_MODULE_4__base_classes_code_CodeModule__["a" /* CodeFactory */].getCodeGenerator("js");
+        this.code_generator = __WEBPACK_IMPORTED_MODULE_5__base_classes_code_CodeModule__["a" /* CodeFactory */].getCodeGenerator("js");
         this._savedNodes = [];
         // 
         // message handling between components
         // 
-        this.subject = new __WEBPACK_IMPORTED_MODULE_1_rxjs_Subject__["a" /* Subject */]();
+        this.subject = new __WEBPACK_IMPORTED_MODULE_2_rxjs_Subject__["a" /* Subject */]();
         this.newFile();
         this.checkSavedNodes();
+        this.checkSavedFile();
+        this.autoSave(60 * 5);
     }
     check() {
         return this._flowchart != undefined;
     }
     ;
+    autoSave(time_in_seconds) {
+        __WEBPACK_IMPORTED_MODULE_1_rxjs__["Observable"].interval(1000 * time_in_seconds).subscribe(x => {
+            // console.log("saving file");
+            this.saveFile(true);
+        });
+    }
+    checkSavedFile() {
+        this.openFileLoadDialog();
+    }
+    openFileLoadDialog() {
+        let myStorage = window.localStorage;
+        let property = __WEBPACK_IMPORTED_MODULE_10__mobius_constants__["a" /* MOBIUS */].PROPERTY.FLOWCHART;
+        let storageString = myStorage.getItem(property);
+        let message;
+        if (storageString) {
+            let fc = __WEBPACK_IMPORTED_MODULE_6_circular_json__["parse"](storageString)["flowchart"]["_lastSaved"];
+            message = "A file saved on " + (new Date(fc)).toDateString() + " at "
+                + (new Date(fc)).toTimeString() + " was found. Do you want to reload?";
+        }
+        if (message) {
+            if (confirm(message)) {
+                this.loadFile(storageString);
+            }
+            else {
+                this.newFile();
+            }
+        }
+        else {
+            this.newFile();
+        }
+        // let dialogRef = this.dialog.open(FileLoadDialogComponent, {
+        //     height: '400px',
+        //     width: '600px'
+        // });
+        // dialogRef.afterClosed().subscribe(result => {
+        //     if(result == 'load'){
+        //       console.log();
+        //     }
+        //     else if(result == 'new'){
+        //       this.newFile()
+        //     }
+        //     else{
+        //       this.newFile();
+        //     }
+        // });
+    }
     checkSavedNodes() {
         this._savedNodes = [];
         let myStorage = window.localStorage;
-        let property = "MOBIUS_NODES";
+        let property = __WEBPACK_IMPORTED_MODULE_10__mobius_constants__["a" /* MOBIUS */].PROPERTY.NODE;
         let storageString = myStorage.getItem(property);
-        let nodesStorage = JSON.parse(storageString == null ? JSON.stringify({ n: [] }) : storageString);
+        let nodesStorage = __WEBPACK_IMPORTED_MODULE_6_circular_json__["parse"](storageString == null ? __WEBPACK_IMPORTED_MODULE_6_circular_json__["stringify"]({ n: [] }) : storageString);
         let nodeData = nodesStorage.n;
         for (let n = 0; n < nodeData.length; n++) {
             let n_data = nodeData[n];
@@ -2291,15 +2372,15 @@ let FlowchartService = class FlowchartService {
         let _this = this;
         let jsonData;
         try {
-            let data = __WEBPACK_IMPORTED_MODULE_5_circular_json__["parse"](fileString);
+            let data = __WEBPACK_IMPORTED_MODULE_6_circular_json__["parse"](fileString);
             // load the required modules
             /* _this.modules.loadModules(data["module"]); */
             // load the required code generator
             if (_this.code_generator.getLanguage() != data["language"] && data["language"] !== undefined) {
-                _this.code_generator = __WEBPACK_IMPORTED_MODULE_4__base_classes_code_CodeModule__["a" /* CodeFactory */].getCodeGenerator(data["language"]);
+                _this.code_generator = __WEBPACK_IMPORTED_MODULE_5__base_classes_code_CodeModule__["a" /* CodeFactory */].getCodeGenerator(data["language"]);
             }
             // read the flowchart
-            _this._flowchart = __WEBPACK_IMPORTED_MODULE_2__base_classes_flowchart_FlowchartModule__["b" /* FlowchartReader */].readFlowchartFromData(data["flowchart"]);
+            _this._flowchart = __WEBPACK_IMPORTED_MODULE_3__base_classes_flowchart_FlowchartModule__["b" /* FlowchartReader */].readFlowchartFromData(data["flowchart"]);
             _this.update();
             this.consoleService.addMessage("File loaded successfully");
         }
@@ -2323,12 +2404,12 @@ let FlowchartService = class FlowchartService {
     
         */
         modules.map(function (mod) {
-            let name = __WEBPACK_IMPORTED_MODULE_4__base_classes_code_CodeModule__["b" /* ModuleUtils */].getName(mod);
-            let version = __WEBPACK_IMPORTED_MODULE_4__base_classes_code_CodeModule__["b" /* ModuleUtils */].getVersion(mod);
-            let author = __WEBPACK_IMPORTED_MODULE_4__base_classes_code_CodeModule__["b" /* ModuleUtils */].getAuthor(mod);
+            let name = __WEBPACK_IMPORTED_MODULE_5__base_classes_code_CodeModule__["b" /* ModuleUtils */].getName(mod);
+            let version = __WEBPACK_IMPORTED_MODULE_5__base_classes_code_CodeModule__["b" /* ModuleUtils */].getVersion(mod);
+            let author = __WEBPACK_IMPORTED_MODULE_5__base_classes_code_CodeModule__["b" /* ModuleUtils */].getAuthor(mod);
             // select the required module from the global module set - that has all the functions
-            let modClass = __WEBPACK_IMPORTED_MODULE_6__assets_modules_AllModules__[name]; //ModuleUtils.getModuleFromSet(ModuleSet, name);
-            if (__WEBPACK_IMPORTED_MODULE_4__base_classes_code_CodeModule__["b" /* ModuleUtils */].isCompatible(mod, modClass)) {
+            let modClass = __WEBPACK_IMPORTED_MODULE_7__assets_modules_AllModules__[name]; //ModuleUtils.getModuleFromSet(ModuleSet, name);
+            if (__WEBPACK_IMPORTED_MODULE_5__base_classes_code_CodeModule__["b" /* ModuleUtils */].isCompatible(mod, modClass)) {
                 moduleSet.push(modClass);
                 moduleMap[name] = modClass;
             }
@@ -2356,7 +2437,7 @@ let FlowchartService = class FlowchartService {
     //
     //
     newFile() {
-        this._flowchart = new __WEBPACK_IMPORTED_MODULE_2__base_classes_flowchart_FlowchartModule__["a" /* Flowchart */](this._user);
+        this._flowchart = new __WEBPACK_IMPORTED_MODULE_3__base_classes_flowchart_FlowchartModule__["a" /* Flowchart */](this._user);
         this._selectedNode = 0;
         this._selectedPort = 0;
         this.update();
@@ -2399,32 +2480,46 @@ let FlowchartService = class FlowchartService {
         }
         // todo: check if overwrite
         if (node.getType() !== undefined) {
-            console.log(this._savedNodes[node.getType()]);
+            console.error("This node was already in the library and shouldn't have invoked this function.");
         }
         else {
+            let message;
             let nav = navigator;
             let myStorage = window.localStorage;
-            let property = "MOBIUS_NODES";
+            let property = __WEBPACK_IMPORTED_MODULE_10__mobius_constants__["a" /* MOBIUS */].PROPERTY.NODE;
             let storageString = myStorage.getItem(property);
-            let nodesStorage = JSON.parse(storageString == null ? JSON.stringify({ n: [] }) : storageString);
-            // add the node
-            nodesStorage.n.push(node);
-            myStorage.setItem(property, JSON.stringify(nodesStorage));
-            console.log(JSON.parse(myStorage.getItem(property)).n.length + " nodes in the library");
-            /*if (nav.storage && nav.storage.persist)
-              nav.storage.persist().then(granted => {
-                if (granted){
-      
-                  alert("Storage will not be cleared except by explicit user action");
+            // initialize node storage by reading from localStorage or reading an empty array
+            let nodesStorage = __WEBPACK_IMPORTED_MODULE_6_circular_json__["parse"](storageString == null ? __WEBPACK_IMPORTED_MODULE_6_circular_json__["stringify"]({ n: [] }) : storageString);
+            // array of nodes
+            let nodes = nodesStorage.n;
+            // check is another node exists with same name
+            for (let i = 0; i < nodes.length; i++) {
+                let node_in_lib = nodes[i];
+                if (node_in_lib["_name"] === node.getName()) {
+                    message = "Node with this name already exists in the library. Either delete existing\
+            node from the library or rename your node and try again.";
+                    this.consoleService.addMessage(message);
+                    this.layoutService.showConsole();
+                    return;
                 }
-                else{
-                  alert("Storage may be cleared by the UA under storage pressure.");
-                }
-              });*/
-            // print message to console
-            this.consoleService.addMessage("Node Saved.");
-            this.checkSavedNodes();
-            this.update();
+            }
+            // no node with common name was found
+            try {
+                nodesStorage.n.push(node);
+                myStorage.setItem(property, __WEBPACK_IMPORTED_MODULE_6_circular_json__["stringify"](nodesStorage));
+                message = "Bravo! Node saved. Now you have " + (nodes.length) + " node(s) in the library!";
+                node.saved();
+                this.consoleService.addMessage(message);
+                this.layoutService.showConsole();
+                this.checkSavedNodes();
+                this.update();
+            }
+            catch (ex) {
+                this.consoleService.addMessage("Oops. Something went wrong while saving this node.\
+                                        Post the error message to the dev team on our Slack channel.");
+                this.consoleService.addMessage(ex);
+                this.layoutService.showConsole();
+            }
         }
     }
     clearLibrary() {
@@ -2446,13 +2541,13 @@ let FlowchartService = class FlowchartService {
         if (type !== undefined) {
             n_data = this._savedNodes[type];
             let default_node_name = n_data["_name"] + (this._flowchart.getNodes().length + 1);
-            new_node = new __WEBPACK_IMPORTED_MODULE_3__base_classes_node_NodeModule__["a" /* GraphNode */](default_node_name, n_data["_id"]);
+            new_node = new __WEBPACK_IMPORTED_MODULE_4__base_classes_node_NodeModule__["a" /* GraphNode */](default_node_name, n_data["_id"]);
             n_data["lib"] = true;
             new_node.update(n_data);
         }
         else {
             let default_node_name = "node" + (this._flowchart.getNodes().length + 1);
-            new_node = new __WEBPACK_IMPORTED_MODULE_3__base_classes_node_NodeModule__["a" /* GraphNode */](default_node_name, undefined);
+            new_node = new __WEBPACK_IMPORTED_MODULE_4__base_classes_node_NodeModule__["a" /* GraphNode */](default_node_name, undefined);
             new_node.addInput();
             new_node.addOutput();
         }
@@ -2651,20 +2746,29 @@ let FlowchartService = class FlowchartService {
     getCode() {
         return this.code_generator.getDisplayCode(this._flowchart);
     }
-    saveFile() {
+    saveFile(local) {
         let file = {};
         let fileString;
+        this._flowchart.setSavedTime(new Date());
         file["language"] = "js";
         file["modules"] = [];
         file["flowchart"] = this._flowchart;
-        fileString = __WEBPACK_IMPORTED_MODULE_5_circular_json__["stringify"](file);
-        this.downloadContent({
-            type: 'text/plain;charset=utf-8',
-            filename: 'Scene' + (new Date()).getTime() + ".mob",
-            content: fileString
-        });
-        // print message to console
-        this.consoleService.addMessage("File saved successfully");
+        fileString = __WEBPACK_IMPORTED_MODULE_6_circular_json__["stringify"](file);
+        if (local == true) {
+            // add file string to local storage
+            let myStorage = window.localStorage;
+            let property = __WEBPACK_IMPORTED_MODULE_10__mobius_constants__["a" /* MOBIUS */].PROPERTY.FLOWCHART;
+            myStorage.setItem(property, fileString);
+            this.consoleService.addMessage("Autosaved flowchart.");
+        }
+        else {
+            this.downloadContent({
+                type: 'text/plain;charset=utf-8',
+                filename: 'Scene' + (new Date()).getTime() + ".mob",
+                content: fileString
+            });
+            this.consoleService.addMessage("File saved successfully");
+        }
     }
     downloadContent(options) {
         if (!options || !options.content) {
@@ -2692,7 +2796,9 @@ let FlowchartService = class FlowchartService {
 };
 FlowchartService = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* Injectable */])(),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_7__console_service__["a" /* ConsoleService */], __WEBPACK_IMPORTED_MODULE_8__layout_service__["a" /* LayoutService */]])
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_8__console_service__["a" /* ConsoleService */],
+        __WEBPACK_IMPORTED_MODULE_9__layout_service__["a" /* LayoutService */],
+        __WEBPACK_IMPORTED_MODULE_11__angular_material__["e" /* MatDialog */]])
 ], FlowchartService);
 
 
@@ -2806,6 +2912,22 @@ LayoutService = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* Injectable */])(),
     __metadata("design:paramtypes", [])
 ], LayoutService);
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/global-services/mobius.constants.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+const MOBIUS = {
+    PROPERTY: {
+        NODE: "MOBIUS_NODES",
+        FLOWCHART: "MOBIUS_FC"
+    }
+};
+/* harmony export (immutable) */ __webpack_exports__["a"] = MOBIUS;
 
 
 
@@ -2942,7 +3064,7 @@ let DataService = class DataService {
         //   self.light.position.copy( self._camera.position );
         // } );
         // self.light.target.position.set( 0, 0, 0 );
-        // this.scene.add( self.light );
+        // this._scene.add( self.light );
         this._scene = scene;
         this._renderer = renderer;
         this._camera = camera;
@@ -3122,6 +3244,61 @@ let DataService = class DataService {
     getscenechild() {
         this.sendMessage();
         return this.scenechildren;
+    }
+    zoomfit() {
+        if (this.selecting.length === 0) {
+            const obj = new __WEBPACK_IMPORTED_MODULE_2_three__["Object3D"]();
+            for (var i = 0; i < this._scene.children.length; i++) {
+                if (this._scene.children[i].name !== "GridHelper") {
+                    obj.children.push(this._scene.children[i]);
+                }
+            }
+            var boxHelper = new __WEBPACK_IMPORTED_MODULE_2_three__["BoxHelper"](obj);
+            boxHelper["geometry"].computeBoundingBox();
+            boxHelper["geometry"].computeBoundingSphere();
+            var boundingSphere = boxHelper["geometry"].boundingSphere;
+            var center = boundingSphere.center;
+            var radius = boundingSphere.radius;
+            var fov = this._camera.fov * (Math.PI / 180);
+            var vec_centre_to_pos = new __WEBPACK_IMPORTED_MODULE_2_three__["Vector3"]();
+            vec_centre_to_pos.subVectors(this._camera.position, center);
+            var tmp_vec = new __WEBPACK_IMPORTED_MODULE_2_three__["Vector3"](center.x + Math.abs(radius / Math.sin(fov / 2)), center.y + Math.abs(radius / Math.sin(fov / 2)), center.z + Math.abs(radius / Math.sin(fov / 2)));
+            vec_centre_to_pos.setLength(tmp_vec.length());
+            var perspectiveNewPos = new __WEBPACK_IMPORTED_MODULE_2_three__["Vector3"]();
+            perspectiveNewPos.addVectors(center, vec_centre_to_pos);
+            var newLookAt = new __WEBPACK_IMPORTED_MODULE_2_three__["Vector3"](center.x, center.y, center.z);
+            this._camera.position.copy(perspectiveNewPos);
+            this._camera.lookAt(newLookAt);
+            this._camera.updateProjectionMatrix();
+            this._orbitControls.target.set(newLookAt.x, newLookAt.y, newLookAt.z);
+        }
+        else {
+            event.preventDefault();
+            var axisX, axisY, axisZ, centerX, centerY, centerZ = 0;
+            var radius = 0;
+            for (var i = 0; i < this.selecting.length; i++) {
+                axisX += this.selecting[i].geometry.boundingSphere.center.x;
+                axisY += this.selecting[i].geometry.boundingSphere.center.y;
+                axisZ += this.selecting[i].geometry.boundingSphere.center.z;
+                radius = Math.max(this.selecting[i].geometry.boundingSphere.radius, radius);
+            }
+            centerX = axisX / this._scene.children[1].children.length;
+            centerY = axisY / this._scene.children[1].children.length;
+            centerY = axisY / this._scene.children[1].children.length;
+            var center = new __WEBPACK_IMPORTED_MODULE_2_three__["Vector3"](centerX, centerY, centerZ);
+            var fov = this._camera.fov * (Math.PI / 180);
+            var vec_centre_to_pos = new __WEBPACK_IMPORTED_MODULE_2_three__["Vector3"]();
+            vec_centre_to_pos.subVectors(this._camera.position, center);
+            var tmp_vec = new __WEBPACK_IMPORTED_MODULE_2_three__["Vector3"](center.x + Math.abs(radius / Math.sin(fov / 2)), center.y + Math.abs(radius / Math.sin(fov / 2)), center.z + Math.abs(radius / Math.sin(fov / 2)));
+            vec_centre_to_pos.setLength(tmp_vec.length());
+            var perspectiveNewPos = new __WEBPACK_IMPORTED_MODULE_2_three__["Vector3"]();
+            perspectiveNewPos.addVectors(center, vec_centre_to_pos);
+            var newLookAt = new __WEBPACK_IMPORTED_MODULE_2_three__["Vector3"](center.x, center.y, center.z);
+            this._camera.position.copy(perspectiveNewPos);
+            this._camera.lookAt(newLookAt);
+            this._camera.updateProjectionMatrix();
+            this._orbitControls.target.set(newLookAt.x, newLookAt.y, newLookAt.z);
+        }
     }
 };
 DataService = __decorate([
@@ -4328,7 +4505,7 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
         }
         ;
         animate();
-        this.zoomfit();
+        //this.zoomfit();
     }
     //
     //  checks if the flowchart service has a flowchart and calls update function for the viewer
@@ -4741,102 +4918,6 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
         div.style.textShadow = "0px 0px 3px white";
         div.style.color = "black";
         return div;
-    }
-    /*getSceneChildren() {
-      var scenechildren=[];
-      var children;
-      for (var i = 0; i<this.scene.children.length; i++) {
-        if(this.scene.children[i].name=="Scene") {
-          children=this.scene.children[i].children;
-          break;
-        }
-        if(i==this.scene.children.length-1) {
-          return [];
-        }
-      }
-      for(var i=0;i<children.length;i++){
-        for(var j=0;j<children[i].children.length;j++){
-          if(children[i].children[j].type==="Mesh"||children[i].children[j].type==="LineSegments"||children[i].children[j].type==="LineLoop"){
-            scenechildren.push(children[i].children[j]);
-          }
-        }
-      }
-      return scenechildren;
-    }*/
-    //One Mesh
-    /*getSceneChildren() {
-      var scenechildren=[];
-      var children;
-      for (var i = 0; i<this.scene.children.length; i++) {
-        if(this.scene.children[i].name=="Scene") {
-          children=this.scene.children[i].children;
-          break;
-        }
-        if(i==this.scene.children.length-1) {
-          return [];
-        }
-      }
-      for(var i=0;i<children.length;i++){
-          if(children[i].type==="Mesh"||children[i].type==="LineSegments"||children[i].type==="LineLoop"){
-            scenechildren.push(children[i]);
-          }
-        }
-      return scenechildren;
-    }*/
-    zoomfit() {
-        if (this.selecting.length === 0) {
-            const obj = new __WEBPACK_IMPORTED_MODULE_1_three__["Object3D"]();
-            for (var i = 0; i < this.scene.children.length; i++) {
-                if (this.scene.children[i].name !== "GridHelper") {
-                    obj.children.push(this.scene.children[i]);
-                }
-            }
-            var boxHelper = new __WEBPACK_IMPORTED_MODULE_1_three__["BoxHelper"](obj);
-            boxHelper["geometry"].computeBoundingBox();
-            boxHelper["geometry"].computeBoundingSphere();
-            var boundingSphere = boxHelper["geometry"].boundingSphere;
-            var center = boundingSphere.center;
-            var radius = boundingSphere.radius;
-            var fov = this.camera.fov * (Math.PI / 180);
-            var vec_centre_to_pos = new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"]();
-            vec_centre_to_pos.subVectors(this.camera.position, center);
-            var tmp_vec = new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](center.x + Math.abs(radius / Math.sin(fov / 2)), center.y + Math.abs(radius / Math.sin(fov / 2)), center.z + Math.abs(radius / Math.sin(fov / 2)));
-            vec_centre_to_pos.setLength(tmp_vec.length());
-            var perspectiveNewPos = new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"]();
-            perspectiveNewPos.addVectors(center, vec_centre_to_pos);
-            var newLookAt = new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](center.x, center.y, center.z);
-            this.camera.position.copy(perspectiveNewPos);
-            this.camera.lookAt(newLookAt);
-            this.camera.updateProjectionMatrix();
-            this.controls.target.set(newLookAt.x, newLookAt.y, newLookAt.z);
-        }
-        else {
-            event.preventDefault();
-            var axisX, axisY, axisZ, centerX, centerY, centerZ = 0;
-            var radius = 0;
-            for (var i = 0; i < this.selecting.length; i++) {
-                axisX += this.selecting[i].geometry.boundingSphere.center.x;
-                axisY += this.selecting[i].geometry.boundingSphere.center.y;
-                axisZ += this.selecting[i].geometry.boundingSphere.center.z;
-                radius = Math.max(this.selecting[i].geometry.boundingSphere.radius, radius);
-            }
-            centerX = axisX / this.scene.children[1].children.length;
-            centerY = axisY / this.scene.children[1].children.length;
-            centerY = axisY / this.scene.children[1].children.length;
-            var center = new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](centerX, centerY, centerZ);
-            var fov = this.camera.fov * (Math.PI / 180);
-            var vec_centre_to_pos = new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"]();
-            vec_centre_to_pos.subVectors(this.camera.position, center);
-            var tmp_vec = new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](center.x + Math.abs(radius / Math.sin(fov / 2)), center.y + Math.abs(radius / Math.sin(fov / 2)), center.z + Math.abs(radius / Math.sin(fov / 2)));
-            vec_centre_to_pos.setLength(tmp_vec.length());
-            var perspectiveNewPos = new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"]();
-            perspectiveNewPos.addVectors(center, vec_centre_to_pos);
-            var newLookAt = new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](center.x, center.y, center.z);
-            this.camera.position.copy(perspectiveNewPos);
-            this.camera.lookAt(newLookAt);
-            this.camera.updateProjectionMatrix();
-            this.controls.target.set(newLookAt.x, newLookAt.y, newLookAt.z);
-        }
     }
 };
 ViewerComponent = __decorate([
@@ -5270,6 +5351,64 @@ ModuleboxComponent = __decorate([
 
 /***/ }),
 
+/***/ "../../../../../src/app/ui-components/dialogs/file-load-dialog.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return FileLoadDialogComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm2015/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_material__ = __webpack_require__("../../../material/esm2015/material.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+//
+// Component for Parameter Settings
+//
+let FileLoadDialogComponent = class FileLoadDialogComponent {
+    constructor(dialogRef) {
+        // let myStorage = window.localStorage;
+        // let property = MOBIUS.PROPERTY.FLOWCHART;
+        // let storageString = myStorage.getItem(property);
+        this.dialogRef = dialogRef;
+        // if(storageString){
+        //   this.message = "A file saved at " + CircularJSON.parse(storageString)["_lastSaved"] + " was found. \
+        //         Do you want to reload?"
+        // }
+    }
+    onNoClick() {
+        this.dialogRef.close('new');
+    }
+    closeDialog(action) {
+        this.dialogRef.close(action);
+    }
+};
+FileLoadDialogComponent = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
+        selector: 'file-load-dialog',
+        template: __webpack_require__("../../../../../src/app/ui-components/dialogs/file-load-dialog.html"),
+    }),
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_material__["g" /* MatDialogRef */]])
+], FileLoadDialogComponent);
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/ui-components/dialogs/file-load-dialog.html":
+/***/ (function(module, exports) {
+
+module.exports = "<p>{{message}}</p>\r\n\r\n<hr>\r\n\r\n<button (click)=\"closeDialog('load')\">Load File</button>\r\n<button (click)=\"closeDialog('new')\">New File</button>"
+
+/***/ }),
+
 /***/ "../../../../../src/app/ui-components/editors/editor/editor.component.html":
 /***/ (function(module, exports) {
 
@@ -5362,7 +5501,7 @@ EditorComponent = __decorate([
 /***/ "../../../../../src/app/ui-components/editors/flowchart-viewer/flowchart-viewer.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!-- <mat-expansion-panel class='viewer' \r\n\t\t[expanded]=\"panelOpenState\">\r\n  \t<mat-expansion-panel-header>\r\n\t    <mat-panel-title class='header'> -->\r\n\r\n<div class=\"viewer\">\r\n\r\n\t<div class=\"container\">\r\n\t\t\r\n\t\t<!-- @Derek: Modify gutterSize/gutterColor/size -->\r\n\t\t<!-- https://bertrandg.github.io/angular-split/#/documentation -->\r\n\t\t<split  direction=\"horizontal\" \r\n              [gutterSize]=\"7\" \r\n              [useTransition]=\"true\" gutterColor=white\r\n              >\r\n\r\n\t\t\t\t<split-area class=\"sidebar\"\r\n\t\t\t\t\t[size]=\"30\"\r\n\t\t\t        order=\"1\">\r\n\t\t\t\t\t\t<section>\r\n\t\t\t\t\t\t\t<div (click)=\"save()\">Save Flowchart</div>\r\n\t\t\t\t\t\t\t<div (click)=\"openPicker()\">Load Flowchart\r\n\t\t\t\t\t\t\t\t<input #fileInput style=\"display: none;\"\r\n\t\t\t\t\t\t  \t\ttype=\"file\" (change)=\"loadFile()\"/>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</section>\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t<section>\r\n\t\t\t\t\t\t\t<div (click)=\"addNode($event, undefined)\">New Empty Node</div>\r\n\t\t\t\t\t\t\t<div class=\"disabled\">New Subnet</div>\r\n\t\t\t\t\t\t</section>\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t<!--<section>\r\n\t\t\t\t\t\t\t<div>Save Node</div>\r\n\t\t\t\t\t\t</section>-->\r\n\r\n\t\t\t\t\t\t<section>\r\n\t\t\t\t\t\t\t<app-node-library></app-node-library>\r\n\t\t\t\t\t\t</section>\r\n\t\t\t\t\t\t\r\n\t\t\t\t</split-area>\r\n\t\t\t\t\r\n\t\t\r\n\t\t\t\t<split-area order=\"2\" [size]=\"70\">\r\n\t\t\t\t    \t<div class=\"info-container\" \r\n\t\t\t\t    \t\tstyle=\"position: absolute; \r\n\t\t\t\t    \t\ttop: 30px; \r\n\t\t\t\t    \t\tright: 30px\">\r\n\t\t\t\t    \t\t<!-- Zoom: {{zoom}} -->\r\n\t\t\t\t    \t</div>\r\n\r\n\t\t\t\t        <!-- svg canvas to draw the edges -->\r\n\t\t\t\t\t\t<svg xmlns=\"http://www.w3.org/2000/svg\" \r\n\t\t\t\t\t\t\tclass=\"graph-container\" \r\n\t\t\t\t\t\t\tid=\"graph-edges\" \r\n\t\t\t\t\t\t\t[style.zoom]=\"zoom\">\r\n\r\n\t\t\t\t\t\t\t<g class=\"edge\" *ngFor=\"let edge of _edges\" >\r\n\t\t\t\t\t\t\t\t<path \r\n\t\t\t\t\t\t\t\t  [attr.d]=\"edge.path\" \r\n\t\t\t\t\t\t\t\t  stroke=\"#7469FF\"\r\n\t\t\t\t\t\t\t\t  stroke-width=\"3\" fill=\"none\" />\r\n\t\t\t\t\t\t\t</g>\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t<!-- dragging path -->\r\n\t\t\t\t\t\t\t<g id=\"temporary-edge\" [class.hidden]=\"!_linkMode\" >\r\n\t\t\t\t\t\t\t\t<path \r\n\t\t\t\t\t\t\t\t[attr.d]=\"edgeString(mouse_pos.start, mouse_pos.current)\" \r\n\t\t\t\t\t\t\t\t \tstroke=\"#7469FF\"\r\n\t\t\t\t\t\t\t\t \tstroke-width=\"5\" \r\n\t\t\t\t\t\t\t\t \tfill=\"none\" \r\n\t\t\t\t\t\t\t\t \tstroke-dasharray=\"5, 5\"/>\r\n\t\t\t\t\t\t\t\t\t<circle id=\"pointC\" [attr.cx]=\"mouse_pos.current.x\" [attr.cy]=\"mouse_pos.current.y\" r=\"5\" />\r\n\t\t\t\t\t\t\t\t</g>\r\n\r\n\t\t\t\t\t\t</svg>\r\n\r\n\t\t\t\t\t\t<!-- div container for the nodes -->\r\n\t\t\t\t\t\t<div class=\"graph-container\" \r\n\t\t\t\t\t\t\tid=\"graph-nodes\" ondragover=\"return false\" [style.zoom]=\"zoom\" >\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t<!-- all nodes -->\r\n\t\t\t\t\t\t\t<div class=\"node-container\">\r\n\r\n\t\t\t\t\t\t\t\t<!-- one node -->\r\n\t\t\t\t\t\t\t\t<div  class=\"node\"\r\n\t\t\t\t\t\t\t\t\t\t*ngFor=\"let node of _nodes; let node_index = index\" \r\n\t\t\t\t\t\t\t\t\t\t[style.left.px]=\"node.position[0]\" \r\n\t\t\t\t\t\t\t\t\t\t[style.top.px]=\"node.position[1]\" >\r\n\r\n\t\t\t\t\t\t\t\t\t<div class=\"btn-container\" *ngIf=\"node_index == _selectedNodeIndex\" >\r\n\t\t\t\t\t\t\t\t\t\t<!-- <div class=\"btn-group node-btns\">\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"action-button\" (click)=\"addPort(node_index, 'in')\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t<mat-icon>input</mat-icon>\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"action-button\" (click)=\"addPort(node_index, 'out')\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t<mat-icon>add_to_queue</mat-icon>\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t</div> -->\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"btn-group port-btns\">\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"action-button\" (click)=\"deleteNode(node_index)\" \t\t\r\n\t\t\t\t\t\t\t\t\t\t\t\tmatTooltip=\"Delete Node\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t<mat-icon>delete</mat-icon>\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"action-button\" (click)=\"toggleNode(node)\"\r\n\t\t\t\t\t\t\t\t\t\t\t\tmatTooltip=\"Disable Node\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t<mat-icon *ngIf='!node.isDisabled()'>check_circle</mat-icon>\r\n\t\t\t\t\t\t\t\t\t\t\t\t<mat-icon *ngIf='node.isDisabled()'>highlight_off</mat-icon>\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t<!-- <div class=\"action-button\" (click)=\"saveNode(node_index)\" \r\n\t\t\t\t\t\t\t\t\t\t\t\tmatTooltip=\"Save Node To Library\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t*ngIf=\"!isSaved(node)\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t<mat-icon>file_download</mat-icon>\r\n\t\t\t\t\t\t\t\t\t\t\t</div> -->\r\n\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t<!-- node body -->\r\n\t\t\t\t\t\t\t\t\t<div class=\"node-body\" \r\n\t\t\t\t\t\t\t\t\t\t[class.library]=\"node.getType() !== undefined\"\r\n\t\t\t\t\t\t\t\t\t\t[class.error]=\"node._hasError\"\r\n\t\t\t\t\t\t\t\t\t\t[class.disabled] =\"node.isDisabled()\"\r\n\t\t\t\t\t\t\t\t\t\t(click)=\"clickNode($event, node_index)\"\r\n\t\t\t\t\t\t\t\t\t\tdraggable=true  \r\n\t\t\t\t\t\t\t\t\t\t(dragstart)=\"nodeDragStart($event, node)\" \r\n\t\t\t\t\t\t\t\t\t\t(drag)=\"nodeDragging($event, node, node_index)\" \r\n\t\t\t\t\t\t\t\t\t\t(dragend)=\"nodeDragEnd($event, node)\">\r\n\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"node-name\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t[class.selected]=\"node_index == _selectedNodeIndex\"\r\n\t\t\t\t\t\t\t\t\t\t\t\tmatTooltip=\"{{node.getName()}}\">\r\n\t\t\t\t\t\t\t\t\t\t\t    <input matInput\r\n\t\t\t\t\t\t\t\t\t\t\t    style=\"margin: 2px; min-width: 50px; width: 50px;\"\r\n\t\t\t\t\t\t\t\t\t\t\t    placeholder=\"Value\" value=\"{{ node.getName() }}\"\r\n\t\t\t\t\t\t\t\t\t\t\t    (change)=\"updateNodeName($event)\"/>\r\n\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t\t<!--inputs -->\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"port-container\">\r\n\t\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"port input\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t*ngFor=\"let port of node.getInputs(); let pi=index\"  \r\n\t\t\t\t\t\t\t\t\t\t\t\tid=\"n{{node_index}}pi{{pi}}\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"port-grip\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\tdraggable=true\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t[class.connected]=\"port.isConnected()\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(dragstart)=\"portDragStart($event, port, [node_index, pi])\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(drag)=\"portDragging($event, port)\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(dragend)=\"portDragEnd($event, port)\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(drop)=\"portDrop($event, port, [node_index, pi])\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t\t<span class=\"port-name\">{{ port.getName() }}</span>\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t\t<!-- outputs -->\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"port-container\">\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"port output\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t*ngFor=\"let port of node.getOutputs(); let po=index;\"\r\n\t\t\t\t\t\t\t\t\t\t\t\tid=\"n{{node_index}}po{{po}}\">\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t\t<span class=\"port-name\">{{port.getName()}}</span>\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"port-grip\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\tdraggable=true\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t[class.selected]=\"isPortSelected(node_index, po)\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t[class.connected]=\"port.isConnected()\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(click)=\"clickPort($event, node_index, po)\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(dragstart)=\"portDragStart($event, port, [node_index, po])\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(drag)=\"portDragging($event, port)\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(dragend)=\"portDragEnd($event, port)\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(drop)=\"portDrop($event, port, [node_index, po])\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t</div> \r\n\r\n\r\n\t\t\t\t\t\t\t\t\t\t<!-- <div class=\"fromLibrary\"  style=\"font-size: 8px; text-align: center\">\r\n\t\t\t\t\t\t\t\t\t\t\tLibrary Node\r\n\t\t\t\t\t\t\t\t\t\t</div> -->\r\n\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t</split-area>\r\n\r\n\t\t</split>\r\n\r\n\t</div>\r\n\t\r\n\r\n</div>\r\n<!-- </mat-expansion-panel> -->\r\n\r\n\r\n\r\n"
+module.exports = "<!-- <mat-expansion-panel class='viewer' \r\n\t\t[expanded]=\"panelOpenState\">\r\n  \t<mat-expansion-panel-header>\r\n\t    <mat-panel-title class='header'> -->\r\n\r\n<div class=\"viewer\">\r\n\r\n\t<div class=\"container\">\r\n\t\t\r\n\t\t<!-- @Derek: Modify gutterSize/gutterColor/size -->\r\n\t\t<!-- https://bertrandg.github.io/angular-split/#/documentation -->\r\n\t\t<split  direction=\"horizontal\" \r\n              [gutterSize]=\"7\" \r\n              [useTransition]=\"true\" gutterColor=white\r\n              >\r\n\r\n\t\t\t\t<split-area class=\"sidebar\"\r\n\t\t\t\t\t[size]=\"30\"\r\n\t\t\t        order=\"1\">\r\n\t\t\t\t\t\t<section>\r\n\t\t\t\t\t\t\t<div (click)=\"save()\">Save Flowchart</div>\r\n\t\t\t\t\t\t\t<div (click)=\"openPicker()\">Load Flowchart\r\n\t\t\t\t\t\t\t\t<input #fileInput style=\"display: none;\"\r\n\t\t\t\t\t\t  \t\ttype=\"file\" (change)=\"loadFile()\"/>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</section>\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t<section>\r\n\t\t\t\t\t\t\t<div (click)=\"addNode($event, undefined)\">New Empty Node</div>\r\n\t\t\t\t\t\t\t<div class=\"disabled\">New Subnet</div>\r\n\t\t\t\t\t\t</section>\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t<!--<section>\r\n\t\t\t\t\t\t\t<div>Save Node</div>\r\n\t\t\t\t\t\t</section>-->\r\n\r\n\t\t\t\t\t\t<section>\r\n\t\t\t\t\t\t\t<app-node-library></app-node-library>\r\n\t\t\t\t\t\t</section>\r\n\t\t\t\t\t\t\r\n\t\t\t\t</split-area>\r\n\t\t\t\t\r\n\t\t\r\n\t\t\t\t<split-area order=\"2\" [size]=\"70\">\r\n\t\t\t\t    \t<div class=\"info-container\" \r\n\t\t\t\t    \t\tstyle=\"position: absolute; \r\n\t\t\t\t    \t\ttop: 30px; \r\n\t\t\t\t    \t\tright: 30px\">\r\n\t\t\t\t    \t\t<!-- Zoom: {{zoom}} -->\r\n\t\t\t\t    \t</div>\r\n\r\n\t\t\t\t        <!-- svg canvas to draw the edges -->\r\n\t\t\t\t\t\t<svg xmlns=\"http://www.w3.org/2000/svg\" \r\n\t\t\t\t\t\t\tclass=\"graph-container\" \r\n\t\t\t\t\t\t\tid=\"graph-edges\" \r\n\t\t\t\t\t\t\t[style.zoom]=\"zoom\">\r\n\r\n\t\t\t\t\t\t\t<g class=\"edge\" *ngFor=\"let edge of _edges\" >\r\n\t\t\t\t\t\t\t\t<path \r\n\t\t\t\t\t\t\t\t  [attr.d]=\"edge.path\" \r\n\t\t\t\t\t\t\t\t  stroke=\"#7469FF\"\r\n\t\t\t\t\t\t\t\t  stroke-width=\"3\" fill=\"none\" />\r\n\t\t\t\t\t\t\t</g>\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t<!-- dragging path -->\r\n\t\t\t\t\t\t\t<g id=\"temporary-edge\" [class.hidden]=\"!_linkMode\" >\r\n\t\t\t\t\t\t\t\t<path \r\n\t\t\t\t\t\t\t\t[attr.d]=\"edgeString(mouse_pos.start, mouse_pos.current)\" \r\n\t\t\t\t\t\t\t\t \tstroke=\"#7469FF\"\r\n\t\t\t\t\t\t\t\t \tstroke-width=\"5\" \r\n\t\t\t\t\t\t\t\t \tfill=\"none\" \r\n\t\t\t\t\t\t\t\t \tstroke-dasharray=\"5, 5\"/>\r\n\t\t\t\t\t\t\t\t\t<circle id=\"pointC\" [attr.cx]=\"mouse_pos.current.x\" [attr.cy]=\"mouse_pos.current.y\" r=\"5\" />\r\n\t\t\t\t\t\t\t\t</g>\r\n\r\n\t\t\t\t\t\t</svg>\r\n\r\n\t\t\t\t\t\t<!-- div container for the nodes -->\r\n\t\t\t\t\t\t<div class=\"graph-container\" \r\n\t\t\t\t\t\t\tid=\"graph-nodes\" ondragover=\"return false\" [style.zoom]=\"zoom\" >\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t<!-- all nodes -->\r\n\t\t\t\t\t\t\t<div class=\"node-container\">\r\n\r\n\t\t\t\t\t\t\t\t<!-- one node -->\r\n\t\t\t\t\t\t\t\t<div  class=\"node\"\r\n\t\t\t\t\t\t\t\t\t\t*ngFor=\"let node of _nodes; let node_index = index\" \r\n\t\t\t\t\t\t\t\t\t\t[style.left.px]=\"node.position[0]\" \r\n\t\t\t\t\t\t\t\t\t\t[style.top.px]=\"node.position[1]\" >\r\n\r\n\t\t\t\t\t\t\t\t\t<div class=\"btn-container\" *ngIf=\"node_index == _selectedNodeIndex\" >\r\n\t\t\t\t\t\t\t\t\t\t<!-- <div class=\"btn-group node-btns\">\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"action-button\" (click)=\"addPort(node_index, 'in')\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t<mat-icon>input</mat-icon>\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"action-button\" (click)=\"addPort(node_index, 'out')\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t<mat-icon>add_to_queue</mat-icon>\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t</div> -->\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"btn-group port-btns\">\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"action-button\" (click)=\"deleteNode(node_index)\" \t\t\r\n\t\t\t\t\t\t\t\t\t\t\t\tmatTooltip=\"Delete Node\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t<mat-icon>delete</mat-icon>\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"action-button\" (click)=\"toggleNode(node)\"\r\n\t\t\t\t\t\t\t\t\t\t\t\tmatTooltip=\"Disable Node\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t<mat-icon *ngIf='!node.isDisabled()'>check_circle</mat-icon>\r\n\t\t\t\t\t\t\t\t\t\t\t\t<mat-icon *ngIf='node.isDisabled()'>highlight_off</mat-icon>\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"action-button\" (click)=\"saveNode(node_index)\" \r\n\t\t\t\t\t\t\t\t\t\t\t\tmatTooltip=\"Save Node To Library\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t*ngIf=\"!isSaved(node)\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t<mat-icon>file_download</mat-icon>\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t<!-- node body -->\r\n\t\t\t\t\t\t\t\t\t<div class=\"node-body\" \r\n\t\t\t\t\t\t\t\t\t\t[class.library]=\"node.getType() !== undefined\"\r\n\t\t\t\t\t\t\t\t\t\t[class.error]=\"node._hasError\"\r\n\t\t\t\t\t\t\t\t\t\t[class.disabled] =\"node.isDisabled()\"\r\n\t\t\t\t\t\t\t\t\t\t(click)=\"clickNode($event, node_index)\"\r\n\t\t\t\t\t\t\t\t\t\tdraggable=true  \r\n\t\t\t\t\t\t\t\t\t\t(dragstart)=\"nodeDragStart($event, node)\" \r\n\t\t\t\t\t\t\t\t\t\t(drag)=\"nodeDragging($event, node, node_index)\" \r\n\t\t\t\t\t\t\t\t\t\t(dragend)=\"nodeDragEnd($event, node)\">\r\n\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"node-name\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t[class.selected]=\"node_index == _selectedNodeIndex\"\r\n\t\t\t\t\t\t\t\t\t\t\t\tmatTooltip=\"{{node.getName()}}\">\r\n\t\t\t\t\t\t\t\t\t\t\t    <input matInput\r\n\t\t\t\t\t\t\t\t\t\t\t    style=\"margin: 2px; min-width: 50px; width: 50px;\"\r\n\t\t\t\t\t\t\t\t\t\t\t    placeholder=\"Value\" value=\"{{ node.getName() }}\"\r\n\t\t\t\t\t\t\t\t\t\t\t    (change)=\"updateNodeName($event)\"/>\r\n\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t\t<!--inputs -->\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"port-container\">\r\n\t\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"port input\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t*ngFor=\"let port of node.getInputs(); let pi=index\"  \r\n\t\t\t\t\t\t\t\t\t\t\t\tid=\"n{{node_index}}pi{{pi}}\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"port-grip\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\tdraggable=true\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t[class.connected]=\"port.isConnected()\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(dragstart)=\"portDragStart($event, port, [node_index, pi])\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(drag)=\"portDragging($event, port)\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(dragend)=\"portDragEnd($event, port)\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(drop)=\"portDrop($event, port, [node_index, pi])\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t\t<span class=\"port-name\">{{ port.getName() }}</span>\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t\t<!-- outputs -->\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"port-container\">\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"port output\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t*ngFor=\"let port of node.getOutputs(); let po=index;\"\r\n\t\t\t\t\t\t\t\t\t\t\t\tid=\"n{{node_index}}po{{po}}\">\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t\t<span class=\"port-name\">{{port.getName()}}</span>\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"port-grip\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\tdraggable=true\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t[class.selected]=\"isPortSelected(node_index, po)\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t[class.connected]=\"port.isConnected()\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(click)=\"clickPort($event, node_index, po)\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(dragstart)=\"portDragStart($event, port, [node_index, po])\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(drag)=\"portDragging($event, port)\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(dragend)=\"portDragEnd($event, port)\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(drop)=\"portDrop($event, port, [node_index, po])\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t</div> \r\n\r\n\r\n\t\t\t\t\t\t\t\t\t\t<!-- <div class=\"fromLibrary\"  style=\"font-size: 8px; text-align: center\">\r\n\t\t\t\t\t\t\t\t\t\t\tLibrary Node\r\n\t\t\t\t\t\t\t\t\t\t</div> -->\r\n\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t</split-area>\r\n\r\n\t\t</split>\r\n\r\n\t</div>\r\n\t\r\n\r\n</div>\r\n<!-- </mat-expansion-panel> -->\r\n\r\n\r\n\r\n"
 
 /***/ }),
 
@@ -5393,6 +5532,7 @@ module.exports = module.exports.toString();
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__base_classes_port_PortModule__ = __webpack_require__("../../../../../src/app/base-classes/port/PortModule.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__base_classes_viz_Viewer__ = __webpack_require__("../../../../../src/app/base-classes/viz/Viewer.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__global_services_layout_service__ = __webpack_require__("../../../../../src/app/global-services/layout.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__global_services_console_service__ = __webpack_require__("../../../../../src/app/global-services/console.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -5406,10 +5546,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 let FlowchartViewerComponent = class FlowchartViewerComponent extends __WEBPACK_IMPORTED_MODULE_2__base_classes_viz_Viewer__["a" /* Viewer */] {
-    constructor(injector, layoutService) {
+    constructor(injector, layoutService, consoleService) {
         super(injector, "FlowchartViewer");
         this.layoutService = layoutService;
+        this.consoleService = consoleService;
         this.pan_mode = false;
         this.left = 0;
         this.top = 0;
@@ -5784,11 +5926,27 @@ let FlowchartViewerComponent = class FlowchartViewerComponent extends __WEBPACK_
         alert("Edge clicked");
     }
     updateNodeName($event) {
-        let name = $event.target.value;
-        if (name.trim().length > 0) {
-            name = name.replace(/[^\w\[\]]/gi, '');
+        let name = $event.target.value.trim();
+        name = name.replace(/[^\w\[\]]/gi, '');
+        if (name.length == 0) {
+            return;
+        }
+        // check no other node has the same name
+        let flag = false;
+        for (let i = 0; i < this._nodes.length; i++) {
+            if (this._nodes[i].getName() == name) {
+                this.consoleService.addMessage("Node with this name already exists in the flowchart!");
+                this.layoutService.showConsole();
+                flag = true;
+                break;
+            }
+        }
+        if (!flag) {
             this._selectedNode.setName(name);
             this.flowchartService.update();
+        }
+        else {
+            $event.target.value = this._selectedNode.getName();
         }
     }
     saveNode(node) {
@@ -5828,7 +5986,9 @@ FlowchartViewerComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/ui-components/editors/flowchart-viewer/flowchart-viewer.component.html"),
         styles: [__webpack_require__("../../../../../src/app/ui-components/editors/flowchart-viewer/flowchart-viewer.component.scss")]
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* Injector */], __WEBPACK_IMPORTED_MODULE_3__global_services_layout_service__["a" /* LayoutService */]])
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* Injector */],
+        __WEBPACK_IMPORTED_MODULE_3__global_services_layout_service__["a" /* LayoutService */],
+        __WEBPACK_IMPORTED_MODULE_4__global_services_console_service__["a" /* ConsoleService */]])
 ], FlowchartViewerComponent);
 
 
@@ -6164,7 +6324,6 @@ module.exports = module.exports.toString();
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__base_classes_procedure_ProcedureModule__ = __webpack_require__("../../../../../src/app/base-classes/procedure/ProcedureModule.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__base_classes_viz_Viewer__ = __webpack_require__("../../../../../src/app/base-classes/viz/Viewer.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__global_services_layout_service__ = __webpack_require__("../../../../../src/app/global-services/layout.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_material__ = __webpack_require__("../../../material/esm2015/material.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -6178,11 +6337,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-
 let ProcedureEditorComponent = class ProcedureEditorComponent extends __WEBPACK_IMPORTED_MODULE_2__base_classes_viz_Viewer__["a" /* Viewer */] {
-    constructor(injector, dialog, layoutService) {
+    constructor(injector, layoutService) {
         super(injector, "procedure-editor");
-        this.dialog = dialog;
         this.layoutService = layoutService;
         this._procedureArr = [];
         //_treeNodes = [];
@@ -6415,7 +6572,7 @@ ProcedureEditorComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/ui-components/editors/procedure-editor/procedure-editor.component.html"),
         styles: [__webpack_require__("../../../../../src/app/ui-components/editors/procedure-editor/procedure-editor.component.scss")]
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* Injector */], __WEBPACK_IMPORTED_MODULE_4__angular_material__["e" /* MatDialog */], __WEBPACK_IMPORTED_MODULE_3__global_services_layout_service__["a" /* LayoutService */]])
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* Injector */], __WEBPACK_IMPORTED_MODULE_3__global_services_layout_service__["a" /* LayoutService */]])
 ], ProcedureEditorComponent);
 
 
@@ -7295,7 +7452,7 @@ NodeLibraryComponent = __decorate([
 /***/ "../../../../../src/app/ui-components/viewers/parameter-viewer/parameter-viewer.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"viewer\">\r\n\r\n\t<div class=\"container\">\r\n\r\n\t\t<div class=\"default\" *ngIf='_inputs == undefined || _inputs.length == 0'>\r\n\t\t\tThis node has no inputs\r\n\t\t</div>\r\n \r\n\t\t<div class='paramater-container' *ngFor=\"let inp of _inputs\" >\r\n\t\t\t\r\n\t\t\t<div class=\"info\">\r\n\t\t\t\t<div class='param'>\r\n\t\t\t\t\t<!--<span class='label'>Name</span>-->\r\n\t\t\t\t\t<span class='content'>{{ inp.getName() }}</span>\r\n\t\t\t\t</div>\r\n\t\t\t</div>\r\n\t\r\n\r\n\t\t\t<!-- if input type == Input -->\r\n\t\t\t<div class=\"value\" *ngIf=\"inp.getType() == InputPortTypes.Input\">\r\n\t\t\t\t<form  class='content'>\r\n\t\t\t\t\t<mat-form-field>\r\n\t\t\t\t\t\t<textarea matInput \r\n\t\t\t\t\t\t\tmatTextareaAutosize \r\n\t\t\t\t\t\t\tmatAutosizeMinRows=\"1\"\r\n\t            \t\t\tmatAutosizeMaxRows=\"5\" \r\n\t            \t\t\t(change)=\"updateComputedValue($event, inp)\"\r\n\t            \t\t\tvalue=\"{{ getValue(inp) }}\">\r\n\t            \t\t</textarea>\r\n\t\t\t\t\t</mat-form-field>\r\n\t\t\t\t</form>\r\n\t\t\t</div> \r\n\r\n\t\t\t<!-- if input type == Slider -->\r\n\t\t\t<div class=\"value\" \r\n\t\t\t\t*ngIf=\"inp.getType() == InputPortTypes.Slider\">\r\n\t\t\t\t<mat-slider min=\"{{inp.getOpts().min}}\" \r\n\t\t\t\t\t\t\tmax=\"{{inp.getOpts().max}}\" \r\n\t\t\t\t\t\t\tstep=\"{{inp.getOpts().step}}\" \r\n\t\t\t\t\t\t\t[thumb-label]=\"true\"\r\n\t\t\t\t\t\t\t[(ngModel)]=\"value\"\r\n\t\t\t\t\t\t\t(change)=\"updateComputedValue($event, inp, value)\"\r\n\t\t\t\t\t\t\tvalue=\"{{ getValue(inp) }}\"></mat-slider>\r\n\t\t\t</div>\r\n\r\n\t\t</div>\r\n\r\n\t\t\t<!-- todo: disable if port is connected -->\r\n\t\t\t<!-- ui options based on type -->\r\n\t\t\t<!-- todo: -->\r\n\t</div>\r\n\t<button id=\"execute\" mat-raised-button color=\"accent\" (click)=\"executeFlowchart($event)\">Execute Flowchart</button>  \r\n\r\n</div>\r\n\r\n"
+module.exports = "<div class=\"viewer\">\r\n\r\n\t<div class=\"container\">\r\n\r\n\t\t<div class=\"default\" *ngIf='_inputs == undefined || _inputs.length == 0'>\r\n\t\t\tThis node has no inputs\r\n\t\t</div>\r\n \r\n\t\t<div class='paramater-container' *ngFor=\"let inp of _inputs\" >\r\n\t\t\t\r\n\t\t\t<div class=\"info\">\r\n\t\t\t\t<div class='param'>\r\n\t\t\t\t\t<!--<span class='label'>Name</span>-->\r\n\t\t\t\t\t<span class='content'>{{ inp.getName() }}</span>\r\n\t\t\t\t</div>\r\n\t\t\t</div>\r\n\t\r\n\r\n\t\t\t<!-- if input type == Input -->\r\n\t\t\t<div class=\"value\" *ngIf=\"inp.getType() == InputPortTypes.Input\">\r\n\t\t\t\t<form  class='content'>\r\n\t\t\t\t\t<mat-form-field>\r\n\t\t\t\t\t\t<textarea matInput \r\n\t\t\t\t\t\t\tmatTextareaAutosize \r\n\t\t\t\t\t\t\tmatAutosizeMinRows=\"1\"\r\n\t            \t\t\tmatAutosizeMaxRows=\"5\" \r\n\t            \t\t\t(change)=\"updateComputedValue($event, inp)\"\r\n\t            \t\t\tvalue=\"{{ getValue(inp) }}\">\r\n\t            \t\t</textarea>\r\n\t\t\t\t\t</mat-form-field>\r\n\t\t\t\t</form>\r\n\t\t\t</div> \r\n\r\n\t\t\t<!-- if input type == Slider -->\r\n\t\t\t<div class=\"value\" \r\n\t\t\t\t*ngIf=\"inp.getType() == InputPortTypes.Slider\">\r\n\t\t\t\t<mat-slider min=\"{{inp.getOpts().min}}\" \r\n\t\t\t\t\t\t\tmax=\"{{inp.getOpts().max}}\" \r\n\t\t\t\t\t\t\tstep=\"{{inp.getOpts().step}}\" \r\n\t\t\t\t\t\t\t[thumb-label]=\"true\"\r\n\t\t\t\t\t\t\t#val\r\n\t\t\t\t\t\t\t[(ngModel)]=\"val.value\"\r\n\t\t\t\t\t\t\t(change)=\"updateComputedValue($event, inp, val.value)\"\r\n\t\t\t\t\t\t\tvalue=\"{{ getValue(inp) }}\"></mat-slider>\r\n\t\t\t</div>\r\n\r\n\t\t</div>\r\n\r\n\t\t\t<!-- todo: disable if port is connected -->\r\n\t\t\t<!-- ui options based on type -->\r\n\t\t\t<!-- todo: -->\r\n\t</div>\r\n\t<button id=\"execute\" mat-raised-button color=\"accent\" (click)=\"executeFlowchart($event)\">Execute Flowchart</button>  \r\n\r\n</div>\r\n\r\n"
 
 /***/ }),
 

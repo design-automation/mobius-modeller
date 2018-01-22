@@ -38,8 +38,9 @@
 							max="{{inp.getOpts().max}}" 
 							step="{{inp.getOpts().step}}" 
 							[thumb-label]="true"
-							[(ngModel)]="value"
-							(change)="updateComputedValue($event, inp, value)"
+							#val
+							[(ngModel)]="val.value"
+							(change)="updateComputedValue($event, inp, val.value)"
 							value="{{ getValue(inp) }}"></mat-slider>
 			</div>
 

@@ -52,7 +52,7 @@ export class FlowchartService {
       this.newFile();
       this.checkSavedNodes();
       this.checkSavedFile();
-      this.autoSave(5);
+      this.autoSave(60*5);
   };
 
   autoSave(time_in_seconds: number): void{

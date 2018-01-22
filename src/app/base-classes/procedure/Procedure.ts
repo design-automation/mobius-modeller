@@ -5,6 +5,7 @@ import {ICodeGenerator} from "../code/CodeModule";
 
 export abstract class Procedure implements IProcedure{
 
+	private _level: number;
 
 	private _type: ProcedureTypes; 
 	private _selected: boolean; 
@@ -21,6 +22,8 @@ export abstract class Procedure implements IProcedure{
 
 	constructor(type: ProcedureTypes, hasChildren: boolean){
 		this._type = type; 
+		this._level = 0;
+
 		this.hasChildren = hasChildren;
 		
 		this.hasChildren = this.hasChildren;
@@ -33,9 +36,14 @@ export abstract class Procedure implements IProcedure{
 		this._rightComponent = prodData._rightComponent;
 
 		this._parent = parent;
+		this._level = prodData._level;
 		
 		this.hasChildren = prodData.hasChildren;
 		this.children = [];
+	}
+
+	getLevel(): number{
+		return this._level;
 	}
 
 	getType(): ProcedureTypes{
@@ -104,6 +112,14 @@ export abstract class Procedure implements IProcedure{
 	}
 
 	setParent(parent: IProcedure): void{
+		console.log(parent["_level"]);
+		if(parent && (parent["_level"]!==undefined)){
+			this._level = parent["_level"] + 1;
+		}
+		else{
+			this._level = 0;
+		}
+
 		this._parent = parent;
 	}
 

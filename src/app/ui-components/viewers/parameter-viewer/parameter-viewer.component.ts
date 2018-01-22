@@ -85,7 +85,6 @@ export class ParameterViewerComponent extends Viewer {
         this.isVisible = false;
       }
   	}
-
     
 
     //
