@@ -1,9 +1,8 @@
-[![Waffle.io - Columns and their card count](https://badge.waffle.io/akshatamohanty/mobius-modeller.png?columns=all)](https://waffle.io/akshatamohanty/mobius-modeller?utm_source=badge)
 ## Mobius 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/ed1412eb9a4549c59e5f08aace8c77f7)](https://www.codacy.com/app/akshatamohanty/mobius-modeller?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=akshatamohanty/mobius-modeller&amp;utm_campaign=Badge_Grade)
 [![Build Status](https://travis-ci.org/akshatamohanty/mobius-modeller.svg?branch=master)](https://travis-ci.org/akshatamohanty/mobius-modeller)
-[![Dependencies](https://david-dm.org/akshatamohanty/mobius_v2.svg)](https://david-dm.org/akshatamohanty/mobius-modeller.svg)
-[![devDependencies Status](https://david-dm.org/akshatamohanty/mobius-modeller/dev-status.svg)](https://david-dm.org/akshatamohanty/mobius-modeller?type=dev)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/ed1412eb9a4549c59e5f08aace8c77f7)](https://www.codacy.com/app/akshatamohanty/mobius-modeller?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=akshatamohanty/mobius-modeller&amp;utm_campaign=Badge_Grade)
+
+[![Waffle.io - Columns and their card count](https://badge.waffle.io/phtj/mobius-modeller.svg?columns=all)](https://waffle.io/phtj/mobius-modeller)
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.3.1.
 
