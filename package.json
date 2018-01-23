@@ -2,10 +2,13 @@
   "name": "mobius-modeller",
   "version": "0.0.0",
   "license": "MIT",
+  "config": {
+      "url": "https://akshatamohanty.github.io/mobius-modeller/"
+   },
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build --base-href %npm_package_config_url% && cp -r /dist /docs && rmdir /dist",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
