@@ -9,6 +9,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "build": "ng build",
     "build-dev": "ng build --base-href=%npm_package_config_dev_url% && rm -r ./docs && cp -r ./dist ./docs && rm -r ./dist",
     "build-prod": "ng build --base-href=%npm_package_config_prod_url% && rm -r ./docs && cp -r ./dist ./docs && rm -r ./dist",
     "test": "echo 'Tests disabled' && exit 0",
