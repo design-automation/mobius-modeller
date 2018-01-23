@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-  - "6.11.2"
+  - "9.2.0"
 branches: 
   only: 
     - master
@@ -9,7 +9,7 @@ before_script:
 script:
   - ng test
 after_success: 
-  - ng build --prod
+  - npm run build-dev
 notifications:
   email:
     on_failure: change
@@ -20,7 +20,7 @@ sudo: required
 dist: trusty
 language: node_js
 node_js:
-  - '6.11.2'
+  - '9.2.0'
 branches: 
   only: 
     - master
@@ -43,4 +43,5 @@ before_script:
 - npm install
 - ng build
 
-script: karma start karma.conf.js --single-run
+# script: karma start karma.conf.js --single-run
+script: npm run test

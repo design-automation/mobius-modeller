@@ -56,6 +56,7 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
   mDownTime: number;
   mUpTime: number;
   sphere:THREE.Mesh;
+  center:THREE.Vector3;
 
   constructor(injector: Injector, myElement: ElementRef) { 
     super(injector);
@@ -91,7 +92,7 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
 
     this.width = width;
     this.height = height;
-
+    
     this.updateModel();
 
     // todo: check and refactor what is required?
@@ -105,43 +106,8 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
     var material = new THREE.MeshBasicMaterial( { color: 0xff0000 } );
     this.sphere = new THREE.Mesh( geometry, material );
     this.sphere.visible = false;
-    this.sphere.name="sphereInter"
+    this.sphere.name="sphereInter";
     this.scene.add( this.sphere );
-
-    /*for(var i=0;i<this.scene.children.length;i++){
-      if(this.scene.children[i].type==="Scene"){
-        if(this.scene.children[i].children[0].type==="Mesh"){
-          this.scene.children[i].children[0]["material"].opacity=this.dataService.opacity;
-        }
-      }
-    }*/
-    //console.log(this.scene);
-    //Material of select and basic;
-    /*for(var i=0;i<this.scene.children.length;i++){
-      if(this.scene.children[i].type==="Scene"){
-        this.basicMat=this.scene.children[i].children[0].children[0]["material"];
-        break;
-      }
-    }*/
-    ///One Mesh
-    for(var i=0;i<this.scene.children.length;i++){
-      if(this.scene.children[i].type==="Scene"){
-        for(var j=0;j<this.scene.children[i].children.length;j++){
-          if(this.scene.children[i].children[j].name=="All faces"){
-            this.basicMat=this.scene.children[i].children[j]["material"];
-            this.scene.children[i].children[j]["material"].blending=1;
-          }
-          if(this.scene.children[i].children[j].name=="All edges"){
-            this.basiclineMat=this.scene.children[i].children[j]["material"];
-            this.scene.children[i].children[j]["material"].blending=1;
-          }
-          if(this.scene.children[i].children[j].name=="All wires"){
-            this.basicwireMat=this.scene.children[i].children[j]["material"];
-            this.scene.children[i].children[j]["material"].blending=1;
-          }
-        }
-      }
-    }
 
     // render loop
     let self = this;
@@ -154,19 +120,11 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
         var currObj=self.scenechildren[i];
         if(self.dataService.getSelectingIndex(currObj.uuid)<0) {
           if ( intersects[ 0 ]!=undefined&&intersects[ 0 ].object.uuid==currObj.uuid) {
-
-            //if(currObj.name==="All edges"){
             self.sphere.visible = true;
             self.sphere.position.copy( intersects[ 0 ].point );
-          //}
-            /*if(currObj.name==="All faces") currObj.material=self.mousehovMat;
-            if(currObj.name==="All edges")  currObj.material=self.mousehovlineMat;
-            if(currObj.name==="All wires")  currObj.material=self.mousehovwireMat;*/
+
           } else {
             self.sphere.visible = false;
-            /*if(currObj.name==="All faces") currObj.material=self.basicMat;
-            if(currObj.name==="All edges")  currObj.material=self.basiclineMat;
-            if(currObj.name==="All wires")  currObj.material=self.basicwireMat;*/
           }
         }
       }
@@ -179,14 +137,15 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
       requestAnimationFrame( animate );
       self.renderer.render( self.scene, self.camera );
     };
-    animate();
-    //this.zoomfit();
+    animate();   
+    this.addgrid();
+
   }
   //
   //  checks if the flowchart service has a flowchart and calls update function for the viewer
   //
   notify(message: string): void{
-    if(message == "model_update"){
+    if(message == "model_update" && this.scene){
       this.updateModel();
     }
     
@@ -212,14 +171,14 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
 
     this._model = this.dataService.getGsModel(); 
 
-    if( !this._model || !this.scene){
-      console.warn("Model or Scene not defined");
+    if( !this._model || !this.scene ){
+      console.warn("Model or Scene not defined.");
       return;
     }
 
     try{
       //this.scene_and_maps= gs.genThreeOptModelAndMaps( this._model );
-      this.scene_and_maps= this.dataService.updateModel();
+      this.scene_and_maps= this.dataService.getscememaps();
 
       const scene_data = this.scene_and_maps.scene;
       //[three_mode, egde_map, tri_map] = genThreeModelandMaps()
@@ -227,45 +186,30 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
       //gs.getThreeFace(label)
       //gs.getThreeObj
 
-      
       this.clearScene();
 
       let loader = new THREE.ObjectLoader();
 
       let objectData = loader.parse( scene_data );
-      /*for(var i =0;i< objectData.children.length;i++){
-        if( objectData.children[i].children!==undefined){
-          for(var j=0;j< objectData.children[i].children.length;j++){
-            let chd = objectData.children[i].children[j];
-            if( chd.type==="Mesh"||chd.type==="LineLoop"||chd.type==="LineSegments"||chd.type==="Line"){
-               objectData.children[i].children[j]["geometry"].computeVertexNormals();
-               objectData.children[i].children[j]["geometry"].computeBoundingBox();
-               objectData.children[i].children[j]["geometry"].computeBoundingSphere();
-            }
-            /// 
-            if( chd.children.length > 0){
-              for(let s=0; s < chd.children.length; s++ ){
-                let spr: any = chd.children[s];
-                this.mySprites.push(spr);
-                spr.material = this.getMaterial(spr.name);
-              }
-            }
+      if( objectData.children!==undefined){
+        for(var i=0;i< objectData.children.length;i++){
+          let chd = objectData.children[i];
+          chd["material"].needsUpdate=true;
+          chd["material"].transparent=true;
+          chd["material"].blending=1;
+          if( chd.name==="All faces"||chd.name==="All wires"||chd.name==="All edges"||chd.name==="All vertices"||
+            chd.name==="Other lines"||chd.name==="All points"){
+            chd["geometry"].computeVertexNormals();
+            chd["geometry"].computeBoundingBox();
+            chd["geometry"].computeBoundingSphere();
+          }
+          if(chd.name==="All points"){
+            this.center=chd["geometry"].boundingSphere.center;
           }
         }
-      }*/
-      //One Mesh
-        if( objectData.children!==undefined){
-          for(var i=0;i< objectData.children.length;i++){
-            let chd = objectData.children[i];
-            chd["material"].needsUpdate=true;
-            chd["material"].transparent=true;
-            if( chd.type==="Mesh"||chd.type==="LineLoop"||chd.type==="LineSegments"||chd.type==="Line"){
-              chd["geometry"].computeVertexNormals();
-              chd["geometry"].computeBoundingBox();
-              chd["geometry"].computeBoundingSphere();
-            }
-          }
-        }
+      }
+      this.controls.target.set(this.center.x,this.center.y,this.center.z);
+      this.controls.update();
       this.scene.add(objectData);
     }
     catch(ex){
@@ -300,9 +244,34 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
   }
 
   onDocumentMouseMove(event) {
-    event.preventDefault();
     this.mouse.x = ( event.offsetX / this.width) * 2 - 1;
     this.mouse.y =-( event.clientY / this.height ) * 2 + 1;
+
+  }
+
+  addgrid(){
+    var max=8;
+    var center=new THREE.Vector3(0,0,0);
+    for(var i=0;i<this.scene.children.length;i++){
+      if(this.scene.children[i].type==="Scene"){
+        for(var j=0;j<this.scene.children[i].children.length;j++){
+          if(this.scene.children[i].children[j]["geometry"].boundingSphere.radius!==0){
+            center=this.scene.children[i].children[j]["geometry"].boundingSphere.center;
+            var radius:number=this.scene.children[i].children[j]["geometry"].boundingSphere.radius;
+            max=Math.ceil(radius)*1.5;
+            break;
+          }
+        }
+      }
+    }
+    if(this.dataService.grid){
+      var gridhelper=new THREE.GridHelper( max, max);
+      gridhelper.name="GridHelper";
+      var vector=new THREE.Vector3(0,1,0);
+      gridhelper.lookAt(vector);
+      gridhelper.position.set(center.x,center.y,center.z);
+      this.scene.add( gridhelper);
+    }
   }
 
   /// selects object from three.js scene
@@ -316,10 +285,8 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
     event.preventDefault();
     var selectedObj, intersects;
     var select:boolean=false;
-    //this.selection_setting=this.dataService.getSelectionSetting();
     this.scenechildren=this.dataService.getscenechild();
     this.raycaster.setFromCamera(this.mouse,this.camera);
-    var linePre=Math.round(this.scene.children[2].children[0]["geometry"].boundingSphere.radius)/10;
     this.raycaster.linePrecision = 0.05;
     intersects = this.raycaster.intersectObjects(this.scenechildren);
     if ( intersects.length > 0 ) {
@@ -327,11 +294,6 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
       if(this.scenechildren[0].name === "All faces"){
         const path: gs.ITopoPathData = this.scene_and_maps.faces_map.get(Math.floor(intersects[ 0 ].faceIndex/2));
         const face: gs.IFace = this._model.getGeom().getTopo(path) as gs.IFace;
-
-        //const faces: gs.IFace[] = face.getObj().getFaces();
-        //const wires: gs.IWire[] = wire.getObj().getWires();
-
-
         const label: string = face.getLabel();
         const label_xyz: gs.XYZ = face.getLabelCentroid();
         const verts: gs.IVertex[] = face.getVertices();
@@ -494,6 +456,56 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
       //this.dataService.addselecting(select);
     }
     //this.updateview();
+  }
+
+  getobject(){
+    var path: gs.ITopoPathData;
+    var face: gs.IFace ;
+    var faces: gs.IFace[] ;
+    var label: string;
+    var label_xyz: gs.XYZ;
+    var verts: gs.IVertex[]; 
+    var verts_xyz: gs.XYZ[];
+    var objects:any=[];
+    var material=new THREE.MeshPhongMaterial( { color:0xFF0000,side:THREE.DoubleSide} );
+    var geometry=new THREE.Geometry();
+    for(var i=0;i<this.scene_and_maps.faces_map.size;i++){
+      var sceneobjs=new THREE.Scene();
+      
+      path= this.scene_and_maps.faces_map.get(i);
+      face= this._model.getGeom().getTopo(path) as gs.IFace;
+      faces= face.getObj().getFaces();
+      
+      for(var n=0;n<faces.length;n++){
+        var sceneobj=new THREE.Scene();
+        verts= faces[n].getVertices();
+        verts_xyz= verts.map((v) => v.getPoint().getPosition());
+        for(var j=0;j<verts_xyz.length;j++){
+          geometry.vertices.push(new THREE.Vector3(verts_xyz[j][0],verts_xyz[j][1],verts_xyz[j][2]));
+        }
+/*        console.log(geometry);
+        //geometry.faces.push(new THREE.Face3(0,2,1));
+        //geometry.faces.push(new THREE.Face3(0,3,2));
+        var mesh=new THREE.Mesh(geometry,material);
+        mesh["geometry"].computeVertexNormals();
+        sceneobj.name="o"+path.id;
+        sceneobj.add(mesh);
+        sceneobjs.add(sceneobj);
+        sceneobjs.name="Objs";
+        //sceneobjs.visible=false;        
+        this.scene.add(sceneobjs);*/
+        i=i+faces.length;
+        }
+        
+
+    }
+    for(j=0;j<geometry.vertices.length;j++){
+          geometry.faces.push(new THREE.Face3(j,j+2,j+1));
+          geometry.faces.push(new THREE.Face3(j,j+3,j+2));
+          j=j+3;
+    }
+    var mesh=new THREE.Mesh(geometry,material);
+        mesh["geometry"].computeVertexNormals();
   }
 
   updateview(){
@@ -662,6 +674,66 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
     return scenechildren;
   }*/
 
+
+  zoomfit(){
+    event.preventDefault();
+    if(this.selecting.length===0){
+      const obj=new THREE.Object3D();
+      for(var i=0;i<this.scene.children.length;i++){
+        if(this.scene.children[i].name!=="GridHelper"){
+          obj.children.push(this.scene.children[i]);
+        }
+      }
+      var boxHelper = new THREE.BoxHelper(obj);
+      boxHelper["geometry"].computeBoundingBox();
+      boxHelper["geometry"].computeBoundingSphere();
+      var boundingSphere=boxHelper["geometry"].boundingSphere;
+      var center = boundingSphere.center;
+      var radius = boundingSphere.radius;
+      var fov=this.camera.fov * ( Math.PI / 180 );
+      var vec_centre_to_pos: THREE.Vector3 = new THREE.Vector3();
+      vec_centre_to_pos.subVectors(this.camera.position, center);
+      var tmp_vec=new THREE.Vector3( center.x+Math.abs( radius / Math.sin( fov / 2 )),
+                                     center.y+Math.abs( radius / Math.sin( fov / 2 ) ),
+                                     center.z+Math.abs( radius / Math.sin( fov / 2 )));
+      vec_centre_to_pos.setLength(tmp_vec.length());
+      var perspectiveNewPos: THREE.Vector3 = new THREE.Vector3();
+      perspectiveNewPos.addVectors(center, vec_centre_to_pos);
+      var newLookAt = new THREE.Vector3(center.x,center.y,center.z)
+      this.camera.position.copy(perspectiveNewPos);
+      this.camera.lookAt(newLookAt);
+      this.camera.updateProjectionMatrix();
+      this.controls.target.set(newLookAt.x, newLookAt.y,newLookAt.z);
+    }else{
+      
+      var axisX,axisY,axisZ,centerX,centerY,centerZ=0;
+      var radius=0;
+      for(var i=0;i<this.selecting.length;i++){
+        axisX+=this.selecting[i].geometry.boundingSphere.center.x;
+        axisY+=this.selecting[i].geometry.boundingSphere.center.y;
+        axisZ+=this.selecting[i].geometry.boundingSphere.center.z;
+        radius=Math.max(this.selecting[i].geometry.boundingSphere.radius,radius);
+      }
+      centerX=axisX/this.scene.children[1].children.length;
+      centerY=axisY/this.scene.children[1].children.length;
+      centerY=axisY/this.scene.children[1].children.length;
+      var center = new THREE.Vector3(centerX,centerY,centerZ);
+      var fov=this.camera.fov * ( Math.PI / 180 );
+      var vec_centre_to_pos: THREE.Vector3 = new THREE.Vector3();
+      vec_centre_to_pos.subVectors(this.camera.position, center);
+      var tmp_vec=new THREE.Vector3(center.x+Math.abs( radius / Math.sin( fov / 2 )),
+                                    center.y+Math.abs( radius / Math.sin( fov / 2 ) ),
+                                    center.z+Math.abs( radius / Math.sin( fov / 2 )));
+      vec_centre_to_pos.setLength(tmp_vec.length());
+      var perspectiveNewPos: THREE.Vector3 = new THREE.Vector3();
+      perspectiveNewPos.addVectors(center, vec_centre_to_pos);
+      var newLookAt = new THREE.Vector3(center.x,center.y,center.z)
+      this.camera.position.copy(perspectiveNewPos);
+      this.camera.lookAt(newLookAt);
+      this.camera.updateProjectionMatrix();
+      this.controls.target.set(newLookAt.x, newLookAt.y,newLookAt.z);
+    }
+  }
 
 
   /*render():void {
