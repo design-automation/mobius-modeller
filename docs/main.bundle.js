@@ -2330,6 +2330,7 @@ let FlowchartService = class FlowchartService {
         this.checkSavedNodes();
         //this.checkSavedFile();
         this.autoSave(60 * 5);
+        console.log("d", __WEBPACK_IMPORTED_MODULE_7__assets_modules_AllModules__);
     }
     check() {
         return this._flowchart != undefined;
@@ -2491,6 +2492,7 @@ let FlowchartService = class FlowchartService {
             { _name: "String", _version: 0.1, _author: "Patrick" },
             { _name: "List", _version: 0.1, _author: "Patrick" },
             { _name: "Math", _version: 0.1, _author: "Patrick" },
+            { _name: "Model", _version: 0.1, _author: "Patrick" },
             { _name: "Point", _version: 0.1, _author: "Patrick" },
             { _name: "Pline", _version: 0.1, _author: "Patrick" },
             { _name: "PMesh", _version: 0.1, _author: "Patrick" },
@@ -2498,7 +2500,8 @@ let FlowchartService = class FlowchartService {
             { _name: "Plane", _version: 0.1, _author: "Patrick" },
             { _name: "Split", _version: 0.1, _author: "Patrick" },
             { _name: "Intersect", _version: 0.1, _author: "Patrick" },
-            { _name: "Model", _version: 0.1, _author: "Patrick" },
+            { _name: "Examples", _version: 0.1, _author: "Patrick" }
+            //{_name: "Calc", _version: 0.1, _author: "Patrick"}
         ]);
         // print message to console
         this.consoleService.addMessage("New file created.");
@@ -3553,13 +3556,14 @@ let SettingComponent = class SettingComponent {
         this.gridVisible = !this.gridVisible;
         var max = 8;
         var center = new __WEBPACK_IMPORTED_MODULE_0_three__["Vector3"](0, 0, 0);
+        var radius = 0;
         for (var i = 0; i < this.scene.children.length; i++) {
             if (this.scene.children[i].type === "Scene") {
                 for (var j = 0; j < this.scene.children[i].children.length; j++) {
-                    if (this.scene.children[i].children[j]["geometry"].boundingSphere.radius !== 0) {
+                    if (this.scene.children[i].children[j]["geometry"].boundingSphere.radius > radius) {
                         center = this.scene.children[i].children[j]["geometry"].boundingSphere.center;
-                        var radius = this.scene.children[i].children[j]["geometry"].boundingSphere.radius;
-                        max = Math.ceil(radius + Math.max(Math.abs(center.x), Math.abs(center.y), Math.abs(center.z)) * 1.2);
+                        radius = this.scene.children[i].children[j]["geometry"].boundingSphere.radius;
+                        max = Math.ceil(radius + Math.max(Math.abs(center.x), Math.abs(center.y), Math.abs(center.z)) * 1.5);
                         break;
                     }
                 }
@@ -3803,7 +3807,12 @@ let ToolwindowComponent = class ToolwindowComponent extends __WEBPACK_IMPORTED_M
     ngOnInit() {
         this.model = this.dataService.getGsModel();
         this.Visible = this.dataService.visible;
-        this.scene_and_maps = this.dataService.getscememaps();
+        if (this.model !== undefined) {
+            this.scene_and_maps = this.dataService.getscememaps();
+        }
+        else {
+            return undefined;
+        }
         this.object(this.Visible);
         //this.objectselect(this.SelectVisible);
         this.getvertices();
@@ -4365,7 +4374,6 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
         this.sphere.visible = false;
         this.sphere.name = "sphereInter";
         this.scene.add(this.sphere);
-        console.log(this.scene_and_maps);
         // render loop
         let self = this;
         function animate() {
@@ -4443,6 +4451,7 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
             let loader = new __WEBPACK_IMPORTED_MODULE_1_three__["ObjectLoader"]();
             let objectData = loader.parse(scene_data);
             if (objectData.children !== undefined) {
+                var radius = 0;
                 for (var i = 0; i < objectData.children.length; i++) {
                     let chd = objectData.children[i];
                     chd["material"].needsUpdate = true;
@@ -4454,7 +4463,8 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
                         chd["geometry"].computeBoundingBox();
                         chd["geometry"].computeBoundingSphere();
                     }
-                    if (chd.name === "All points") {
+                    if (chd["geometry"].boundingSphere.radius > radius) {
+                        radius = chd["geometry"].boundingSphere.radius;
                         this.center = chd["geometry"].boundingSphere.center;
                     }
                 }
@@ -4462,6 +4472,7 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
             this.controls.target.set(this.center.x, this.center.y, this.center.z);
             this.controls.update();
             this.scene.add(objectData);
+            console.log(this.scene);
         }
         catch (ex) {
             console.error("Error displaying model:", ex);
@@ -4658,13 +4669,14 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
     addgrid() {
         var max = 8;
         var center = new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](0, 0, 0);
+        var radius = 0;
         for (var i = 0; i < this.scene.children.length; i++) {
             if (this.scene.children[i].type === "Scene") {
                 for (var j = 0; j < this.scene.children[i].children.length; j++) {
-                    if (this.scene.children[i].children[j]["geometry"].boundingSphere.radius !== 0) {
+                    if (this.scene.children[i].children[j]["geometry"].boundingSphere.radius > radius) {
                         center = this.scene.children[i].children[j]["geometry"].boundingSphere.center;
-                        var radius = this.scene.children[i].children[j]["geometry"].boundingSphere.radius;
-                        max = Math.ceil(radius + Math.max(Math.abs(center.x), Math.abs(center.y), Math.abs(center.z)) * 1.2);
+                        radius = this.scene.children[i].children[j]["geometry"].boundingSphere.radius;
+                        max = Math.ceil(radius + Math.max(Math.abs(center.x), Math.abs(center.y), Math.abs(center.z)) * 1.5);
                         break;
                     }
                     if (this.scene.children[i].children[j].type === "GridHelper") {
@@ -8029,10 +8041,14 @@ ViewerContainerComponent = __decorate([
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "List", function() { return List; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Math", function() { return Math; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "String", function() { return String; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Circle", function() { return Circle; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Model", function() { return Model; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Attrib", function() { return Attrib; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Examples", function() { return Examples; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Intersect", function() { return Intersect; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Model", function() { return Model; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Obj", function() { return Obj; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Plane", function() { return Plane; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Pline", function() { return Pline; });
@@ -8042,9 +8058,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Ray", function() { return Ray; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Split", function() { return Split; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Topo", function() { return Topo; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "List", function() { return List; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Math", function() { return Math; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "String", function() { return String; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__ = __webpack_require__("../../../../../src/app/base-classes/code/CodeModule.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_gs_modelling__ = __webpack_require__("../../../../gs-modelling/dist/index.js");
 

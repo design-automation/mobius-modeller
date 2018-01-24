@@ -39,6 +39,7 @@ export class ModuleboxComponent extends Viewer implements OnInit{
 			this._category.push(user_module["_name"]);
 			this._moduleList[user_module["_name"]] = this._moduleList.concat(ModuleUtils.getFunctions(user_module));
 		}
+
 	}
 
 	reset():void{

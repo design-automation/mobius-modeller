@@ -53,6 +53,8 @@ export class FlowchartService {
       this.checkSavedNodes();
       //this.checkSavedFile();
       this.autoSave(60*5);
+
+      console.log("d", ModuleSet);
   };
 
   autoSave(time_in_seconds: number): void{
@@ -263,6 +265,7 @@ export class FlowchartService {
                         {_name: "String", _version: 0.1, _author: "Patrick"},
                         {_name: "List", _version: 0.1, _author: "Patrick"},
                         {_name: "Math", _version: 0.1, _author: "Patrick"},
+                        {_name: "Model", _version: 0.1, _author: "Patrick"},
                         {_name: "Point", _version: 0.1, _author: "Patrick"},
                         {_name: "Pline", _version: 0.1, _author: "Patrick"},
                         {_name: "PMesh", _version: 0.1, _author: "Patrick"},
@@ -270,14 +273,13 @@ export class FlowchartService {
                         {_name: "Plane", _version: 0.1, _author: "Patrick"},
                         {_name: "Split", _version: 0.1, _author: "Patrick"},
                         {_name: "Intersect", _version: 0.1, _author: "Patrick"},
-                        {_name: "Model", _version: 0.1, _author: "Patrick"},
+                        {_name: "Examples", _version: 0.1, _author: "Patrick"}
                         //{_name: "Calc", _version: 0.1, _author: "Patrick"}
                       ]
                     );
 
     // print message to console
     this.consoleService.addMessage("New file created.");
-
     this.update();
 
     return this._flowchart;
