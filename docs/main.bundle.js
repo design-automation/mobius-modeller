@@ -1563,10 +1563,10 @@ class OutputPort extends __WEBPACK_IMPORTED_MODULE_0__Port__["a" /* Port */] {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return OutputPortTypes; });
 var OutputPortTypes;
 (function (OutputPortTypes) {
-    OutputPortTypes["Three"] = "3D Viewer";
-    OutputPortTypes["Code"] = "Code Viewer";
-    OutputPortTypes["Text"] = "Text Viewer";
-    OutputPortTypes["Console"] = "Console";
+    OutputPortTypes[OutputPortTypes["Three"] = 0] = "Three";
+    OutputPortTypes[OutputPortTypes["Code"] = 1] = "Code";
+    OutputPortTypes[OutputPortTypes["Text"] = 2] = "Text";
+    OutputPortTypes[OutputPortTypes["Console"] = 3] = "Console";
 })(OutputPortTypes || (OutputPortTypes = {}));
 
 
@@ -1578,8 +1578,6 @@ var OutputPortTypes;
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__misc_GUID__ = __webpack_require__("../../../../../src/app/base-classes/misc/GUID.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__InputPortTypes__ = __webpack_require__("../../../../../src/app/base-classes/port/InputPortTypes.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__OutputPortTypes__ = __webpack_require__("../../../../../src/app/base-classes/port/OutputPortTypes.ts");
-
 
 
 class Port {
@@ -1630,7 +1628,7 @@ class Port {
             this._type = Object.keys(__WEBPACK_IMPORTED_MODULE_1__InputPortTypes__["a" /* InputPortTypes */])[this._type];
         }
         else if (typeof (this._type) == "number" && type == "out") {
-            this._type = Object.keys(__WEBPACK_IMPORTED_MODULE_2__OutputPortTypes__["a" /* OutputPortTypes */])[this._type];
+            //this._type = <OutputPortTypes>Object.keys(OutputPortTypes)[this._type]
         }
         this._selected = false;
         this._connected = false;
@@ -2330,7 +2328,7 @@ let FlowchartService = class FlowchartService {
         this.subject = new __WEBPACK_IMPORTED_MODULE_2_rxjs_Subject__["a" /* Subject */]();
         this.newFile();
         this.checkSavedNodes();
-        this.checkSavedFile();
+        //this.checkSavedFile();
         this.autoSave(60 * 5);
     }
     check() {
@@ -2353,20 +2351,22 @@ let FlowchartService = class FlowchartService {
         let message;
         if (storageString) {
             let fc = __WEBPACK_IMPORTED_MODULE_6_circular_json__["parse"](storageString)["flowchart"]["_lastSaved"];
-            message = "Welcome back! We found a file saved on " + (new Date(fc)).toDateString() + " at "
+            message = "Hey there! We found a file saved on " + (new Date(fc)).toDateString() + " at "
                 + (new Date(fc)).toTimeString() + ". Would you like to reload?";
         }
-        // if(message){
-        //   if (confirm(message)) {
-        //      this.loadFile(storageString);
-        //   } else {
-        //       this.newFile();
-        //   }
-        // }
-        // else{
-        this.newFile();
-        //}
-        // let dialogRef = this.dialog.open(FileLoadDialogComponent, {
+        if (message) {
+            if (confirm(message)) {
+                console.log(storageString);
+                this.loadFile(storageString);
+            }
+            else {
+                this.newFile();
+            }
+        }
+        else {
+            alert("Oops... We couldn't find a file in memory.");
+        }
+        //let dialogRef = this.dialog.open(FileLoadDialogComponent, {
         //     height: '400px',
         //     width: '600px'
         // });
@@ -2415,6 +2415,7 @@ let FlowchartService = class FlowchartService {
         let _this = this;
         let jsonData;
         try {
+            this.newFile();
             let data = __WEBPACK_IMPORTED_MODULE_6_circular_json__["parse"](fileString);
             // load the required modules
             /* _this.modules.loadModules(data["module"]); */
@@ -2426,10 +2427,12 @@ let FlowchartService = class FlowchartService {
             _this._flowchart = __WEBPACK_IMPORTED_MODULE_3__base_classes_flowchart_FlowchartModule__["b" /* FlowchartReader */].readFlowchartFromData(data["flowchart"]);
             _this.update();
             this.consoleService.addMessage("File loaded successfully");
+            this.layoutService.showConsole();
         }
         catch (err) {
-            this.consoleService.addMessage("Error loading file: " + err);
             this.newFile();
+            this.consoleService.addMessage("Error loading file: " + err);
+            this.layoutService.showConsole();
         }
     }
     loadModules(modules) {
@@ -2499,6 +2502,7 @@ let FlowchartService = class FlowchartService {
         ]);
         // print message to console
         this.consoleService.addMessage("New file created.");
+        this.update();
         return this._flowchart;
     }
     //
@@ -2598,7 +2602,6 @@ let FlowchartService = class FlowchartService {
         this.selectNode(this._flowchart.getNodes().length - 1);
         // print message to console
         this.consoleService.addMessage("New Node was added");
-        this.update();
     }
     addEdge(outputAddress, inputAddress) {
         if (outputAddress[0] == inputAddress[0]) {
@@ -2867,6 +2870,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
+//import {OutputPortTypes} from '../../../base-classes/Port/PortModule';
 
 let LayoutService = class LayoutService {
     constructor() {
@@ -3064,6 +3068,7 @@ let DataService = class DataService {
         this.sprite = [];
         this.selectedFaces = [];
         this.scenechildren = [];
+        this.textlabels = [];
         // ---- 
         // Subscription Handling
         // 
@@ -3072,7 +3077,6 @@ let DataService = class DataService {
         // scene
         let scene = new __WEBPACK_IMPORTED_MODULE_2_three__["Scene"]();
         scene.background = new __WEBPACK_IMPORTED_MODULE_2_three__["Color"](0xcccccc);
-        console.log(scene);
         // renderer
         let renderer = new __WEBPACK_IMPORTED_MODULE_2_three__["WebGLRenderer"]({ antialias: true });
         renderer.setPixelRatio(window.devicePixelRatio);
@@ -3113,7 +3117,6 @@ let DataService = class DataService {
         // add it to alight - what does alight do?
         this._alight = [];
         this._alight.push(hemi_light);
-        //this.zoomfit();
     }
     sendMessage(message) {
         this.subject.next({ text: message });
@@ -3236,6 +3239,12 @@ let DataService = class DataService {
     }
     getselecting() {
         return this.selecting;
+    }
+    addattrvertix(attributevertix) {
+        this.attributevertix = attributevertix;
+    }
+    getattrvertix() {
+        return this.attributevertix;
     }
     addgrid(grid) {
         this.grid = grid;
@@ -3550,7 +3559,7 @@ let SettingComponent = class SettingComponent {
                     if (this.scene.children[i].children[j]["geometry"].boundingSphere.radius !== 0) {
                         center = this.scene.children[i].children[j]["geometry"].boundingSphere.center;
                         var radius = this.scene.children[i].children[j]["geometry"].boundingSphere.radius;
-                        max = Math.ceil(radius) * 1.5;
+                        max = Math.ceil(radius + Math.max(Math.abs(center.x), Math.abs(center.y), Math.abs(center.z)) * 1.2);
                         break;
                     }
                 }
@@ -3561,7 +3570,7 @@ let SettingComponent = class SettingComponent {
             gridhelper.name = "GridHelper";
             var vector = new __WEBPACK_IMPORTED_MODULE_0_three__["Vector3"](0, 1, 0);
             gridhelper.lookAt(vector);
-            gridhelper.position.set(center.x, center.y, center.z);
+            gridhelper.position.set(center.x, center.y, 0);
             this.scene.add(gridhelper);
         }
         else {
@@ -3743,7 +3752,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "#toolwindow{\r\n  background-color:white;\r\n}\r\n#toolbar{\r\n  background-color: #E6E6E6;\r\n  height: 28px;\r\n}\r\n#point{\r\n  margin-left:25px;\r\n  font-size:20px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n#vertice{\r\n  font-size:22px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n#edge{\r\n  font-size:22px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n#wire{\r\n  font-size:22px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n#face{\r\n  font-size:22px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n#object{\r\n  font-size:20px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n#selected{\r\n  margin-left:30px;\r\n}\r\n.visible{\r\n  color: grey;\r\n}\r\n.selectvisible{\r\n  color: grey;\r\n}\r\n#table{\r\n  width:100% ;\r\n  height: 15px;\r\n}\r\n#tablename{\r\n  width:100% ;\r\n  height: 15px;\r\n  color:grey;\r\n}\r\n#numberbutton{\r\n  width:100%;\r\n  border:0;\r\n}\r\n.selectid{\r\n  background-color:#66CCFF;\r\n}\r\n#select{\r\n  position: relative;\r\n  float:right;\r\n  margin-right: 30px;\r\n}", ""]);
+exports.push([module.i, "#toolwindow{\r\n  background-color:white;\r\n}\r\n#toolbar{\r\n  background-color: #E6E6E6;\r\n  height: 28px;\r\n}\r\n#point{\r\n  margin-left:25px;\r\n  font-size:20px;\r\n  background:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n#vertice{\r\n  font-size:22px;\r\n  background-color:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n#edge{\r\n  font-size:22px;\r\n  background-color:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n#wire{\r\n  font-size:22px;\r\n  background-color:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n#face{\r\n  font-size:22px;\r\n  background-color:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n#object{\r\n  font-size:20px;\r\n  background-color:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n#selected{\r\n  margin-left:30px;\r\n}\r\n.visible{\r\n  background-color: white !important;\r\n  color:#395d73;\r\n}\r\n.selectvisible{\r\n  background-color:  white !important;\r\n  color:#395d73;\r\n}\r\n#table{\r\n  width:100% ;\r\n  height: 15px;\r\n}\r\n#tablename{\r\n  width:100% ;\r\n  height: 15px;\r\n  color:grey;\r\n}\r\n#numberbutton{\r\n  width:100%;\r\n  border:0;\r\n}\r\n/*.selectid{\r\n  background-color:#66CCFF;\r\n}*/\r\n#select{\r\n  position: relative;\r\n  float:right;\r\n  margin-right: 30px;\r\n}", ""]);
 
 // exports
 
@@ -3756,7 +3765,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/gs-viewer/toolwindow/toolwindow.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"toolwindow\">\r\n  <div id=\"toolbar\">\r\n    <button id=\"point\" [class.visible]=\"Visible === 'Points'\" (click)=\"point(Visible)\"><i class=\"fa fa-dot-circle-o\"></i></button>\r\n    <button id=\"vertice\" [class.visible]=\"Visible === 'Vertices'\" (click)=\"vertice(Visible)\">V</button>\r\n    <button id=\"edge\" [class.visible]=\"Visible === 'Edges'\" (click)=\"edge(Visible)\">E</button>\r\n    <button id=\"wire\" [class.visible]=\"Visible === 'Wires'\" (click)=\"wire(Visible)\">W</button>\r\n    <button id=\"face\" [class.visible]=\"Visible === 'Faces'\" (click)=\"face(Visible)\">F</button>\r\n    <button id=\"object\" [class.visible]=\"Visible === 'Objs'\" (click)=\"object(Visible)\"><i class=\"fa fa-map\"></i></button>\r\n    <input id=\"selected\" type=\"checkbox\" (click)=\"changeselected()\">\r\n    <label id=\"selectedname\" value=\"selected\">Show selected only</label>\r\n    <div id=\"select\">\r\n      <button id=\"vertice\" [class.selectvisible]=\"SelectVisible === 'Vertices'\" (click)=\"verticeselect(SelectVisible)\">V</button>\r\n      <button id=\"edge\" [class.selectvisible]=\"SelectVisible === 'Edges'\" (click)=\"edgeselect(SelectVisible)\">E</button>\r\n      <button id=\"wire\" [class.selectvisible]=\"SelectVisible === 'Wires'\" (click)=\"wireselect(SelectVisible)\">W</button>\r\n      <button id=\"face\" [class.selectvisible]=\"SelectVisible === 'Faces'\" (click)=\"faceselect(SelectVisible)\">F</button>\r\n      <button id=\"object\" [class.selectvisible]=\"SelectVisible === 'Objs'\" (click)=\"objectselect(SelectVisible)\"><i class=\"fa fa-map\"></i></button>\r\n    </div>\r\n  </div>\r\n  <div id=\"toolview\">\r\n    <div *ngIf=\"Visible === 'Points'\">\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\" id=\"table\" name=\"table\" bordercolor=\"#d0d0d0\">\r\n        <tr>\r\n          <td name=\"Number\" align=center width=\"40%\" align=center>ID</td>\r\n          <td width=\"20%\" align=center>X</td>\r\n          <td width=\"20%\" align=center>Y</td>\r\n          <td width=\"20%\" align=center>Z</td>\r\n        </tr>\r\n      </table>\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\" id=\"tablename\" name=\"table\" bordercolor=\"#d0d0d0\" *ngFor=\"let datascale of attribute; \">\r\n        <tr>\r\n          <button id=\"numberbutton\">{{datascale.id}}</button>\r\n          <td width=\"20%\" align=center>{{datascale.x}}</td>\r\n          <td width=\"20%\" align=center>{{datascale.y}}</td>\r\n          <td width=\"20%\" align=center>{{datascale.z}}</td>\r\n        </tr>\r\n      </table>\r\n    </div>\r\n    <div *ngIf=\"Visible === 'Vertices'\">\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\" bordercolor=\"#d0d0d0\" width=\"50%\">\r\n        <tr>\r\n          <td  align=center width=\"25%\">Vertices Lable</td>\r\n          <td  align=center width=\"25%\">Points ID</td>\r\n        </tr>\r\n      </table>\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\" bordercolor=\"#d0d0d0\" *ngFor=\"let datascale of attribute\" width=\"50%\">\r\n        <tr>\r\n          <button id=\"numberbutton\" [class.selectid]=\"ID == datascale.id\" (click)=clicktoshow(datascale.id)>{{datascale.id}}</button>\r\n          <td  align=center  width=\"50%\">{{datascale.pointid}}</td>\r\n        </tr>\r\n      </table>\r\n    </div>\r\n    <div *ngIf=\"Visible === 'Edges'\">\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" width=\"40%\">\r\n        <tr>\r\n          <td  align=center>Edge ID</td>\r\n        </tr>\r\n      </table>\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" *ngFor=\"let datascale of attribute\" width=\"40%\">\r\n        <tr>\r\n          <!-- <button id=\"numberbutton\"[class.selectid]=\"ID == datascale.id\" (click)=clicktoshow(datascale.id) >{{datascale.id}}</button> -->\r\n          <button id=\"numberbutton\">{{datascale}}</button>\r\n        </tr>\r\n      </table>\r\n    </div>\r\n    <div *ngIf=\"Visible === 'Wires'\">\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" width=\"40%\">\r\n        <tr>\r\n          <td  align=center>Wire ID</td>\r\n        </tr>\r\n      </table>\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" *ngFor=\"let datascale of attribute\" width=\"40%\">\r\n        <tr>\r\n          <button id=\"numberbutton\" >{{datascale}}</button>\r\n        </tr>\r\n      </table>\r\n    </div>\r\n    <div *ngIf=\"Visible === 'Faces'\">\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" width=\"40%\">\r\n        <tr>\r\n          <td  align=center>Face ID</td>\r\n        </tr>\r\n      </table>\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" *ngFor=\"let datascale of attribute\" width=\"40%\">\r\n        <tr>\r\n          <button id=\"numberbutton\" >{{datascale}}</button>\r\n        </tr>\r\n      </table>\r\n    </div>\r\n    <div *ngIf=\"Visible === 'Objs'\">\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" width=\"40%\">\r\n        <tr>\r\n          <td name=\"Number\" align=center  align=center>Object ID</td>\r\n        </tr>\r\n      </table>\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" *ngFor=\"let datascale of attribute \" width=\"40%\">\r\n        <tr>\r\n          <button  id=\"numberbutton\"  >{{datascale}}</button>\r\n        </tr>\r\n      </table>\r\n    </div>\r\n  </div>\r\n"
+module.exports = "<div id=\"toolwindow\">\r\n  <div id=\"toolbar\">\r\n    <button id=\"point\" [class.visible]=\"Visible === 'Points'\" (click)=\"point(Visible)\">P</button>\r\n    <button id=\"vertice\" [class.visible]=\"Visible === 'Vertices'\" (click)=\"vertice(Visible)\">V</button>\r\n    <button id=\"edge\" [class.visible]=\"Visible === 'Edges'\" (click)=\"edge(Visible)\">E</button>\r\n    <button id=\"wire\" [class.visible]=\"Visible === 'Wires'\" (click)=\"wire(Visible)\">W</button>\r\n    <button id=\"face\" [class.visible]=\"Visible === 'Faces'\" (click)=\"face(Visible)\">F</button>\r\n    <button id=\"object\" [class.visible]=\"Visible === 'Objs'\" (click)=\"object(Visible)\">O</button>\r\n    <input id=\"selected\" type=\"checkbox\" (click)=\"changeselected()\">\r\n    <label id=\"selectedname\" value=\"selected\">Show selected only</label>\r\n    <!-- <div id=\"select\">\r\n      <button id=\"vertice\" [class.selectvisible]=\"SelectVisible === 'Vertices'\" (click)=\"verticeselect(SelectVisible)\">V</button>\r\n      <button id=\"edge\" [class.selectvisible]=\"SelectVisible === 'Edges'\" (click)=\"edgeselect(SelectVisible)\">E</button>\r\n      <button id=\"wire\" [class.selectvisible]=\"SelectVisible === 'Wires'\" (click)=\"wireselect(SelectVisible)\">W</button>\r\n      <button id=\"face\" [class.selectvisible]=\"SelectVisible === 'Faces'\" (click)=\"faceselect(SelectVisible)\">F</button>\r\n      <button id=\"object\" [class.selectvisible]=\"SelectVisible === 'Objs'\" (click)=\"objectselect(SelectVisible)\"><i class=\"fa fa-map\"></i></button>\r\n    </div> -->\r\n  </div>\r\n  <div id=\"toolview\">\r\n    <div *ngIf=\"Visible === 'Points'\">\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\" id=\"table\" name=\"table\" bordercolor=\"#d0d0d0\">\r\n        <tr>\r\n          <td name=\"Number\" align=center width=\"40%\" align=center>ID</td>\r\n          <td width=\"20%\" align=center>X</td>\r\n          <td width=\"20%\" align=center>Y</td>\r\n          <td width=\"20%\" align=center>Z</td>\r\n        </tr>\r\n      </table>\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\" id=\"tablename\" name=\"table\" bordercolor=\"#d0d0d0\" *ngFor=\"let datascale of attribute; \">\r\n        <tr>\r\n          <button id=\"numberbutton\">{{datascale.id}}</button>\r\n          <td width=\"20%\" align=center>{{datascale.x}}</td>\r\n          <td width=\"20%\" align=center>{{datascale.y}}</td>\r\n          <td width=\"20%\" align=center>{{datascale.z}}</td>\r\n        </tr>\r\n      </table>\r\n    </div>\r\n    <div *ngIf=\"Visible === 'Vertices'\">\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\" bordercolor=\"#d0d0d0\" width=\"50%\">\r\n        <tr>\r\n          <td  align=center width=\"25%\">Vertices Label</td>\r\n          <td  align=center width=\"25%\">Points ID</td>\r\n        </tr>\r\n      </table>\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\" bordercolor=\"#d0d0d0\" *ngFor=\"let datascale of attribute\" width=\"50%\">\r\n        <tr>\r\n          <!-- <button id=\"numberbutton\" [class.selectid]=\"ID == datascale.id\" (click)=clicktoshow(datascale.id)>{{datascale.vertixlabel}}</button> -->\r\n          <button id=\"numberbutton\">{{datascale.vertixlabel}}</button>\r\n          <td  align=center  width=\"50%\">{{datascale.pointid}}</td>\r\n        </tr>\r\n      </table>\r\n    </div>\r\n    <div *ngIf=\"Visible === 'Edges'\">\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" width=\"40%\">\r\n        <tr>\r\n          <td  align=center>Edge ID</td>\r\n        </tr>\r\n      </table>\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" *ngFor=\"let datascale of attribute\" width=\"40%\">\r\n        <tr>\r\n          <!-- <button id=\"numberbutton\"[class.selectid]=\"ID == datascale.id\" (click)=clicktoshow(datascale.id) >{{datascale.id}}</button> -->\r\n          <button id=\"numberbutton\">{{datascale}}</button>\r\n        </tr>\r\n      </table>\r\n    </div>\r\n    <div *ngIf=\"Visible === 'Wires'\">\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" width=\"40%\">\r\n        <tr>\r\n          <td  align=center>Wire ID</td>\r\n        </tr>\r\n      </table>\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" *ngFor=\"let datascale of attribute\" width=\"40%\">\r\n        <tr>\r\n          <button id=\"numberbutton\" >{{datascale}}</button>\r\n        </tr>\r\n      </table>\r\n    </div>\r\n    <div *ngIf=\"Visible === 'Faces'\">\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" width=\"40%\">\r\n        <tr>\r\n          <td  align=center>Face ID</td>\r\n        </tr>\r\n      </table>\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" *ngFor=\"let datascale of attribute\" width=\"40%\">\r\n        <tr>\r\n          <button id=\"numberbutton\" >{{datascale}}</button>\r\n        </tr>\r\n      </table>\r\n    </div>\r\n    <div *ngIf=\"Visible === 'Objs'\">\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" width=\"40%\">\r\n        <tr>\r\n          <td name=\"Number\" align=center  align=center>Object ID</td>\r\n        </tr>\r\n      </table>\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" *ngFor=\"let datascale of attribute \" width=\"40%\">\r\n        <tr>\r\n          <button  id=\"numberbutton\"  >{{datascale}}</button>\r\n        </tr>\r\n      </table>\r\n    </div>\r\n  </div>\r\n"
 
 /***/ }),
 
@@ -3793,12 +3802,11 @@ let ToolwindowComponent = class ToolwindowComponent extends __WEBPACK_IMPORTED_M
     }
     ngOnInit() {
         this.model = this.dataService.getGsModel();
-        this.object(this.Visible);
         this.Visible = this.dataService.visible;
         this.scene_and_maps = this.dataService.getscememaps();
-        this.getoject();
-        this.getcolor();
-        this.faceselect(this.SelectVisible);
+        this.object(this.Visible);
+        //this.objectselect(this.SelectVisible);
+        this.getvertices();
     }
     notify() {
         this.selectObj = [];
@@ -3824,79 +3832,66 @@ let ToolwindowComponent = class ToolwindowComponent extends __WEBPACK_IMPORTED_M
                 this.verticecheck();
         }
         this.dataService.visible = this.Visible;
-        ;
     }
-    getvertice() {
-        var attributeedge = [];
-        for (var i = 0; i < this.scene_and_maps.faces_map.size; i++) {
-            const face = this.model.getGeom().getTopo(this.scene_and_maps.faces_map.get(i));
-            const verts = face.getVertices();
-            const verts_xyz = verts.map((v) => v.getPoint().getPosition());
-            console.log(verts_xyz);
+    getvertices() {
+        var attributevertix = [];
+        var points = this.getpoints();
+        for (var i = 0; i < this.scene_and_maps.vertices_map.size; i++) {
+            const path = this.scene_and_maps.vertices_map.get(i);
+            const vertices = this.model.getGeom().getTopo(path);
+            const label = vertices.getLabel();
+            const verts_xyz = vertices.getLabelCentroid();
+            var attributes = [];
+            for (var j = 0; j < points.length; j++) {
+                if (points[j].x === verts_xyz[0] && points[j].y === verts_xyz[1] && points[j].z === verts_xyz[2]) {
+                    attributes.pointid = points[j].id;
+                }
+            }
+            attributes.vertixlabel = label;
+            attributevertix.push(attributes);
         }
+        this.dataService.addattrvertix(attributevertix);
+        return attributevertix;
     }
     getedges() {
         var attributeedge = [];
         for (var i = 0; i < this.scene_and_maps.edges_map.size; i++) {
-            var attribute = [];
-            attribute = this.scene_and_maps.edges_map.get(i);
-            if (attribute["tt"] != undefined) {
-                if (attribute["tt"] == 1) {
-                    var edge = "o" + attribute["id"] + ":" + "f" + attribute["ti"] + ":" + "e" + attribute["si"];
-                    attributeedge.push(edge);
-                }
-            }
+            const path = this.scene_and_maps.edges_map.get(i);
+            const edge = this.model.getGeom().getTopo(path);
+            const label = edge.getLabel();
+            attributeedge.push(label);
         }
         return attributeedge;
     }
     getwires() {
         var attributewire = [];
         for (var i = 0; i < this.scene_and_maps.wires_map.size; i++) {
-            var attribute = [];
-            attribute = this.scene_and_maps.wires_map.get(i);
-            if (attribute["tt"] != undefined) {
-                if (attribute["tt"] == 0) {
-                    var edge = "o" + attribute["id"] + ":" + "w" + attribute["ti"];
-                    attributewire.push(edge);
-                }
-            }
+            const path = this.scene_and_maps.wires_map.get(i);
+            const wire = this.model.getGeom().getTopo(path);
+            const label = wire.getLabel();
+            attributewire.push(label);
         }
         return attributewire;
     }
     getfaces() {
         var attributeface = [];
         for (var i = 0; i < this.scene_and_maps.faces_map.size; i++) {
-            var attribute = [];
-            attribute = this.scene_and_maps.faces_map.get(i);
-            if (attribute["tt"] != undefined) {
-                if (attribute["tt"] == 1) {
-                    var edge = "o" + attribute["id"] + ":" + "f" + attribute["ti"];
-                    attributeface.push(edge);
-                }
-            }
+            const path = this.scene_and_maps.faces_map.get(i);
+            const face = this.model.getGeom().getTopo(path);
+            const label = face.getLabel();
+            attributeface.push(label);
         }
         return attributeface;
     }
     getoject() {
         var attributeobject = [];
-        var objectlable = [];
-        /*for(var i =0;i<this.scene_and_maps.faces_map.size;i++){
-          var attribute:any=[]
-          attribute=this.scene_and_maps.faces_map.get(i);
-          if(attribute["id"]!=undefined){
-            if(objectlable.length!=0){
-              for(var j=0;j<objectlable.length;j++){
-                if(objectlable[j]!=attribute["id"]){
-                  objectlable.push(attribute["id"]);
-                }
-              }
-            }else{objectlable.push(attribute["id"]);}
-          }
+        for (var i = 0; i < this.scene_and_maps.faces_map.size; i++) {
+            const path = this.scene_and_maps.faces_map.get(i);
+            if (i === 0 || path.id !== this.scene_and_maps.faces_map.get(i - 1).id) {
+                const label = "o" + path.id;
+                attributeobject.push(label);
+            }
         }
-        for(var n=0;n<objectlable.length;n++){
-          var object:string="o"+objectlable[n];
-          attributeobject.push(object);
-        }*/
         return attributeobject;
     }
     getchildren() {
@@ -3912,122 +3907,123 @@ let ToolwindowComponent = class ToolwindowComponent extends __WEBPACK_IMPORTED_M
         }
         return children;
     }
-    getcolor() {
-        var children = this.getchildren();
-        for (var i = 0; i < children.length; i++) {
-            if (children[i].name === "All faces") {
-                this.FaceColor = children[i]["material"].color;
-            }
-            if (children[i].name === "All wires") {
-                this.WireColor = children[i]["material"].color;
-            }
-            if (children[i].name === "All edges") {
-                this.EdgeColor = children[i]["material"].color;
-            }
+    /*objectselect(SelectVisible){
+      this.SelectVisible="Objs";
+      this.object(this.Visible);
+      document.getElementById("object").style.color=null;
+      document.getElementById("face").style.color=null;
+      document.getElementById("wire").style.color=null;
+      document.getElementById("edge").style.color=null;
+      document.getElementById("vertice").style.color=null;
+      var scenechildren=[];
+      var children=this.getchildren();
+      for(var i=0;i<children.length;i++){
+        if(children[i].name==="All wires") children[i]["material"].opacity=0;
+        if(children[i].name==="All edges") children[i]["material"].opacity=0;
+        if(children[i].name==="All vertices") children[i]["material"].opacity=0;
+        if(children[i].name==="All objs"||children[i].name==="All faces"){
+          children[i]["material"].opacity=0.8;
+          children[i].name="All objs";
+          scenechildren.push(children[i]);
         }
+      }
+      this.dataService.addscenechild(scenechildren);
     }
-    objectselect(SelectVisible) {
-        this.SelectVisible = "Ojbs";
-        var scenechildren = [];
-        var children = this.getchildren();
-        for (var i = 0; i < children.length; i++) {
-            if (children[i].name === "All wires")
-                children[i]["material"].opacity = 0;
-            if (children[i].name === "All edges")
-                children[i]["material"].opacity = 0;
-            if (children[i].name === "All points")
-                children[i]["material"].opacity = 0;
-            if (children[i].name === "All faces") {
-                children[i]["material"].opacity = 0.8;
-            }
+  
+    faceselect(SelectVisible){
+      this.SelectVisible="Faces";
+      this.face(this.Visible);
+      document.getElementById("object").style.color="grey";
+      document.getElementById("face").style.color=null;
+      document.getElementById("wire").style.color=null;
+      document.getElementById("edge").style.color=null;
+      document.getElementById("vertice").style.color=null;
+      var scenechildren=[];
+      var children=this.getchildren();
+      for(var i=0;i<children.length;i++){
+        if(children[i].name==="All wires") children[i]["material"].opacity=0.1;
+        if(children[i].name==="All edges") children[i]["material"].opacity=0.1;
+        if(children[i].name==="All vertices") children[i]["material"].opacity=0.1;
+        if(children[i].name==="All objs"||children[i].name==="All faces"){
+          children[i]["material"].opacity=0.8;
+          children[i].name="All faces";
+          scenechildren.push(children[i]);
         }
-        for (var j = 0; j < this.scene.children.length; j++) {
-            if (this.scene.children[j].name === "Objs") {
-                scenechildren.push(this.scene.children[j]);
-            }
-        }
-        this.dataService.addscenechild(scenechildren);
+      }
+      this.dataService.addscenechild(scenechildren);
     }
-    faceselect(SelectVisible) {
-        this.SelectVisible = "Faces";
-        var scenechildren = [];
-        var children = this.getchildren();
-        for (var i = 0; i < children.length; i++) {
-            if (children[i].name === "All wires")
-                children[i]["material"].opacity = 0.1;
-            if (children[i].name === "All edges")
-                children[i]["material"].opacity = 0.1;
-            if (children[i].name === "All points")
-                children[i]["material"].opacity = 0.1;
-            if (children[i].name === "All faces") {
-                children[i]["material"].opacity = 0.8;
-                scenechildren.push(children[i]);
-            }
+  
+    wireselect(SelectVisible){
+      this.SelectVisible="Wires";
+      this.wire(this.Visible);
+      document.getElementById("object").style.color="grey";
+      document.getElementById("face").style.color="grey";
+      document.getElementById("wire").style.color=null;
+      document.getElementById("edge").style.color=null;
+      document.getElementById("vertice").style.color=null;
+      var scenechildren=[];
+      var children=this.getchildren();
+      for(var i=0;i<children.length;i++){
+        if(children[i].name==="All objs"||children[i].name==="All faces") children[i]["material"].opacity=0.1;
+        if(children[i].name==="All edges") children[i]["material"].opacity=0.1;
+        if(children[i].name==="All vertices") children[i]["material"].opacity=0.1;
+        if(children[i].name==="All wires"){
+          children[i]["material"].opacity=0.6;
+          scenechildren.push(children[i]);
         }
-        this.dataService.addscenechild(scenechildren);
+      }
+      this.dataService.addscenechild(scenechildren);
     }
-    wireselect(SelectVisible) {
-        this.SelectVisible = "Wires";
-        var scenechildren = [];
-        var children = this.getchildren();
-        for (var i = 0; i < children.length; i++) {
-            if (children[i].name == "All faces")
-                children[i]["material"].opacity = 0.1;
-            if (children[i].name === "All edges")
-                children[i]["material"].opacity = 0.1;
-            if (children[i].name === "All points")
-                children[i]["material"].opacity = 0.1;
-            if (children[i].name === "All wires") {
-                children[i]["material"].opacity = 0.6;
-                scenechildren.push(children[i]);
-            }
+    edgeselect(SelectVisible){
+      this.SelectVisible="Edges";
+      this.edge(this.Visible);
+      document.getElementById("object").style.color="grey";
+      document.getElementById("face").style.color="grey";
+      document.getElementById("wire").style.color="grey";
+      document.getElementById("edge").style.color=null;
+      document.getElementById("vertice").style.color=null;
+      var scenechildren=[];
+      var children=this.getchildren();
+      for(var i=0;i<children.length;i++){
+        if(children[i].name==="All objs"||children[i].name==="All faces") children[i]["material"].opacity=0.1;
+        if(children[i].name==="All wires") children[i]["material"].opacity=0.1;
+        if(children[i].name==="All vertices") children[i]["material"].opacity=0.1;
+        if(children[i].name==="All edges"){
+          children[i]["material"].opacity=0.4;
+          scenechildren.push(children[i]);
         }
-        this.dataService.addscenechild(scenechildren);
+      }
+      this.dataService.addscenechild(scenechildren);
     }
-    edgeselect(SelectVisible) {
-        this.SelectVisible = "Edges";
-        var scenechildren = [];
-        var children = this.getchildren();
-        for (var i = 0; i < children.length; i++) {
-            if (children[i].name == "All faces")
-                children[i]["material"].opacity = 0.1;
-            if (children[i].name === "All wires")
-                children[i]["material"].opacity = 0.1;
-            if (children[i].name === "All points")
-                children[i]["material"].opacity = 0.1;
-            if (children[i].name === "All edges") {
-                children[i]["material"].opacity = 0.4;
-                scenechildren.push(children[i]);
-            }
+  
+    verticeselect(SelectVisible){
+      this.SelectVisible="Vertices";
+      this.vertice(this.Visible);
+      document.getElementById("object").style.color="grey";
+      document.getElementById("face").style.color="grey";
+      document.getElementById("wire").style.color="grey";
+      document.getElementById("edge").style.color="grey";
+      document.getElementById("vertice").style.color=null;
+      var scenechildren=[];
+      var children=this.getchildren();
+      for(var i=0;i<children.length;i++){
+        console.log(children);
+        if(children[i].name==="All objs"||children[i].name==="All faces") children[i]["material"].opacity=0.1;
+        if(children[i].name==="All wires") children[i]["material"].opacity=0.1;
+        if(children[i].name==="All edges") children[i]["material"].opacity=0.1;
+        if(children[i].name==="All vertices"){
+          children[i]["material"].opacity=1;
+          scenechildren.push(children[i]);
         }
-        this.dataService.addscenechild(scenechildren);
-    }
-    verticeselect(SelectVisible) {
-        this.SelectVisible = "Vertices";
-        var scenechildren = [];
-        var children = this.getchildren();
-        for (var i = 0; i < children.length; i++) {
-            if (children[i].name == "All faces")
-                children[i]["material"].opacity = 0.1;
-            if (children[i].name === "All wires")
-                children[i]["material"].opacity = 0.1;
-            if (children[i].name === "All edges")
-                children[i]["material"].opacity = 0.1;
-            if (children[i].name === "All points") {
-                children[i]["material"].opacity = 1;
-                scenechildren.push(children[i]);
-            }
-        }
-        this.dataService.addscenechild(scenechildren);
-    }
+      }
+      this.dataService.addscenechild(scenechildren);
+    }*/
     getscenechildren() {
         var scenechildren = [];
         for (var n = 0; n < this.scene.children.length; n++) {
             if (this.scene.children[n].type === "Scene") {
                 for (var i = 0; i < this.scene.children[n].children.length; i++) {
-                    //for(var j=0;j<this.scene.children[n].children[i].children.length;j++){
                     scenechildren.push(this.scene.children[n].children[i]);
-                    //}
                 }
             }
         }
@@ -4045,34 +4041,13 @@ let ToolwindowComponent = class ToolwindowComponent extends __WEBPACK_IMPORTED_M
         var attrubtepoints = [];
         for (var i = 0; i < this.model.getGeom().getAllPoints().length; i++) {
             var attributepoint = [];
-            attributepoint.id = this.model.getGeom().getAllPoints()[i].getID();
+            attributepoint.id = this.model.getGeom().getAllPoints()[i].getLabel();
             attributepoint.x = this.model.getGeom().getAllPoints()[i].getPosition()[0];
             attributepoint.y = this.model.getGeom().getAllPoints()[i].getPosition()[1];
             attributepoint.z = this.model.getGeom().getAllPoints()[i].getPosition()[2];
             attrubtepoints.push(attributepoint);
         }
         return attrubtepoints;
-    }
-    getvertices() {
-        var points = this.getpoints();
-        var attributes = [];
-        for (var i = 0; i < this.scenechildren.length; i++) {
-            if (this.scenechildren[i].name === "All points") {
-                for (var j = 0; j < this.scenechildren[i].children.length; j++) {
-                    for (var n = 0; n < points.length; n++) {
-                        if (points[n].x === this.scenechildren[i].children[j].position.x &&
-                            points[n].y === this.scenechildren[i].children[j].position.y &&
-                            points[n].z === this.scenechildren[i].children[j].position.z) {
-                            var attributevertice = [];
-                            attributevertice.id = this.scenechildren[i].children[j].name;
-                            attributevertice.pointid = points[n].id;
-                            attributes.push(attributevertice);
-                        }
-                    }
-                }
-            }
-        }
-        return attributes;
     }
     getverticescheck() {
         var points = this.getpoints();
@@ -4124,16 +4099,6 @@ let ToolwindowComponent = class ToolwindowComponent extends __WEBPACK_IMPORTED_M
     edge(Visible) {
         this.Visible = "Edges";
         this.attribute = [];
-        /*this.scenechildren=this.getscenechildren();
-        for(var i=0;i<this.scenechildren.length;i++){
-          if(this.scenechildren[i].name==="Edges"){
-            for(var j=0;j<this.scenechildren[i].children.length;j++){
-              var attributeface:any=[];
-              attributeface.id=this.scenechildren[i].children[j].name;
-              this.attribute.push(attributeface);
-            }
-          }
-        }*/
         this.attribute = this.getedges();
         if (this.selectedVisible == true) {
             this.edgecheck();
@@ -4159,16 +4124,6 @@ let ToolwindowComponent = class ToolwindowComponent extends __WEBPACK_IMPORTED_M
     wire(Visible) {
         this.Visible = "Wires";
         this.attribute = [];
-        /*this.scenechildren=this.getscenechildren();
-        for(var i=0;i<this.scenechildren.length;i++){
-          if(this.scenechildren[i].name==="Wires"){
-            for(var j=0;j<this.scenechildren[i].children.length;j++){
-              var attributeface:any=[];
-              attributeface.id=this.scenechildren[i].children[j].name;
-              this.attribute.push(attributeface);
-            }
-          }
-        }*/
         this.attribute = this.getwires();
         if (this.selectedVisible == true) {
             this.wirecheck();
@@ -4193,16 +4148,6 @@ let ToolwindowComponent = class ToolwindowComponent extends __WEBPACK_IMPORTED_M
     face(Visible) {
         this.Visible = "Faces";
         this.attribute = [];
-        /*this.scenechildren=this.getscenechildren();
-        for(var i=0;i<this.scenechildren.length;i++){
-          if(this.scenechildren[i].name==="Faces"){
-            for(var j=0;j<this.scenechildren[i].children.length;j++){
-              var attributeface:any=[];
-              attributeface.id=this.scenechildren[i].children[j].name;
-              this.attribute.push(attributeface);
-            }
-          }
-        }*/
         this.attribute = this.getfaces();
         if (this.selectedVisible == true) {
             this.facecheck();
@@ -4241,17 +4186,7 @@ let ToolwindowComponent = class ToolwindowComponent extends __WEBPACK_IMPORTED_M
     object(Visible) {
         this.Visible = "Objs";
         this.attribute = [];
-        /*this.scenechildren=this.getscenechildren();
-        for(var i=0;i<this.scenechildren.length;i++){
-          if(this.scenechildren[i].name==="Objs"){
-            for(var j=0;j<this.scenechildren[i].children.length;j++){
-              var attributeface:any=[];
-              attributeface.id=this.scenechildren[i].children[j].name;
-              this.attribute.push(attributeface);
-            }
-          }
-        }*/
-        //this.attribute=this.getoject();
+        this.attribute = this.getoject();
         if (this.selectedVisible == true) {
             this.objectcheck();
         }
@@ -4307,7 +4242,6 @@ let ToolwindowComponent = class ToolwindowComponent extends __WEBPACK_IMPORTED_M
         var select;
         for (var n = 0; n < this.scene.children.length; n++) {
             if (this.scene.children[n].type === "Scene") {
-                console.log(this.scene.children[n].children.length);
                 for (var m = 0; m < this.scene.children[n].children.length; m++) {
                     var sprite = this.scene.children[n].children[m].children[this.scene.children[n].children[m].children.length - 1].children;
                     for (var j = 0; j < sprite.length; j++) {
@@ -4349,7 +4283,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "#container {\r\n  position: relative;\r\n  height:100%;\r\n  width: 100%;\r\n  margin:0px;\r\n  overflow: hidden;\r\n  color: white;\r\n}\r\n\r\n/*#rotating{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:15px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  top: 0px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n\r\n#paning{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:15px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  top: 25px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n\r\n#zooming{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:15px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 50px;\r\n  background-color:transparent;\r\n  border:0;\r\n}*/\r\n\r\n#zoomingfit{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:15px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 10px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n\r\n/*#selecting{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:15px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 100px;\r\n  background-color:transparent;\r\n  border:0;\r\n}*/\r\n\r\n#setting{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:15px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  top: 35px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n\r\n\r\n.selected{\r\n  color: grey;\r\n\r\n}\r\n.visible{\r\n  color: grey;\r\n}\r\n\r\n.cursor {\r\n\r\n}", ""]);
+exports.push([module.i, "#container {\r\n  position: relative;\r\n  height:100%;\r\n  width: 100%;\r\n  margin:0px;\r\n  overflow: hidden;\r\n  color: white;\r\n}\r\n\r\n/*#rotating{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:15px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  top: 0px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n\r\n#paning{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:15px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  top: 25px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n\r\n#zooming{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:15px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 50px;\r\n  background-color:transparent;\r\n  border:0;\r\n}*/\r\n\r\n#zoomingfit{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:15px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 30px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n\r\n#selecting{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:15px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 50px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n\r\n#points{\r\n  width: 30px;\r\n  height: 25px;\r\n  font:20px bolder;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 80px;\r\n  background-color:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n#vertices{\r\n  width: 30px;\r\n  height: 25px;\r\n  font:20px bolder;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 100px;\r\n  background-color:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n#edges{\r\n  width: 30px;\r\n  height: 25px;\r\n  font:20px bolder;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 120px;\r\n  background-color:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n#wires{\r\n  width: 30px;\r\n  height: 25px;\r\n  font:20px bolder;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 140px;\r\n  background-color:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n#faces{\r\n  width: 30px;\r\n  height: 25px;\r\n  font:20px bolder;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 160px;\r\n  background-color:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n#objects{\r\n  width: 30px;\r\n  height: 25px;\r\n  font:20px bolder;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 180px;\r\n  background-color:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n\r\n#setting{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:15px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  top: 10px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n\r\n\r\n.selected{\r\n  color: grey;\r\n\r\n}\r\n.visible{\r\n  color: grey;\r\n}\r\n\r\n.cursor {\r\n\r\n}\r\n\r\n.selectvisible{\r\n  background-color:  white !important;\r\n  color:#395d73;\r\n}", ""]);
 
 // exports
 
@@ -4362,7 +4296,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/gs-viewer/viewer/viewer.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"container\"  \r\n    (mousemove)=\"onDocumentMouseMove($event)\" \r\n    (mousedown)=\"mousedown($event)\"\r\n    (mouseup)=\"mouseup($event)\"\r\n\t\t(click)=\"onDocumentMouseDown($event)\">\r\n\t\r\n  \t\t<!-- <button id=\"rotating\" \r\n  \t\t\t[class.visible]=\"Visible === 'rotate'\" \r\n  \t\t\t(click)=\"rotate()\">\r\n  \t\t\t<i class=\"fa fa-refresh\"></i>\r\n  \t\t</button>\r\n\r\n  \t\t<button id=\"paning\"  \r\n  \t\t\t[class.visible]=\"Visible === 'pan'\" \r\n  \t\t\t(click)=\"pan()\">\r\n  \t\t\t<i class=\"fa fa-hand-paper-o\"></i>\r\n  \t\t</button>\r\n\r\n  \t\t<button id=\"zooming\"  \r\n  \t\t\t[class.visible]=\"Visible === 'zoom'\" \r\n  \t\t\t(click)=\"Visible='zoom'\">\r\n  \t\t\t<i class=\"fa fa-search\"></i>\r\n  \t\t</button>-->\r\n  \t\t\r\n  \t\t<button id=\"zoomingfit\"  \r\n  \t\t\t[class.visible]=\"Visible === 'zoomfit'\" \r\n  \t\t\t(click)=\"zoomfit()\">\r\n  \t\t\t<i class=\"fa fa-arrows-alt\"></i>\r\n  \t\t</button> \r\n  \t\t\r\n  \t\t<!-- <button id=\"selecting\" [class.visible]=\"Visible === 'select'\" (click)= \"select($event, Visible)\" ><i class=\"fa fa-mouse-pointer\"></i></button> -->\r\n  \t\t\r\n  \t\t<button id=\"setting\" [class.selected]=\"settingVisible\" (click)= \"settingVisible = !settingVisible\">\r\n      \t\r\n      \t<!--setting-->\r\n      \t<i class=\"fa fa-cog\"></i></button>\r\n \t\t<app-setting *ngIf=\"settingVisible == true\"></app-setting>\r\n</div>\r\n\r\n\r\n\t\r\n\r\n\r\n"
+module.exports = "<div id=\"container\"  \r\n    (mousemove)=\"onDocumentMouseMove($event)\" \r\n    (mousedown)=\"mousedown($event)\"\r\n    (mouseup)=\"mouseup($event)\"\r\n\t\t(click)=\"onDocumentMouseDown($event)\">\r\n\t\r\n  \t\t<!-- <button id=\"rotating\" \r\n  \t\t\t[class.visible]=\"Visible === 'rotate'\" \r\n  \t\t\t(click)=\"rotate()\">\r\n  \t\t\t<i class=\"fa fa-refresh\"></i>\r\n  \t\t</button>\r\n\r\n  \t\t<button id=\"paning\"  \r\n  \t\t\t[class.visible]=\"Visible === 'pan'\" \r\n  \t\t\t(click)=\"pan()\">\r\n  \t\t\t<i class=\"fa fa-hand-paper-o\"></i>\r\n  \t\t</button>\r\n\r\n  \t\t<button id=\"zooming\"  \r\n  \t\t\t[class.visible]=\"Visible === 'zoom'\" \r\n  \t\t\t(click)=\"Visible='zoom'\">\r\n  \t\t\t<i class=\"fa fa-search\"></i>\r\n  \t\t</button>-->\r\n  \t\t\r\n  \t\t<button id=\"zoomingfit\"  \r\n  \t\t\t[class.visible]=\"Visible === 'zoomfit'\" \r\n  \t\t\t(click)=\"zoomfit()\">\r\n  \t\t\t<i class=\"fa fa-arrows-alt\"></i>\r\n  \t\t</button> \r\n  \t\t\r\n  \t\t<!-- <button id=\"selecting\" [class.visible]=\"Visible === 'select'\" (click)= \"select($event, Visible)\" ><i class=\"fa fa-mouse-pointer\"></i></button> -->\r\n  \t\t\r\n  \t\t<button id=\"setting\" [class.selected]=\"settingVisible\" (click)= \"settingVisible = !settingVisible\"><i class=\"fa fa-cog\"></i></button>\r\n\r\n      <button id=\"selecting\" [class.selected]=\"seVisible\" (click)= \"select(seVisible)\" ><i class=\"fa fa-mouse-pointer\"></i></button>\r\n\r\n      \t\r\n      \t<!--setting-->\r\n      \t\r\n \t\t<app-setting *ngIf=\"settingVisible == true\"></app-setting>\r\n    <div *ngIf=\"seVisible == true\">\r\n        <button id=\"points\" [class.selectvisible]=\"SelectVisible === 'Points'\" (click)=\"pointselect(SelectVisible)\">P</button>\r\n        <button id=\"vertices\" [class.selectvisible]=\"SelectVisible === 'Vertices'\" (click)=\"verticeselect(SelectVisible)\">V</button>\r\n        <button id=\"edges\" [class.selectvisible]=\"SelectVisible === 'Edges'\" (click)=\"edgeselect(SelectVisible)\">E</button>\r\n        <button id=\"wires\" [class.selectvisible]=\"SelectVisible === 'Wires'\" (click)=\"wireselect(SelectVisible)\">W</button>\r\n        <button id=\"faces\" [class.selectvisible]=\"SelectVisible === 'Faces'\" (click)=\"faceselect(SelectVisible)\">F</button>\r\n        <button id=\"objects\" [class.selectvisible]=\"SelectVisible === 'Objs'\" (click)=\"objectselect(SelectVisible)\">O</button>\r\n      </div>\r\n</div>\r\n\r\n\r\n\t\r\n\r\n\r\n"
 
 /***/ }),
 
@@ -4393,6 +4327,8 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
         this.mySprites = [];
         this.textlabels = [];
         this.starsGeometry = new __WEBPACK_IMPORTED_MODULE_1_three__["Geometry"]();
+        this.seVisible = false;
+        this.SelectVisible = 'Objs';
         this.myElement = myElement;
     }
     ngOnInit() {
@@ -4424,41 +4360,48 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
         this.scenechildren = this.dataService.getscenechild();
         this.scenechild = new __WEBPACK_IMPORTED_MODULE_1_three__["Scene"]();
         var geometry = new __WEBPACK_IMPORTED_MODULE_1_three__["SphereGeometry"](0.05);
-        var material = new __WEBPACK_IMPORTED_MODULE_1_three__["MeshBasicMaterial"]({ color: 0xff0000 });
+        var material = new __WEBPACK_IMPORTED_MODULE_1_three__["MeshBasicMaterial"]({ color: 0x00ff00 });
         this.sphere = new __WEBPACK_IMPORTED_MODULE_1_three__["Mesh"](geometry, material);
         this.sphere.visible = false;
         this.sphere.name = "sphereInter";
         this.scene.add(this.sphere);
+        console.log(this.scene_and_maps);
         // render loop
         let self = this;
         function animate() {
-            self.raycaster.setFromCamera(self.mouse, self.camera);
-            self.raycaster.linePrecision = 0.05;
-            self.scenechildren = self.dataService.getscenechild();
-            var intersects = self.raycaster.intersectObjects(self.scenechildren);
-            for (var i = 0; i < self.scenechildren.length; i++) {
-                var currObj = self.scenechildren[i];
-                if (self.dataService.getSelectingIndex(currObj.uuid) < 0) {
-                    if (intersects[0] != undefined && intersects[0].object.uuid == currObj.uuid) {
-                        self.sphere.visible = true;
-                        self.sphere.position.copy(intersects[0].point);
-                    }
-                    else {
-                        self.sphere.visible = false;
+            if (self.seVisible === true) {
+                self.raycaster.setFromCamera(self.mouse, self.camera);
+                self.raycaster.linePrecision = 0.05;
+                self.raycaster.params.Points.threshold = 0.05;
+                self.scenechildren = self.dataService.getscenechild();
+                var intersects = self.raycaster.intersectObjects(self.scenechildren);
+                for (var i = 0; i < self.scenechildren.length; i++) {
+                    var currObj = self.scenechildren[i];
+                    if (self.dataService.getSelectingIndex(currObj.uuid) < 0) {
+                        if (intersects[0] != undefined && intersects[0].object.uuid == currObj.uuid) {
+                            self.sphere.visible = true;
+                            self.sphere.position.copy(intersects[0].point);
+                        }
+                        else {
+                            self.sphere.visible = false;
+                        }
                     }
                 }
-            }
-            for (var i = 0; i < self.textlabels.length; i++) {
-                self.textlabels[i].updatePosition();
-            }
-            if (self.dataService.selecting.length != 0) {
-                self.updateview();
+                for (var i = 0; i < self.textlabels.length; i++) {
+                    self.textlabels[i].updatePosition();
+                }
+                if (self.dataService.selecting.length != 0) {
+                    self.updateview();
+                }
             }
             requestAnimationFrame(animate);
             self.renderer.render(self.scene, self.camera);
         }
         ;
         animate();
+        for (var i = 0; i < this.getchildren().length; i++) {
+            this.getchildren()[i]["material"].transparent = false;
+        }
         this.addgrid();
     }
     //
@@ -4537,6 +4480,168 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
         var spriteMaterial = new __WEBPACK_IMPORTED_MODULE_1_three__["SpriteMaterial"]({ map: texture, color: 0xffffff });
         return spriteMaterial;
     }
+    getchildren() {
+        var children;
+        for (var i = 0; i < this.scene.children.length; i++) {
+            if (this.scene.children[i].name == "Scene") {
+                children = this.scene.children[i].children;
+                break;
+            }
+            if (i == this.scene.children.length - 1) {
+                return [];
+            }
+        }
+        return children;
+    }
+    select(seVisible) {
+        this.seVisible = !this.seVisible;
+        if (this.seVisible) {
+            if (this.SelectVisible === "Objs") {
+                this.objectselect(this.SelectVisible);
+            }
+            for (var i = 0; i < this.getchildren().length; i++) {
+                this.getchildren()[i]["material"].transparent = true;
+            }
+        }
+        else {
+            for (var i = 0; i < this.getchildren().length; i++) {
+                this.getchildren()[i]["material"].transparent = false;
+            }
+        }
+    }
+    objectselect(SelectVisible) {
+        this.SelectVisible = "Objs";
+        this.dataService.visible = "Objs";
+        event.preventDefault();
+        document.getElementById("object").style.color = null;
+        document.getElementById("face").style.color = null;
+        document.getElementById("wire").style.color = null;
+        document.getElementById("edge").style.color = null;
+        document.getElementById("vertice").style.color = null;
+        var scenechildren = [];
+        var children = this.getchildren();
+        for (var i = 0; i < children.length; i++) {
+            if (children[i].name === "All wires")
+                children[i]["material"].opacity = 0;
+            if (children[i].name === "All edges")
+                children[i]["material"].opacity = 0;
+            if (children[i].name === "All vertices")
+                children[i]["material"].opacity = 0;
+            if (children[i].name === "All objs" || children[i].name === "All faces") {
+                children[i]["material"].opacity = 0.8;
+                children[i].name = "All objs";
+                scenechildren.push(children[i]);
+            }
+        }
+        this.dataService.addscenechild(scenechildren);
+    }
+    faceselect(SelectVisible) {
+        event.preventDefault();
+        this.SelectVisible = "Faces";
+        this.dataService.visible = "Faces";
+        document.getElementById("object").style.color = "grey";
+        document.getElementById("face").style.color = null;
+        document.getElementById("wire").style.color = null;
+        document.getElementById("edge").style.color = null;
+        document.getElementById("vertice").style.color = null;
+        var scenechildren = [];
+        var children = this.getchildren();
+        for (var i = 0; i < children.length; i++) {
+            if (children[i].name === "All wires")
+                children[i]["material"].opacity = 0.1;
+            if (children[i].name === "All edges")
+                children[i]["material"].opacity = 0.1;
+            if (children[i].name === "All vertices")
+                children[i]["material"].opacity = 0.1;
+            if (children[i].name === "All objs" || children[i].name === "All faces") {
+                children[i]["material"].opacity = 0.8;
+                children[i].name = "All faces";
+                scenechildren.push(children[i]);
+            }
+        }
+        this.dataService.addscenechild(scenechildren);
+    }
+    wireselect(SelectVisible) {
+        event.preventDefault();
+        this.SelectVisible = "Wires";
+        document.getElementById("object").style.color = "grey";
+        document.getElementById("face").style.color = "grey";
+        document.getElementById("wire").style.color = null;
+        document.getElementById("edge").style.color = null;
+        document.getElementById("vertice").style.color = null;
+        var scenechildren = [];
+        var children = this.getchildren();
+        for (var i = 0; i < children.length; i++) {
+            if (children[i].name === "All objs" || children[i].name === "All faces")
+                children[i]["material"].opacity = 0.1;
+            if (children[i].name === "All edges")
+                children[i]["material"].opacity = 0.1;
+            if (children[i].name === "All vertices")
+                children[i]["material"].opacity = 0.1;
+            if (children[i].name === "All wires") {
+                children[i]["material"].opacity = 0.6;
+                scenechildren.push(children[i]);
+            }
+        }
+        this.dataService.addscenechild(scenechildren);
+    }
+    edgeselect(SelectVisible) {
+        event.preventDefault();
+        this.SelectVisible = "Edges";
+        document.getElementById("object").style.color = "grey";
+        document.getElementById("face").style.color = "grey";
+        document.getElementById("wire").style.color = "grey";
+        document.getElementById("edge").style.color = null;
+        document.getElementById("vertice").style.color = null;
+        var scenechildren = [];
+        var children = this.getchildren();
+        for (var i = 0; i < children.length; i++) {
+            children[i]["material"].transparent = true;
+            if (children[i].name === "All objs" || children[i].name === "All faces")
+                children[i]["material"].opacity = 0.1;
+            if (children[i].name === "All wires")
+                children[i]["material"].opacity = 0.1;
+            if (children[i].name === "All vertices")
+                children[i]["material"].opacity = 0.1;
+            if (children[i].name === "All edges") {
+                children[i]["material"].opacity = 0.4;
+                scenechildren.push(children[i]);
+            }
+        }
+        this.dataService.addscenechild(scenechildren);
+    }
+    verticeselect(SelectVisible) {
+        event.preventDefault();
+        this.SelectVisible = "Vertices";
+        document.getElementById("object").style.color = "grey";
+        document.getElementById("face").style.color = "grey";
+        document.getElementById("wire").style.color = "grey";
+        document.getElementById("edge").style.color = "grey";
+        document.getElementById("vertice").style.color = null;
+        var scenechildren = [];
+        var children = this.getchildren();
+        for (var i = 0; i < children.length; i++) {
+            if (children[i].name === "All objs" || children[i].name === "All faces")
+                children[i]["material"].opacity = 0.1;
+            if (children[i].name === "All wires")
+                children[i]["material"].opacity = 0.1;
+            if (children[i].name === "All edges")
+                children[i]["material"].opacity = 0.1;
+            if (children[i].name === "All vertices") {
+                children[i]["material"].opacity = 1;
+                //scenechildren.push(children[i]);
+            }
+            if (children[i].name === "All points") {
+                scenechildren.push(children[i]);
+            }
+        }
+        this.dataService.addscenechild(scenechildren);
+    }
+    pointselect(SelectVisible) {
+        event.preventDefault();
+        this.verticeselect("Vertices");
+        this.SelectVisible = "Points";
+    }
     //
     //  events
     //
@@ -4559,8 +4664,12 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
                     if (this.scene.children[i].children[j]["geometry"].boundingSphere.radius !== 0) {
                         center = this.scene.children[i].children[j]["geometry"].boundingSphere.center;
                         var radius = this.scene.children[i].children[j]["geometry"].boundingSphere.radius;
-                        max = Math.ceil(radius) * 1.5;
+                        max = Math.ceil(radius + Math.max(Math.abs(center.x), Math.abs(center.y), Math.abs(center.z)) * 1.2);
                         break;
+                    }
+                    if (this.scene.children[i].children[j].type === "GridHelper") {
+                        this.scene.remove(this.scene.children[i].children[j]);
+                        j = j - 1;
                     }
                 }
             }
@@ -4570,119 +4679,155 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
             gridhelper.name = "GridHelper";
             var vector = new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](0, 1, 0);
             gridhelper.lookAt(vector);
-            gridhelper.position.set(center.x, center.y, center.z);
+            gridhelper.position.set(center.x, center.y, 0);
             this.scene.add(gridhelper);
         }
     }
     /// selects object from three.js scene
     onDocumentMouseDown(event) {
-        let threshold = 100;
-        if (Math.abs(this.mDownTime - this.mUpTime) > threshold) {
-            this.mDownTime = 0;
-            this.mUpTime = 0;
-            return;
-        }
-        event.preventDefault();
-        var selectedObj, intersects;
-        var select = false;
-        this.scenechildren = this.dataService.getscenechild();
-        this.raycaster.setFromCamera(this.mouse, this.camera);
-        this.raycaster.linePrecision = 0.05;
-        intersects = this.raycaster.intersectObjects(this.scenechildren);
-        if (intersects.length > 0) {
-            selectedObj = intersects[0].object;
-            if (this.scenechildren[0].name === "All faces") {
-                const path = this.scene_and_maps.faces_map.get(Math.floor(intersects[0].faceIndex / 2));
-                const face = this._model.getGeom().getTopo(path);
-                const label = face.getLabel();
-                const label_xyz = face.getLabelCentroid();
-                const verts = face.getVertices();
-                const verts_xyz = verts.map((v) => v.getPoint().getPosition());
-                if (this.textlabels.length === 0) {
-                    var geometry = new __WEBPACK_IMPORTED_MODULE_1_three__["Geometry"]();
-                    for (var i = 0; i < verts_xyz.length; i++) {
-                        geometry.vertices.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](verts_xyz[i][0], verts_xyz[i][1], verts_xyz[i][2]));
+        if (this.seVisible === true) {
+            let threshold = 100;
+            if (Math.abs(this.mDownTime - this.mUpTime) > threshold) {
+                this.mDownTime = 0;
+                this.mUpTime = 0;
+                return;
+            }
+            event.preventDefault();
+            var selectedObj, intersects;
+            var select = false;
+            this.scenechildren = this.dataService.getscenechild();
+            this.raycaster.setFromCamera(this.mouse, this.camera);
+            this.raycaster.linePrecision = 0.05;
+            this.raycaster.params.Points.threshold = 0.05;
+            intersects = this.raycaster.intersectObjects(this.scenechildren);
+            if (intersects.length > 0) {
+                selectedObj = intersects[0].object;
+                if (this.scenechildren[0].name === "All objs") {
+                    const path = this.scene_and_maps.faces_map.get(Math.floor(intersects[0].faceIndex / 2));
+                    const face = this._model.getGeom().getTopo(path);
+                    const label = "o" + path.id;
+                    const label_xyz = face.getLabelCentroid();
+                    const faces = face.getObj().getFaces();
+                    if (this.textlabels.length === 0) {
+                        for (var n = 0; n < faces.length; n++) {
+                            var verts = faces[n].getVertices();
+                            var verts_xyz = verts.map((v) => v.getPoint().getPosition());
+                            var geometry = new __WEBPACK_IMPORTED_MODULE_1_three__["Geometry"]();
+                            for (var i = 0; i < verts_xyz.length; i++) {
+                                geometry.vertices.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](verts_xyz[i][0], verts_xyz[i][1], verts_xyz[i][2]));
+                            }
+                            geometry.faces.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Face3"](0, 2, 1));
+                            geometry.faces.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Face3"](0, 3, 2));
+                            var mesh = new __WEBPACK_IMPORTED_MODULE_1_three__["Mesh"](geometry, new __WEBPACK_IMPORTED_MODULE_1_three__["MeshPhongMaterial"]({ color: 0x00ff00, side: __WEBPACK_IMPORTED_MODULE_1_three__["DoubleSide"] }));
+                            mesh["geometry"].computeVertexNormals();
+                            mesh.userData.id = path.id;
+                            mesh.name = "selects";
+                            this.scene.add(mesh);
+                        }
+                        this.addTextLabel(label, label_xyz, label);
                     }
-                    geometry.faces.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Face3"](0, 2, 1));
-                    geometry.faces.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Face3"](0, 3, 2));
-                    var mesh = new __WEBPACK_IMPORTED_MODULE_1_three__["Mesh"](geometry, new __WEBPACK_IMPORTED_MODULE_1_three__["MeshPhongMaterial"]({ color: 0xFF0000, side: __WEBPACK_IMPORTED_MODULE_1_three__["DoubleSide"] }));
-                    mesh.userData.id = Math.floor(intersects[0].faceIndex / 2);
-                    mesh["geometry"].computeVertexNormals();
-                    mesh.name = "selects";
-                    this.scene.add(mesh);
-                    this.addTextLabel(label, label_xyz, Math.floor(intersects[0].faceIndex / 2));
+                    else {
+                        for (var j = 0; j < this.scene.children.length; j++) {
+                            if (path.id === this.scene.children[j].userData.id) {
+                                select = true;
+                                this.scene.remove(this.scene.children[j]);
+                                j = j - 1;
+                            }
+                        }
+                        for (var j = 0; j < this.textlabels.length; j++) {
+                            if (label === this.textlabels[j]["id"]) {
+                                select = true;
+                                this.removeTextLabel(this.textlabels[j]["id"]);
+                                j = j - 1;
+                            }
+                        }
+                        if (select == false) {
+                            for (var n = 0; n < faces.length; n++) {
+                                var verts = faces[n].getVertices();
+                                var verts_xyz = verts.map((v) => v.getPoint().getPosition());
+                                var geometry = new __WEBPACK_IMPORTED_MODULE_1_three__["Geometry"]();
+                                for (var i = 0; i < verts_xyz.length; i++) {
+                                    geometry.vertices.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](verts_xyz[i][0], verts_xyz[i][1], verts_xyz[i][2]));
+                                }
+                                geometry.faces.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Face3"](0, 2, 1));
+                                geometry.faces.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Face3"](0, 3, 2));
+                                var mesh = new __WEBPACK_IMPORTED_MODULE_1_three__["Mesh"](geometry, new __WEBPACK_IMPORTED_MODULE_1_three__["MeshPhongMaterial"]({ color: 0x00ff00, side: __WEBPACK_IMPORTED_MODULE_1_three__["DoubleSide"] }));
+                                mesh.userData.id = Math.floor(intersects[0].faceIndex / 2);
+                                mesh["geometry"].computeVertexNormals();
+                                mesh.userData.id = path.id;
+                                mesh.name = "selects";
+                                this.scene.add(mesh);
+                            }
+                            this.addTextLabel(label, label_xyz, label);
+                        }
+                    }
                 }
-                else {
-                    for (var j = 0; j < this.scene.children.length; j++) {
-                        if (Math.floor(intersects[0].faceIndex / 2) === this.scene.children[j].userData.id) {
-                            select = true;
-                            this.scene.remove(this.scene.children[j]);
-                        }
-                    }
-                    for (var j = 0; j < this.textlabels.length; j++) {
-                        if (Math.floor(intersects[0].faceIndex / 2) === this.textlabels[j]["id"]) {
-                            select = true;
-                            this.removeTextLabel(this.textlabels[j]["id"]);
-                        }
-                    }
-                    if (select == false) {
+                if (this.scenechildren[0].name === "All faces") {
+                    const path = this.scene_and_maps.faces_map.get(Math.floor(intersects[0].faceIndex / 2));
+                    const face = this._model.getGeom().getTopo(path);
+                    const label = face.getLabel();
+                    const label_xyz = face.getLabelCentroid();
+                    const verts = face.getVertices();
+                    const verts_xyz = verts.map((v) => v.getPoint().getPosition());
+                    if (this.textlabels.length === 0) {
                         var geometry = new __WEBPACK_IMPORTED_MODULE_1_three__["Geometry"]();
                         for (var i = 0; i < verts_xyz.length; i++) {
                             geometry.vertices.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](verts_xyz[i][0], verts_xyz[i][1], verts_xyz[i][2]));
                         }
                         geometry.faces.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Face3"](0, 2, 1));
                         geometry.faces.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Face3"](0, 3, 2));
-                        var mesh = new __WEBPACK_IMPORTED_MODULE_1_three__["Mesh"](geometry, new __WEBPACK_IMPORTED_MODULE_1_three__["MeshPhongMaterial"]({ color: 0xFF0000, side: __WEBPACK_IMPORTED_MODULE_1_three__["DoubleSide"] }));
+                        var mesh = new __WEBPACK_IMPORTED_MODULE_1_three__["Mesh"](geometry, new __WEBPACK_IMPORTED_MODULE_1_three__["MeshPhongMaterial"]({ color: 0x00ff00, side: __WEBPACK_IMPORTED_MODULE_1_three__["DoubleSide"] }));
                         mesh.userData.id = Math.floor(intersects[0].faceIndex / 2);
                         mesh["geometry"].computeVertexNormals();
                         mesh.name = "selects";
                         this.scene.add(mesh);
                         this.addTextLabel(label, label_xyz, Math.floor(intersects[0].faceIndex / 2));
                     }
-                }
-            }
-            if (this.scenechildren[0].name == "All wires") {
-                const path = this.scene_and_maps.wires_map.get(Math.floor(intersects[0].index / 2));
-                const wire = this._model.getGeom().getTopo(path);
-                const label = wire.getLabel();
-                const label_xyz = wire.getLabelCentroid();
-                const verts = wire.getVertices();
-                const verts_xyz = verts.map((v) => v.getPoint().getPosition());
-                if (wire.isClosed()) {
-                    verts_xyz.push(verts_xyz[0]);
-                }
-                if (this.textlabels.length === 0) {
-                    var geometry = new __WEBPACK_IMPORTED_MODULE_1_three__["Geometry"]();
-                    for (var i = 0; i < verts_xyz.length; i++) {
-                        geometry.vertices.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](verts_xyz[i][0], verts_xyz[i][1], verts_xyz[i][2]));
-                    }
-                    var material = new __WEBPACK_IMPORTED_MODULE_1_three__["LineBasicMaterial"]({ color: 0xff0000, side: __WEBPACK_IMPORTED_MODULE_1_three__["DoubleSide"] });
-                    const line = new __WEBPACK_IMPORTED_MODULE_1_three__["Line"](geometry, material);
-                    line.userData.id = Math.floor(intersects[0].index / 2);
-                    line["material"].needsUpdate = true;
-                    line.name = "selects";
-                    this.scene.add(line);
-                    this.addTextLabel(label, label_xyz, Math.floor(intersects[0].index / 2));
-                }
-                else {
-                    for (var j = 0; j < this.scene.children.length; j++) {
-                        if (Math.floor(intersects[0].index / 2) === this.scene.children[j].userData.id) {
-                            select = true;
-                            this.scene.remove(this.scene.children[j]);
+                    else {
+                        for (var j = 0; j < this.scene.children.length; j++) {
+                            if (Math.floor(intersects[0].faceIndex / 2) === this.scene.children[j].userData.id) {
+                                select = true;
+                                this.scene.remove(this.scene.children[j]);
+                            }
+                        }
+                        for (var j = 0; j < this.textlabels.length; j++) {
+                            if (Math.floor(intersects[0].faceIndex / 2) === this.textlabels[j]["id"]) {
+                                select = true;
+                                this.removeTextLabel(this.textlabels[j]["id"]);
+                            }
+                        }
+                        if (select == false) {
+                            var geometry = new __WEBPACK_IMPORTED_MODULE_1_three__["Geometry"]();
+                            for (var i = 0; i < verts_xyz.length; i++) {
+                                geometry.vertices.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](verts_xyz[i][0], verts_xyz[i][1], verts_xyz[i][2]));
+                            }
+                            geometry.faces.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Face3"](0, 2, 1));
+                            geometry.faces.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Face3"](0, 3, 2));
+                            var mesh = new __WEBPACK_IMPORTED_MODULE_1_three__["Mesh"](geometry, new __WEBPACK_IMPORTED_MODULE_1_three__["MeshPhongMaterial"]({ color: 0x00ff00, side: __WEBPACK_IMPORTED_MODULE_1_three__["DoubleSide"] }));
+                            mesh.userData.id = Math.floor(intersects[0].faceIndex / 2);
+                            mesh["geometry"].computeVertexNormals();
+                            mesh.name = "selects";
+                            this.scene.add(mesh);
+                            this.addTextLabel(label, label_xyz, Math.floor(intersects[0].faceIndex / 2));
                         }
                     }
-                    for (var j = 0; j < this.textlabels.length; j++) {
-                        if (Math.floor(intersects[0].index / 2) === this.textlabels[j]["id"]) {
-                            select = true;
-                            this.removeTextLabel(this.textlabels[j]["id"]);
-                        }
+                }
+                if (this.scenechildren[0].name == "All wires") {
+                    const path = this.scene_and_maps.wires_map.get(Math.floor(intersects[0].index / 2));
+                    const wire = this._model.getGeom().getTopo(path);
+                    const label = wire.getLabel();
+                    const label_xyz = wire.getLabelCentroid();
+                    const verts = wire.getVertices();
+                    const verts_xyz = verts.map((v) => v.getPoint().getPosition());
+                    if (wire.isClosed()) {
+                        verts_xyz.push(verts_xyz[0]);
                     }
-                    if (select == false) {
+                    if (this.textlabels.length === 0) {
                         var geometry = new __WEBPACK_IMPORTED_MODULE_1_three__["Geometry"]();
                         for (var i = 0; i < verts_xyz.length; i++) {
                             geometry.vertices.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](verts_xyz[i][0], verts_xyz[i][1], verts_xyz[i][2]));
                         }
-                        var material = new __WEBPACK_IMPORTED_MODULE_1_three__["LineBasicMaterial"]({ color: 0xff0000, side: __WEBPACK_IMPORTED_MODULE_1_three__["DoubleSide"] });
+                        var material = new __WEBPACK_IMPORTED_MODULE_1_three__["LineBasicMaterial"]({ color: 0x00ff00, side: __WEBPACK_IMPORTED_MODULE_1_three__["DoubleSide"] });
                         const line = new __WEBPACK_IMPORTED_MODULE_1_three__["Line"](geometry, material);
                         line.userData.id = Math.floor(intersects[0].index / 2);
                         line["material"].needsUpdate = true;
@@ -4690,121 +4835,156 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
                         this.scene.add(line);
                         this.addTextLabel(label, label_xyz, Math.floor(intersects[0].index / 2));
                     }
-                }
-            }
-            if (this.scenechildren[0].name == "All edges") {
-                const path = this.scene_and_maps.edges_map.get(Math.floor(intersects[0].index / 2));
-                const edge = this._model.getGeom().getTopo(path);
-                const label = edge.getLabel();
-                const label_xyz = edge.getLabelCentroid();
-                const verts = edge.getVertices();
-                const verts_xyz = verts.map((v) => v.getPoint().getPosition());
-                if (this.textlabels.length === 0) {
-                    var geometry = new __WEBPACK_IMPORTED_MODULE_1_three__["Geometry"]();
-                    for (var i = 0; i < verts_xyz.length; i++) {
-                        geometry.vertices.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](verts_xyz[i][0], verts_xyz[i][1], verts_xyz[i][2]));
-                    }
-                    var material = new __WEBPACK_IMPORTED_MODULE_1_three__["LineBasicMaterial"]({ color: 0xff0000, side: __WEBPACK_IMPORTED_MODULE_1_three__["DoubleSide"] });
-                    const line = new __WEBPACK_IMPORTED_MODULE_1_three__["Line"](geometry, material);
-                    line.userData.id = Math.floor(intersects[0].index / 2);
-                    line["material"].needsUpdate = true;
-                    line.name = "selects";
-                    this.scene.add(line);
-                    this.addTextLabel(label, label_xyz, Math.floor(intersects[0].index / 2));
-                }
-                else {
-                    for (var j = 0; j < this.scene.children.length; j++) {
-                        if (Math.floor(intersects[0].index / 2) === this.scene.children[j].userData.id) {
-                            select = true;
-                            this.scene.remove(this.scene.children[j]);
+                    else {
+                        for (var j = 0; j < this.scene.children.length; j++) {
+                            if (Math.floor(intersects[0].index / 2) === this.scene.children[j].userData.id) {
+                                select = true;
+                                this.scene.remove(this.scene.children[j]);
+                            }
+                        }
+                        for (var j = 0; j < this.textlabels.length; j++) {
+                            if (Math.floor(intersects[0].index / 2) === this.textlabels[j]["id"]) {
+                                select = true;
+                                this.removeTextLabel(this.textlabels[j]["id"]);
+                            }
+                        }
+                        if (select == false) {
+                            var geometry = new __WEBPACK_IMPORTED_MODULE_1_three__["Geometry"]();
+                            for (var i = 0; i < verts_xyz.length; i++) {
+                                geometry.vertices.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](verts_xyz[i][0], verts_xyz[i][1], verts_xyz[i][2]));
+                            }
+                            var material = new __WEBPACK_IMPORTED_MODULE_1_three__["LineBasicMaterial"]({ color: 0x00ff00, side: __WEBPACK_IMPORTED_MODULE_1_three__["DoubleSide"] });
+                            const line = new __WEBPACK_IMPORTED_MODULE_1_three__["Line"](geometry, material);
+                            line.userData.id = Math.floor(intersects[0].index / 2);
+                            line["material"].needsUpdate = true;
+                            line.name = "selects";
+                            this.scene.add(line);
+                            this.addTextLabel(label, label_xyz, Math.floor(intersects[0].index / 2));
                         }
                     }
-                    for (var j = 0; j < this.textlabels.length; j++) {
-                        if (Math.floor(intersects[0].index / 2) === this.textlabels[j]["id"]) {
-                            select = true;
-                            this.removeTextLabel(this.textlabels[j]["id"]);
-                        }
-                    }
-                    if (select == false) {
+                }
+                if (this.scenechildren[0].name == "All edges") {
+                    const path = this.scene_and_maps.edges_map.get(Math.floor(intersects[0].index / 2));
+                    const edge = this._model.getGeom().getTopo(path);
+                    const label = edge.getLabel();
+                    const label_xyz = edge.getLabelCentroid();
+                    const verts = edge.getVertices();
+                    const verts_xyz = verts.map((v) => v.getPoint().getPosition());
+                    if (this.textlabels.length === 0) {
                         var geometry = new __WEBPACK_IMPORTED_MODULE_1_three__["Geometry"]();
                         for (var i = 0; i < verts_xyz.length; i++) {
                             geometry.vertices.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](verts_xyz[i][0], verts_xyz[i][1], verts_xyz[i][2]));
                         }
-                        var material = new __WEBPACK_IMPORTED_MODULE_1_three__["LineBasicMaterial"]({ color: 0xff0000, side: __WEBPACK_IMPORTED_MODULE_1_three__["DoubleSide"] });
+                        var material = new __WEBPACK_IMPORTED_MODULE_1_three__["LineBasicMaterial"]({ color: 0x00ff00, side: __WEBPACK_IMPORTED_MODULE_1_three__["DoubleSide"] });
                         const line = new __WEBPACK_IMPORTED_MODULE_1_three__["Line"](geometry, material);
                         line.userData.id = Math.floor(intersects[0].index / 2);
+                        line["material"].needsUpdate = true;
                         line.name = "selects";
                         this.scene.add(line);
                         this.addTextLabel(label, label_xyz, Math.floor(intersects[0].index / 2));
                     }
+                    else {
+                        for (var j = 0; j < this.scene.children.length; j++) {
+                            if (Math.floor(intersects[0].index / 2) === this.scene.children[j].userData.id) {
+                                select = true;
+                                this.scene.remove(this.scene.children[j]);
+                            }
+                        }
+                        for (var j = 0; j < this.textlabels.length; j++) {
+                            if (Math.floor(intersects[0].index / 2) === this.textlabels[j]["id"]) {
+                                select = true;
+                                this.removeTextLabel(this.textlabels[j]["id"]);
+                            }
+                        }
+                        if (select == false) {
+                            var geometry = new __WEBPACK_IMPORTED_MODULE_1_three__["Geometry"]();
+                            for (var i = 0; i < verts_xyz.length; i++) {
+                                geometry.vertices.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](verts_xyz[i][0], verts_xyz[i][1], verts_xyz[i][2]));
+                            }
+                            var material = new __WEBPACK_IMPORTED_MODULE_1_three__["LineBasicMaterial"]({ color: 0x00ff00, side: __WEBPACK_IMPORTED_MODULE_1_three__["DoubleSide"] });
+                            const line = new __WEBPACK_IMPORTED_MODULE_1_three__["Line"](geometry, material);
+                            line.userData.id = Math.floor(intersects[0].index / 2);
+                            line.name = "selects";
+                            this.scene.add(line);
+                            this.addTextLabel(label, label_xyz, Math.floor(intersects[0].index / 2));
+                        }
+                    }
+                }
+                if (this.scenechildren[0].name === "All points") {
+                    const attributevertix = this.dataService.getattrvertix();
+                    //const path: gs.ITopoPathData = this.scene_and_maps.vertices_map.get(intersects[ 0 ].index);
+                    //const vertices: gs.IVertex = this._model.getGeom().getTopo(path) as gs.IVertex;
+                    //const points: gs.IPoint = this._model.getGeom().getTopo(path) as gs.IPoint;
+                    const id = this._model.getGeom().getAllPoints()[intersects[0].index].getLabel();
+                    for (var i = 0; i < attributevertix.length; i++) {
+                        if (id === attributevertix[i].pointid) {
+                            var label = attributevertix[i].vertixlabel;
+                        }
+                    }
+                    const verts_xyz = this._model.getGeom().getAllPoints()[intersects[0].index].getPosition(); //vertices.getPoint().getPosition();
+                    console.log(intersects[0].index, verts_xyz);
+                    console.log(this.scene);
+                    //const verts: gs.IVertex[] = vertices.getVertices();
+                    //const verts_xyz: gs.XYZ[] = vertices.getPoint().getPosition();
+                    if (this.textlabels.length === 0) {
+                        var geometry = new __WEBPACK_IMPORTED_MODULE_1_three__["Geometry"]();
+                        geometry.vertices.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](verts_xyz[0], verts_xyz[1], verts_xyz[2]));
+                        var pointsmaterial = new __WEBPACK_IMPORTED_MODULE_1_three__["PointsMaterial"]({ color: 0x00ff00, size: 0.2 });
+                        const points = new __WEBPACK_IMPORTED_MODULE_1_three__["Points"](geometry, pointsmaterial);
+                        points.userData.id = label;
+                        points["material"].needsUpdate = true;
+                        points.name = "selects";
+                        this.scene.add(points);
+                        this.addTextLabel(label, verts_xyz, label);
+                    }
+                    else {
+                        for (var j = 0; j < this.scene.children.length; j++) {
+                            if (label === this.scene.children[j].userData.id) {
+                                select = true;
+                                this.scene.remove(this.scene.children[j]);
+                            }
+                        }
+                        for (var j = 0; j < this.textlabels.length; j++) {
+                            if (label === this.textlabels[j]["id"]) {
+                                select = true;
+                                this.removeTextLabel(this.textlabels[j]["id"]);
+                            }
+                        }
+                        if (select == false) {
+                            var geometry = new __WEBPACK_IMPORTED_MODULE_1_three__["Geometry"]();
+                            geometry.vertices.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](verts_xyz[0], verts_xyz[1], verts_xyz[2]));
+                            var pointsmaterial = new __WEBPACK_IMPORTED_MODULE_1_three__["PointsMaterial"]({ color: 0x00ff00, size: 0.2 });
+                            const points = new __WEBPACK_IMPORTED_MODULE_1_three__["Points"](geometry, pointsmaterial);
+                            points.userData.id = label[0];
+                            points["material"].needsUpdate = true;
+                            points.name = "selects";
+                            this.scene.add(points);
+                            this.addTextLabel(label, verts_xyz, label);
+                        }
+                    }
                 }
             }
-        }
-        else {
-            for (var i = 0; i < this.dataService.sprite.length; i++) {
-                this.dataService.sprite[i].visible = false;
-            }
-            for (var i = 0; i < this.scene.children.length; i++) {
-                if (this.scene.children[i].name == "selects") {
-                    this.scene.remove(this.scene.children[i]);
+            else {
+                for (var i = 0; i < this.dataService.sprite.length; i++) {
+                    this.dataService.sprite[i].visible = false;
+                }
+                for (var i = 0; i < this.scene.children.length; i++) {
+                    if (this.scene.children[i].name == "selects") {
+                        this.scene.remove(this.scene.children[i]);
+                        i = i - 1;
+                    }
+                }
+                for (var i = 0; i < this.textlabels.length; i++) {
+                    this.removeTextLabel(this.textlabels[i]["id"]);
                     i = i - 1;
                 }
+                //var sprite=[];
+                //this.dataService.pushsprite(sprite);
+                //var select=[];
+                //this.dataService.addselecting(select);
             }
-            for (var i = 0; i < this.textlabels.length; i++) {
-                this.removeTextLabel(this.textlabels[i]["id"]);
-                i = i - 1;
-            }
-            //var sprite=[];
-            //this.dataService.pushsprite(sprite);
-            //var select=[];
-            //this.dataService.addselecting(select);
         }
         //this.updateview();
-    }
-    getobject() {
-        var path;
-        var face;
-        var faces;
-        var label;
-        var label_xyz;
-        var verts;
-        var verts_xyz;
-        var objects = [];
-        var material = new __WEBPACK_IMPORTED_MODULE_1_three__["MeshPhongMaterial"]({ color: 0xFF0000, side: __WEBPACK_IMPORTED_MODULE_1_three__["DoubleSide"] });
-        var geometry = new __WEBPACK_IMPORTED_MODULE_1_three__["Geometry"]();
-        for (var i = 0; i < this.scene_and_maps.faces_map.size; i++) {
-            var sceneobjs = new __WEBPACK_IMPORTED_MODULE_1_three__["Scene"]();
-            path = this.scene_and_maps.faces_map.get(i);
-            face = this._model.getGeom().getTopo(path);
-            faces = face.getObj().getFaces();
-            for (var n = 0; n < faces.length; n++) {
-                var sceneobj = new __WEBPACK_IMPORTED_MODULE_1_three__["Scene"]();
-                verts = faces[n].getVertices();
-                verts_xyz = verts.map((v) => v.getPoint().getPosition());
-                for (var j = 0; j < verts_xyz.length; j++) {
-                    geometry.vertices.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](verts_xyz[j][0], verts_xyz[j][1], verts_xyz[j][2]));
-                }
-                /*        console.log(geometry);
-                        //geometry.faces.push(new THREE.Face3(0,2,1));
-                        //geometry.faces.push(new THREE.Face3(0,3,2));
-                        var mesh=new THREE.Mesh(geometry,material);
-                        mesh["geometry"].computeVertexNormals();
-                        sceneobj.name="o"+path.id;
-                        sceneobj.add(mesh);
-                        sceneobjs.add(sceneobj);
-                        sceneobjs.name="Objs";
-                        //sceneobjs.visible=false;
-                        this.scene.add(sceneobjs);*/
-                i = i + faces.length;
-            }
-        }
-        for (j = 0; j < geometry.vertices.length; j++) {
-            geometry.faces.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Face3"](j, j + 2, j + 1));
-            geometry.faces.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Face3"](j, j + 3, j + 2));
-            j = j + 3;
-        }
-        var mesh = new __WEBPACK_IMPORTED_MODULE_1_three__["Mesh"](geometry, material);
-        mesh["geometry"].computeVertexNormals();
     }
     updateview() {
         this.Visible = this.dataService.visible;
@@ -4848,7 +5028,9 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
         let textLabel = this.createTextLabel(label, star, id);
         this.starsGeometry.vertices.push(star);
         this.textlabels.push(textLabel);
+        this.dataService.pushselecting(textLabel);
         container.appendChild(textLabel.element);
+        console.log(this.dataService.selecting);
     }
     //To remove text labels just provide its id
     removeTextLabel(id) {
@@ -4866,6 +5048,8 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
         }
         if (i < this.textlabels.length) {
             this.textlabels.splice(i, 1);
+            this.dataService.spliceselecting(i, 1);
+            console.log(this.dataService.selecting);
         }
     }
     creatStarGeometry(label_xyz) {
@@ -4923,47 +5107,6 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
         div.style.color = "black";
         return div;
     }
-    /*getSceneChildren() {
-      var scenechildren=[];
-      var children;
-      for (var i = 0; i<this.scene.children.length; i++) {
-        if(this.scene.children[i].name=="Scene") {
-          children=this.scene.children[i].children;
-          break;
-        }
-        if(i==this.scene.children.length-1) {
-          return [];
-        }
-      }
-      for(var i=0;i<children.length;i++){
-        for(var j=0;j<children[i].children.length;j++){
-          if(children[i].children[j].type==="Mesh"||children[i].children[j].type==="LineSegments"||children[i].children[j].type==="LineLoop"){
-            scenechildren.push(children[i].children[j]);
-          }
-        }
-      }
-      return scenechildren;
-    }*/
-    //One Mesh
-    /*getSceneChildren() {
-      var scenechildren=[];
-      var children;
-      for (var i = 0; i<this.scene.children.length; i++) {
-        if(this.scene.children[i].name=="Scene") {
-          children=this.scene.children[i].children;
-          break;
-        }
-        if(i==this.scene.children.length-1) {
-          return [];
-        }
-      }
-      for(var i=0;i<children.length;i++){
-          if(children[i].type==="Mesh"||children[i].type==="LineSegments"||children[i].type==="LineLoop"){
-            scenechildren.push(children[i]);
-          }
-        }
-      return scenechildren;
-    }*/
     zoomfit() {
         event.preventDefault();
         if (this.selecting.length === 0) {
@@ -5601,7 +5744,7 @@ EditorComponent = __decorate([
 /***/ "../../../../../src/app/ui-components/editors/flowchart-viewer/flowchart-viewer.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!-- <mat-expansion-panel class='viewer' \r\n\t\t[expanded]=\"panelOpenState\">\r\n  \t<mat-expansion-panel-header>\r\n\t    <mat-panel-title class='header'> -->\r\n\r\n<div class=\"viewer\">\r\n\r\n\t<div class=\"container\">\r\n\t\t\r\n\t\t<!-- @Derek: Modify gutterSize/gutterColor/size -->\r\n\t\t<!-- https://bertrandg.github.io/angular-split/#/documentation -->\r\n\t\t<split  direction=\"horizontal\" \r\n              [gutterSize]=\"7\" \r\n              [useTransition]=\"true\" gutterColor=white\r\n              >\r\n\r\n\t\t\t\t<split-area class=\"sidebar\"\r\n\t\t\t\t\t[size]=\"30\"\r\n\t\t\t        order=\"1\">\r\n\t\t\t\t\t\t<section>\r\n\t\t\t\t\t\t\t<div (click)=\"save()\">Save Flowchart</div>\r\n\t\t\t\t\t\t\t<div (click)=\"openPicker()\">Load Flowchart\r\n\t\t\t\t\t\t\t\t<input #fileInput style=\"display: none;\"\r\n\t\t\t\t\t\t  \t\ttype=\"file\" (change)=\"loadFile()\"/>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</section>\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t<section>\r\n\t\t\t\t\t\t\t<div (click)=\"addNode($event, undefined)\">New Empty Node</div>\r\n\t\t\t\t\t\t\t<div class=\"disabled\">New Subnet</div>\r\n\t\t\t\t\t\t</section>\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t<!--<section>\r\n\t\t\t\t\t\t\t<div>Save Node</div>\r\n\t\t\t\t\t\t</section>-->\r\n\r\n\t\t\t\t\t\t<section>\r\n\t\t\t\t\t\t\t<app-node-library></app-node-library>\r\n\t\t\t\t\t\t</section>\r\n\t\t\t\t\t\t\r\n\t\t\t\t</split-area>\r\n\t\t\t\t\r\n\t\t\r\n\t\t\t\t<split-area order=\"2\" [size]=\"70\">\r\n\t\t\t\t    \t<div class=\"info-container\" \r\n\t\t\t\t    \t\tstyle=\"position: absolute; \r\n\t\t\t\t    \t\ttop: 30px; \r\n\t\t\t\t    \t\tright: 30px\">\r\n\t\t\t\t    \t\t<!-- Zoom: {{zoom}} -->\r\n\t\t\t\t    \t</div>\r\n\r\n\t\t\t\t        <!-- svg canvas to draw the edges -->\r\n\t\t\t\t\t\t<svg xmlns=\"http://www.w3.org/2000/svg\" \r\n\t\t\t\t\t\t\tclass=\"graph-container\" \r\n\t\t\t\t\t\t\tid=\"graph-edges\" \r\n\t\t\t\t\t\t\t[style.zoom]=\"zoom\">\r\n\r\n\t\t\t\t\t\t\t<g class=\"edge\" *ngFor=\"let edge of _edges\" >\r\n\t\t\t\t\t\t\t\t<path \r\n\t\t\t\t\t\t\t\t  [attr.d]=\"edge.path\" \r\n\t\t\t\t\t\t\t\t  stroke=\"#7469FF\"\r\n\t\t\t\t\t\t\t\t  stroke-width=\"3\" fill=\"none\" />\r\n\t\t\t\t\t\t\t</g>\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t<!-- dragging path -->\r\n\t\t\t\t\t\t\t<g id=\"temporary-edge\" [class.hidden]=\"!_linkMode\" >\r\n\t\t\t\t\t\t\t\t<path \r\n\t\t\t\t\t\t\t\t[attr.d]=\"edgeString(mouse_pos.start, mouse_pos.current)\" \r\n\t\t\t\t\t\t\t\t \tstroke=\"#7469FF\"\r\n\t\t\t\t\t\t\t\t \tstroke-width=\"5\" \r\n\t\t\t\t\t\t\t\t \tfill=\"none\" \r\n\t\t\t\t\t\t\t\t \tstroke-dasharray=\"5, 5\"/>\r\n\t\t\t\t\t\t\t\t\t<circle id=\"pointC\" [attr.cx]=\"mouse_pos.current.x\" [attr.cy]=\"mouse_pos.current.y\" r=\"5\" />\r\n\t\t\t\t\t\t\t\t</g>\r\n\r\n\t\t\t\t\t\t</svg>\r\n\r\n\t\t\t\t\t\t<!-- div container for the nodes -->\r\n\t\t\t\t\t\t<div class=\"graph-container\" \r\n\t\t\t\t\t\t\tid=\"graph-nodes\" ondragover=\"return false\" [style.zoom]=\"zoom\" >\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t<!-- all nodes -->\r\n\t\t\t\t\t\t\t<div class=\"node-container\">\r\n\r\n\t\t\t\t\t\t\t\t<!-- one node -->\r\n\t\t\t\t\t\t\t\t<div  class=\"node\"\r\n\t\t\t\t\t\t\t\t\t\t*ngFor=\"let node of _nodes; let node_index = index\" \r\n\t\t\t\t\t\t\t\t\t\t[style.left.px]=\"node.position[0]\" \r\n\t\t\t\t\t\t\t\t\t\t[style.top.px]=\"node.position[1]\" >\r\n\r\n\t\t\t\t\t\t\t\t\t<div class=\"btn-container\" *ngIf=\"node_index == _selectedNodeIndex\" >\r\n\t\t\t\t\t\t\t\t\t\t<!-- <div class=\"btn-group node-btns\">\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"action-button\" (click)=\"addPort(node_index, 'in')\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t<mat-icon>input</mat-icon>\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"action-button\" (click)=\"addPort(node_index, 'out')\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t<mat-icon>add_to_queue</mat-icon>\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t</div> -->\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"btn-group port-btns\">\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"action-button\" (click)=\"deleteNode(node_index)\" \t\t\r\n\t\t\t\t\t\t\t\t\t\t\t\tmatTooltip=\"Delete Node\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t<mat-icon>delete</mat-icon>\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"action-button\" (click)=\"toggleNode(node)\"\r\n\t\t\t\t\t\t\t\t\t\t\t\tmatTooltip=\"Disable Node\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t<mat-icon *ngIf='!node.isDisabled()'>check_circle</mat-icon>\r\n\t\t\t\t\t\t\t\t\t\t\t\t<mat-icon *ngIf='node.isDisabled()'>highlight_off</mat-icon>\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"action-button\" (click)=\"saveNode(node_index)\" \r\n\t\t\t\t\t\t\t\t\t\t\t\tmatTooltip=\"Save Node To Library\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t*ngIf=\"!isSaved(node)\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t<mat-icon>file_download</mat-icon>\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t<!-- node body -->\r\n\t\t\t\t\t\t\t\t\t<div class=\"node-body\" \r\n\t\t\t\t\t\t\t\t\t\t[class.library]=\"node.getType() !== undefined\"\r\n\t\t\t\t\t\t\t\t\t\t[class.error]=\"node._hasError\"\r\n\t\t\t\t\t\t\t\t\t\t[class.disabled] =\"node.isDisabled()\"\r\n\t\t\t\t\t\t\t\t\t\t(click)=\"clickNode($event, node_index)\"\r\n\t\t\t\t\t\t\t\t\t\tdraggable=true  \r\n\t\t\t\t\t\t\t\t\t\t(dragstart)=\"nodeDragStart($event, node)\" \r\n\t\t\t\t\t\t\t\t\t\t(drag)=\"nodeDragging($event, node, node_index)\" \r\n\t\t\t\t\t\t\t\t\t\t(dragend)=\"nodeDragEnd($event, node)\">\r\n\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"node-name\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t[class.selected]=\"node_index == _selectedNodeIndex\"\r\n\t\t\t\t\t\t\t\t\t\t\t\tmatTooltip=\"{{node.getName()}}\">\r\n\t\t\t\t\t\t\t\t\t\t\t    <input matInput\r\n\t\t\t\t\t\t\t\t\t\t\t    style=\"margin: 2px; min-width: 50px; width: 50px;\"\r\n\t\t\t\t\t\t\t\t\t\t\t    placeholder=\"Value\" value=\"{{ node.getName() }}\"\r\n\t\t\t\t\t\t\t\t\t\t\t    (change)=\"updateNodeName($event)\"/>\r\n\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t\t<!--inputs -->\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"port-container\">\r\n\t\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"port input\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t*ngFor=\"let port of node.getInputs(); let pi=index\"  \r\n\t\t\t\t\t\t\t\t\t\t\t\tid=\"n{{node_index}}pi{{pi}}\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"port-grip\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\tdraggable=true\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t[class.connected]=\"port.isConnected()\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(dragstart)=\"portDragStart($event, port, [node_index, pi])\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(drag)=\"portDragging($event, port)\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(dragend)=\"portDragEnd($event, port)\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(drop)=\"portDrop($event, port, [node_index, pi])\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t\t<span class=\"port-name\">{{ port.getName() }}</span>\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t\t<!-- outputs -->\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"port-container\">\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"port output\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t*ngFor=\"let port of node.getOutputs(); let po=index;\"\r\n\t\t\t\t\t\t\t\t\t\t\t\tid=\"n{{node_index}}po{{po}}\">\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t\t<span class=\"port-name\">{{port.getName()}}</span>\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"port-grip\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\tdraggable=true\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t[class.selected]=\"isPortSelected(node_index, po)\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t[class.connected]=\"port.isConnected()\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(click)=\"clickPort($event, node_index, po)\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(dragstart)=\"portDragStart($event, port, [node_index, po])\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(drag)=\"portDragging($event, port)\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(dragend)=\"portDragEnd($event, port)\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(drop)=\"portDrop($event, port, [node_index, po])\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t</div> \r\n\r\n\r\n\t\t\t\t\t\t\t\t\t\t<!-- <div class=\"fromLibrary\"  style=\"font-size: 8px; text-align: center\">\r\n\t\t\t\t\t\t\t\t\t\t\tLibrary Node\r\n\t\t\t\t\t\t\t\t\t\t</div> -->\r\n\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t</split-area>\r\n\r\n\t\t</split>\r\n\r\n\t</div>\r\n\t\r\n\r\n</div>\r\n<!-- </mat-expansion-panel> -->\r\n\r\n\r\n\r\n"
+module.exports = "<!-- <mat-expansion-panel class='viewer' \r\n\t\t[expanded]=\"panelOpenState\">\r\n  \t<mat-expansion-panel-header>\r\n\t    <mat-panel-title class='header'> -->\r\n\r\n<div class=\"viewer\">\r\n\r\n\t<div class=\"container\">\r\n\t\t\r\n\t\t<!-- @Derek: Modify gutterSize/gutterColor/size -->\r\n\t\t<!-- https://bertrandg.github.io/angular-split/#/documentation -->\r\n\t\t<split  direction=\"horizontal\" \r\n              [gutterSize]=\"7\" \r\n              [useTransition]=\"true\" gutterColor=white\r\n              >\r\n\r\n\t\t\t\t<split-area class=\"sidebar\"\r\n\t\t\t\t\t[size]=\"30\"\r\n\t\t\t        order=\"1\">\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t<section>\r\n\t\t\t\t\t\t\t<div (click)=\"addNode($event, undefined)\">New Empty Node</div>\r\n\t\t\t\t\t\t\t<div class=\"disabled\">New Subnet</div>\r\n\t\t\t\t\t\t</section>\r\n\r\n\t\t\t\t\t\t<section>\r\n\t\t\t\t\t\t\t<div (click)=\"newfile()\">New Flowchart</div>\r\n\t\t\t\t\t\t</section>\r\n\r\n\t\t\t\t\t\t<section>\r\n\t\t\t\t\t\t\t<div (click)=\"loadFromMemory()\">Revert</div>\r\n\t\t\t\t\t\t</section>\r\n\r\n\t\t\t\t\t\t<section>\r\n\t\t\t\t\t\t\t<div (click)=\"save()\">Download Flowchart</div>\r\n\t\t\t\t\t\t\t<div (click)=\"openPicker()\">Load Flowchart\r\n\t\t\t\t\t\t\t\t<input #fileInput style=\"display: none;\"\r\n\t\t\t\t\t\t  \t\ttype=\"file\" (change)=\"loadFile()\"/>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</section>\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t<!--<section>\r\n\t\t\t\t\t\t\t<div>Save Node</div>\r\n\t\t\t\t\t\t</section>-->\r\n\r\n\t\t\t\t\t\t<section>\r\n\t\t\t\t\t\t\t<app-node-library></app-node-library>\r\n\t\t\t\t\t\t</section>\r\n\t\t\t\t\t\t\r\n\t\t\t\t</split-area>\r\n\t\t\t\t\r\n\t\t\r\n\t\t\t\t<split-area order=\"2\" [size]=\"70\">\r\n\t\t\t\t    \t<div class=\"info-container\" \r\n\t\t\t\t    \t\tstyle=\"position: absolute; \r\n\t\t\t\t    \t\ttop: 30px; \r\n\t\t\t\t    \t\tright: 30px\">\r\n\t\t\t\t    \t\t<!-- Zoom: {{zoom}} -->\r\n\t\t\t\t    \t</div>\r\n\r\n\t\t\t\t        <!-- svg canvas to draw the edges -->\r\n\t\t\t\t\t\t<svg xmlns=\"http://www.w3.org/2000/svg\" \r\n\t\t\t\t\t\t\tclass=\"graph-container\" \r\n\t\t\t\t\t\t\tid=\"graph-edges\" \r\n\t\t\t\t\t\t\t[style.zoom]=\"zoom\">\r\n\r\n\t\t\t\t\t\t\t<g class=\"edge\" *ngFor=\"let edge of _edges\" >\r\n\t\t\t\t\t\t\t\t<path \r\n\t\t\t\t\t\t\t\t  [attr.d]=\"edge.path\" \r\n\t\t\t\t\t\t\t\t  stroke=\"#7469FF\"\r\n\t\t\t\t\t\t\t\t  stroke-width=\"3\" fill=\"none\" />\r\n\t\t\t\t\t\t\t</g>\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t<!-- dragging path -->\r\n\t\t\t\t\t\t\t<g id=\"temporary-edge\" [class.hidden]=\"!_linkMode\" >\r\n\t\t\t\t\t\t\t\t<path \r\n\t\t\t\t\t\t\t\t[attr.d]=\"edgeString(mouse_pos.start, mouse_pos.current)\" \r\n\t\t\t\t\t\t\t\t \tstroke=\"#7469FF\"\r\n\t\t\t\t\t\t\t\t \tstroke-width=\"5\" \r\n\t\t\t\t\t\t\t\t \tfill=\"none\" \r\n\t\t\t\t\t\t\t\t \tstroke-dasharray=\"5, 5\"/>\r\n\t\t\t\t\t\t\t\t\t<circle id=\"pointC\" [attr.cx]=\"mouse_pos.current.x\" [attr.cy]=\"mouse_pos.current.y\" r=\"5\" />\r\n\t\t\t\t\t\t\t\t</g>\r\n\r\n\t\t\t\t\t\t</svg>\r\n\r\n\t\t\t\t\t\t<!-- div container for the nodes -->\r\n\t\t\t\t\t\t<div class=\"graph-container\" \r\n\t\t\t\t\t\t\tid=\"graph-nodes\" ondragover=\"return false\" [style.zoom]=\"zoom\" >\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t<!-- all nodes -->\r\n\t\t\t\t\t\t\t<div class=\"node-container\">\r\n\r\n\t\t\t\t\t\t\t\t<!-- one node -->\r\n\t\t\t\t\t\t\t\t<div  class=\"node\"\r\n\t\t\t\t\t\t\t\t\t\t*ngFor=\"let node of _nodes; let node_index = index\" \r\n\t\t\t\t\t\t\t\t\t\t[style.left.px]=\"node.position[0]\" \r\n\t\t\t\t\t\t\t\t\t\t[style.top.px]=\"node.position[1]\" >\r\n\r\n\t\t\t\t\t\t\t\t\t<div class=\"btn-container\" *ngIf=\"node_index == _selectedNodeIndex\" >\r\n\t\t\t\t\t\t\t\t\t\t<!-- <div class=\"btn-group node-btns\">\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"action-button\" (click)=\"addPort(node_index, 'in')\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t<mat-icon>input</mat-icon>\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"action-button\" (click)=\"addPort(node_index, 'out')\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t<mat-icon>add_to_queue</mat-icon>\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t</div> -->\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"btn-group port-btns\">\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"action-button\" (click)=\"deleteNode(node_index)\" \t\t\r\n\t\t\t\t\t\t\t\t\t\t\t\tmatTooltip=\"Delete Node\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t<mat-icon>delete</mat-icon>\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"action-button\" (click)=\"toggleNode(node)\"\r\n\t\t\t\t\t\t\t\t\t\t\t\tmatTooltip=\"Disable Node\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t<mat-icon *ngIf='!node.isDisabled()'>check_circle</mat-icon>\r\n\t\t\t\t\t\t\t\t\t\t\t\t<mat-icon *ngIf='node.isDisabled()'>highlight_off</mat-icon>\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"action-button\" (click)=\"saveNode(node_index)\" \r\n\t\t\t\t\t\t\t\t\t\t\t\tmatTooltip=\"Save Node To Library\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t*ngIf=\"!isSaved(node)\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t<mat-icon>file_download</mat-icon>\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t<!-- node body -->\r\n\t\t\t\t\t\t\t\t\t<div class=\"node-body\" \r\n\t\t\t\t\t\t\t\t\t\t[class.library]=\"node.getType() !== undefined\"\r\n\t\t\t\t\t\t\t\t\t\t[class.error]=\"node._hasError\"\r\n\t\t\t\t\t\t\t\t\t\t[class.disabled] =\"node.isDisabled()\"\r\n\t\t\t\t\t\t\t\t\t\t(click)=\"clickNode($event, node_index)\"\r\n\t\t\t\t\t\t\t\t\t\tdraggable=true  \r\n\t\t\t\t\t\t\t\t\t\t(dragstart)=\"nodeDragStart($event, node)\" \r\n\t\t\t\t\t\t\t\t\t\t(drag)=\"nodeDragging($event, node, node_index)\" \r\n\t\t\t\t\t\t\t\t\t\t(dragend)=\"nodeDragEnd($event, node)\">\r\n\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"node-name\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t[class.selected]=\"node_index == _selectedNodeIndex\"\r\n\t\t\t\t\t\t\t\t\t\t\t\tmatTooltip=\"{{node.getName()}}\">\r\n\t\t\t\t\t\t\t\t\t\t\t    <input matInput\r\n\t\t\t\t\t\t\t\t\t\t\t    style=\"margin: 2px; min-width: 50px; width: 50px;\"\r\n\t\t\t\t\t\t\t\t\t\t\t    placeholder=\"Value\" value=\"{{ node.getName() }}\"\r\n\t\t\t\t\t\t\t\t\t\t\t    (change)=\"updateNodeName($event)\"/>\r\n\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t\t<!--inputs -->\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"port-container\">\r\n\t\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"port input\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t*ngFor=\"let port of node.getInputs(); let pi=index\"  \r\n\t\t\t\t\t\t\t\t\t\t\t\tid=\"n{{node_index}}pi{{pi}}\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"port-grip\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\tdraggable=true\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t[class.connected]=\"port.isConnected()\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(dragstart)=\"portDragStart($event, port, [node_index, pi])\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(drag)=\"portDragging($event, port)\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(dragend)=\"portDragEnd($event, port)\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(drop)=\"portDrop($event, port, [node_index, pi])\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t\t<span class=\"port-name\">{{ port.getName() }}</span>\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t\t<!-- outputs -->\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"port-container\">\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"port output\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t*ngFor=\"let port of node.getOutputs(); let po=index;\"\r\n\t\t\t\t\t\t\t\t\t\t\t\tid=\"n{{node_index}}po{{po}}\">\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t\t<span class=\"port-name\">{{port.getName()}}</span>\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"port-grip\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\tdraggable=true\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t[class.selected]=\"isPortSelected(node_index, po)\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t[class.connected]=\"port.isConnected()\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(click)=\"clickPort($event, node_index, po)\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(dragstart)=\"portDragStart($event, port, [node_index, po])\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(drag)=\"portDragging($event, port)\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(dragend)=\"portDragEnd($event, port)\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(drop)=\"portDrop($event, port, [node_index, po])\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t</div> \r\n\r\n\r\n\t\t\t\t\t\t\t\t\t\t<!-- <div class=\"fromLibrary\"  style=\"font-size: 8px; text-align: center\">\r\n\t\t\t\t\t\t\t\t\t\t\tLibrary Node\r\n\t\t\t\t\t\t\t\t\t\t</div> -->\r\n\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t</split-area>\r\n\r\n\t\t</split>\r\n\r\n\t</div>\r\n\t\r\n\r\n</div>\r\n<!-- </mat-expansion-panel> -->\r\n\r\n\r\n\r\n"
 
 /***/ }),
 
@@ -5688,6 +5831,15 @@ let FlowchartViewerComponent = class FlowchartViewerComponent extends __WEBPACK_
             start: { x: 0, y: 0 },
             current: { x: 0, y: 0 }
         };
+        // bad bad bad!
+        let self = this;
+        document.addEventListener("keydown", function (e) {
+            if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+                e.preventDefault();
+                self.save(true);
+                //your implementation or function calls
+            }
+        }, false);
     }
     reset() {
         this._selectedNode = undefined;
@@ -6072,8 +6224,15 @@ let FlowchartViewerComponent = class FlowchartViewerComponent extends __WEBPACK_
         }
         this.flowchartService.loadFile(url);
     }
-    save() {
-        this.flowchartService.saveFile();
+    loadFromMemory() {
+        this.flowchartService.checkSavedFile();
+    }
+    save(value) {
+        this.flowchartService.saveFile(true);
+        this.layoutService.showConsole();
+    }
+    newfile() {
+        this.flowchartService.newFile();
     }
 };
 __decorate([
@@ -7813,8 +7972,7 @@ let ViewerContainerComponent = class ViewerContainerComponent extends __WEBPACK_
     constructor(injector, layoutService) {
         super(injector, "Viewer Container", "Contains all the viewers");
         this.layoutService = layoutService;
-        this.group = { value: undefined };
-        this._lock = false;
+        this.group = { value: 5 };
         this._layout_subscription = this.layoutService.getMessage().subscribe(message => {
             if (message.text.startsWith("Module: ")) {
                 this.switchToHelp();
@@ -7824,37 +7982,32 @@ let ViewerContainerComponent = class ViewerContainerComponent extends __WEBPACK_
             }
         });
     }
+    reset() {
+    }
     updateGroupValue(value) {
         this.group.value = value;
         this.layoutService.setViewContainer(value);
     }
     switchToHelp() {
         this.updateGroupValue(4);
-        this._lock = true;
     }
     switchToConsole() {
         this.updateGroupValue(3);
-        this._lock = true;
     }
     update() {
-        if (!this._lock) {
-            let port = this.flowchartService.getSelectedPort();
-            if (port == undefined) {
-                this.updateGroupValue(this.layoutService.getViewContainer());
-            }
-            else {
-                this.updateGroupValue(this.flowchartService.getSelectedPort().getType());
-            }
+        let port = this.flowchartService.getSelectedPort();
+        if (port == undefined) {
+            this.updateGroupValue(this.layoutService.getViewContainer());
         }
-    }
-    lock() {
-        this._lock = !this._lock;
+        else {
+            console.log(this.flowchartService.getSelectedPort().getType());
+            this.updateGroupValue(this.flowchartService.getSelectedPort().getType());
+        }
     }
     ngOnInit() {
         this.updateGroupValue(this.layoutService.getViewContainer());
     }
     changed() {
-        this._lock = false;
         this.layoutService.setViewContainer(this.group.value);
     }
 };
