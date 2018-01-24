@@ -250,31 +250,67 @@ export class Flowchart implements IFlowchart{
 	}
 
 	//todo: provide a more efficient sort
+	//	Returns an ordering of the node IDs in order or execution
+	//
 	getNodeOrder(): number[]{
 
-		let rankedNodeOrder: number[] = [];
-		let incoming = [];
-
-		this._nodes.map(function(node, index){
-			incoming[index] = {count: 0, id: index};
+		let n_map = [];
+		n_map = this._nodes.map(function(node, index){
+			return {prevArr: [], nextArr: [], id: index};
 		})
 
 		for(let c=0; c < this._edges.length; c++){
 			let edge: IEdge = this._edges[c];
-			let in_nodeIndex = edge.input_address[0]; 
 			let out_nodeIndex = edge.output_address[0];
-			incoming[in_nodeIndex].count++;
-			incoming[out_nodeIndex].count--;
+			let in_nodeIndex = edge.input_address[0]; 
+
+			if(n_map[out_nodeIndex].nextArr.indexOf(in_nodeIndex) == -1){
+				n_map[out_nodeIndex].nextArr.push(in_nodeIndex);
+			}
+
+			if(n_map[in_nodeIndex].prevArr.indexOf(out_nodeIndex) == -1){
+				n_map[in_nodeIndex].prevArr.push(out_nodeIndex);
+			}
+
 		}
 
-		let an = this._nodes;
-		rankedNodeOrder = incoming.sort(function(a: any, b: any){
-			return a.count - b.count;
-		}).map(function(obj){ 
-			return obj.id;
-		});
+		let sortO = n_map[0].prevArr.concat([n_map[0].id]).concat(n_map[0].nextArr);
+		for(let i=1; i < n_map.length; i++){
+			let o = n_map[i];
 
-		return rankedNodeOrder;
+			if(sortO.indexOf(o.id) == -1){
+				sortO.push(o.id);
+			}
+			
+			let el_pos = sortO.indexOf(o.id);
+
+			if(o.prevArr.length == 0 && el_pos !== 0){
+				sortO.splice(el_pos, 1);
+				sortO.unshift(o.id);
+			}
+
+			o.prevArr.map(function(r){
+
+				let index = sortO.indexOf(r);
+
+				if(index == -1){
+					sortO.splice(el_pos -1, 1,  r);
+				}
+				else{
+					if(index > el_pos){
+						sortO.splice(index, 1);
+						sortO.splice(el_pos -1, 1, r);
+					}
+					else{
+						// do nothing
+					}
+				}
+				
+			});
+
+		}
+
+		return sortO;
 	}
 
 
@@ -335,8 +371,6 @@ export class Flowchart implements IFlowchart{
 			let inputPort = inputNode.getInputByIndex(edge.input_address[1]);
 
 			inputPort.setComputedValue(outputPort.getValue());
-			console.log(outputPort.getValue());
-
 
 			// let value = outputPort.getValue();
 			// if( value["_kernel"] && value["_id"] ){

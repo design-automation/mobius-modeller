@@ -77,20 +77,20 @@ export class FlowchartService {
     if(storageString){
       let fc = CircularJSON.parse(storageString)["flowchart"]["_lastSaved"];
 
-      message = "A file saved on " + (new Date(fc)).toDateString() + " at " 
-              + (new Date(fc)).toTimeString() + " was found. Do you want to reload?"
+      message = "Welcome back! We found a file saved on " + (new Date(fc)).toDateString() + " at " 
+              + (new Date(fc)).toTimeString() + ". Would you like to reload?"
     }
 
-    if(message){
-      if (confirm(message)) {
-         this.loadFile(storageString);
-      } else {
-          this.newFile();
-      }
-    }
-    else{
+    // if(message){
+    //   if (confirm(message)) {
+    //      this.loadFile(storageString);
+    //   } else {
+    //       this.newFile();
+    //   }
+    // }
+    // else{
       this.newFile();
-    }
+    //}
 
     
 
