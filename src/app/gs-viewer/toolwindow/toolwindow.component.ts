@@ -28,7 +28,8 @@ export class ToolwindowComponent extends DataSubscriber implements OnInit {
           scene: gs.IThreeScene, 
           faces_map: Map<number, gs.ITopoPathData>, 
           wires_map: Map<number, gs.ITopoPathData>, 
-          edges_map: Map<number, gs.ITopoPathData>} ;
+          edges_map: Map<number, gs.ITopoPathData>,
+          vertices_map: Map<number, gs.ITopoPathData>} ;
   children:Array<any>;
   SelectVisible:string="Faces";
   FaceColor:THREE.Color;
@@ -48,12 +49,11 @@ export class ToolwindowComponent extends DataSubscriber implements OnInit {
 
   ngOnInit() {
     this.model= this.dataService.getGsModel(); 
-  	this.object(this.Visible);
     this.Visible=this.dataService.visible;
     this.scene_and_maps= this.dataService.getscememaps();
-    this.getoject();
-    this.getcolor();
-    this.faceselect(this.SelectVisible);
+    this.object(this.Visible);
+    //this.objectselect(this.SelectVisible);
+    this.getvertices();
   }
 
   notify(){ 
@@ -74,44 +74,48 @@ export class ToolwindowComponent extends DataSubscriber implements OnInit {
       if(this.Visible==="Edges") this.edgecheck();
       if(this.Visible==="Vertices") this.verticecheck();
     }
-    this.dataService.visible=this.Visible;;
+    this.dataService.visible=this.Visible;
   }
 
-  getvertice(){
-    var attributeedge=[];
-    for(var i =0;i<this.scene_and_maps.faces_map.size;i++){
-      const face: gs.IFace = this.model.getGeom().getTopo(this.scene_and_maps.faces_map.get(i)) as gs.IFace;
-      const verts: gs.IVertex[] = face.getVertices();
-       const verts_xyz: gs.XYZ[] = verts.map((v) => v.getPoint().getPosition());
-      console.log(verts_xyz);
+  getvertices(){
+    var attributevertix=[];
+    var points=this.getpoints();
+    for(var i =0;i<this.scene_and_maps.vertices_map.size;i++){
+      const path: gs.ITopoPathData = this.scene_and_maps.vertices_map.get(i);
+      const vertices: gs.IVertex = this.model.getGeom().getTopo(path) as gs.IVertex;
+      const label: string = vertices.getLabel();
+      const verts_xyz: gs.XYZ = vertices.getLabelCentroid();
+      var attributes:any=[];
+      for(var j=0;j<points.length;j++){
+        if(points[j].x===verts_xyz[0]&&points[j].y===verts_xyz[1]&&points[j].z===verts_xyz[2]){
+           attributes.pointid=points[j].id;
+        }
+      }
+      attributes.vertixlabel=label;
+      attributevertix.push(attributes);
     }
+    this.dataService.addattrvertix(attributevertix);
+    return attributevertix;
   }
 
   getedges():Array<any>{
     var attributeedge=[];
     for(var i =0;i<this.scene_and_maps.edges_map.size;i++){
-      var attribute:any=[]
-      attribute=this.scene_and_maps.edges_map.get(i);
-      if(attribute["tt"]!=undefined){
-        if(attribute["tt"]==1){
-          var edge:string="o"+attribute["id"]+":"+"f"+attribute["ti"]+":"+"e"+attribute["si"];
-          attributeedge.push(edge);
-        }
-      }
+      const path: gs.ITopoPathData = this.scene_and_maps.edges_map.get(i);
+      const edge: gs.IEdge = this.model.getGeom().getTopo(path) as gs.IEdge;
+      const label: string = edge.getLabel();
+      attributeedge.push(label);
     }
     return attributeedge;
   }
+
   getwires():Array<any>{
     var attributewire=[];
     for(var i =0;i<this.scene_and_maps.wires_map.size;i++){
-      var attribute:any=[]
-      attribute=this.scene_and_maps.wires_map.get(i);
-      if(attribute["tt"]!=undefined){
-        if(attribute["tt"]==0){
-          var edge:string="o"+attribute["id"]+":"+"w"+attribute["ti"];
-          attributewire.push(edge);
-        }
-      }
+      const path: gs.ITopoPathData = this.scene_and_maps.wires_map.get(i);
+      const wire: gs.IWire = this.model.getGeom().getTopo(path) as gs.IWire;
+      const label: string = wire.getLabel();
+      attributewire.push(label);
     }
     return attributewire;
   }
@@ -119,38 +123,23 @@ export class ToolwindowComponent extends DataSubscriber implements OnInit {
   getfaces():Array<any>{
     var attributeface=[];
     for(var i =0;i<this.scene_and_maps.faces_map.size;i++){
-      var attribute:any=[]
-      attribute=this.scene_and_maps.faces_map.get(i);
-      if(attribute["tt"]!=undefined){
-        if(attribute["tt"]==1){
-          var edge:string="o"+attribute["id"]+":"+"f"+attribute["ti"];
-          attributeface.push(edge);
-        }
-      }
+      const path: gs.ITopoPathData = this.scene_and_maps.faces_map.get(i);
+      const face: gs.IFace = this.model.getGeom().getTopo(path) as gs.IFace;
+      const label: string = face.getLabel();
+      attributeface.push(label)
     }
     return attributeface;
   }
 
   getoject():Array<any>{
     var attributeobject=[];
-    var objectlable=[];
-    /*for(var i =0;i<this.scene_and_maps.faces_map.size;i++){
-      var attribute:any=[]
-      attribute=this.scene_and_maps.faces_map.get(i);
-      if(attribute["id"]!=undefined){
-        if(objectlable.length!=0){
-          for(var j=0;j<objectlable.length;j++){
-            if(objectlable[j]!=attribute["id"]){
-              objectlable.push(attribute["id"]);
-            }
-          }
-        }else{objectlable.push(attribute["id"]);}
+    for(var i =0;i<this.scene_and_maps.faces_map.size;i++){
+      const path: gs.ITopoPathData = this.scene_and_maps.faces_map.get(i);
+      if(i===0||path.id!==this.scene_and_maps.faces_map.get(i-1).id){
+        const label: string = "o"+path.id;
+        attributeobject.push(label);
       }
     }
-    for(var n=0;n<objectlable.length;n++){
-      var object:string="o"+objectlable[n];
-      attributeobject.push(object);
-    }*/
     return attributeobject;
   }
 
@@ -167,37 +156,25 @@ export class ToolwindowComponent extends DataSubscriber implements OnInit {
       }
     return children;
   }
-  getcolor(){
-    var children=this.getchildren();
-    for(var i=0;i<children.length;i++){
-      if(children[i].name==="All faces"){
-        this.FaceColor=children[i]["material"].color;
-      }
-      if(children[i].name==="All wires"){
-        this.WireColor=children[i]["material"].color;
-      }
-      if(children[i].name==="All edges"){
-        this.EdgeColor=children[i]["material"].color;
-      }
-    }
-  }
 
-  objectselect(SelectVisible){
-    this.SelectVisible="Ojbs";
+  /*objectselect(SelectVisible){
+    this.SelectVisible="Objs";
+    this.object(this.Visible);
+    document.getElementById("object").style.color=null;
+    document.getElementById("face").style.color=null;
+    document.getElementById("wire").style.color=null;
+    document.getElementById("edge").style.color=null;
+    document.getElementById("vertice").style.color=null;
     var scenechildren=[];
     var children=this.getchildren();
     for(var i=0;i<children.length;i++){
       if(children[i].name==="All wires") children[i]["material"].opacity=0;
       if(children[i].name==="All edges") children[i]["material"].opacity=0;
-      if(children[i].name==="All points") children[i]["material"].opacity=0;
-      if(children[i].name==="All faces"){
+      if(children[i].name==="All vertices") children[i]["material"].opacity=0;
+      if(children[i].name==="All objs"||children[i].name==="All faces"){
         children[i]["material"].opacity=0.8;
-      }
-
-    }
-    for(var j=0;j<this.scene.children.length;j++){
-      if(this.scene.children[j].name==="Objs"){
-        scenechildren.push(this.scene.children[j]);
+        children[i].name="All objs";
+        scenechildren.push(children[i]);
       }
     }
     this.dataService.addscenechild(scenechildren);
@@ -205,14 +182,21 @@ export class ToolwindowComponent extends DataSubscriber implements OnInit {
 
   faceselect(SelectVisible){
     this.SelectVisible="Faces";
+    this.face(this.Visible);
+    document.getElementById("object").style.color="grey";
+    document.getElementById("face").style.color=null;
+    document.getElementById("wire").style.color=null;
+    document.getElementById("edge").style.color=null;
+    document.getElementById("vertice").style.color=null;
     var scenechildren=[];
     var children=this.getchildren();
     for(var i=0;i<children.length;i++){
       if(children[i].name==="All wires") children[i]["material"].opacity=0.1;
       if(children[i].name==="All edges") children[i]["material"].opacity=0.1;
-      if(children[i].name==="All points") children[i]["material"].opacity=0.1;
-      if(children[i].name==="All faces"){
+      if(children[i].name==="All vertices") children[i]["material"].opacity=0.1;
+      if(children[i].name==="All objs"||children[i].name==="All faces"){
         children[i]["material"].opacity=0.8;
+        children[i].name="All faces";
         scenechildren.push(children[i]);
       }
     }
@@ -221,12 +205,18 @@ export class ToolwindowComponent extends DataSubscriber implements OnInit {
 
   wireselect(SelectVisible){
     this.SelectVisible="Wires";
+    this.wire(this.Visible);
+    document.getElementById("object").style.color="grey";
+    document.getElementById("face").style.color="grey";
+    document.getElementById("wire").style.color=null;
+    document.getElementById("edge").style.color=null;
+    document.getElementById("vertice").style.color=null;
     var scenechildren=[];
     var children=this.getchildren();
     for(var i=0;i<children.length;i++){
-      if(children[i].name=="All faces") children[i]["material"].opacity=0.1;
+      if(children[i].name==="All objs"||children[i].name==="All faces") children[i]["material"].opacity=0.1;
       if(children[i].name==="All edges") children[i]["material"].opacity=0.1;
-      if(children[i].name==="All points") children[i]["material"].opacity=0.1;
+      if(children[i].name==="All vertices") children[i]["material"].opacity=0.1;
       if(children[i].name==="All wires"){
         children[i]["material"].opacity=0.6;
         scenechildren.push(children[i]);
@@ -236,12 +226,18 @@ export class ToolwindowComponent extends DataSubscriber implements OnInit {
   }
   edgeselect(SelectVisible){
     this.SelectVisible="Edges";
+    this.edge(this.Visible);
+    document.getElementById("object").style.color="grey";
+    document.getElementById("face").style.color="grey";
+    document.getElementById("wire").style.color="grey";
+    document.getElementById("edge").style.color=null;
+    document.getElementById("vertice").style.color=null;
     var scenechildren=[];
     var children=this.getchildren();
     for(var i=0;i<children.length;i++){
-      if(children[i].name=="All faces") children[i]["material"].opacity=0.1;
+      if(children[i].name==="All objs"||children[i].name==="All faces") children[i]["material"].opacity=0.1;
       if(children[i].name==="All wires") children[i]["material"].opacity=0.1;
-      if(children[i].name==="All points") children[i]["material"].opacity=0.1;
+      if(children[i].name==="All vertices") children[i]["material"].opacity=0.1;
       if(children[i].name==="All edges"){
         children[i]["material"].opacity=0.4;
         scenechildren.push(children[i]);
@@ -252,19 +248,26 @@ export class ToolwindowComponent extends DataSubscriber implements OnInit {
 
   verticeselect(SelectVisible){
     this.SelectVisible="Vertices";
+    this.vertice(this.Visible);
+    document.getElementById("object").style.color="grey";
+    document.getElementById("face").style.color="grey";
+    document.getElementById("wire").style.color="grey";
+    document.getElementById("edge").style.color="grey";
+    document.getElementById("vertice").style.color=null;
     var scenechildren=[];
     var children=this.getchildren();
     for(var i=0;i<children.length;i++){
-      if(children[i].name=="All faces") children[i]["material"].opacity=0.1;
+      console.log(children);
+      if(children[i].name==="All objs"||children[i].name==="All faces") children[i]["material"].opacity=0.1;
       if(children[i].name==="All wires") children[i]["material"].opacity=0.1;
       if(children[i].name==="All edges") children[i]["material"].opacity=0.1;
-      if(children[i].name==="All points"){
+      if(children[i].name==="All vertices"){
         children[i]["material"].opacity=1;
         scenechildren.push(children[i]);
       }
     }
     this.dataService.addscenechild(scenechildren);
-  }
+  }*/
 
 
   getscenechildren():Array<any>{
@@ -272,9 +275,7 @@ export class ToolwindowComponent extends DataSubscriber implements OnInit {
     for(var n=0;n<this.scene.children.length;n++){
       if(this.scene.children[n].type==="Scene"){
         for(var i=0;i<this.scene.children[n].children.length;i++){
-          //for(var j=0;j<this.scene.children[n].children[i].children.length;j++){
             scenechildren.push(this.scene.children[n].children[i]);
-          //}
         }
       }
     }
@@ -293,37 +294,15 @@ export class ToolwindowComponent extends DataSubscriber implements OnInit {
     var attrubtepoints=[];
     for(var i=0;i<this.model.getGeom().getAllPoints().length;i++){
       var attributepoint:any=[];
-      attributepoint.id=this.model.getGeom().getAllPoints()[i].getID();
+      attributepoint.id=this.model.getGeom().getAllPoints()[i].getLabel();
       attributepoint.x=this.model.getGeom().getAllPoints()[i].getPosition()[0];
       attributepoint.y=this.model.getGeom().getAllPoints()[i].getPosition()[1];
       attributepoint.z=this.model.getGeom().getAllPoints()[i].getPosition()[2];
       attrubtepoints.push(attributepoint);
     }
-
     return attrubtepoints;
-
   }
-  getvertices(){
-    var points:Array<any>=this.getpoints();
-    var attributes=[];
-    for(var i=0;i<this.scenechildren.length;i++){
-      if(this.scenechildren[i].name==="All points"){
-        for(var j=0;j<this.scenechildren[i].children.length;j++){
-          for(var n=0;n<points.length;n++){
-            if(points[n].x===this.scenechildren[i].children[j].position.x&&
-              points[n].y===this.scenechildren[i].children[j].position.y&&
-              points[n].z===this.scenechildren[i].children[j].position.z){
-              var attributevertice:any=[];
-              attributevertice.id=this.scenechildren[i].children[j].name;
-              attributevertice.pointid=points[n].id;
-              attributes.push(attributevertice);
-            }
-          }
-        }
-      }
-    }
-    return attributes;
-  }
+  
   getverticescheck(){
     var points:Array<any>=this.getpoints();
     var attributes=[];
@@ -379,16 +358,6 @@ export class ToolwindowComponent extends DataSubscriber implements OnInit {
   edge(Visible){
   	this.Visible="Edges";
     this.attribute=[];
-    /*this.scenechildren=this.getscenechildren();
-    for(var i=0;i<this.scenechildren.length;i++){
-      if(this.scenechildren[i].name==="Edges"){
-        for(var j=0;j<this.scenechildren[i].children.length;j++){
-          var attributeface:any=[];
-          attributeface.id=this.scenechildren[i].children[j].name;
-          this.attribute.push(attributeface);
-        }
-      }
-    }*/
     this.attribute=this.getedges();
     if(this.selectedVisible==true){
       this.edgecheck();
@@ -416,16 +385,6 @@ export class ToolwindowComponent extends DataSubscriber implements OnInit {
   wire(Visible){
   	this.Visible="Wires";
     this.attribute=[];
-    /*this.scenechildren=this.getscenechildren();
-    for(var i=0;i<this.scenechildren.length;i++){
-      if(this.scenechildren[i].name==="Wires"){
-        for(var j=0;j<this.scenechildren[i].children.length;j++){
-          var attributeface:any=[];
-          attributeface.id=this.scenechildren[i].children[j].name;
-          this.attribute.push(attributeface);
-        }
-      }
-    }*/
     this.attribute=this.getwires();
     if(this.selectedVisible==true){
       this.wirecheck();
@@ -452,16 +411,6 @@ export class ToolwindowComponent extends DataSubscriber implements OnInit {
   face(Visible){
   	this.Visible="Faces";
   	this.attribute=[];
-    /*this.scenechildren=this.getscenechildren();
-    for(var i=0;i<this.scenechildren.length;i++){
-      if(this.scenechildren[i].name==="Faces"){
-        for(var j=0;j<this.scenechildren[i].children.length;j++){
-          var attributeface:any=[];
-          attributeface.id=this.scenechildren[i].children[j].name;
-          this.attribute.push(attributeface);
-        }
-      }
-    }*/
     this.attribute=this.getfaces();
     if(this.selectedVisible==true){
       this.facecheck();
@@ -503,17 +452,7 @@ export class ToolwindowComponent extends DataSubscriber implements OnInit {
   object(Visible){
   	this.Visible="Objs";
     this.attribute=[];
-    /*this.scenechildren=this.getscenechildren();
-    for(var i=0;i<this.scenechildren.length;i++){
-      if(this.scenechildren[i].name==="Objs"){
-        for(var j=0;j<this.scenechildren[i].children.length;j++){
-          var attributeface:any=[];
-          attributeface.id=this.scenechildren[i].children[j].name;
-          this.attribute.push(attributeface);
-        }
-      }
-    }*/
-    //this.attribute=this.getoject();
+    this.attribute=this.getoject();
     if(this.selectedVisible==true){
       this.objectcheck();
     }
@@ -560,7 +499,6 @@ export class ToolwindowComponent extends DataSubscriber implements OnInit {
   	var select;
     for(var n=0;n<this.scene.children.length;n++){
       if(this.scene.children[n].type==="Scene"){
-        console.log(this.scene.children[n].children.length);
         for(var m=0;m<this.scene.children[n].children.length;m++){
           var sprite:Array<any>=this.scene.children[n].children[m].children[this.scene.children[n].children[m].children.length-1].children;
           for(var j=0;j<sprite.length;j++){

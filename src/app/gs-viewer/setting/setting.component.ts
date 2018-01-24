@@ -95,7 +95,7 @@ export class SettingComponent implements OnInit {
           if(this.scene.children[i].children[j]["geometry"].boundingSphere.radius!==0){
             center=this.scene.children[i].children[j]["geometry"].boundingSphere.center;
             var radius:number=this.scene.children[i].children[j]["geometry"].boundingSphere.radius;
-            max=Math.ceil(radius)*1.5;
+            max=Math.ceil(radius+Math.max(Math.abs(center.x),Math.abs(center.y),Math.abs(center.z))*1.2);
             break;
           }
         }
@@ -106,7 +106,7 @@ export class SettingComponent implements OnInit {
       gridhelper.name="GridHelper";
       var vector=new THREE.Vector3(0,1,0);
       gridhelper.lookAt(vector);
-      gridhelper.position.set(center.x,center.y,center.z);
+      gridhelper.position.set(center.x,center.y,0);
       this.scene.add( gridhelper);
 
     }else{

@@ -30,11 +30,22 @@
   		
   		<!-- <button id="selecting" [class.visible]="Visible === 'select'" (click)= "select($event, Visible)" ><i class="fa fa-mouse-pointer"></i></button> -->
   		
-  		<button id="setting" [class.selected]="settingVisible" (click)= "settingVisible = !settingVisible">
+  		<button id="setting" [class.selected]="settingVisible" (click)= "settingVisible = !settingVisible"><i class="fa fa-cog"></i></button>
+
+      <button id="selecting" [class.selected]="seVisible" (click)= "select(seVisible)" ><i class="fa fa-mouse-pointer"></i></button>
+
       	
       	<!--setting-->
-      	<i class="fa fa-cog"></i></button>
+      	
  		<app-setting *ngIf="settingVisible == true"></app-setting>
+    <div *ngIf="seVisible == true">
+        <button id="points" [class.selectvisible]="SelectVisible === 'Points'" (click)="pointselect(SelectVisible)">P</button>
+        <button id="vertices" [class.selectvisible]="SelectVisible === 'Vertices'" (click)="verticeselect(SelectVisible)">V</button>
+        <button id="edges" [class.selectvisible]="SelectVisible === 'Edges'" (click)="edgeselect(SelectVisible)">E</button>
+        <button id="wires" [class.selectvisible]="SelectVisible === 'Wires'" (click)="wireselect(SelectVisible)">W</button>
+        <button id="faces" [class.selectvisible]="SelectVisible === 'Faces'" (click)="faceselect(SelectVisible)">F</button>
+        <button id="objects" [class.selectvisible]="SelectVisible === 'Objs'" (click)="objectselect(SelectVisible)">O</button>
+      </div>
 </div>
 
 

@@ -55,7 +55,8 @@ export class DataService {
           scene: gs.IThreeScene, 
           faces_map: Map<number, gs.ITopoPathData>, 
           wires_map: Map<number, gs.ITopoPathData>, 
-          edges_map: Map<number, gs.ITopoPathData>} ;
+          edges_map: Map<number, gs.ITopoPathData>,
+          vertices_map: Map<number, gs.ITopoPathData>} ;
   scenechildren:Array<any>=[];
   red:number;
   green:number;
@@ -66,7 +67,10 @@ export class DataService {
           scene: gs.IThreeScene, 
           faces_map: Map<number, gs.ITopoPathData>, 
           wires_map: Map<number, gs.ITopoPathData>, 
-          edges_map: Map<number, gs.ITopoPathData>} ;
+          edges_map: Map<number, gs.ITopoPathData>,
+          vertices_map: Map<number, gs.ITopoPathData>} ;
+  textlabels:Array<any>=[];
+  attributevertix:Array<any>;
 
 
   // ---- 
@@ -96,8 +100,6 @@ export class DataService {
     // scene
     let scene: THREE.Scene = new THREE.Scene();
     scene.background = new THREE.Color( 0xcccccc );
-    console.log(scene);
-    
 
     // renderer
     let renderer: THREE.WebGLRenderer =  new THREE.WebGLRenderer( {antialias: true} );
@@ -150,8 +152,6 @@ export class DataService {
     this._alight = [];
     this._alight.push(hemi_light);
     
-    //this.zoomfit();
-    
   }
 
   //
@@ -173,7 +173,8 @@ export class DataService {
           scene: gs.IThreeScene, 
           faces_map: Map<number, gs.ITopoPathData>, 
           wires_map: Map<number, gs.ITopoPathData>, 
-          edges_map: Map<number, gs.ITopoPathData>}= gs.genThreeOptModelAndMaps( this._gsModel );
+          edges_map: Map<number, gs.ITopoPathData>,
+          vertices_map: Map<number, gs.ITopoPathData>}= gs.genThreeOptModelAndMaps( this._gsModel );
     this.scenemaps=scene_and_maps;
   }
   getscememaps():any{
@@ -284,6 +285,15 @@ export class DataService {
   getselecting(){
     return this.selecting;
   }
+
+  addattrvertix(attributevertix){
+    this.attributevertix=attributevertix;
+  }
+
+  getattrvertix(){
+    return this.attributevertix;
+  }
+
   addgrid(grid){
     this.grid=grid;
   }

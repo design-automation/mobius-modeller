@@ -40,9 +40,20 @@ export class FlowchartViewerComponent extends Viewer{
   showDialog: {status: boolean, position: number[]} = {status: false, position: [0,0]};
 
   constructor(injector: Injector, 
-      private layoutService: LayoutService, 
-      private consoleService: ConsoleService){  
+    private layoutService: LayoutService, 
+    private consoleService: ConsoleService){  
     super(injector, "FlowchartViewer");  
+
+    // bad bad bad!
+    let self = this;
+    document.addEventListener("keydown", function(e) {
+      if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey))      {
+        e.preventDefault();
+        self.save(true);
+        //your implementation or function calls
+      }
+    }, false);
+
   }
 
   reset(){ 
@@ -584,9 +595,19 @@ export class FlowchartViewerComponent extends Viewer{
     this.flowchartService.loadFile(url);
   }
 
-  save(): void{
-    this.flowchartService.saveFile();
+  loadFromMemory(): void{
+    this.flowchartService.checkSavedFile();
   }
+
+  save(value: boolean): void{
+    this.flowchartService.saveFile(true);
+    this.layoutService.showConsole();
+  }
+
+  newfile(): void{
+    this.flowchartService.newFile();
+  }
+
 
 }
 

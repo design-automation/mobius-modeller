@@ -74,7 +74,7 @@ export abstract class Port implements IPort{
 			this._type = <InputPortTypes>Object.keys(InputPortTypes)[this._type]
 		}
 		else if( typeof(this._type) == "number" && type == "out"){
-			this._type = <OutputPortTypes>Object.keys(OutputPortTypes)[this._type]
+			//this._type = <OutputPortTypes>Object.keys(OutputPortTypes)[this._type]
 		}
 
 		this._selected = false;
