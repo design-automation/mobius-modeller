@@ -111,7 +111,6 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
     this.sphere.visible = false;
     this.sphere.name="sphereInter";
     this.scene.add( this.sphere );
-    console.log(this.scene_and_maps);
 
     // render loop
     let self = this;
@@ -201,6 +200,7 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
 
       let objectData = loader.parse( scene_data );
       if( objectData.children!==undefined){
+        var radius=0;
         for(var i=0;i< objectData.children.length;i++){
           let chd = objectData.children[i];
           chd["material"].needsUpdate=true;
@@ -212,7 +212,8 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
             chd["geometry"].computeBoundingBox();
             chd["geometry"].computeBoundingSphere();
           }
-          if(chd.name==="All points"){
+          if(chd["geometry"].boundingSphere.radius>radius){
+            radius=chd["geometry"].boundingSphere.radius;
             this.center=chd["geometry"].boundingSphere.center;
           }
         }
@@ -220,6 +221,7 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
       this.controls.target.set(this.center.x,this.center.y,this.center.z);
       this.controls.update();
       this.scene.add(objectData);
+      console.log(this.scene);
     }
     catch(ex){
       console.error("Error displaying model:", ex);
@@ -415,13 +417,14 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
   addgrid(){
     var max=8;
     var center=new THREE.Vector3(0,0,0);
+    var radius:number=0
     for(var i=0;i<this.scene.children.length;i++){
       if(this.scene.children[i].type==="Scene"){
         for(var j=0;j<this.scene.children[i].children.length;j++){
-          if(this.scene.children[i].children[j]["geometry"].boundingSphere.radius!==0){
+          if(this.scene.children[i].children[j]["geometry"].boundingSphere.radius>radius){
             center=this.scene.children[i].children[j]["geometry"].boundingSphere.center;
-            var radius:number=this.scene.children[i].children[j]["geometry"].boundingSphere.radius;
-            max=Math.ceil(radius+Math.max(Math.abs(center.x),Math.abs(center.y),Math.abs(center.z))*1.2);
+            radius=this.scene.children[i].children[j]["geometry"].boundingSphere.radius;
+            max=Math.ceil(radius+Math.max(Math.abs(center.x),Math.abs(center.y),Math.abs(center.z))*1.5);
             break;
           }
           if(this.scene.children[i].children[j].type==="GridHelper") {

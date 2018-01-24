@@ -50,7 +50,11 @@ export class ToolwindowComponent extends DataSubscriber implements OnInit {
   ngOnInit() {
     this.model= this.dataService.getGsModel(); 
     this.Visible=this.dataService.visible;
-    this.scene_and_maps= this.dataService.getscememaps();
+    if(this.model!==undefined){
+      this.scene_and_maps= this.dataService.getscememaps();
+    }else{
+      return undefined;
+    }
     this.object(this.Visible);
     //this.objectselect(this.SelectVisible);
     this.getvertices();

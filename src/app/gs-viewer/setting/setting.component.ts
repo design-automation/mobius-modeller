@@ -89,13 +89,14 @@ export class SettingComponent implements OnInit {
     this.gridVisible = !this.gridVisible;
     var max=8;
     var center=new THREE.Vector3(0,0,0);
+    var radius:number=0
     for(var i=0;i<this.scene.children.length;i++){
       if(this.scene.children[i].type==="Scene"){
         for(var j=0;j<this.scene.children[i].children.length;j++){
-          if(this.scene.children[i].children[j]["geometry"].boundingSphere.radius!==0){
+          if(this.scene.children[i].children[j]["geometry"].boundingSphere.radius>radius){
             center=this.scene.children[i].children[j]["geometry"].boundingSphere.center;
-            var radius:number=this.scene.children[i].children[j]["geometry"].boundingSphere.radius;
-            max=Math.ceil(radius+Math.max(Math.abs(center.x),Math.abs(center.y),Math.abs(center.z))*1.2);
+            radius=this.scene.children[i].children[j]["geometry"].boundingSphere.radius;
+            max=Math.ceil(radius+Math.max(Math.abs(center.x),Math.abs(center.y),Math.abs(center.z))*1.5);
             break;
           }
         }
