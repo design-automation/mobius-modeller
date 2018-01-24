@@ -99,7 +99,7 @@ export class GraphNode implements IGraphNode{
 			let inp_data :InputPort = inputs[input_index];
 			let input :InputPort = new InputPort(inp_data["_name"]);
 
-			input.update(inp_data);
+			input.update(inp_data, "inp");
 			this._inputs.push(input);
 		}
 
@@ -109,7 +109,7 @@ export class GraphNode implements IGraphNode{
 			let output_data: OutputPort = outputs[output_index];
 			let output: OutputPort = new OutputPort(output_data["_name"]);
 
-			output.update(output_data);
+			output.update(output_data, "out");
 			this._outputs.push(output);
 		}
 

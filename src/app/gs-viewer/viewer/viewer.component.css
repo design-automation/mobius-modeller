@@ -50,22 +50,95 @@
   right:0px; 
   text-align:center;
   position: absolute;
-  margin-top: 10px;
+  margin-top: 30px;
   background-color:transparent;
   border:0;
 }
 
-/*#selecting{
+#selecting{
   width: 30px;
   height: 25px;
   font-size:15px;
   right:0px; 
   text-align:center;
   position: absolute;
+  margin-top: 50px;
+  background-color:transparent;
+  border:0;
+}
+
+#points{
+  width: 30px;
+  height: 25px;
+  font:20px bolder;
+  right:0px; 
+  text-align:center;
+  position: absolute;
+  margin-top: 80px;
+  background-color:transparent;
+  border:0;
+  font-family:sans-serif;
+}
+#vertices{
+  width: 30px;
+  height: 25px;
+  font:20px bolder;
+  right:0px; 
+  text-align:center;
+  position: absolute;
   margin-top: 100px;
   background-color:transparent;
   border:0;
-}*/
+  font-family:sans-serif;
+}
+#edges{
+  width: 30px;
+  height: 25px;
+  font:20px bolder;
+  right:0px; 
+  text-align:center;
+  position: absolute;
+  margin-top: 120px;
+  background-color:transparent;
+  border:0;
+  font-family:sans-serif;
+}
+#wires{
+  width: 30px;
+  height: 25px;
+  font:20px bolder;
+  right:0px; 
+  text-align:center;
+  position: absolute;
+  margin-top: 140px;
+  background-color:transparent;
+  border:0;
+  font-family:sans-serif;
+}
+#faces{
+  width: 30px;
+  height: 25px;
+  font:20px bolder;
+  right:0px; 
+  text-align:center;
+  position: absolute;
+  margin-top: 160px;
+  background-color:transparent;
+  border:0;
+  font-family:sans-serif;
+}
+#objects{
+  width: 30px;
+  height: 25px;
+  font:20px bolder;
+  right:0px; 
+  text-align:center;
+  position: absolute;
+  margin-top: 180px;
+  background-color:transparent;
+  border:0;
+  font-family:sans-serif;
+}
 
 #setting{
   width: 30px;
@@ -74,7 +147,7 @@
   right:0px; 
   text-align:center;
   position: absolute;
-  top: 35px;
+  top: 10px;
   background-color:transparent;
   border:0;
 }
@@ -90,4 +163,9 @@
 
 .cursor {
 
+}
+
+.selectvisible{
+  background-color:  white !important;
+  color:#395d73;
 }

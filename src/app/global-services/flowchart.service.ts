@@ -51,7 +51,7 @@ export class FlowchartService {
               public dialog: MatDialog,) { 
       this.newFile();
       this.checkSavedNodes();
-      this.checkSavedFile();
+      //this.checkSavedFile();
       this.autoSave(60*5);
   };
 
@@ -77,25 +77,26 @@ export class FlowchartService {
     if(storageString){
       let fc = CircularJSON.parse(storageString)["flowchart"]["_lastSaved"];
 
-      message = "A file saved on " + (new Date(fc)).toDateString() + " at " 
-              + (new Date(fc)).toTimeString() + " was found. Do you want to reload?"
+      message = "Hey there! We found a file saved on " + (new Date(fc)).toDateString() + " at " 
+              + (new Date(fc)).toTimeString() + ". Would you like to reload?"
     }
 
     if(message){
       if (confirm(message)) {
+        console.log(storageString);
          this.loadFile(storageString);
       } else {
           this.newFile();
       }
     }
     else{
-      this.newFile();
+      alert("Oops... We couldn't find a file in memory.");
     }
 
     
 
 
-        // let dialogRef = this.dialog.open(FileLoadDialogComponent, {
+        //let dialogRef = this.dialog.open(FileLoadDialogComponent, {
         //     height: '400px',
         //     width: '600px'
         // });
@@ -166,6 +167,9 @@ export class FlowchartService {
       let _this = this;
       let jsonData: {language: string, flowchart: JSON, modules: JSON};
       try{
+
+        this.newFile();
+
         let data = CircularJSON.parse(fileString);
 
         // load the required modules
@@ -181,11 +185,13 @@ export class FlowchartService {
         _this.update();
 
         this.consoleService.addMessage("File loaded successfully");
+        this.layoutService.showConsole();
         
       }
       catch(err){
-        this.consoleService.addMessage("Error loading file: " + err);
         this.newFile();
+        this.consoleService.addMessage("Error loading file: " + err);
+        this.layoutService.showConsole();
       }
 
   }
@@ -271,6 +277,8 @@ export class FlowchartService {
 
     // print message to console
     this.consoleService.addMessage("New file created.");
+
+    this.update();
 
     return this._flowchart;
   }
@@ -400,7 +408,6 @@ export class FlowchartService {
     // print message to console
     this.consoleService.addMessage("New Node was added");
 
-    this.update();
   }
 
   addEdge(outputAddress: number[], inputAddress: number[]):  void{

@@ -927,26 +927,52 @@ class Flowchart {
         return this._edges[index];
     }
     //todo: provide a more efficient sort
+    //	Returns an ordering of the node IDs in order or execution
+    //
     getNodeOrder() {
-        let rankedNodeOrder = [];
-        let incoming = [];
-        this._nodes.map(function (node, index) {
-            incoming[index] = { count: 0, id: index };
+        let n_map = [];
+        n_map = this._nodes.map(function (node, index) {
+            return { prevArr: [], nextArr: [], id: index };
         });
         for (let c = 0; c < this._edges.length; c++) {
             let edge = this._edges[c];
-            let in_nodeIndex = edge.input_address[0];
             let out_nodeIndex = edge.output_address[0];
-            incoming[in_nodeIndex].count++;
-            incoming[out_nodeIndex].count--;
+            let in_nodeIndex = edge.input_address[0];
+            if (n_map[out_nodeIndex].nextArr.indexOf(in_nodeIndex) == -1) {
+                n_map[out_nodeIndex].nextArr.push(in_nodeIndex);
+            }
+            if (n_map[in_nodeIndex].prevArr.indexOf(out_nodeIndex) == -1) {
+                n_map[in_nodeIndex].prevArr.push(out_nodeIndex);
+            }
         }
-        let an = this._nodes;
-        rankedNodeOrder = incoming.sort(function (a, b) {
-            return a.count - b.count;
-        }).map(function (obj) {
-            return obj.id;
-        });
-        return rankedNodeOrder;
+        let sortO = n_map[0].prevArr.concat([n_map[0].id]).concat(n_map[0].nextArr);
+        for (let i = 1; i < n_map.length; i++) {
+            let o = n_map[i];
+            if (sortO.indexOf(o.id) == -1) {
+                sortO.push(o.id);
+            }
+            let el_pos = sortO.indexOf(o.id);
+            if (o.prevArr.length == 0 && el_pos !== 0) {
+                sortO.splice(el_pos, 1);
+                sortO.unshift(o.id);
+            }
+            o.prevArr.map(function (r) {
+                let index = sortO.indexOf(r);
+                if (index == -1) {
+                    sortO.splice(el_pos - 1, 1, r);
+                }
+                else {
+                    if (index > el_pos) {
+                        sortO.splice(index, 1);
+                        sortO.splice(el_pos - 1, 1, r);
+                    }
+                    else {
+                        // do nothing
+                    }
+                }
+            });
+        }
+        return sortO;
     }
     //
     //	clears all the cached results
@@ -997,7 +1023,6 @@ class Flowchart {
             let outputPort = node.getOutputByIndex(edge.output_address[1]);
             let inputPort = inputNode.getInputByIndex(edge.input_address[1]);
             inputPort.setComputedValue(outputPort.getValue());
-            console.log(outputPort.getValue());
             // let value = outputPort.getValue();
             // if( value["_kernel"] && value["_id"] ){
             // 	console.log(value);
@@ -1134,7 +1159,15 @@ class FlowchartReader {
         // add edges
         for (let index in edges) {
             let e_data = edges[index];
-            fc.addEdge(e_data.output_address, e_data.input_address);
+            let in_node = e_data.input_address[0];
+            let out_node = e_data.output_address[0];
+            let valid_input = (in_node >= 0 && in_node < nodes.length);
+            let valid_output = (out_node >= 0 && out_node < nodes.length);
+            if (valid_input && valid_output) {
+                fc.addEdge(e_data.output_address, e_data.input_address);
+            }
+            else {
+            }
         }
         return fc;
     }
@@ -1244,7 +1277,7 @@ class GraphNode {
         for (let input_index in inputs) {
             let inp_data = inputs[input_index];
             let input = new __WEBPACK_IMPORTED_MODULE_2__port_PortModule__["a" /* InputPort */](inp_data["_name"]);
-            input.update(inp_data);
+            input.update(inp_data, "inp");
             this._inputs.push(input);
         }
         // add outputs
@@ -1252,7 +1285,7 @@ class GraphNode {
         for (let output_index in outputs) {
             let output_data = outputs[output_index];
             let output = new __WEBPACK_IMPORTED_MODULE_2__port_PortModule__["c" /* OutputPort */](output_data["_name"]);
-            output.update(output_data);
+            output.update(output_data, "out");
             this._outputs.push(output);
         }
         // add procedure
@@ -1544,6 +1577,8 @@ var OutputPortTypes;
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__misc_GUID__ = __webpack_require__("../../../../../src/app/base-classes/misc/GUID.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__InputPortTypes__ = __webpack_require__("../../../../../src/app/base-classes/port/InputPortTypes.ts");
+
 
 class Port {
     constructor(name) {
@@ -1585,12 +1620,19 @@ class Port {
     //
     //
     //
-    update(portData) {
+    update(portData, type) {
         this._id = portData["_id"];
         this._type = portData["_type"];
-        this._selected = portData["_selected"];
+        if (typeof (this._type) == "number" && type == "inp") {
+            //this._type = (InputPortTypes)this._type; 
+            this._type = Object.keys(__WEBPACK_IMPORTED_MODULE_1__InputPortTypes__["a" /* InputPortTypes */])[this._type];
+        }
+        else if (typeof (this._type) == "number" && type == "out") {
+            //this._type = <OutputPortTypes>Object.keys(OutputPortTypes)[this._type]
+        }
+        this._selected = false;
+        this._connected = false;
         this._disabled = portData["_disabled"];
-        this._connected = portData["_connected"];
         this._default = portData["_default"];
         this.opts = portData["opts"];
         // todo: assign computed also??
@@ -2286,7 +2328,7 @@ let FlowchartService = class FlowchartService {
         this.subject = new __WEBPACK_IMPORTED_MODULE_2_rxjs_Subject__["a" /* Subject */]();
         this.newFile();
         this.checkSavedNodes();
-        this.checkSavedFile();
+        //this.checkSavedFile();
         this.autoSave(60 * 5);
     }
     check() {
@@ -2309,11 +2351,12 @@ let FlowchartService = class FlowchartService {
         let message;
         if (storageString) {
             let fc = __WEBPACK_IMPORTED_MODULE_6_circular_json__["parse"](storageString)["flowchart"]["_lastSaved"];
-            message = "A file saved on " + (new Date(fc)).toDateString() + " at "
-                + (new Date(fc)).toTimeString() + " was found. Do you want to reload?";
+            message = "Hey there! We found a file saved on " + (new Date(fc)).toDateString() + " at "
+                + (new Date(fc)).toTimeString() + ". Would you like to reload?";
         }
         if (message) {
             if (confirm(message)) {
+                console.log(storageString);
                 this.loadFile(storageString);
             }
             else {
@@ -2321,9 +2364,9 @@ let FlowchartService = class FlowchartService {
             }
         }
         else {
-            this.newFile();
+            alert("Oops... We couldn't find a file in memory.");
         }
-        // let dialogRef = this.dialog.open(FileLoadDialogComponent, {
+        //let dialogRef = this.dialog.open(FileLoadDialogComponent, {
         //     height: '400px',
         //     width: '600px'
         // });
@@ -2372,6 +2415,7 @@ let FlowchartService = class FlowchartService {
         let _this = this;
         let jsonData;
         try {
+            this.newFile();
             let data = __WEBPACK_IMPORTED_MODULE_6_circular_json__["parse"](fileString);
             // load the required modules
             /* _this.modules.loadModules(data["module"]); */
@@ -2383,10 +2427,12 @@ let FlowchartService = class FlowchartService {
             _this._flowchart = __WEBPACK_IMPORTED_MODULE_3__base_classes_flowchart_FlowchartModule__["b" /* FlowchartReader */].readFlowchartFromData(data["flowchart"]);
             _this.update();
             this.consoleService.addMessage("File loaded successfully");
+            this.layoutService.showConsole();
         }
         catch (err) {
-            this.consoleService.addMessage("Error loading file: " + err);
             this.newFile();
+            this.consoleService.addMessage("Error loading file: " + err);
+            this.layoutService.showConsole();
         }
     }
     loadModules(modules) {
@@ -2456,6 +2502,7 @@ let FlowchartService = class FlowchartService {
         ]);
         // print message to console
         this.consoleService.addMessage("New file created.");
+        this.update();
         return this._flowchart;
     }
     //
@@ -2555,7 +2602,6 @@ let FlowchartService = class FlowchartService {
         this.selectNode(this._flowchart.getNodes().length - 1);
         // print message to console
         this.consoleService.addMessage("New Node was added");
-        this.update();
     }
     addEdge(outputAddress, inputAddress) {
         if (outputAddress[0] == inputAddress[0]) {
@@ -2824,6 +2870,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
+//import {OutputPortTypes} from '../../../base-classes/Port/PortModule';
 
 let LayoutService = class LayoutService {
     constructor() {
@@ -3017,9 +3064,11 @@ let DataService = class DataService {
         // intializations
         // this only runs once
         this.selecting = [];
+        this.grid = true;
         this.sprite = [];
         this.selectedFaces = [];
         this.scenechildren = [];
+        this.textlabels = [];
         // ---- 
         // Subscription Handling
         // 
@@ -3058,13 +3107,6 @@ let DataService = class DataService {
         var hemi_light = new __WEBPACK_IMPORTED_MODULE_2_three__["HemisphereLight"](0xffffff, 0.5);
         hemi_light.color.setHSL(default_hue, default_saturation, default_saturation);
         scene.add(hemi_light);
-        // var self=this;
-        // self.;
-        // self._controls.addEventListener( 'change',  function() {
-        //   self.light.position.copy( self._camera.position );
-        // } );
-        // self.light.target.position.set( 0, 0, 0 );
-        // this._scene.add( self.light );
         this._scene = scene;
         this._renderer = renderer;
         this._camera = camera;
@@ -3093,19 +3135,18 @@ let DataService = class DataService {
     }
     setGsModel(model) {
         this._gsModel = model;
+        if (this._gsModel !== undefined) {
+            this.updateModel();
+        }
         this.sendMessage("model_update");
     }
     updateModel() {
-        var scene_and_maps = __WEBPACK_IMPORTED_MODULE_3_gs_json__["e" /* genThreeOptModelAndMaps */](this._gsModel);
-        return scene_and_maps;
+        var scene_and_maps = __WEBPACK_IMPORTED_MODULE_3_gs_json__["a" /* genThreeOptModelAndMaps */](this._gsModel);
+        this.scenemaps = scene_and_maps;
     }
-    //
-    // Getter and Setter for Scene
-    //
-    // addScene(scene: THREE.Scene): void{
-    //   console.warn("Three Scene is being reset");
-    // 	this._scene = scene;
-    // }
+    getscememaps() {
+        return this.scenemaps;
+    }
     getScene(width, height) {
         if (width && height) {
             this._width = width;
@@ -3199,6 +3240,12 @@ let DataService = class DataService {
     getselecting() {
         return this.selecting;
     }
+    addattrvertix(attributevertix) {
+        this.attributevertix = attributevertix;
+    }
+    getattrvertix() {
+        return this.attributevertix;
+    }
     addgrid(grid) {
         this.grid = grid;
     }
@@ -3245,61 +3292,6 @@ let DataService = class DataService {
         this.sendMessage();
         return this.scenechildren;
     }
-    zoomfit() {
-        if (this.selecting.length === 0) {
-            const obj = new __WEBPACK_IMPORTED_MODULE_2_three__["Object3D"]();
-            for (var i = 0; i < this._scene.children.length; i++) {
-                if (this._scene.children[i].name !== "GridHelper") {
-                    obj.children.push(this._scene.children[i]);
-                }
-            }
-            var boxHelper = new __WEBPACK_IMPORTED_MODULE_2_three__["BoxHelper"](obj);
-            boxHelper["geometry"].computeBoundingBox();
-            boxHelper["geometry"].computeBoundingSphere();
-            var boundingSphere = boxHelper["geometry"].boundingSphere;
-            var center = boundingSphere.center;
-            var radius = boundingSphere.radius;
-            var fov = this._camera.fov * (Math.PI / 180);
-            var vec_centre_to_pos = new __WEBPACK_IMPORTED_MODULE_2_three__["Vector3"]();
-            vec_centre_to_pos.subVectors(this._camera.position, center);
-            var tmp_vec = new __WEBPACK_IMPORTED_MODULE_2_three__["Vector3"](center.x + Math.abs(radius / Math.sin(fov / 2)), center.y + Math.abs(radius / Math.sin(fov / 2)), center.z + Math.abs(radius / Math.sin(fov / 2)));
-            vec_centre_to_pos.setLength(tmp_vec.length());
-            var perspectiveNewPos = new __WEBPACK_IMPORTED_MODULE_2_three__["Vector3"]();
-            perspectiveNewPos.addVectors(center, vec_centre_to_pos);
-            var newLookAt = new __WEBPACK_IMPORTED_MODULE_2_three__["Vector3"](center.x, center.y, center.z);
-            this._camera.position.copy(perspectiveNewPos);
-            this._camera.lookAt(newLookAt);
-            this._camera.updateProjectionMatrix();
-            this._orbitControls.target.set(newLookAt.x, newLookAt.y, newLookAt.z);
-        }
-        else {
-            event.preventDefault();
-            var axisX, axisY, axisZ, centerX, centerY, centerZ = 0;
-            var radius = 0;
-            for (var i = 0; i < this.selecting.length; i++) {
-                axisX += this.selecting[i].geometry.boundingSphere.center.x;
-                axisY += this.selecting[i].geometry.boundingSphere.center.y;
-                axisZ += this.selecting[i].geometry.boundingSphere.center.z;
-                radius = Math.max(this.selecting[i].geometry.boundingSphere.radius, radius);
-            }
-            centerX = axisX / this._scene.children[1].children.length;
-            centerY = axisY / this._scene.children[1].children.length;
-            centerY = axisY / this._scene.children[1].children.length;
-            var center = new __WEBPACK_IMPORTED_MODULE_2_three__["Vector3"](centerX, centerY, centerZ);
-            var fov = this._camera.fov * (Math.PI / 180);
-            var vec_centre_to_pos = new __WEBPACK_IMPORTED_MODULE_2_three__["Vector3"]();
-            vec_centre_to_pos.subVectors(this._camera.position, center);
-            var tmp_vec = new __WEBPACK_IMPORTED_MODULE_2_three__["Vector3"](center.x + Math.abs(radius / Math.sin(fov / 2)), center.y + Math.abs(radius / Math.sin(fov / 2)), center.z + Math.abs(radius / Math.sin(fov / 2)));
-            vec_centre_to_pos.setLength(tmp_vec.length());
-            var perspectiveNewPos = new __WEBPACK_IMPORTED_MODULE_2_three__["Vector3"]();
-            perspectiveNewPos.addVectors(center, vec_centre_to_pos);
-            var newLookAt = new __WEBPACK_IMPORTED_MODULE_2_three__["Vector3"](center.x, center.y, center.z);
-            this._camera.position.copy(perspectiveNewPos);
-            this._camera.lookAt(newLookAt);
-            this._camera.updateProjectionMatrix();
-            this._orbitControls.target.set(newLookAt.x, newLookAt.y, newLookAt.z);
-        }
-    }
 };
 DataService = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* Injectable */])(),
@@ -3325,7 +3317,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 exports.push([module.i, "@import url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css);", ""]);
 
 // module
-exports.push([module.i, "@font-face {\n  font-family: \"FontAwesome\"; }\n\n.font-awesome-hand {\n  font-family: FontAwesome; }\n\n.font-awesome-hand::after {\n  font-family: FontAwesome; }\n\nhtml, body {\n  font-family: 'Open Sans', sans-serif;\n  text-align: justify;\n  margin: 0px;\n  padding: 0px; }\n\n#appdiv {\n  position: absolute;\n  width: 99%;\n  height: 98%;\n  background-color: white;\n  overflow: hidden; }\n\na {\n  text-decoration: none;\n  color: #fff;\n  text-transform: uppercase; }\n\n.toolbar {\n  background-color: #333; }\n\n.toolbar ul {\n  list-style: none;\n  overflow: hidden;\n  margin-bottom: 0px;\n  z-index: 1; }\n\n.toolbar div > ul > li {\n  display: inline-block;\n  float: left; }\n\n.toolbar div > ul > li:hover {\n  background-color: #fff; }\n\n.toolbar div > ul > li:hover a {\n  color: #333; }\n\n.toolbar div > ul > li > a {\n  font-size: 12px;\n  line-height: 20px;\n  display: block;\n  float: left;\n  padding: 0 16px; }\n\n/**\r\n * Carets\r\n */\n.toolbar div ul li i.icon-sort {\n  display: none; }\n\n.toolbar div ul li:hover i.icon-sort {\n  display: inline; }\n\n.toolbar div ul li:hover i.icon-caret-down {\n  display: none; }\n\n.toolbar .dropdown i {\n  margin: 0px; }\n\n.toolbar div > ul > li > a:hover {\n  background-color: #fff;\n  color: #333; }\n\n.dropdown {\n  float: left; }\n\n/**\r\n * Sub navigaton\r\n **/\n.sub {\n  min-width: 180px;\n  margin: 20px;\n  display: none;\n  position: absolute;\n  border-left: 1px solid #ebebeb;\n  border-right: 1px solid #ebebeb;\n  border-bottom: 1px solid #ebebeb; }\n\n.sub li a {\n  display: block;\n  background-color: #fff;\n  color: #333 !important;\n  border-left: 4px solid #fff;\n  padding: 4px 12px;\n  font-size: 12px;\n  line-height: 26px; }\n\n.sub li a:hover {\n  border-left: 4px solid #ff0000;\n  float: top; }\n\n.toolbar div > ul > li:hover .sub {\n  display: block; }\n\n.sub li a {\n  transition: all .5s linear;\n  overflow: hidden; }\n\n#toolwindow {\n  position: relative;\n  background-color: slategrey; }\n\n.sidebar {\n  position: absolute;\n  top: 0px;\n  right: 0px;\n  height: 100%; }\n\n.tool-form {\n  padding-top: 10px;\n  padding-left: 10px;\n  color: white; }\n\n.tool-form-heading {\n  border-bottom: 2px solid #ddd;\n  margin: 0px;\n  padding-bottom: 3px; }\n\n.tool-form label {\n  font-family: 'Open Sans', sans-serif;\n  font-size: 13px;\n  color: black;\n  display: block;\n  margin: 0px 0px 15px 0px; }\n\n.tool-form label > span {\n  width: 150px;\n  font-family: 'Open Sans', sans-serif;\n  font-size: 13px;\n  float: left;\n  padding-top: 4px;\n  padding-right: 5px; }\n\n.tool-form span.required {\n  color: red; }\n\n.tool-form .tel-number-field {\n  width: 30px;\n  text-align: center; }\n\n.tool-form input.input-field {\n  width: 30px; }\n\n.tool-form input.file-input-field {\n  border: 1px solid #ccc;\n  height: 20px;\n  display: inline-block;\n  padding: 6px 6px;\n  cursor: pointer;\n  background-color: #888888; }\n\n.tool-form input.input-field,\n.tool-form .tel-number-field,\n.tool-form .textarea-field,\n.tool-form .select-field {\n  height: 20px;\n  overflow: hidden;\n  width: 240px;\n  background-color: #888888;\n  border-radius: 5px;\n  color: #ffffff; }\n\n.tool-form .input-field:focus,\n.tool-form .tel-number-field:focus,\n.tool-form .textarea-field:focus,\n.tool-form .select-field:focus {\n  border: 1px solid #0C0; }\n\n.tool-form .textarea-field {\n  height: 100px;\n  width: 55%; }\n\n.tool-form input[type=submit],\n.tool-form input[type=button] {\n  height: 25px;\n  border: none;\n  padding: 2px 8px 2px 8px;\n  background: #444466;\n  color: #fff;\n  box-shadow: 1px 1px 4px #DADADA;\n  -moz-box-shadow: 1px 1px 4px #DADADA;\n  -webkit-box-shadow: 1px 1px 4px #DADADA;\n  border-radius: 3px;\n  -webkit-border-radius: 3px;\n  -moz-border-radius: 3px;\n  color: #ffffff; }\n\n.tool-form input[type=submit]:hover,\n.tool-form input[type=button]:hover {\n  background: #333377;\n  color: #fff; }\n\n.rightstyle {\n  width: 30px;\n  height: 100%;\n  float: right;\n  background: #FFFFFF;\n  background-repeat: repeat;\n  background-attachment: scroll;\n  overflow: auto; }\n\n.leftstyle {\n  background: #e6e6e6;\n  height: 100%; }\n\n.slider {\n  width: 0;\n  height: 0;\n  border-top: 30px solid transparent;\n  border-right: 10px solid black;\n  border-bottom: 30px solid transparent; }\n", ""]);
+exports.push([module.i, "@font-face {\n  font-family: \"FontAwesome\"; }\n\n.font-awesome-hand {\n  font-family: FontAwesome; }\n\n.font-awesome-hand::after {\n  font-family: FontAwesome; }\n\nhtml, body {\n  font-family: 'Open Sans', sans-serif;\n  text-align: justify;\n  margin: 0px;\n  padding: 0px; }\n\n#appdiv {\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  background-color: white;\n  overflow: hidden; }\n\na {\n  text-decoration: none;\n  color: #fff;\n  text-transform: uppercase; }\n\n.toolbar {\n  background-color: #333; }\n\n.toolbar ul {\n  list-style: none;\n  overflow: hidden;\n  margin-bottom: 0px;\n  z-index: 1; }\n\n.toolbar div > ul > li {\n  display: inline-block;\n  float: left; }\n\n.toolbar div > ul > li:hover {\n  background-color: #fff; }\n\n.toolbar div > ul > li:hover a {\n  color: #333; }\n\n.toolbar div > ul > li > a {\n  font-size: 12px;\n  line-height: 20px;\n  display: block;\n  float: left;\n  padding: 0 16px; }\n\n/**\r\n * Carets\r\n */\n.toolbar div ul li i.icon-sort {\n  display: none; }\n\n.toolbar div ul li:hover i.icon-sort {\n  display: inline; }\n\n.toolbar div ul li:hover i.icon-caret-down {\n  display: none; }\n\n.toolbar .dropdown i {\n  margin: 0px; }\n\n.toolbar div > ul > li > a:hover {\n  background-color: #fff;\n  color: #333; }\n\n.dropdown {\n  float: left; }\n\n/**\r\n * Sub navigaton\r\n **/\n.sub {\n  min-width: 180px;\n  margin: 20px;\n  display: none;\n  position: absolute;\n  border-left: 1px solid #ebebeb;\n  border-right: 1px solid #ebebeb;\n  border-bottom: 1px solid #ebebeb; }\n\n.sub li a {\n  display: block;\n  background-color: #fff;\n  color: #333 !important;\n  border-left: 4px solid #fff;\n  padding: 4px 12px;\n  font-size: 12px;\n  line-height: 26px; }\n\n.sub li a:hover {\n  border-left: 4px solid #ff0000;\n  float: top; }\n\n.toolbar div > ul > li:hover .sub {\n  display: block; }\n\n.sub li a {\n  transition: all .5s linear;\n  overflow: hidden; }\n\n#toolwindow {\n  position: relative;\n  background-color: slategrey; }\n\n.sidebar {\n  position: absolute;\n  top: 0px;\n  right: 0px;\n  height: 100%; }\n\n.tool-form {\n  padding-top: 10px;\n  padding-left: 10px;\n  color: white; }\n\n.tool-form-heading {\n  border-bottom: 2px solid #ddd;\n  margin: 0px;\n  padding-bottom: 3px; }\n\n.tool-form label {\n  font-family: 'Open Sans', sans-serif;\n  font-size: 13px;\n  color: black;\n  display: block;\n  margin: 0px 0px 15px 0px; }\n\n.tool-form label > span {\n  width: 150px;\n  font-family: 'Open Sans', sans-serif;\n  font-size: 13px;\n  float: left;\n  padding-top: 4px;\n  padding-right: 5px; }\n\n.tool-form span.required {\n  color: red; }\n\n.tool-form .tel-number-field {\n  width: 30px;\n  text-align: center; }\n\n.tool-form input.input-field {\n  width: 30px; }\n\n.tool-form input.file-input-field {\n  border: 1px solid #ccc;\n  height: 20px;\n  display: inline-block;\n  padding: 6px 6px;\n  cursor: pointer;\n  background-color: #888888; }\n\n.tool-form input.input-field,\n.tool-form .tel-number-field,\n.tool-form .textarea-field,\n.tool-form .select-field {\n  height: 20px;\n  overflow: hidden;\n  width: 240px;\n  background-color: #888888;\n  border-radius: 5px;\n  color: #ffffff; }\n\n.tool-form .input-field:focus,\n.tool-form .tel-number-field:focus,\n.tool-form .textarea-field:focus,\n.tool-form .select-field:focus {\n  border: 1px solid #0C0; }\n\n.tool-form .textarea-field {\n  height: 100px;\n  width: 55%; }\n\n.tool-form input[type=submit],\n.tool-form input[type=button] {\n  height: 25px;\n  border: none;\n  padding: 2px 8px 2px 8px;\n  background: #444466;\n  color: #fff;\n  box-shadow: 1px 1px 4px #DADADA;\n  -moz-box-shadow: 1px 1px 4px #DADADA;\n  -webkit-box-shadow: 1px 1px 4px #DADADA;\n  border-radius: 3px;\n  -webkit-border-radius: 3px;\n  -moz-border-radius: 3px;\n  color: #ffffff; }\n\n.tool-form input[type=submit]:hover,\n.tool-form input[type=button]:hover {\n  background: #333377;\n  color: #fff; }\n\n.rightstyle {\n  width: 30px;\n  height: 100%;\n  float: right;\n  background: #FFFFFF;\n  background-repeat: repeat;\n  background-attachment: scroll;\n  overflow: auto; }\n\n.leftstyle {\n  background: #e6e6e6;\n  height: 100%; }\n\n.slider {\n  width: 0;\n  height: 0;\n  border-top: 30px solid transparent;\n  border-right: 10px solid black;\n  border-bottom: 30px solid transparent; }\n", ""]);
 
 // exports
 
@@ -3559,33 +3551,26 @@ let SettingComponent = class SettingComponent {
     }
     changegrid() {
         this.gridVisible = !this.gridVisible;
-        var maxX = 4;
-        var maxY = 4;
-        /*for(var j=0;j<this.scene.children.length;j++){
-          if(this.scene.children[j].type==="Scene"){
-            for(var i=0;i<this.scene.children[j].children.length;i++){
-              maxX=Math.max(maxX,Math.abs(this.scene.children[j].children[i].children[0]["geometry"].boundingBox.max.x));
-              maxY=Math.max(maxY,Math.abs(this.scene.children[j].children[i].children[0]["geometry"].boundingBox.max.y));
-            }
-          }
-        }*/
+        var max = 8;
+        var center = new __WEBPACK_IMPORTED_MODULE_0_three__["Vector3"](0, 0, 0);
         for (var i = 0; i < this.scene.children.length; i++) {
             if (this.scene.children[i].type === "Scene") {
                 for (var j = 0; j < this.scene.children[i].children.length; j++) {
                     if (this.scene.children[i].children[j]["geometry"].boundingSphere.radius !== 0) {
-                        maxX = Math.max(maxX, Math.abs(this.scene.children[i].children[j]["geometry"].boundingBox.max.x));
-                        maxY = Math.max(maxY, Math.abs(this.scene.children[i].children[j]["geometry"].boundingBox.max.y));
+                        center = this.scene.children[i].children[j]["geometry"].boundingSphere.center;
+                        var radius = this.scene.children[i].children[j]["geometry"].boundingSphere.radius;
+                        max = Math.ceil(radius + Math.max(Math.abs(center.x), Math.abs(center.y), Math.abs(center.z)) * 1.2);
                         break;
                     }
                 }
             }
         }
-        var max = Math.ceil(Math.max(maxX, maxY) * 1.3) * 2;
         if (this.gridVisible) {
             var gridhelper = new __WEBPACK_IMPORTED_MODULE_0_three__["GridHelper"](max, max);
             gridhelper.name = "GridHelper";
             var vector = new __WEBPACK_IMPORTED_MODULE_0_three__["Vector3"](0, 1, 0);
             gridhelper.lookAt(vector);
+            gridhelper.position.set(center.x, center.y, 0);
             this.scene.add(gridhelper);
         }
         else {
@@ -3595,22 +3580,20 @@ let SettingComponent = class SettingComponent {
     }
     changeaxis() {
         this.axisVisible = !this.axisVisible;
-        var maxX = 4;
-        var maxY = 4;
-        var maxZ = 4;
+        var max = 8;
+        var center = new __WEBPACK_IMPORTED_MODULE_0_three__["Vector3"](0, 0, 0);
         for (var i = 0; i < this.scene.children.length; i++) {
             if (this.scene.children[i].type === "Scene") {
                 for (var j = 0; j < this.scene.children[i].children.length; j++) {
                     if (this.scene.children[i].children[j]["geometry"].boundingSphere.radius !== 0) {
-                        maxX = Math.max(maxX, Math.abs(this.scene.children[i].children[j]["geometry"].boundingBox.max.x));
-                        maxY = Math.max(maxY, Math.abs(this.scene.children[i].children[j]["geometry"].boundingBox.max.y));
-                        maxZ = Math.max(maxZ, Math.abs(this.scene.children[i].children[j]["geometry"].boundingBox.max.z));
+                        center = this.scene.children[i].children[j]["geometry"].boundingSphere.center;
+                        var radius = this.scene.children[i].children[j]["geometry"].boundingSphere.radius;
+                        max = radius;
                         break;
                     }
                 }
             }
         }
-        var max = Math.ceil(Math.max(maxX, maxY, maxZ) * 1.2);
         if (this.axisVisible) {
             var axishelper = new __WEBPACK_IMPORTED_MODULE_0_three__["AxisHelper"](max);
             axishelper.name = "AxisHelper";
@@ -3769,7 +3752,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "#toolwindow{\r\n  background-color:white;\r\n}\r\n#toolbar{\r\n  background-color: #E6E6E6;\r\n  height: 28px;\r\n}\r\n#point{\r\n  margin-left:25px;\r\n  font-size:20px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n#vertice{\r\n  font-size:22px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n#edge{\r\n  font-size:22px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n#wire{\r\n  font-size:22px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n#face{\r\n  font-size:22px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n#object{\r\n  font-size:20px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n#selected{\r\n  margin-left:30px;\r\n}\r\n.visible{\r\n  color: grey;\r\n}\r\n.selectvisible{\r\n  color: grey;\r\n}\r\n#table{\r\n  width:100% ;\r\n  height: 15px;\r\n}\r\n#tablename{\r\n  width:100% ;\r\n  height: 15px;\r\n  color:grey;\r\n}\r\n#numberbutton{\r\n  width:100%;\r\n  border:0;\r\n}\r\n.selectid{\r\n  background-color:#66CCFF;\r\n}\r\n#select{\r\n  position: relative;\r\n  float:right;\r\n  margin-right: 30px;\r\n}", ""]);
+exports.push([module.i, "#toolwindow{\r\n  background-color:white;\r\n}\r\n#toolbar{\r\n  background-color: #E6E6E6;\r\n  height: 28px;\r\n}\r\n#point{\r\n  margin-left:25px;\r\n  font-size:20px;\r\n  background:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n#vertice{\r\n  font-size:22px;\r\n  background-color:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n#edge{\r\n  font-size:22px;\r\n  background-color:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n#wire{\r\n  font-size:22px;\r\n  background-color:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n#face{\r\n  font-size:22px;\r\n  background-color:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n#object{\r\n  font-size:20px;\r\n  background-color:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n#selected{\r\n  margin-left:30px;\r\n}\r\n.visible{\r\n  background-color: white !important;\r\n  color:#395d73;\r\n}\r\n.selectvisible{\r\n  background-color:  white !important;\r\n  color:#395d73;\r\n}\r\n#table{\r\n  width:100% ;\r\n  height: 15px;\r\n}\r\n#tablename{\r\n  width:100% ;\r\n  height: 15px;\r\n  color:grey;\r\n}\r\n#numberbutton{\r\n  width:100%;\r\n  border:0;\r\n}\r\n/*.selectid{\r\n  background-color:#66CCFF;\r\n}*/\r\n#select{\r\n  position: relative;\r\n  float:right;\r\n  margin-right: 30px;\r\n}", ""]);
 
 // exports
 
@@ -3782,7 +3765,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/gs-viewer/toolwindow/toolwindow.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"toolwindow\">\r\n  <div id=\"toolbar\">\r\n    <button id=\"point\" [class.visible]=\"Visible === 'Points'\" (click)=\"point(Visible)\"><i class=\"fa fa-dot-circle-o\"></i></button>\r\n    <button id=\"vertice\" [class.visible]=\"Visible === 'Vertices'\" (click)=\"vertice(Visible)\">V</button>\r\n    <button id=\"edge\" [class.visible]=\"Visible === 'Edges'\" (click)=\"edge(Visible)\">E</button>\r\n    <button id=\"wire\" [class.visible]=\"Visible === 'Wires'\" (click)=\"wire(Visible)\">W</button>\r\n    <button id=\"face\" [class.visible]=\"Visible === 'Faces'\" (click)=\"face(Visible)\">F</button>\r\n    <button id=\"object\" [class.visible]=\"Visible === 'Objs'\" (click)=\"object(Visible)\"><i class=\"fa fa-map\"></i></button>\r\n    <input id=\"selected\" type=\"checkbox\" (click)=\"changeselected()\">\r\n    <label id=\"selectedname\" value=\"selected\">Show selected only</label>\r\n    <div id=\"select\">\r\n      <button id=\"vertice\" [class.selectvisible]=\"SelectVisible === 'Vertices'\" (click)=\"verticeselect(SelectVisible)\">V</button>\r\n      <button id=\"edge\" [class.selectvisible]=\"SelectVisible === 'Edges'\" (click)=\"edgeselect(SelectVisible)\">E</button>\r\n      <button id=\"wire\" [class.selectvisible]=\"SelectVisible === 'Wires'\" (click)=\"wireselect(SelectVisible)\">W</button>\r\n      <button id=\"face\" [class.selectvisible]=\"SelectVisible === 'Faces'\" (click)=\"faceselect(SelectVisible)\">F</button>\r\n    </div>\r\n  </div>\r\n  <div id=\"toolview\">\r\n    <div *ngIf=\"Visible === 'Points'\">\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\" id=\"table\" name=\"table\" bordercolor=\"#d0d0d0\">\r\n        <tr>\r\n          <td name=\"Number\" align=center width=\"40%\" align=center>ID</td>\r\n          <td width=\"20%\" align=center>X</td>\r\n          <td width=\"20%\" align=center>Y</td>\r\n          <td width=\"20%\" align=center>Z</td>\r\n        </tr>\r\n      </table>\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\" id=\"tablename\" name=\"table\" bordercolor=\"#d0d0d0\" *ngFor=\"let datascale of attribute; \">\r\n        <tr>\r\n          <button id=\"numberbutton\">{{datascale.id}}</button>\r\n          <td width=\"20%\" align=center>{{datascale.x}}</td>\r\n          <td width=\"20%\" align=center>{{datascale.y}}</td>\r\n          <td width=\"20%\" align=center>{{datascale.z}}</td>\r\n        </tr>\r\n      </table>\r\n    </div>\r\n    <div *ngIf=\"Visible === 'Vertices'\">\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\" bordercolor=\"#d0d0d0\" width=\"50%\">\r\n        <tr>\r\n          <td  align=center width=\"25%\">Vertices Lable</td>\r\n          <td  align=center width=\"25%\">Points ID</td>\r\n        </tr>\r\n      </table>\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\" bordercolor=\"#d0d0d0\" *ngFor=\"let datascale of attribute\" width=\"50%\">\r\n        <tr>\r\n          <button id=\"numberbutton\" [class.selectid]=\"ID == datascale.id\" (click)=clicktoshow(datascale.id)>{{datascale.id}}</button>\r\n          <td  align=center  width=\"50%\">{{datascale.pointid}}</td>\r\n        </tr>\r\n      </table>\r\n    </div>\r\n    <div *ngIf=\"Visible === 'Edges'\">\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" width=\"40%\">\r\n        <tr>\r\n          <td  align=center>Edge ID</td>\r\n        </tr>\r\n      </table>\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" *ngFor=\"let datascale of attribute\" width=\"40%\">\r\n        <tr>\r\n          <!-- <button id=\"numberbutton\"[class.selectid]=\"ID == datascale.id\" (click)=clicktoshow(datascale.id) >{{datascale.id}}</button> -->\r\n          <button id=\"numberbutton\">{{datascale}}</button>\r\n        </tr>\r\n      </table>\r\n    </div>\r\n    <div *ngIf=\"Visible === 'Wires'\">\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" width=\"40%\">\r\n        <tr>\r\n          <td  align=center>Wire ID</td>\r\n        </tr>\r\n      </table>\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" *ngFor=\"let datascale of attribute\" width=\"40%\">\r\n        <tr>\r\n          <button id=\"numberbutton\" >{{datascale}}</button>\r\n        </tr>\r\n      </table>\r\n    </div>\r\n    <div *ngIf=\"Visible === 'Faces'\">\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" width=\"40%\">\r\n        <tr>\r\n          <td  align=center>Face ID</td>\r\n        </tr>\r\n      </table>\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" *ngFor=\"let datascale of attribute\" width=\"40%\">\r\n        <tr>\r\n          <button id=\"numberbutton\" >{{datascale}}</button>\r\n        </tr>\r\n      </table>\r\n    </div>\r\n    <div *ngIf=\"Visible === 'Objs'\">\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" width=\"40%\">\r\n        <tr>\r\n          <td name=\"Number\" align=center  align=center>Object ID</td>\r\n        </tr>\r\n      </table>\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" *ngFor=\"let datascale of attribute \" width=\"40%\">\r\n        <tr>\r\n          <button  id=\"numberbutton\"  >{{datascale}}</button>\r\n        </tr>\r\n      </table>\r\n    </div>\r\n  </div>\r\n"
+module.exports = "<div id=\"toolwindow\">\r\n  <div id=\"toolbar\">\r\n    <button id=\"point\" [class.visible]=\"Visible === 'Points'\" (click)=\"point(Visible)\">P</button>\r\n    <button id=\"vertice\" [class.visible]=\"Visible === 'Vertices'\" (click)=\"vertice(Visible)\">V</button>\r\n    <button id=\"edge\" [class.visible]=\"Visible === 'Edges'\" (click)=\"edge(Visible)\">E</button>\r\n    <button id=\"wire\" [class.visible]=\"Visible === 'Wires'\" (click)=\"wire(Visible)\">W</button>\r\n    <button id=\"face\" [class.visible]=\"Visible === 'Faces'\" (click)=\"face(Visible)\">F</button>\r\n    <button id=\"object\" [class.visible]=\"Visible === 'Objs'\" (click)=\"object(Visible)\">O</button>\r\n    <input id=\"selected\" type=\"checkbox\" (click)=\"changeselected()\">\r\n    <label id=\"selectedname\" value=\"selected\">Show selected only</label>\r\n    <!-- <div id=\"select\">\r\n      <button id=\"vertice\" [class.selectvisible]=\"SelectVisible === 'Vertices'\" (click)=\"verticeselect(SelectVisible)\">V</button>\r\n      <button id=\"edge\" [class.selectvisible]=\"SelectVisible === 'Edges'\" (click)=\"edgeselect(SelectVisible)\">E</button>\r\n      <button id=\"wire\" [class.selectvisible]=\"SelectVisible === 'Wires'\" (click)=\"wireselect(SelectVisible)\">W</button>\r\n      <button id=\"face\" [class.selectvisible]=\"SelectVisible === 'Faces'\" (click)=\"faceselect(SelectVisible)\">F</button>\r\n      <button id=\"object\" [class.selectvisible]=\"SelectVisible === 'Objs'\" (click)=\"objectselect(SelectVisible)\"><i class=\"fa fa-map\"></i></button>\r\n    </div> -->\r\n  </div>\r\n  <div id=\"toolview\">\r\n    <div *ngIf=\"Visible === 'Points'\">\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\" id=\"table\" name=\"table\" bordercolor=\"#d0d0d0\">\r\n        <tr>\r\n          <td name=\"Number\" align=center width=\"40%\" align=center>ID</td>\r\n          <td width=\"20%\" align=center>X</td>\r\n          <td width=\"20%\" align=center>Y</td>\r\n          <td width=\"20%\" align=center>Z</td>\r\n        </tr>\r\n      </table>\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\" id=\"tablename\" name=\"table\" bordercolor=\"#d0d0d0\" *ngFor=\"let datascale of attribute; \">\r\n        <tr>\r\n          <button id=\"numberbutton\">{{datascale.id}}</button>\r\n          <td width=\"20%\" align=center>{{datascale.x}}</td>\r\n          <td width=\"20%\" align=center>{{datascale.y}}</td>\r\n          <td width=\"20%\" align=center>{{datascale.z}}</td>\r\n        </tr>\r\n      </table>\r\n    </div>\r\n    <div *ngIf=\"Visible === 'Vertices'\">\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\" bordercolor=\"#d0d0d0\" width=\"50%\">\r\n        <tr>\r\n          <td  align=center width=\"25%\">Vertices Label</td>\r\n          <td  align=center width=\"25%\">Points ID</td>\r\n        </tr>\r\n      </table>\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\" bordercolor=\"#d0d0d0\" *ngFor=\"let datascale of attribute\" width=\"50%\">\r\n        <tr>\r\n          <!-- <button id=\"numberbutton\" [class.selectid]=\"ID == datascale.id\" (click)=clicktoshow(datascale.id)>{{datascale.vertixlabel}}</button> -->\r\n          <button id=\"numberbutton\">{{datascale.vertixlabel}}</button>\r\n          <td  align=center  width=\"50%\">{{datascale.pointid}}</td>\r\n        </tr>\r\n      </table>\r\n    </div>\r\n    <div *ngIf=\"Visible === 'Edges'\">\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" width=\"40%\">\r\n        <tr>\r\n          <td  align=center>Edge ID</td>\r\n        </tr>\r\n      </table>\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" *ngFor=\"let datascale of attribute\" width=\"40%\">\r\n        <tr>\r\n          <!-- <button id=\"numberbutton\"[class.selectid]=\"ID == datascale.id\" (click)=clicktoshow(datascale.id) >{{datascale.id}}</button> -->\r\n          <button id=\"numberbutton\">{{datascale}}</button>\r\n        </tr>\r\n      </table>\r\n    </div>\r\n    <div *ngIf=\"Visible === 'Wires'\">\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" width=\"40%\">\r\n        <tr>\r\n          <td  align=center>Wire ID</td>\r\n        </tr>\r\n      </table>\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" *ngFor=\"let datascale of attribute\" width=\"40%\">\r\n        <tr>\r\n          <button id=\"numberbutton\" >{{datascale}}</button>\r\n        </tr>\r\n      </table>\r\n    </div>\r\n    <div *ngIf=\"Visible === 'Faces'\">\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" width=\"40%\">\r\n        <tr>\r\n          <td  align=center>Face ID</td>\r\n        </tr>\r\n      </table>\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" *ngFor=\"let datascale of attribute\" width=\"40%\">\r\n        <tr>\r\n          <button id=\"numberbutton\" >{{datascale}}</button>\r\n        </tr>\r\n      </table>\r\n    </div>\r\n    <div *ngIf=\"Visible === 'Objs'\">\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" width=\"40%\">\r\n        <tr>\r\n          <td name=\"Number\" align=center  align=center>Object ID</td>\r\n        </tr>\r\n      </table>\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" *ngFor=\"let datascale of attribute \" width=\"40%\">\r\n        <tr>\r\n          <button  id=\"numberbutton\"  >{{datascale}}</button>\r\n        </tr>\r\n      </table>\r\n    </div>\r\n  </div>\r\n"
 
 /***/ }),
 
@@ -3819,12 +3802,11 @@ let ToolwindowComponent = class ToolwindowComponent extends __WEBPACK_IMPORTED_M
     }
     ngOnInit() {
         this.model = this.dataService.getGsModel();
-        this.object(this.Visible);
         this.Visible = this.dataService.visible;
-        this.scene_and_maps = this.dataService.updateModel();
-        this.getoject();
-        this.getcolor();
-        this.faceselect(this.SelectVisible);
+        this.scene_and_maps = this.dataService.getscememaps();
+        this.object(this.Visible);
+        //this.objectselect(this.SelectVisible);
+        this.getvertices();
     }
     notify() {
         this.selectObj = [];
@@ -3850,79 +3832,66 @@ let ToolwindowComponent = class ToolwindowComponent extends __WEBPACK_IMPORTED_M
                 this.verticecheck();
         }
         this.dataService.visible = this.Visible;
-        ;
     }
-    getvertice() {
-        var attributeedge = [];
-        for (var i = 0; i < this.scene_and_maps.faces_map.size; i++) {
-            const face = this.model.getGeom().getTopo(this.scene_and_maps.faces_map.get(i));
-            const verts = face.getVertices();
-            const verts_xyz = verts.map((v) => v.getPoint().getPosition());
-            console.log(verts_xyz);
+    getvertices() {
+        var attributevertix = [];
+        var points = this.getpoints();
+        for (var i = 0; i < this.scene_and_maps.vertices_map.size; i++) {
+            const path = this.scene_and_maps.vertices_map.get(i);
+            const vertices = this.model.getGeom().getTopo(path);
+            const label = vertices.getLabel();
+            const verts_xyz = vertices.getLabelCentroid();
+            var attributes = [];
+            for (var j = 0; j < points.length; j++) {
+                if (points[j].x === verts_xyz[0] && points[j].y === verts_xyz[1] && points[j].z === verts_xyz[2]) {
+                    attributes.pointid = points[j].id;
+                }
+            }
+            attributes.vertixlabel = label;
+            attributevertix.push(attributes);
         }
+        this.dataService.addattrvertix(attributevertix);
+        return attributevertix;
     }
     getedges() {
         var attributeedge = [];
         for (var i = 0; i < this.scene_and_maps.edges_map.size; i++) {
-            var attribute = [];
-            attribute = this.scene_and_maps.edges_map.get(i);
-            if (attribute["tt"] != undefined) {
-                if (attribute["tt"] == 1) {
-                    var edge = "o" + attribute["id"] + ":" + "f" + attribute["ti"] + ":" + "e" + attribute["si"];
-                    attributeedge.push(edge);
-                }
-            }
+            const path = this.scene_and_maps.edges_map.get(i);
+            const edge = this.model.getGeom().getTopo(path);
+            const label = edge.getLabel();
+            attributeedge.push(label);
         }
         return attributeedge;
     }
     getwires() {
         var attributewire = [];
         for (var i = 0; i < this.scene_and_maps.wires_map.size; i++) {
-            var attribute = [];
-            attribute = this.scene_and_maps.wires_map.get(i);
-            if (attribute["tt"] != undefined) {
-                if (attribute["tt"] == 0) {
-                    var edge = "o" + attribute["id"] + ":" + "w" + attribute["ti"];
-                    attributewire.push(edge);
-                }
-            }
+            const path = this.scene_and_maps.wires_map.get(i);
+            const wire = this.model.getGeom().getTopo(path);
+            const label = wire.getLabel();
+            attributewire.push(label);
         }
         return attributewire;
     }
     getfaces() {
         var attributeface = [];
         for (var i = 0; i < this.scene_and_maps.faces_map.size; i++) {
-            var attribute = [];
-            attribute = this.scene_and_maps.faces_map.get(i);
-            if (attribute["tt"] != undefined) {
-                if (attribute["tt"] == 1) {
-                    var edge = "o" + attribute["id"] + ":" + "f" + attribute["ti"];
-                    attributeface.push(edge);
-                }
-            }
+            const path = this.scene_and_maps.faces_map.get(i);
+            const face = this.model.getGeom().getTopo(path);
+            const label = face.getLabel();
+            attributeface.push(label);
         }
         return attributeface;
     }
     getoject() {
         var attributeobject = [];
-        var objectlable = [];
-        /*for(var i =0;i<this.scene_and_maps.faces_map.size;i++){
-          var attribute:any=[]
-          attribute=this.scene_and_maps.faces_map.get(i);
-          if(attribute["id"]!=undefined){
-            if(objectlable.length!=0){
-              for(var j=0;j<objectlable.length;j++){
-                if(objectlable[j]!=attribute["id"]){
-                  objectlable.push(attribute["id"]);
-                }
-              }
-            }else{objectlable.push(attribute["id"]);}
-          }
+        for (var i = 0; i < this.scene_and_maps.faces_map.size; i++) {
+            const path = this.scene_and_maps.faces_map.get(i);
+            if (i === 0 || path.id !== this.scene_and_maps.faces_map.get(i - 1).id) {
+                const label = "o" + path.id;
+                attributeobject.push(label);
+            }
         }
-        for(var n=0;n<objectlable.length;n++){
-          var object:string="o"+objectlable[n];
-          attributeobject.push(object);
-        }*/
         return attributeobject;
     }
     getchildren() {
@@ -3938,100 +3907,123 @@ let ToolwindowComponent = class ToolwindowComponent extends __WEBPACK_IMPORTED_M
         }
         return children;
     }
-    getcolor() {
-        var children = this.getchildren();
-        for (var i = 0; i < children.length; i++) {
-            if (children[i].name === "All faces") {
-                this.FaceColor = children[i]["material"].color;
-            }
-            if (children[i].name === "All wires") {
-                this.WireColor = children[i]["material"].color;
-            }
-            if (children[i].name === "All edges") {
-                this.EdgeColor = children[i]["material"].color;
-            }
+    /*objectselect(SelectVisible){
+      this.SelectVisible="Objs";
+      this.object(this.Visible);
+      document.getElementById("object").style.color=null;
+      document.getElementById("face").style.color=null;
+      document.getElementById("wire").style.color=null;
+      document.getElementById("edge").style.color=null;
+      document.getElementById("vertice").style.color=null;
+      var scenechildren=[];
+      var children=this.getchildren();
+      for(var i=0;i<children.length;i++){
+        if(children[i].name==="All wires") children[i]["material"].opacity=0;
+        if(children[i].name==="All edges") children[i]["material"].opacity=0;
+        if(children[i].name==="All vertices") children[i]["material"].opacity=0;
+        if(children[i].name==="All objs"||children[i].name==="All faces"){
+          children[i]["material"].opacity=0.8;
+          children[i].name="All objs";
+          scenechildren.push(children[i]);
         }
+      }
+      this.dataService.addscenechild(scenechildren);
     }
-    faceselect(SelectVisible) {
-        this.SelectVisible = "Faces";
-        var scenechildren = [];
-        var children = this.getchildren();
-        for (var i = 0; i < children.length; i++) {
-            if (children[i].name === "All wires")
-                children[i]["material"].opacity = 0;
-            if (children[i].name === "All edges")
-                children[i]["material"].opacity = 0;
-            if (children[i].name === "All points")
-                children[i]["material"].opacity = 0;
-            if (children[i].name === "All faces") {
-                children[i]["material"].opacity = 0.8;
-                scenechildren.push(children[i]);
-            }
+  
+    faceselect(SelectVisible){
+      this.SelectVisible="Faces";
+      this.face(this.Visible);
+      document.getElementById("object").style.color="grey";
+      document.getElementById("face").style.color=null;
+      document.getElementById("wire").style.color=null;
+      document.getElementById("edge").style.color=null;
+      document.getElementById("vertice").style.color=null;
+      var scenechildren=[];
+      var children=this.getchildren();
+      for(var i=0;i<children.length;i++){
+        if(children[i].name==="All wires") children[i]["material"].opacity=0.1;
+        if(children[i].name==="All edges") children[i]["material"].opacity=0.1;
+        if(children[i].name==="All vertices") children[i]["material"].opacity=0.1;
+        if(children[i].name==="All objs"||children[i].name==="All faces"){
+          children[i]["material"].opacity=0.8;
+          children[i].name="All faces";
+          scenechildren.push(children[i]);
         }
-        this.dataService.addscenechild(scenechildren);
+      }
+      this.dataService.addscenechild(scenechildren);
     }
-    wireselect(SelectVisible) {
-        this.SelectVisible = "Wires";
-        var scenechildren = [];
-        var children = this.getchildren();
-        for (var i = 0; i < children.length; i++) {
-            if (children[i].name == "All faces")
-                children[i]["material"].opacity = 0.1;
-            if (children[i].name === "All edges")
-                children[i]["material"].opacity = 0;
-            if (children[i].name === "All points")
-                children[i]["material"].opacity = 0;
-            if (children[i].name === "All wires") {
-                children[i]["material"].opacity = 0.6;
-                scenechildren.push(children[i]);
-            }
+  
+    wireselect(SelectVisible){
+      this.SelectVisible="Wires";
+      this.wire(this.Visible);
+      document.getElementById("object").style.color="grey";
+      document.getElementById("face").style.color="grey";
+      document.getElementById("wire").style.color=null;
+      document.getElementById("edge").style.color=null;
+      document.getElementById("vertice").style.color=null;
+      var scenechildren=[];
+      var children=this.getchildren();
+      for(var i=0;i<children.length;i++){
+        if(children[i].name==="All objs"||children[i].name==="All faces") children[i]["material"].opacity=0.1;
+        if(children[i].name==="All edges") children[i]["material"].opacity=0.1;
+        if(children[i].name==="All vertices") children[i]["material"].opacity=0.1;
+        if(children[i].name==="All wires"){
+          children[i]["material"].opacity=0.6;
+          scenechildren.push(children[i]);
         }
-        this.dataService.addscenechild(scenechildren);
+      }
+      this.dataService.addscenechild(scenechildren);
     }
-    edgeselect(SelectVisible) {
-        this.SelectVisible = "Edges";
-        var scenechildren = [];
-        var children = this.getchildren();
-        for (var i = 0; i < children.length; i++) {
-            if (children[i].name == "All faces")
-                children[i]["material"].opacity = 0.1;
-            if (children[i].name === "All wires")
-                children[i]["material"].opacity = 0;
-            if (children[i].name === "All points")
-                children[i]["material"].opacity = 0;
-            if (children[i].name === "All edges") {
-                children[i]["material"].opacity = 0.4;
-                scenechildren.push(children[i]);
-            }
+    edgeselect(SelectVisible){
+      this.SelectVisible="Edges";
+      this.edge(this.Visible);
+      document.getElementById("object").style.color="grey";
+      document.getElementById("face").style.color="grey";
+      document.getElementById("wire").style.color="grey";
+      document.getElementById("edge").style.color=null;
+      document.getElementById("vertice").style.color=null;
+      var scenechildren=[];
+      var children=this.getchildren();
+      for(var i=0;i<children.length;i++){
+        if(children[i].name==="All objs"||children[i].name==="All faces") children[i]["material"].opacity=0.1;
+        if(children[i].name==="All wires") children[i]["material"].opacity=0.1;
+        if(children[i].name==="All vertices") children[i]["material"].opacity=0.1;
+        if(children[i].name==="All edges"){
+          children[i]["material"].opacity=0.4;
+          scenechildren.push(children[i]);
         }
-        this.dataService.addscenechild(scenechildren);
+      }
+      this.dataService.addscenechild(scenechildren);
     }
-    verticeselect(SelectVisible) {
-        this.SelectVisible = "Vertices";
-        var scenechildren = [];
-        var children = this.getchildren();
-        for (var i = 0; i < children.length; i++) {
-            if (children[i].name == "All faces")
-                children[i]["material"].opacity = 0.1;
-            if (children[i].name === "All wires")
-                children[i]["material"].opacity = 0;
-            if (children[i].name === "All edges")
-                children[i]["material"].opacity = 0;
-            if (children[i].name === "All points") {
-                children[i]["material"].opacity = 1;
-                scenechildren.push(children[i]);
-            }
+  
+    verticeselect(SelectVisible){
+      this.SelectVisible="Vertices";
+      this.vertice(this.Visible);
+      document.getElementById("object").style.color="grey";
+      document.getElementById("face").style.color="grey";
+      document.getElementById("wire").style.color="grey";
+      document.getElementById("edge").style.color="grey";
+      document.getElementById("vertice").style.color=null;
+      var scenechildren=[];
+      var children=this.getchildren();
+      for(var i=0;i<children.length;i++){
+        console.log(children);
+        if(children[i].name==="All objs"||children[i].name==="All faces") children[i]["material"].opacity=0.1;
+        if(children[i].name==="All wires") children[i]["material"].opacity=0.1;
+        if(children[i].name==="All edges") children[i]["material"].opacity=0.1;
+        if(children[i].name==="All vertices"){
+          children[i]["material"].opacity=1;
+          scenechildren.push(children[i]);
         }
-        this.dataService.addscenechild(scenechildren);
-    }
+      }
+      this.dataService.addscenechild(scenechildren);
+    }*/
     getscenechildren() {
         var scenechildren = [];
         for (var n = 0; n < this.scene.children.length; n++) {
             if (this.scene.children[n].type === "Scene") {
                 for (var i = 0; i < this.scene.children[n].children.length; i++) {
-                    //for(var j=0;j<this.scene.children[n].children[i].children.length;j++){
                     scenechildren.push(this.scene.children[n].children[i]);
-                    //}
                 }
             }
         }
@@ -4049,34 +4041,13 @@ let ToolwindowComponent = class ToolwindowComponent extends __WEBPACK_IMPORTED_M
         var attrubtepoints = [];
         for (var i = 0; i < this.model.getGeom().getAllPoints().length; i++) {
             var attributepoint = [];
-            attributepoint.id = this.model.getGeom().getAllPoints()[i].getID();
+            attributepoint.id = this.model.getGeom().getAllPoints()[i].getLabel();
             attributepoint.x = this.model.getGeom().getAllPoints()[i].getPosition()[0];
             attributepoint.y = this.model.getGeom().getAllPoints()[i].getPosition()[1];
             attributepoint.z = this.model.getGeom().getAllPoints()[i].getPosition()[2];
             attrubtepoints.push(attributepoint);
         }
         return attrubtepoints;
-    }
-    getvertices() {
-        var points = this.getpoints();
-        var attributes = [];
-        for (var i = 0; i < this.scenechildren.length; i++) {
-            if (this.scenechildren[i].name === "All points") {
-                for (var j = 0; j < this.scenechildren[i].children.length; j++) {
-                    for (var n = 0; n < points.length; n++) {
-                        if (points[n].x === this.scenechildren[i].children[j].position.x &&
-                            points[n].y === this.scenechildren[i].children[j].position.y &&
-                            points[n].z === this.scenechildren[i].children[j].position.z) {
-                            var attributevertice = [];
-                            attributevertice.id = this.scenechildren[i].children[j].name;
-                            attributevertice.pointid = points[n].id;
-                            attributes.push(attributevertice);
-                        }
-                    }
-                }
-            }
-        }
-        return attributes;
     }
     getverticescheck() {
         var points = this.getpoints();
@@ -4128,16 +4099,6 @@ let ToolwindowComponent = class ToolwindowComponent extends __WEBPACK_IMPORTED_M
     edge(Visible) {
         this.Visible = "Edges";
         this.attribute = [];
-        /*this.scenechildren=this.getscenechildren();
-        for(var i=0;i<this.scenechildren.length;i++){
-          if(this.scenechildren[i].name==="Edges"){
-            for(var j=0;j<this.scenechildren[i].children.length;j++){
-              var attributeface:any=[];
-              attributeface.id=this.scenechildren[i].children[j].name;
-              this.attribute.push(attributeface);
-            }
-          }
-        }*/
         this.attribute = this.getedges();
         if (this.selectedVisible == true) {
             this.edgecheck();
@@ -4163,16 +4124,6 @@ let ToolwindowComponent = class ToolwindowComponent extends __WEBPACK_IMPORTED_M
     wire(Visible) {
         this.Visible = "Wires";
         this.attribute = [];
-        /*this.scenechildren=this.getscenechildren();
-        for(var i=0;i<this.scenechildren.length;i++){
-          if(this.scenechildren[i].name==="Wires"){
-            for(var j=0;j<this.scenechildren[i].children.length;j++){
-              var attributeface:any=[];
-              attributeface.id=this.scenechildren[i].children[j].name;
-              this.attribute.push(attributeface);
-            }
-          }
-        }*/
         this.attribute = this.getwires();
         if (this.selectedVisible == true) {
             this.wirecheck();
@@ -4197,16 +4148,6 @@ let ToolwindowComponent = class ToolwindowComponent extends __WEBPACK_IMPORTED_M
     face(Visible) {
         this.Visible = "Faces";
         this.attribute = [];
-        /*this.scenechildren=this.getscenechildren();
-        for(var i=0;i<this.scenechildren.length;i++){
-          if(this.scenechildren[i].name==="Faces"){
-            for(var j=0;j<this.scenechildren[i].children.length;j++){
-              var attributeface:any=[];
-              attributeface.id=this.scenechildren[i].children[j].name;
-              this.attribute.push(attributeface);
-            }
-          }
-        }*/
         this.attribute = this.getfaces();
         if (this.selectedVisible == true) {
             this.facecheck();
@@ -4245,17 +4186,7 @@ let ToolwindowComponent = class ToolwindowComponent extends __WEBPACK_IMPORTED_M
     object(Visible) {
         this.Visible = "Objs";
         this.attribute = [];
-        /*this.scenechildren=this.getscenechildren();
-        for(var i=0;i<this.scenechildren.length;i++){
-          if(this.scenechildren[i].name==="Objs"){
-            for(var j=0;j<this.scenechildren[i].children.length;j++){
-              var attributeface:any=[];
-              attributeface.id=this.scenechildren[i].children[j].name;
-              this.attribute.push(attributeface);
-            }
-          }
-        }*/
-        //this.attribute=this.getoject();
+        this.attribute = this.getoject();
         if (this.selectedVisible == true) {
             this.objectcheck();
         }
@@ -4311,7 +4242,6 @@ let ToolwindowComponent = class ToolwindowComponent extends __WEBPACK_IMPORTED_M
         var select;
         for (var n = 0; n < this.scene.children.length; n++) {
             if (this.scene.children[n].type === "Scene") {
-                console.log(this.scene.children[n].children.length);
                 for (var m = 0; m < this.scene.children[n].children.length; m++) {
                     var sprite = this.scene.children[n].children[m].children[this.scene.children[n].children[m].children.length - 1].children;
                     for (var j = 0; j < sprite.length; j++) {
@@ -4353,7 +4283,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "#container {\r\n  position: relative;\r\n  height:100%;\r\n  width: 100%;\r\n  margin:0px;\r\n  overflow: hidden;\r\n  color: white;\r\n}\r\n\r\n/*#rotating{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:15px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  top: 0px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n\r\n#paning{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:15px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  top: 25px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n\r\n#zooming{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:15px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 50px;\r\n  background-color:transparent;\r\n  border:0;\r\n}*/\r\n\r\n#zoomingfit{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:15px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 10px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n\r\n/*#selecting{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:15px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 100px;\r\n  background-color:transparent;\r\n  border:0;\r\n}*/\r\n\r\n#setting{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:15px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  top: 35px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n\r\n\r\n.selected{\r\n  color: grey;\r\n\r\n}\r\n.visible{\r\n  color: grey;\r\n}\r\n\r\n.cursor {\r\n\r\n}", ""]);
+exports.push([module.i, "#container {\r\n  position: relative;\r\n  height:100%;\r\n  width: 100%;\r\n  margin:0px;\r\n  overflow: hidden;\r\n  color: white;\r\n}\r\n\r\n/*#rotating{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:15px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  top: 0px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n\r\n#paning{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:15px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  top: 25px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n\r\n#zooming{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:15px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 50px;\r\n  background-color:transparent;\r\n  border:0;\r\n}*/\r\n\r\n#zoomingfit{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:15px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 30px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n\r\n#selecting{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:15px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 50px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n\r\n#points{\r\n  width: 30px;\r\n  height: 25px;\r\n  font:20px bolder;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 80px;\r\n  background-color:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n#vertices{\r\n  width: 30px;\r\n  height: 25px;\r\n  font:20px bolder;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 100px;\r\n  background-color:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n#edges{\r\n  width: 30px;\r\n  height: 25px;\r\n  font:20px bolder;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 120px;\r\n  background-color:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n#wires{\r\n  width: 30px;\r\n  height: 25px;\r\n  font:20px bolder;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 140px;\r\n  background-color:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n#faces{\r\n  width: 30px;\r\n  height: 25px;\r\n  font:20px bolder;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 160px;\r\n  background-color:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n#objects{\r\n  width: 30px;\r\n  height: 25px;\r\n  font:20px bolder;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 180px;\r\n  background-color:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n\r\n#setting{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:15px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  top: 10px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n\r\n\r\n.selected{\r\n  color: grey;\r\n\r\n}\r\n.visible{\r\n  color: grey;\r\n}\r\n\r\n.cursor {\r\n\r\n}\r\n\r\n.selectvisible{\r\n  background-color:  white !important;\r\n  color:#395d73;\r\n}", ""]);
 
 // exports
 
@@ -4366,7 +4296,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/gs-viewer/viewer/viewer.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"container\"  \r\n    (mousemove)=\"onDocumentMouseMove($event)\" \r\n    (mousedown)=\"mousedown($event)\"\r\n    (mouseup)=\"mouseup($event)\"\r\n\t\t(click)=\"onDocumentMouseDown($event)\">\r\n\t\r\n  \t\t<!-- <button id=\"rotating\" \r\n  \t\t\t[class.visible]=\"Visible === 'rotate'\" \r\n  \t\t\t(click)=\"rotate()\">\r\n  \t\t\t<i class=\"fa fa-refresh\"></i>\r\n  \t\t</button>\r\n\r\n  \t\t<button id=\"paning\"  \r\n  \t\t\t[class.visible]=\"Visible === 'pan'\" \r\n  \t\t\t(click)=\"pan()\">\r\n  \t\t\t<i class=\"fa fa-hand-paper-o\"></i>\r\n  \t\t</button>\r\n\r\n  \t\t<button id=\"zooming\"  \r\n  \t\t\t[class.visible]=\"Visible === 'zoom'\" \r\n  \t\t\t(click)=\"Visible='zoom'\">\r\n  \t\t\t<i class=\"fa fa-search\"></i>\r\n  \t\t</button>-->\r\n  \t\t\r\n  \t\t<button id=\"zoomingfit\"  \r\n  \t\t\t[class.visible]=\"Visible === 'zoomfit'\" \r\n  \t\t\t(click)=\"zoomfit()\">\r\n  \t\t\t<i class=\"fa fa-arrows-alt\"></i>\r\n  \t\t</button> \r\n  \t\t\r\n  \t\t<!-- <button id=\"selecting\" [class.visible]=\"Visible === 'select'\" (click)= \"select($event, Visible)\" ><i class=\"fa fa-mouse-pointer\"></i></button> -->\r\n  \t\t\r\n  \t\t<button id=\"setting\" [class.selected]=\"settingVisible\" (click)= \"settingVisible = !settingVisible\">\r\n      \t\r\n      \t<!--setting-->\r\n      \t<i class=\"fa fa-cog\"></i></button>\r\n \t\t<app-setting *ngIf=\"settingVisible == true\"></app-setting>\r\n</div>\r\n\r\n\r\n\t\r\n\r\n\r\n"
+module.exports = "<div id=\"container\"  \r\n    (mousemove)=\"onDocumentMouseMove($event)\" \r\n    (mousedown)=\"mousedown($event)\"\r\n    (mouseup)=\"mouseup($event)\"\r\n\t\t(click)=\"onDocumentMouseDown($event)\">\r\n\t\r\n  \t\t<!-- <button id=\"rotating\" \r\n  \t\t\t[class.visible]=\"Visible === 'rotate'\" \r\n  \t\t\t(click)=\"rotate()\">\r\n  \t\t\t<i class=\"fa fa-refresh\"></i>\r\n  \t\t</button>\r\n\r\n  \t\t<button id=\"paning\"  \r\n  \t\t\t[class.visible]=\"Visible === 'pan'\" \r\n  \t\t\t(click)=\"pan()\">\r\n  \t\t\t<i class=\"fa fa-hand-paper-o\"></i>\r\n  \t\t</button>\r\n\r\n  \t\t<button id=\"zooming\"  \r\n  \t\t\t[class.visible]=\"Visible === 'zoom'\" \r\n  \t\t\t(click)=\"Visible='zoom'\">\r\n  \t\t\t<i class=\"fa fa-search\"></i>\r\n  \t\t</button>-->\r\n  \t\t\r\n  \t\t<button id=\"zoomingfit\"  \r\n  \t\t\t[class.visible]=\"Visible === 'zoomfit'\" \r\n  \t\t\t(click)=\"zoomfit()\">\r\n  \t\t\t<i class=\"fa fa-arrows-alt\"></i>\r\n  \t\t</button> \r\n  \t\t\r\n  \t\t<!-- <button id=\"selecting\" [class.visible]=\"Visible === 'select'\" (click)= \"select($event, Visible)\" ><i class=\"fa fa-mouse-pointer\"></i></button> -->\r\n  \t\t\r\n  \t\t<button id=\"setting\" [class.selected]=\"settingVisible\" (click)= \"settingVisible = !settingVisible\"><i class=\"fa fa-cog\"></i></button>\r\n\r\n      <button id=\"selecting\" [class.selected]=\"seVisible\" (click)= \"select(seVisible)\" ><i class=\"fa fa-mouse-pointer\"></i></button>\r\n\r\n      \t\r\n      \t<!--setting-->\r\n      \t\r\n \t\t<app-setting *ngIf=\"settingVisible == true\"></app-setting>\r\n    <div *ngIf=\"seVisible == true\">\r\n        <button id=\"points\" [class.selectvisible]=\"SelectVisible === 'Points'\" (click)=\"pointselect(SelectVisible)\">P</button>\r\n        <button id=\"vertices\" [class.selectvisible]=\"SelectVisible === 'Vertices'\" (click)=\"verticeselect(SelectVisible)\">V</button>\r\n        <button id=\"edges\" [class.selectvisible]=\"SelectVisible === 'Edges'\" (click)=\"edgeselect(SelectVisible)\">E</button>\r\n        <button id=\"wires\" [class.selectvisible]=\"SelectVisible === 'Wires'\" (click)=\"wireselect(SelectVisible)\">W</button>\r\n        <button id=\"faces\" [class.selectvisible]=\"SelectVisible === 'Faces'\" (click)=\"faceselect(SelectVisible)\">F</button>\r\n        <button id=\"objects\" [class.selectvisible]=\"SelectVisible === 'Objs'\" (click)=\"objectselect(SelectVisible)\">O</button>\r\n      </div>\r\n</div>\r\n\r\n\r\n\t\r\n\r\n\r\n"
 
 /***/ }),
 
@@ -4397,6 +4327,8 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
         this.mySprites = [];
         this.textlabels = [];
         this.starsGeometry = new __WEBPACK_IMPORTED_MODULE_1_three__["Geometry"]();
+        this.seVisible = false;
+        this.SelectVisible = 'Objs';
         this.myElement = myElement;
     }
     ngOnInit() {
@@ -4428,90 +4360,55 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
         this.scenechildren = this.dataService.getscenechild();
         this.scenechild = new __WEBPACK_IMPORTED_MODULE_1_three__["Scene"]();
         var geometry = new __WEBPACK_IMPORTED_MODULE_1_three__["SphereGeometry"](0.05);
-        var material = new __WEBPACK_IMPORTED_MODULE_1_three__["MeshBasicMaterial"]({ color: 0xff0000 });
+        var material = new __WEBPACK_IMPORTED_MODULE_1_three__["MeshBasicMaterial"]({ color: 0x00ff00 });
         this.sphere = new __WEBPACK_IMPORTED_MODULE_1_three__["Mesh"](geometry, material);
         this.sphere.visible = false;
         this.sphere.name = "sphereInter";
         this.scene.add(this.sphere);
-        /*for(var i=0;i<this.scene.children.length;i++){
-          if(this.scene.children[i].type==="Scene"){
-            if(this.scene.children[i].children[0].type==="Mesh"){
-              this.scene.children[i].children[0]["material"].opacity=this.dataService.opacity;
-            }
-          }
-        }*/
-        //console.log(this.scene);
-        //Material of select and basic;
-        /*for(var i=0;i<this.scene.children.length;i++){
-          if(this.scene.children[i].type==="Scene"){
-            this.basicMat=this.scene.children[i].children[0].children[0]["material"];
-            break;
-          }
-        }*/
-        ///One Mesh
-        for (var i = 0; i < this.scene.children.length; i++) {
-            if (this.scene.children[i].type === "Scene") {
-                for (var j = 0; j < this.scene.children[i].children.length; j++) {
-                    if (this.scene.children[i].children[j].name == "All faces") {
-                        this.basicMat = this.scene.children[i].children[j]["material"];
-                        this.scene.children[i].children[j]["material"].blending = 1;
-                    }
-                    if (this.scene.children[i].children[j].name == "All edges") {
-                        this.basiclineMat = this.scene.children[i].children[j]["material"];
-                        this.scene.children[i].children[j]["material"].blending = 1;
-                    }
-                    if (this.scene.children[i].children[j].name == "All wires") {
-                        this.basicwireMat = this.scene.children[i].children[j]["material"];
-                        this.scene.children[i].children[j]["material"].blending = 1;
-                    }
-                }
-            }
-        }
+        console.log(this.scene_and_maps);
         // render loop
         let self = this;
         function animate() {
-            self.raycaster.setFromCamera(self.mouse, self.camera);
-            self.raycaster.linePrecision = 0.05;
-            self.scenechildren = self.dataService.getscenechild();
-            var intersects = self.raycaster.intersectObjects(self.scenechildren);
-            for (var i = 0; i < self.scenechildren.length; i++) {
-                var currObj = self.scenechildren[i];
-                if (self.dataService.getSelectingIndex(currObj.uuid) < 0) {
-                    if (intersects[0] != undefined && intersects[0].object.uuid == currObj.uuid) {
-                        //if(currObj.name==="All edges"){
-                        self.sphere.visible = true;
-                        self.sphere.position.copy(intersects[0].point);
-                        //}
-                        /*if(currObj.name==="All faces") currObj.material=self.mousehovMat;
-                        if(currObj.name==="All edges")  currObj.material=self.mousehovlineMat;
-                        if(currObj.name==="All wires")  currObj.material=self.mousehovwireMat;*/
-                    }
-                    else {
-                        self.sphere.visible = false;
-                        /*if(currObj.name==="All faces") currObj.material=self.basicMat;
-                        if(currObj.name==="All edges")  currObj.material=self.basiclineMat;
-                        if(currObj.name==="All wires")  currObj.material=self.basicwireMat;*/
+            if (self.seVisible === true) {
+                self.raycaster.setFromCamera(self.mouse, self.camera);
+                self.raycaster.linePrecision = 0.05;
+                self.raycaster.params.Points.threshold = 0.05;
+                self.scenechildren = self.dataService.getscenechild();
+                var intersects = self.raycaster.intersectObjects(self.scenechildren);
+                for (var i = 0; i < self.scenechildren.length; i++) {
+                    var currObj = self.scenechildren[i];
+                    if (self.dataService.getSelectingIndex(currObj.uuid) < 0) {
+                        if (intersects[0] != undefined && intersects[0].object.uuid == currObj.uuid) {
+                            self.sphere.visible = true;
+                            self.sphere.position.copy(intersects[0].point);
+                        }
+                        else {
+                            self.sphere.visible = false;
+                        }
                     }
                 }
-            }
-            for (var i = 0; i < self.textlabels.length; i++) {
-                self.textlabels[i].updatePosition();
-            }
-            if (self.dataService.selecting.length != 0) {
-                self.updateview();
+                for (var i = 0; i < self.textlabels.length; i++) {
+                    self.textlabels[i].updatePosition();
+                }
+                if (self.dataService.selecting.length != 0) {
+                    self.updateview();
+                }
             }
             requestAnimationFrame(animate);
             self.renderer.render(self.scene, self.camera);
         }
         ;
         animate();
-        //this.zoomfit();
+        for (var i = 0; i < this.getchildren().length; i++) {
+            this.getchildren()[i]["material"].transparent = false;
+        }
+        this.addgrid();
     }
     //
     //  checks if the flowchart service has a flowchart and calls update function for the viewer
     //
     notify(message) {
-        if (message == "model_update") {
+        if (message == "model_update" && this.scene) {
             this.updateModel();
         }
     }
@@ -4531,12 +4428,12 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
     updateModel() {
         this._model = this.dataService.getGsModel();
         if (!this._model || !this.scene) {
-            console.warn("Model or Scene not defined");
+            console.warn("Model or Scene not defined.");
             return;
         }
         try {
             //this.scene_and_maps= gs.genThreeOptModelAndMaps( this._model );
-            this.scene_and_maps = this.dataService.updateModel();
+            this.scene_and_maps = this.dataService.getscememaps();
             const scene_data = this.scene_and_maps.scene;
             //[three_mode, egde_map, tri_map] = genThreeModelandMaps()
             //[three_mode, label_data] = gs.getThreeWire(labels)
@@ -4545,39 +4442,25 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
             this.clearScene();
             let loader = new __WEBPACK_IMPORTED_MODULE_1_three__["ObjectLoader"]();
             let objectData = loader.parse(scene_data);
-            /*for(var i =0;i< objectData.children.length;i++){
-              if( objectData.children[i].children!==undefined){
-                for(var j=0;j< objectData.children[i].children.length;j++){
-                  let chd = objectData.children[i].children[j];
-                  if( chd.type==="Mesh"||chd.type==="LineLoop"||chd.type==="LineSegments"||chd.type==="Line"){
-                     objectData.children[i].children[j]["geometry"].computeVertexNormals();
-                     objectData.children[i].children[j]["geometry"].computeBoundingBox();
-                     objectData.children[i].children[j]["geometry"].computeBoundingSphere();
-                  }
-                  ///
-                  if( chd.children.length > 0){
-                    for(let s=0; s < chd.children.length; s++ ){
-                      let spr: any = chd.children[s];
-                      this.mySprites.push(spr);
-                      spr.material = this.getMaterial(spr.name);
-                    }
-                  }
-                }
-              }
-            }*/
-            //One Mesh
             if (objectData.children !== undefined) {
                 for (var i = 0; i < objectData.children.length; i++) {
                     let chd = objectData.children[i];
                     chd["material"].needsUpdate = true;
                     chd["material"].transparent = true;
-                    if (chd.type === "Mesh" || chd.type === "LineLoop" || chd.type === "LineSegments" || chd.type === "Line") {
+                    chd["material"].blending = 1;
+                    if (chd.name === "All faces" || chd.name === "All wires" || chd.name === "All edges" || chd.name === "All vertices" ||
+                        chd.name === "Other lines" || chd.name === "All points") {
                         chd["geometry"].computeVertexNormals();
                         chd["geometry"].computeBoundingBox();
                         chd["geometry"].computeBoundingSphere();
                     }
+                    if (chd.name === "All points") {
+                        this.center = chd["geometry"].boundingSphere.center;
+                    }
                 }
             }
+            this.controls.target.set(this.center.x, this.center.y, this.center.z);
+            this.controls.update();
             this.scene.add(objectData);
         }
         catch (ex) {
@@ -4597,6 +4480,168 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
         var spriteMaterial = new __WEBPACK_IMPORTED_MODULE_1_three__["SpriteMaterial"]({ map: texture, color: 0xffffff });
         return spriteMaterial;
     }
+    getchildren() {
+        var children;
+        for (var i = 0; i < this.scene.children.length; i++) {
+            if (this.scene.children[i].name == "Scene") {
+                children = this.scene.children[i].children;
+                break;
+            }
+            if (i == this.scene.children.length - 1) {
+                return [];
+            }
+        }
+        return children;
+    }
+    select(seVisible) {
+        this.seVisible = !this.seVisible;
+        if (this.seVisible) {
+            if (this.SelectVisible === "Objs") {
+                this.objectselect(this.SelectVisible);
+            }
+            for (var i = 0; i < this.getchildren().length; i++) {
+                this.getchildren()[i]["material"].transparent = true;
+            }
+        }
+        else {
+            for (var i = 0; i < this.getchildren().length; i++) {
+                this.getchildren()[i]["material"].transparent = false;
+            }
+        }
+    }
+    objectselect(SelectVisible) {
+        this.SelectVisible = "Objs";
+        this.dataService.visible = "Objs";
+        event.preventDefault();
+        document.getElementById("object").style.color = null;
+        document.getElementById("face").style.color = null;
+        document.getElementById("wire").style.color = null;
+        document.getElementById("edge").style.color = null;
+        document.getElementById("vertice").style.color = null;
+        var scenechildren = [];
+        var children = this.getchildren();
+        for (var i = 0; i < children.length; i++) {
+            if (children[i].name === "All wires")
+                children[i]["material"].opacity = 0;
+            if (children[i].name === "All edges")
+                children[i]["material"].opacity = 0;
+            if (children[i].name === "All vertices")
+                children[i]["material"].opacity = 0;
+            if (children[i].name === "All objs" || children[i].name === "All faces") {
+                children[i]["material"].opacity = 0.8;
+                children[i].name = "All objs";
+                scenechildren.push(children[i]);
+            }
+        }
+        this.dataService.addscenechild(scenechildren);
+    }
+    faceselect(SelectVisible) {
+        event.preventDefault();
+        this.SelectVisible = "Faces";
+        this.dataService.visible = "Faces";
+        document.getElementById("object").style.color = "grey";
+        document.getElementById("face").style.color = null;
+        document.getElementById("wire").style.color = null;
+        document.getElementById("edge").style.color = null;
+        document.getElementById("vertice").style.color = null;
+        var scenechildren = [];
+        var children = this.getchildren();
+        for (var i = 0; i < children.length; i++) {
+            if (children[i].name === "All wires")
+                children[i]["material"].opacity = 0.1;
+            if (children[i].name === "All edges")
+                children[i]["material"].opacity = 0.1;
+            if (children[i].name === "All vertices")
+                children[i]["material"].opacity = 0.1;
+            if (children[i].name === "All objs" || children[i].name === "All faces") {
+                children[i]["material"].opacity = 0.8;
+                children[i].name = "All faces";
+                scenechildren.push(children[i]);
+            }
+        }
+        this.dataService.addscenechild(scenechildren);
+    }
+    wireselect(SelectVisible) {
+        event.preventDefault();
+        this.SelectVisible = "Wires";
+        document.getElementById("object").style.color = "grey";
+        document.getElementById("face").style.color = "grey";
+        document.getElementById("wire").style.color = null;
+        document.getElementById("edge").style.color = null;
+        document.getElementById("vertice").style.color = null;
+        var scenechildren = [];
+        var children = this.getchildren();
+        for (var i = 0; i < children.length; i++) {
+            if (children[i].name === "All objs" || children[i].name === "All faces")
+                children[i]["material"].opacity = 0.1;
+            if (children[i].name === "All edges")
+                children[i]["material"].opacity = 0.1;
+            if (children[i].name === "All vertices")
+                children[i]["material"].opacity = 0.1;
+            if (children[i].name === "All wires") {
+                children[i]["material"].opacity = 0.6;
+                scenechildren.push(children[i]);
+            }
+        }
+        this.dataService.addscenechild(scenechildren);
+    }
+    edgeselect(SelectVisible) {
+        event.preventDefault();
+        this.SelectVisible = "Edges";
+        document.getElementById("object").style.color = "grey";
+        document.getElementById("face").style.color = "grey";
+        document.getElementById("wire").style.color = "grey";
+        document.getElementById("edge").style.color = null;
+        document.getElementById("vertice").style.color = null;
+        var scenechildren = [];
+        var children = this.getchildren();
+        for (var i = 0; i < children.length; i++) {
+            children[i]["material"].transparent = true;
+            if (children[i].name === "All objs" || children[i].name === "All faces")
+                children[i]["material"].opacity = 0.1;
+            if (children[i].name === "All wires")
+                children[i]["material"].opacity = 0.1;
+            if (children[i].name === "All vertices")
+                children[i]["material"].opacity = 0.1;
+            if (children[i].name === "All edges") {
+                children[i]["material"].opacity = 0.4;
+                scenechildren.push(children[i]);
+            }
+        }
+        this.dataService.addscenechild(scenechildren);
+    }
+    verticeselect(SelectVisible) {
+        event.preventDefault();
+        this.SelectVisible = "Vertices";
+        document.getElementById("object").style.color = "grey";
+        document.getElementById("face").style.color = "grey";
+        document.getElementById("wire").style.color = "grey";
+        document.getElementById("edge").style.color = "grey";
+        document.getElementById("vertice").style.color = null;
+        var scenechildren = [];
+        var children = this.getchildren();
+        for (var i = 0; i < children.length; i++) {
+            if (children[i].name === "All objs" || children[i].name === "All faces")
+                children[i]["material"].opacity = 0.1;
+            if (children[i].name === "All wires")
+                children[i]["material"].opacity = 0.1;
+            if (children[i].name === "All edges")
+                children[i]["material"].opacity = 0.1;
+            if (children[i].name === "All vertices") {
+                children[i]["material"].opacity = 1;
+                //scenechildren.push(children[i]);
+            }
+            if (children[i].name === "All points") {
+                scenechildren.push(children[i]);
+            }
+        }
+        this.dataService.addscenechild(scenechildren);
+    }
+    pointselect(SelectVisible) {
+        event.preventDefault();
+        this.verticeselect("Vertices");
+        this.SelectVisible = "Points";
+    }
     //
     //  events
     //
@@ -4607,123 +4652,182 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
         this.mUpTime = (new Date()).getTime();
     }
     onDocumentMouseMove(event) {
-        event.preventDefault();
         this.mouse.x = (event.offsetX / this.width) * 2 - 1;
         this.mouse.y = -(event.clientY / this.height) * 2 + 1;
     }
+    addgrid() {
+        var max = 8;
+        var center = new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](0, 0, 0);
+        for (var i = 0; i < this.scene.children.length; i++) {
+            if (this.scene.children[i].type === "Scene") {
+                for (var j = 0; j < this.scene.children[i].children.length; j++) {
+                    if (this.scene.children[i].children[j]["geometry"].boundingSphere.radius !== 0) {
+                        center = this.scene.children[i].children[j]["geometry"].boundingSphere.center;
+                        var radius = this.scene.children[i].children[j]["geometry"].boundingSphere.radius;
+                        max = Math.ceil(radius + Math.max(Math.abs(center.x), Math.abs(center.y), Math.abs(center.z)) * 1.2);
+                        break;
+                    }
+                    if (this.scene.children[i].children[j].type === "GridHelper") {
+                        this.scene.remove(this.scene.children[i].children[j]);
+                        j = j - 1;
+                    }
+                }
+            }
+        }
+        if (this.dataService.grid) {
+            var gridhelper = new __WEBPACK_IMPORTED_MODULE_1_three__["GridHelper"](max, max);
+            gridhelper.name = "GridHelper";
+            var vector = new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](0, 1, 0);
+            gridhelper.lookAt(vector);
+            gridhelper.position.set(center.x, center.y, 0);
+            this.scene.add(gridhelper);
+        }
+    }
     /// selects object from three.js scene
     onDocumentMouseDown(event) {
-        let threshold = 100;
-        if (Math.abs(this.mDownTime - this.mUpTime) > threshold) {
-            this.mDownTime = 0;
-            this.mUpTime = 0;
-            return;
-        }
-        event.preventDefault();
-        var selectedObj, intersects;
-        var select = false;
-        //this.selection_setting=this.dataService.getSelectionSetting();
-        this.scenechildren = this.dataService.getscenechild();
-        this.raycaster.setFromCamera(this.mouse, this.camera);
-        var linePre = Math.round(this.scene.children[2].children[0]["geometry"].boundingSphere.radius) / 10;
-        this.raycaster.linePrecision = 0.05;
-        intersects = this.raycaster.intersectObjects(this.scenechildren);
-        if (intersects.length > 0) {
-            selectedObj = intersects[0].object;
-            if (this.scenechildren[0].name === "All faces") {
-                const path = this.scene_and_maps.faces_map.get(Math.floor(intersects[0].faceIndex / 2));
-                const face = this._model.getGeom().getTopo(path);
-                //const faces: gs.IFace[] = face.getObj().getFaces();
-                //const wires: gs.IWire[] = wire.getObj().getWires();
-                const label = face.getLabel();
-                const label_xyz = face.getLabelCentroid();
-                const verts = face.getVertices();
-                const verts_xyz = verts.map((v) => v.getPoint().getPosition());
-                if (this.textlabels.length === 0) {
-                    var geometry = new __WEBPACK_IMPORTED_MODULE_1_three__["Geometry"]();
-                    for (var i = 0; i < verts_xyz.length; i++) {
-                        geometry.vertices.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](verts_xyz[i][0], verts_xyz[i][1], verts_xyz[i][2]));
+        if (this.seVisible === true) {
+            let threshold = 100;
+            if (Math.abs(this.mDownTime - this.mUpTime) > threshold) {
+                this.mDownTime = 0;
+                this.mUpTime = 0;
+                return;
+            }
+            event.preventDefault();
+            var selectedObj, intersects;
+            var select = false;
+            this.scenechildren = this.dataService.getscenechild();
+            this.raycaster.setFromCamera(this.mouse, this.camera);
+            this.raycaster.linePrecision = 0.05;
+            this.raycaster.params.Points.threshold = 0.05;
+            intersects = this.raycaster.intersectObjects(this.scenechildren);
+            if (intersects.length > 0) {
+                selectedObj = intersects[0].object;
+                if (this.scenechildren[0].name === "All objs") {
+                    const path = this.scene_and_maps.faces_map.get(Math.floor(intersects[0].faceIndex / 2));
+                    const face = this._model.getGeom().getTopo(path);
+                    const label = "o" + path.id;
+                    const label_xyz = face.getLabelCentroid();
+                    const faces = face.getObj().getFaces();
+                    if (this.textlabels.length === 0) {
+                        for (var n = 0; n < faces.length; n++) {
+                            var verts = faces[n].getVertices();
+                            var verts_xyz = verts.map((v) => v.getPoint().getPosition());
+                            var geometry = new __WEBPACK_IMPORTED_MODULE_1_three__["Geometry"]();
+                            for (var i = 0; i < verts_xyz.length; i++) {
+                                geometry.vertices.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](verts_xyz[i][0], verts_xyz[i][1], verts_xyz[i][2]));
+                            }
+                            geometry.faces.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Face3"](0, 2, 1));
+                            geometry.faces.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Face3"](0, 3, 2));
+                            var mesh = new __WEBPACK_IMPORTED_MODULE_1_three__["Mesh"](geometry, new __WEBPACK_IMPORTED_MODULE_1_three__["MeshPhongMaterial"]({ color: 0x00ff00, side: __WEBPACK_IMPORTED_MODULE_1_three__["DoubleSide"] }));
+                            mesh["geometry"].computeVertexNormals();
+                            mesh.userData.id = path.id;
+                            mesh.name = "selects";
+                            this.scene.add(mesh);
+                        }
+                        this.addTextLabel(label, label_xyz, label);
                     }
-                    geometry.faces.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Face3"](0, 2, 1));
-                    geometry.faces.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Face3"](0, 3, 2));
-                    var mesh = new __WEBPACK_IMPORTED_MODULE_1_three__["Mesh"](geometry, new __WEBPACK_IMPORTED_MODULE_1_three__["MeshPhongMaterial"]({ color: 0xFF0000, side: __WEBPACK_IMPORTED_MODULE_1_three__["DoubleSide"] }));
-                    mesh.userData.id = Math.floor(intersects[0].faceIndex / 2);
-                    mesh["geometry"].computeVertexNormals();
-                    mesh.name = "selects";
-                    this.scene.add(mesh);
-                    this.addTextLabel(label, label_xyz, Math.floor(intersects[0].faceIndex / 2));
+                    else {
+                        for (var j = 0; j < this.scene.children.length; j++) {
+                            if (path.id === this.scene.children[j].userData.id) {
+                                select = true;
+                                this.scene.remove(this.scene.children[j]);
+                                j = j - 1;
+                            }
+                        }
+                        for (var j = 0; j < this.textlabels.length; j++) {
+                            if (label === this.textlabels[j]["id"]) {
+                                select = true;
+                                this.removeTextLabel(this.textlabels[j]["id"]);
+                                j = j - 1;
+                            }
+                        }
+                        if (select == false) {
+                            for (var n = 0; n < faces.length; n++) {
+                                var verts = faces[n].getVertices();
+                                var verts_xyz = verts.map((v) => v.getPoint().getPosition());
+                                var geometry = new __WEBPACK_IMPORTED_MODULE_1_three__["Geometry"]();
+                                for (var i = 0; i < verts_xyz.length; i++) {
+                                    geometry.vertices.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](verts_xyz[i][0], verts_xyz[i][1], verts_xyz[i][2]));
+                                }
+                                geometry.faces.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Face3"](0, 2, 1));
+                                geometry.faces.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Face3"](0, 3, 2));
+                                var mesh = new __WEBPACK_IMPORTED_MODULE_1_three__["Mesh"](geometry, new __WEBPACK_IMPORTED_MODULE_1_three__["MeshPhongMaterial"]({ color: 0x00ff00, side: __WEBPACK_IMPORTED_MODULE_1_three__["DoubleSide"] }));
+                                mesh.userData.id = Math.floor(intersects[0].faceIndex / 2);
+                                mesh["geometry"].computeVertexNormals();
+                                mesh.userData.id = path.id;
+                                mesh.name = "selects";
+                                this.scene.add(mesh);
+                            }
+                            this.addTextLabel(label, label_xyz, label);
+                        }
+                    }
                 }
-                else {
-                    for (var j = 0; j < this.scene.children.length; j++) {
-                        if (Math.floor(intersects[0].faceIndex / 2) === this.scene.children[j].userData.id) {
-                            select = true;
-                            this.scene.remove(this.scene.children[j]);
-                        }
-                    }
-                    for (var j = 0; j < this.textlabels.length; j++) {
-                        if (Math.floor(intersects[0].faceIndex / 2) === this.textlabels[j]["id"]) {
-                            select = true;
-                            this.removeTextLabel(this.textlabels[j]["id"]);
-                        }
-                    }
-                    if (select == false) {
+                if (this.scenechildren[0].name === "All faces") {
+                    const path = this.scene_and_maps.faces_map.get(Math.floor(intersects[0].faceIndex / 2));
+                    const face = this._model.getGeom().getTopo(path);
+                    const label = face.getLabel();
+                    const label_xyz = face.getLabelCentroid();
+                    const verts = face.getVertices();
+                    const verts_xyz = verts.map((v) => v.getPoint().getPosition());
+                    if (this.textlabels.length === 0) {
                         var geometry = new __WEBPACK_IMPORTED_MODULE_1_three__["Geometry"]();
                         for (var i = 0; i < verts_xyz.length; i++) {
                             geometry.vertices.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](verts_xyz[i][0], verts_xyz[i][1], verts_xyz[i][2]));
                         }
                         geometry.faces.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Face3"](0, 2, 1));
                         geometry.faces.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Face3"](0, 3, 2));
-                        var mesh = new __WEBPACK_IMPORTED_MODULE_1_three__["Mesh"](geometry, new __WEBPACK_IMPORTED_MODULE_1_three__["MeshPhongMaterial"]({ color: 0xFF0000, side: __WEBPACK_IMPORTED_MODULE_1_three__["DoubleSide"] }));
+                        var mesh = new __WEBPACK_IMPORTED_MODULE_1_three__["Mesh"](geometry, new __WEBPACK_IMPORTED_MODULE_1_three__["MeshPhongMaterial"]({ color: 0x00ff00, side: __WEBPACK_IMPORTED_MODULE_1_three__["DoubleSide"] }));
                         mesh.userData.id = Math.floor(intersects[0].faceIndex / 2);
                         mesh["geometry"].computeVertexNormals();
                         mesh.name = "selects";
                         this.scene.add(mesh);
                         this.addTextLabel(label, label_xyz, Math.floor(intersects[0].faceIndex / 2));
                     }
-                }
-            }
-            if (this.scenechildren[0].name == "All wires") {
-                const path = this.scene_and_maps.wires_map.get(Math.floor(intersects[0].index / 2));
-                const wire = this._model.getGeom().getTopo(path);
-                const label = wire.getLabel();
-                const label_xyz = wire.getLabelCentroid();
-                const verts = wire.getVertices();
-                const verts_xyz = verts.map((v) => v.getPoint().getPosition());
-                if (wire.isClosed()) {
-                    verts_xyz.push(verts_xyz[0]);
-                }
-                if (this.textlabels.length === 0) {
-                    var geometry = new __WEBPACK_IMPORTED_MODULE_1_three__["Geometry"]();
-                    for (var i = 0; i < verts_xyz.length; i++) {
-                        geometry.vertices.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](verts_xyz[i][0], verts_xyz[i][1], verts_xyz[i][2]));
-                    }
-                    var material = new __WEBPACK_IMPORTED_MODULE_1_three__["LineBasicMaterial"]({ color: 0xff0000, side: __WEBPACK_IMPORTED_MODULE_1_three__["DoubleSide"] });
-                    const line = new __WEBPACK_IMPORTED_MODULE_1_three__["Line"](geometry, material);
-                    line.userData.id = Math.floor(intersects[0].index / 2);
-                    line["material"].needsUpdate = true;
-                    line.name = "selects";
-                    this.scene.add(line);
-                    this.addTextLabel(label, label_xyz, Math.floor(intersects[0].index / 2));
-                }
-                else {
-                    for (var j = 0; j < this.scene.children.length; j++) {
-                        if (Math.floor(intersects[0].index / 2) === this.scene.children[j].userData.id) {
-                            select = true;
-                            this.scene.remove(this.scene.children[j]);
+                    else {
+                        for (var j = 0; j < this.scene.children.length; j++) {
+                            if (Math.floor(intersects[0].faceIndex / 2) === this.scene.children[j].userData.id) {
+                                select = true;
+                                this.scene.remove(this.scene.children[j]);
+                            }
+                        }
+                        for (var j = 0; j < this.textlabels.length; j++) {
+                            if (Math.floor(intersects[0].faceIndex / 2) === this.textlabels[j]["id"]) {
+                                select = true;
+                                this.removeTextLabel(this.textlabels[j]["id"]);
+                            }
+                        }
+                        if (select == false) {
+                            var geometry = new __WEBPACK_IMPORTED_MODULE_1_three__["Geometry"]();
+                            for (var i = 0; i < verts_xyz.length; i++) {
+                                geometry.vertices.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](verts_xyz[i][0], verts_xyz[i][1], verts_xyz[i][2]));
+                            }
+                            geometry.faces.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Face3"](0, 2, 1));
+                            geometry.faces.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Face3"](0, 3, 2));
+                            var mesh = new __WEBPACK_IMPORTED_MODULE_1_three__["Mesh"](geometry, new __WEBPACK_IMPORTED_MODULE_1_three__["MeshPhongMaterial"]({ color: 0x00ff00, side: __WEBPACK_IMPORTED_MODULE_1_three__["DoubleSide"] }));
+                            mesh.userData.id = Math.floor(intersects[0].faceIndex / 2);
+                            mesh["geometry"].computeVertexNormals();
+                            mesh.name = "selects";
+                            this.scene.add(mesh);
+                            this.addTextLabel(label, label_xyz, Math.floor(intersects[0].faceIndex / 2));
                         }
                     }
-                    for (var j = 0; j < this.textlabels.length; j++) {
-                        if (Math.floor(intersects[0].index / 2) === this.textlabels[j]["id"]) {
-                            select = true;
-                            this.removeTextLabel(this.textlabels[j]["id"]);
-                        }
+                }
+                if (this.scenechildren[0].name == "All wires") {
+                    const path = this.scene_and_maps.wires_map.get(Math.floor(intersects[0].index / 2));
+                    const wire = this._model.getGeom().getTopo(path);
+                    const label = wire.getLabel();
+                    const label_xyz = wire.getLabelCentroid();
+                    const verts = wire.getVertices();
+                    const verts_xyz = verts.map((v) => v.getPoint().getPosition());
+                    if (wire.isClosed()) {
+                        verts_xyz.push(verts_xyz[0]);
                     }
-                    if (select == false) {
+                    if (this.textlabels.length === 0) {
                         var geometry = new __WEBPACK_IMPORTED_MODULE_1_three__["Geometry"]();
                         for (var i = 0; i < verts_xyz.length; i++) {
                             geometry.vertices.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](verts_xyz[i][0], verts_xyz[i][1], verts_xyz[i][2]));
                         }
-                        var material = new __WEBPACK_IMPORTED_MODULE_1_three__["LineBasicMaterial"]({ color: 0xff0000, side: __WEBPACK_IMPORTED_MODULE_1_three__["DoubleSide"] });
+                        var material = new __WEBPACK_IMPORTED_MODULE_1_three__["LineBasicMaterial"]({ color: 0x00ff00, side: __WEBPACK_IMPORTED_MODULE_1_three__["DoubleSide"] });
                         const line = new __WEBPACK_IMPORTED_MODULE_1_three__["Line"](geometry, material);
                         line.userData.id = Math.floor(intersects[0].index / 2);
                         line["material"].needsUpdate = true;
@@ -4731,74 +4835,154 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
                         this.scene.add(line);
                         this.addTextLabel(label, label_xyz, Math.floor(intersects[0].index / 2));
                     }
-                }
-            }
-            if (this.scenechildren[0].name == "All edges") {
-                const path = this.scene_and_maps.edges_map.get(Math.floor(intersects[0].index / 2));
-                const edge = this._model.getGeom().getTopo(path);
-                const label = edge.getLabel();
-                const label_xyz = edge.getLabelCentroid();
-                const verts = edge.getVertices();
-                const verts_xyz = verts.map((v) => v.getPoint().getPosition());
-                if (this.textlabels.length === 0) {
-                    var geometry = new __WEBPACK_IMPORTED_MODULE_1_three__["Geometry"]();
-                    for (var i = 0; i < verts_xyz.length; i++) {
-                        geometry.vertices.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](verts_xyz[i][0], verts_xyz[i][1], verts_xyz[i][2]));
-                    }
-                    var material = new __WEBPACK_IMPORTED_MODULE_1_three__["LineBasicMaterial"]({ color: 0xff0000, side: __WEBPACK_IMPORTED_MODULE_1_three__["DoubleSide"] });
-                    const line = new __WEBPACK_IMPORTED_MODULE_1_three__["Line"](geometry, material);
-                    line.userData.id = Math.floor(intersects[0].index / 2);
-                    line["material"].needsUpdate = true;
-                    line.name = "selects";
-                    this.scene.add(line);
-                    this.addTextLabel(label, label_xyz, Math.floor(intersects[0].index / 2));
-                }
-                else {
-                    for (var j = 0; j < this.scene.children.length; j++) {
-                        if (Math.floor(intersects[0].index / 2) === this.scene.children[j].userData.id) {
-                            select = true;
-                            this.scene.remove(this.scene.children[j]);
+                    else {
+                        for (var j = 0; j < this.scene.children.length; j++) {
+                            if (Math.floor(intersects[0].index / 2) === this.scene.children[j].userData.id) {
+                                select = true;
+                                this.scene.remove(this.scene.children[j]);
+                            }
+                        }
+                        for (var j = 0; j < this.textlabels.length; j++) {
+                            if (Math.floor(intersects[0].index / 2) === this.textlabels[j]["id"]) {
+                                select = true;
+                                this.removeTextLabel(this.textlabels[j]["id"]);
+                            }
+                        }
+                        if (select == false) {
+                            var geometry = new __WEBPACK_IMPORTED_MODULE_1_three__["Geometry"]();
+                            for (var i = 0; i < verts_xyz.length; i++) {
+                                geometry.vertices.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](verts_xyz[i][0], verts_xyz[i][1], verts_xyz[i][2]));
+                            }
+                            var material = new __WEBPACK_IMPORTED_MODULE_1_three__["LineBasicMaterial"]({ color: 0x00ff00, side: __WEBPACK_IMPORTED_MODULE_1_three__["DoubleSide"] });
+                            const line = new __WEBPACK_IMPORTED_MODULE_1_three__["Line"](geometry, material);
+                            line.userData.id = Math.floor(intersects[0].index / 2);
+                            line["material"].needsUpdate = true;
+                            line.name = "selects";
+                            this.scene.add(line);
+                            this.addTextLabel(label, label_xyz, Math.floor(intersects[0].index / 2));
                         }
                     }
-                    for (var j = 0; j < this.textlabels.length; j++) {
-                        if (Math.floor(intersects[0].index / 2) === this.textlabels[j]["id"]) {
-                            select = true;
-                            this.removeTextLabel(this.textlabels[j]["id"]);
-                        }
-                    }
-                    if (select == false) {
+                }
+                if (this.scenechildren[0].name == "All edges") {
+                    const path = this.scene_and_maps.edges_map.get(Math.floor(intersects[0].index / 2));
+                    const edge = this._model.getGeom().getTopo(path);
+                    const label = edge.getLabel();
+                    const label_xyz = edge.getLabelCentroid();
+                    const verts = edge.getVertices();
+                    const verts_xyz = verts.map((v) => v.getPoint().getPosition());
+                    if (this.textlabels.length === 0) {
                         var geometry = new __WEBPACK_IMPORTED_MODULE_1_three__["Geometry"]();
                         for (var i = 0; i < verts_xyz.length; i++) {
                             geometry.vertices.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](verts_xyz[i][0], verts_xyz[i][1], verts_xyz[i][2]));
                         }
-                        var material = new __WEBPACK_IMPORTED_MODULE_1_three__["LineBasicMaterial"]({ color: 0xff0000, side: __WEBPACK_IMPORTED_MODULE_1_three__["DoubleSide"] });
+                        var material = new __WEBPACK_IMPORTED_MODULE_1_three__["LineBasicMaterial"]({ color: 0x00ff00, side: __WEBPACK_IMPORTED_MODULE_1_three__["DoubleSide"] });
                         const line = new __WEBPACK_IMPORTED_MODULE_1_three__["Line"](geometry, material);
                         line.userData.id = Math.floor(intersects[0].index / 2);
+                        line["material"].needsUpdate = true;
                         line.name = "selects";
                         this.scene.add(line);
                         this.addTextLabel(label, label_xyz, Math.floor(intersects[0].index / 2));
                     }
+                    else {
+                        for (var j = 0; j < this.scene.children.length; j++) {
+                            if (Math.floor(intersects[0].index / 2) === this.scene.children[j].userData.id) {
+                                select = true;
+                                this.scene.remove(this.scene.children[j]);
+                            }
+                        }
+                        for (var j = 0; j < this.textlabels.length; j++) {
+                            if (Math.floor(intersects[0].index / 2) === this.textlabels[j]["id"]) {
+                                select = true;
+                                this.removeTextLabel(this.textlabels[j]["id"]);
+                            }
+                        }
+                        if (select == false) {
+                            var geometry = new __WEBPACK_IMPORTED_MODULE_1_three__["Geometry"]();
+                            for (var i = 0; i < verts_xyz.length; i++) {
+                                geometry.vertices.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](verts_xyz[i][0], verts_xyz[i][1], verts_xyz[i][2]));
+                            }
+                            var material = new __WEBPACK_IMPORTED_MODULE_1_three__["LineBasicMaterial"]({ color: 0x00ff00, side: __WEBPACK_IMPORTED_MODULE_1_three__["DoubleSide"] });
+                            const line = new __WEBPACK_IMPORTED_MODULE_1_three__["Line"](geometry, material);
+                            line.userData.id = Math.floor(intersects[0].index / 2);
+                            line.name = "selects";
+                            this.scene.add(line);
+                            this.addTextLabel(label, label_xyz, Math.floor(intersects[0].index / 2));
+                        }
+                    }
+                }
+                if (this.scenechildren[0].name === "All points") {
+                    const attributevertix = this.dataService.getattrvertix();
+                    //const path: gs.ITopoPathData = this.scene_and_maps.vertices_map.get(intersects[ 0 ].index);
+                    //const vertices: gs.IVertex = this._model.getGeom().getTopo(path) as gs.IVertex;
+                    //const points: gs.IPoint = this._model.getGeom().getTopo(path) as gs.IPoint;
+                    const id = this._model.getGeom().getAllPoints()[intersects[0].index].getLabel();
+                    for (var i = 0; i < attributevertix.length; i++) {
+                        if (id === attributevertix[i].pointid) {
+                            var label = attributevertix[i].vertixlabel;
+                        }
+                    }
+                    const verts_xyz = this._model.getGeom().getAllPoints()[intersects[0].index].getPosition(); //vertices.getPoint().getPosition();
+                    console.log(intersects[0].index, verts_xyz);
+                    console.log(this.scene);
+                    //const verts: gs.IVertex[] = vertices.getVertices();
+                    //const verts_xyz: gs.XYZ[] = vertices.getPoint().getPosition();
+                    if (this.textlabels.length === 0) {
+                        var geometry = new __WEBPACK_IMPORTED_MODULE_1_three__["Geometry"]();
+                        geometry.vertices.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](verts_xyz[0], verts_xyz[1], verts_xyz[2]));
+                        var pointsmaterial = new __WEBPACK_IMPORTED_MODULE_1_three__["PointsMaterial"]({ color: 0x00ff00, size: 0.2 });
+                        const points = new __WEBPACK_IMPORTED_MODULE_1_three__["Points"](geometry, pointsmaterial);
+                        points.userData.id = label;
+                        points["material"].needsUpdate = true;
+                        points.name = "selects";
+                        this.scene.add(points);
+                        this.addTextLabel(label, verts_xyz, label);
+                    }
+                    else {
+                        for (var j = 0; j < this.scene.children.length; j++) {
+                            if (label === this.scene.children[j].userData.id) {
+                                select = true;
+                                this.scene.remove(this.scene.children[j]);
+                            }
+                        }
+                        for (var j = 0; j < this.textlabels.length; j++) {
+                            if (label === this.textlabels[j]["id"]) {
+                                select = true;
+                                this.removeTextLabel(this.textlabels[j]["id"]);
+                            }
+                        }
+                        if (select == false) {
+                            var geometry = new __WEBPACK_IMPORTED_MODULE_1_three__["Geometry"]();
+                            geometry.vertices.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](verts_xyz[0], verts_xyz[1], verts_xyz[2]));
+                            var pointsmaterial = new __WEBPACK_IMPORTED_MODULE_1_three__["PointsMaterial"]({ color: 0x00ff00, size: 0.2 });
+                            const points = new __WEBPACK_IMPORTED_MODULE_1_three__["Points"](geometry, pointsmaterial);
+                            points.userData.id = label[0];
+                            points["material"].needsUpdate = true;
+                            points.name = "selects";
+                            this.scene.add(points);
+                            this.addTextLabel(label, verts_xyz, label);
+                        }
+                    }
                 }
             }
-        }
-        else {
-            for (var i = 0; i < this.dataService.sprite.length; i++) {
-                this.dataService.sprite[i].visible = false;
-            }
-            for (var i = 0; i < this.scene.children.length; i++) {
-                if (this.scene.children[i].name == "selects") {
-                    this.scene.remove(this.scene.children[i]);
+            else {
+                for (var i = 0; i < this.dataService.sprite.length; i++) {
+                    this.dataService.sprite[i].visible = false;
+                }
+                for (var i = 0; i < this.scene.children.length; i++) {
+                    if (this.scene.children[i].name == "selects") {
+                        this.scene.remove(this.scene.children[i]);
+                        i = i - 1;
+                    }
+                }
+                for (var i = 0; i < this.textlabels.length; i++) {
+                    this.removeTextLabel(this.textlabels[i]["id"]);
                     i = i - 1;
                 }
+                //var sprite=[];
+                //this.dataService.pushsprite(sprite);
+                //var select=[];
+                //this.dataService.addselecting(select);
             }
-            for (var i = 0; i < this.textlabels.length; i++) {
-                this.removeTextLabel(this.textlabels[i]["id"]);
-                i = i - 1;
-            }
-            //var sprite=[];
-            //this.dataService.pushsprite(sprite);
-            //var select=[];
-            //this.dataService.addselecting(select);
         }
         //this.updateview();
     }
@@ -4844,7 +5028,9 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
         let textLabel = this.createTextLabel(label, star, id);
         this.starsGeometry.vertices.push(star);
         this.textlabels.push(textLabel);
+        this.dataService.pushselecting(textLabel);
         container.appendChild(textLabel.element);
+        console.log(this.dataService.selecting);
     }
     //To remove text labels just provide its id
     removeTextLabel(id) {
@@ -4862,6 +5048,8 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
         }
         if (i < this.textlabels.length) {
             this.textlabels.splice(i, 1);
+            this.dataService.spliceselecting(i, 1);
+            console.log(this.dataService.selecting);
         }
     }
     creatStarGeometry(label_xyz) {
@@ -4918,6 +5106,61 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
         div.style.textShadow = "0px 0px 3px white";
         div.style.color = "black";
         return div;
+    }
+    zoomfit() {
+        event.preventDefault();
+        if (this.selecting.length === 0) {
+            const obj = new __WEBPACK_IMPORTED_MODULE_1_three__["Object3D"]();
+            for (var i = 0; i < this.scene.children.length; i++) {
+                if (this.scene.children[i].name !== "GridHelper") {
+                    obj.children.push(this.scene.children[i]);
+                }
+            }
+            var boxHelper = new __WEBPACK_IMPORTED_MODULE_1_three__["BoxHelper"](obj);
+            boxHelper["geometry"].computeBoundingBox();
+            boxHelper["geometry"].computeBoundingSphere();
+            var boundingSphere = boxHelper["geometry"].boundingSphere;
+            var center = boundingSphere.center;
+            var radius = boundingSphere.radius;
+            var fov = this.camera.fov * (Math.PI / 180);
+            var vec_centre_to_pos = new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"]();
+            vec_centre_to_pos.subVectors(this.camera.position, center);
+            var tmp_vec = new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](center.x + Math.abs(radius / Math.sin(fov / 2)), center.y + Math.abs(radius / Math.sin(fov / 2)), center.z + Math.abs(radius / Math.sin(fov / 2)));
+            vec_centre_to_pos.setLength(tmp_vec.length());
+            var perspectiveNewPos = new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"]();
+            perspectiveNewPos.addVectors(center, vec_centre_to_pos);
+            var newLookAt = new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](center.x, center.y, center.z);
+            this.camera.position.copy(perspectiveNewPos);
+            this.camera.lookAt(newLookAt);
+            this.camera.updateProjectionMatrix();
+            this.controls.target.set(newLookAt.x, newLookAt.y, newLookAt.z);
+        }
+        else {
+            var axisX, axisY, axisZ, centerX, centerY, centerZ = 0;
+            var radius = 0;
+            for (var i = 0; i < this.selecting.length; i++) {
+                axisX += this.selecting[i].geometry.boundingSphere.center.x;
+                axisY += this.selecting[i].geometry.boundingSphere.center.y;
+                axisZ += this.selecting[i].geometry.boundingSphere.center.z;
+                radius = Math.max(this.selecting[i].geometry.boundingSphere.radius, radius);
+            }
+            centerX = axisX / this.scene.children[1].children.length;
+            centerY = axisY / this.scene.children[1].children.length;
+            centerY = axisY / this.scene.children[1].children.length;
+            var center = new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](centerX, centerY, centerZ);
+            var fov = this.camera.fov * (Math.PI / 180);
+            var vec_centre_to_pos = new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"]();
+            vec_centre_to_pos.subVectors(this.camera.position, center);
+            var tmp_vec = new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](center.x + Math.abs(radius / Math.sin(fov / 2)), center.y + Math.abs(radius / Math.sin(fov / 2)), center.z + Math.abs(radius / Math.sin(fov / 2)));
+            vec_centre_to_pos.setLength(tmp_vec.length());
+            var perspectiveNewPos = new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"]();
+            perspectiveNewPos.addVectors(center, vec_centre_to_pos);
+            var newLookAt = new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](center.x, center.y, center.z);
+            this.camera.position.copy(perspectiveNewPos);
+            this.camera.lookAt(newLookAt);
+            this.camera.updateProjectionMatrix();
+            this.controls.target.set(newLookAt.x, newLookAt.y, newLookAt.z);
+        }
     }
 };
 ViewerComponent = __decorate([
@@ -5501,7 +5744,7 @@ EditorComponent = __decorate([
 /***/ "../../../../../src/app/ui-components/editors/flowchart-viewer/flowchart-viewer.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!-- <mat-expansion-panel class='viewer' \r\n\t\t[expanded]=\"panelOpenState\">\r\n  \t<mat-expansion-panel-header>\r\n\t    <mat-panel-title class='header'> -->\r\n\r\n<div class=\"viewer\">\r\n\r\n\t<div class=\"container\">\r\n\t\t\r\n\t\t<!-- @Derek: Modify gutterSize/gutterColor/size -->\r\n\t\t<!-- https://bertrandg.github.io/angular-split/#/documentation -->\r\n\t\t<split  direction=\"horizontal\" \r\n              [gutterSize]=\"7\" \r\n              [useTransition]=\"true\" gutterColor=white\r\n              >\r\n\r\n\t\t\t\t<split-area class=\"sidebar\"\r\n\t\t\t\t\t[size]=\"30\"\r\n\t\t\t        order=\"1\">\r\n\t\t\t\t\t\t<section>\r\n\t\t\t\t\t\t\t<div (click)=\"save()\">Save Flowchart</div>\r\n\t\t\t\t\t\t\t<div (click)=\"openPicker()\">Load Flowchart\r\n\t\t\t\t\t\t\t\t<input #fileInput style=\"display: none;\"\r\n\t\t\t\t\t\t  \t\ttype=\"file\" (change)=\"loadFile()\"/>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</section>\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t<section>\r\n\t\t\t\t\t\t\t<div (click)=\"addNode($event, undefined)\">New Empty Node</div>\r\n\t\t\t\t\t\t\t<div class=\"disabled\">New Subnet</div>\r\n\t\t\t\t\t\t</section>\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t<!--<section>\r\n\t\t\t\t\t\t\t<div>Save Node</div>\r\n\t\t\t\t\t\t</section>-->\r\n\r\n\t\t\t\t\t\t<section>\r\n\t\t\t\t\t\t\t<app-node-library></app-node-library>\r\n\t\t\t\t\t\t</section>\r\n\t\t\t\t\t\t\r\n\t\t\t\t</split-area>\r\n\t\t\t\t\r\n\t\t\r\n\t\t\t\t<split-area order=\"2\" [size]=\"70\">\r\n\t\t\t\t    \t<div class=\"info-container\" \r\n\t\t\t\t    \t\tstyle=\"position: absolute; \r\n\t\t\t\t    \t\ttop: 30px; \r\n\t\t\t\t    \t\tright: 30px\">\r\n\t\t\t\t    \t\t<!-- Zoom: {{zoom}} -->\r\n\t\t\t\t    \t</div>\r\n\r\n\t\t\t\t        <!-- svg canvas to draw the edges -->\r\n\t\t\t\t\t\t<svg xmlns=\"http://www.w3.org/2000/svg\" \r\n\t\t\t\t\t\t\tclass=\"graph-container\" \r\n\t\t\t\t\t\t\tid=\"graph-edges\" \r\n\t\t\t\t\t\t\t[style.zoom]=\"zoom\">\r\n\r\n\t\t\t\t\t\t\t<g class=\"edge\" *ngFor=\"let edge of _edges\" >\r\n\t\t\t\t\t\t\t\t<path \r\n\t\t\t\t\t\t\t\t  [attr.d]=\"edge.path\" \r\n\t\t\t\t\t\t\t\t  stroke=\"#7469FF\"\r\n\t\t\t\t\t\t\t\t  stroke-width=\"3\" fill=\"none\" />\r\n\t\t\t\t\t\t\t</g>\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t<!-- dragging path -->\r\n\t\t\t\t\t\t\t<g id=\"temporary-edge\" [class.hidden]=\"!_linkMode\" >\r\n\t\t\t\t\t\t\t\t<path \r\n\t\t\t\t\t\t\t\t[attr.d]=\"edgeString(mouse_pos.start, mouse_pos.current)\" \r\n\t\t\t\t\t\t\t\t \tstroke=\"#7469FF\"\r\n\t\t\t\t\t\t\t\t \tstroke-width=\"5\" \r\n\t\t\t\t\t\t\t\t \tfill=\"none\" \r\n\t\t\t\t\t\t\t\t \tstroke-dasharray=\"5, 5\"/>\r\n\t\t\t\t\t\t\t\t\t<circle id=\"pointC\" [attr.cx]=\"mouse_pos.current.x\" [attr.cy]=\"mouse_pos.current.y\" r=\"5\" />\r\n\t\t\t\t\t\t\t\t</g>\r\n\r\n\t\t\t\t\t\t</svg>\r\n\r\n\t\t\t\t\t\t<!-- div container for the nodes -->\r\n\t\t\t\t\t\t<div class=\"graph-container\" \r\n\t\t\t\t\t\t\tid=\"graph-nodes\" ondragover=\"return false\" [style.zoom]=\"zoom\" >\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t<!-- all nodes -->\r\n\t\t\t\t\t\t\t<div class=\"node-container\">\r\n\r\n\t\t\t\t\t\t\t\t<!-- one node -->\r\n\t\t\t\t\t\t\t\t<div  class=\"node\"\r\n\t\t\t\t\t\t\t\t\t\t*ngFor=\"let node of _nodes; let node_index = index\" \r\n\t\t\t\t\t\t\t\t\t\t[style.left.px]=\"node.position[0]\" \r\n\t\t\t\t\t\t\t\t\t\t[style.top.px]=\"node.position[1]\" >\r\n\r\n\t\t\t\t\t\t\t\t\t<div class=\"btn-container\" *ngIf=\"node_index == _selectedNodeIndex\" >\r\n\t\t\t\t\t\t\t\t\t\t<!-- <div class=\"btn-group node-btns\">\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"action-button\" (click)=\"addPort(node_index, 'in')\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t<mat-icon>input</mat-icon>\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"action-button\" (click)=\"addPort(node_index, 'out')\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t<mat-icon>add_to_queue</mat-icon>\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t</div> -->\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"btn-group port-btns\">\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"action-button\" (click)=\"deleteNode(node_index)\" \t\t\r\n\t\t\t\t\t\t\t\t\t\t\t\tmatTooltip=\"Delete Node\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t<mat-icon>delete</mat-icon>\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"action-button\" (click)=\"toggleNode(node)\"\r\n\t\t\t\t\t\t\t\t\t\t\t\tmatTooltip=\"Disable Node\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t<mat-icon *ngIf='!node.isDisabled()'>check_circle</mat-icon>\r\n\t\t\t\t\t\t\t\t\t\t\t\t<mat-icon *ngIf='node.isDisabled()'>highlight_off</mat-icon>\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"action-button\" (click)=\"saveNode(node_index)\" \r\n\t\t\t\t\t\t\t\t\t\t\t\tmatTooltip=\"Save Node To Library\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t*ngIf=\"!isSaved(node)\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t<mat-icon>file_download</mat-icon>\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t<!-- node body -->\r\n\t\t\t\t\t\t\t\t\t<div class=\"node-body\" \r\n\t\t\t\t\t\t\t\t\t\t[class.library]=\"node.getType() !== undefined\"\r\n\t\t\t\t\t\t\t\t\t\t[class.error]=\"node._hasError\"\r\n\t\t\t\t\t\t\t\t\t\t[class.disabled] =\"node.isDisabled()\"\r\n\t\t\t\t\t\t\t\t\t\t(click)=\"clickNode($event, node_index)\"\r\n\t\t\t\t\t\t\t\t\t\tdraggable=true  \r\n\t\t\t\t\t\t\t\t\t\t(dragstart)=\"nodeDragStart($event, node)\" \r\n\t\t\t\t\t\t\t\t\t\t(drag)=\"nodeDragging($event, node, node_index)\" \r\n\t\t\t\t\t\t\t\t\t\t(dragend)=\"nodeDragEnd($event, node)\">\r\n\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"node-name\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t[class.selected]=\"node_index == _selectedNodeIndex\"\r\n\t\t\t\t\t\t\t\t\t\t\t\tmatTooltip=\"{{node.getName()}}\">\r\n\t\t\t\t\t\t\t\t\t\t\t    <input matInput\r\n\t\t\t\t\t\t\t\t\t\t\t    style=\"margin: 2px; min-width: 50px; width: 50px;\"\r\n\t\t\t\t\t\t\t\t\t\t\t    placeholder=\"Value\" value=\"{{ node.getName() }}\"\r\n\t\t\t\t\t\t\t\t\t\t\t    (change)=\"updateNodeName($event)\"/>\r\n\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t\t<!--inputs -->\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"port-container\">\r\n\t\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"port input\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t*ngFor=\"let port of node.getInputs(); let pi=index\"  \r\n\t\t\t\t\t\t\t\t\t\t\t\tid=\"n{{node_index}}pi{{pi}}\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"port-grip\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\tdraggable=true\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t[class.connected]=\"port.isConnected()\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(dragstart)=\"portDragStart($event, port, [node_index, pi])\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(drag)=\"portDragging($event, port)\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(dragend)=\"portDragEnd($event, port)\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(drop)=\"portDrop($event, port, [node_index, pi])\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t\t<span class=\"port-name\">{{ port.getName() }}</span>\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t\t<!-- outputs -->\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"port-container\">\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"port output\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t*ngFor=\"let port of node.getOutputs(); let po=index;\"\r\n\t\t\t\t\t\t\t\t\t\t\t\tid=\"n{{node_index}}po{{po}}\">\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t\t<span class=\"port-name\">{{port.getName()}}</span>\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"port-grip\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\tdraggable=true\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t[class.selected]=\"isPortSelected(node_index, po)\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t[class.connected]=\"port.isConnected()\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(click)=\"clickPort($event, node_index, po)\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(dragstart)=\"portDragStart($event, port, [node_index, po])\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(drag)=\"portDragging($event, port)\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(dragend)=\"portDragEnd($event, port)\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(drop)=\"portDrop($event, port, [node_index, po])\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t</div> \r\n\r\n\r\n\t\t\t\t\t\t\t\t\t\t<!-- <div class=\"fromLibrary\"  style=\"font-size: 8px; text-align: center\">\r\n\t\t\t\t\t\t\t\t\t\t\tLibrary Node\r\n\t\t\t\t\t\t\t\t\t\t</div> -->\r\n\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t</split-area>\r\n\r\n\t\t</split>\r\n\r\n\t</div>\r\n\t\r\n\r\n</div>\r\n<!-- </mat-expansion-panel> -->\r\n\r\n\r\n\r\n"
+module.exports = "<!-- <mat-expansion-panel class='viewer' \r\n\t\t[expanded]=\"panelOpenState\">\r\n  \t<mat-expansion-panel-header>\r\n\t    <mat-panel-title class='header'> -->\r\n\r\n<div class=\"viewer\">\r\n\r\n\t<div class=\"container\">\r\n\t\t\r\n\t\t<!-- @Derek: Modify gutterSize/gutterColor/size -->\r\n\t\t<!-- https://bertrandg.github.io/angular-split/#/documentation -->\r\n\t\t<split  direction=\"horizontal\" \r\n              [gutterSize]=\"7\" \r\n              [useTransition]=\"true\" gutterColor=white\r\n              >\r\n\r\n\t\t\t\t<split-area class=\"sidebar\"\r\n\t\t\t\t\t[size]=\"30\"\r\n\t\t\t        order=\"1\">\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t<section>\r\n\t\t\t\t\t\t\t<div (click)=\"addNode($event, undefined)\">New Empty Node</div>\r\n\t\t\t\t\t\t\t<div class=\"disabled\">New Subnet</div>\r\n\t\t\t\t\t\t</section>\r\n\r\n\t\t\t\t\t\t<section>\r\n\t\t\t\t\t\t\t<div (click)=\"newfile()\">New Flowchart</div>\r\n\t\t\t\t\t\t</section>\r\n\r\n\t\t\t\t\t\t<section>\r\n\t\t\t\t\t\t\t<div (click)=\"loadFromMemory()\">Revert</div>\r\n\t\t\t\t\t\t</section>\r\n\r\n\t\t\t\t\t\t<section>\r\n\t\t\t\t\t\t\t<div (click)=\"save()\">Download Flowchart</div>\r\n\t\t\t\t\t\t\t<div (click)=\"openPicker()\">Load Flowchart\r\n\t\t\t\t\t\t\t\t<input #fileInput style=\"display: none;\"\r\n\t\t\t\t\t\t  \t\ttype=\"file\" (change)=\"loadFile()\"/>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</section>\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t<!--<section>\r\n\t\t\t\t\t\t\t<div>Save Node</div>\r\n\t\t\t\t\t\t</section>-->\r\n\r\n\t\t\t\t\t\t<section>\r\n\t\t\t\t\t\t\t<app-node-library></app-node-library>\r\n\t\t\t\t\t\t</section>\r\n\t\t\t\t\t\t\r\n\t\t\t\t</split-area>\r\n\t\t\t\t\r\n\t\t\r\n\t\t\t\t<split-area order=\"2\" [size]=\"70\">\r\n\t\t\t\t    \t<div class=\"info-container\" \r\n\t\t\t\t    \t\tstyle=\"position: absolute; \r\n\t\t\t\t    \t\ttop: 30px; \r\n\t\t\t\t    \t\tright: 30px\">\r\n\t\t\t\t    \t\t<!-- Zoom: {{zoom}} -->\r\n\t\t\t\t    \t</div>\r\n\r\n\t\t\t\t        <!-- svg canvas to draw the edges -->\r\n\t\t\t\t\t\t<svg xmlns=\"http://www.w3.org/2000/svg\" \r\n\t\t\t\t\t\t\tclass=\"graph-container\" \r\n\t\t\t\t\t\t\tid=\"graph-edges\" \r\n\t\t\t\t\t\t\t[style.zoom]=\"zoom\">\r\n\r\n\t\t\t\t\t\t\t<g class=\"edge\" *ngFor=\"let edge of _edges\" >\r\n\t\t\t\t\t\t\t\t<path \r\n\t\t\t\t\t\t\t\t  [attr.d]=\"edge.path\" \r\n\t\t\t\t\t\t\t\t  stroke=\"#7469FF\"\r\n\t\t\t\t\t\t\t\t  stroke-width=\"3\" fill=\"none\" />\r\n\t\t\t\t\t\t\t</g>\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t<!-- dragging path -->\r\n\t\t\t\t\t\t\t<g id=\"temporary-edge\" [class.hidden]=\"!_linkMode\" >\r\n\t\t\t\t\t\t\t\t<path \r\n\t\t\t\t\t\t\t\t[attr.d]=\"edgeString(mouse_pos.start, mouse_pos.current)\" \r\n\t\t\t\t\t\t\t\t \tstroke=\"#7469FF\"\r\n\t\t\t\t\t\t\t\t \tstroke-width=\"5\" \r\n\t\t\t\t\t\t\t\t \tfill=\"none\" \r\n\t\t\t\t\t\t\t\t \tstroke-dasharray=\"5, 5\"/>\r\n\t\t\t\t\t\t\t\t\t<circle id=\"pointC\" [attr.cx]=\"mouse_pos.current.x\" [attr.cy]=\"mouse_pos.current.y\" r=\"5\" />\r\n\t\t\t\t\t\t\t\t</g>\r\n\r\n\t\t\t\t\t\t</svg>\r\n\r\n\t\t\t\t\t\t<!-- div container for the nodes -->\r\n\t\t\t\t\t\t<div class=\"graph-container\" \r\n\t\t\t\t\t\t\tid=\"graph-nodes\" ondragover=\"return false\" [style.zoom]=\"zoom\" >\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t<!-- all nodes -->\r\n\t\t\t\t\t\t\t<div class=\"node-container\">\r\n\r\n\t\t\t\t\t\t\t\t<!-- one node -->\r\n\t\t\t\t\t\t\t\t<div  class=\"node\"\r\n\t\t\t\t\t\t\t\t\t\t*ngFor=\"let node of _nodes; let node_index = index\" \r\n\t\t\t\t\t\t\t\t\t\t[style.left.px]=\"node.position[0]\" \r\n\t\t\t\t\t\t\t\t\t\t[style.top.px]=\"node.position[1]\" >\r\n\r\n\t\t\t\t\t\t\t\t\t<div class=\"btn-container\" *ngIf=\"node_index == _selectedNodeIndex\" >\r\n\t\t\t\t\t\t\t\t\t\t<!-- <div class=\"btn-group node-btns\">\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"action-button\" (click)=\"addPort(node_index, 'in')\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t<mat-icon>input</mat-icon>\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"action-button\" (click)=\"addPort(node_index, 'out')\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t<mat-icon>add_to_queue</mat-icon>\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t</div> -->\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"btn-group port-btns\">\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"action-button\" (click)=\"deleteNode(node_index)\" \t\t\r\n\t\t\t\t\t\t\t\t\t\t\t\tmatTooltip=\"Delete Node\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t<mat-icon>delete</mat-icon>\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"action-button\" (click)=\"toggleNode(node)\"\r\n\t\t\t\t\t\t\t\t\t\t\t\tmatTooltip=\"Disable Node\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t<mat-icon *ngIf='!node.isDisabled()'>check_circle</mat-icon>\r\n\t\t\t\t\t\t\t\t\t\t\t\t<mat-icon *ngIf='node.isDisabled()'>highlight_off</mat-icon>\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"action-button\" (click)=\"saveNode(node_index)\" \r\n\t\t\t\t\t\t\t\t\t\t\t\tmatTooltip=\"Save Node To Library\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t*ngIf=\"!isSaved(node)\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t<mat-icon>file_download</mat-icon>\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t<!-- node body -->\r\n\t\t\t\t\t\t\t\t\t<div class=\"node-body\" \r\n\t\t\t\t\t\t\t\t\t\t[class.library]=\"node.getType() !== undefined\"\r\n\t\t\t\t\t\t\t\t\t\t[class.error]=\"node._hasError\"\r\n\t\t\t\t\t\t\t\t\t\t[class.disabled] =\"node.isDisabled()\"\r\n\t\t\t\t\t\t\t\t\t\t(click)=\"clickNode($event, node_index)\"\r\n\t\t\t\t\t\t\t\t\t\tdraggable=true  \r\n\t\t\t\t\t\t\t\t\t\t(dragstart)=\"nodeDragStart($event, node)\" \r\n\t\t\t\t\t\t\t\t\t\t(drag)=\"nodeDragging($event, node, node_index)\" \r\n\t\t\t\t\t\t\t\t\t\t(dragend)=\"nodeDragEnd($event, node)\">\r\n\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"node-name\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t[class.selected]=\"node_index == _selectedNodeIndex\"\r\n\t\t\t\t\t\t\t\t\t\t\t\tmatTooltip=\"{{node.getName()}}\">\r\n\t\t\t\t\t\t\t\t\t\t\t    <input matInput\r\n\t\t\t\t\t\t\t\t\t\t\t    style=\"margin: 2px; min-width: 50px; width: 50px;\"\r\n\t\t\t\t\t\t\t\t\t\t\t    placeholder=\"Value\" value=\"{{ node.getName() }}\"\r\n\t\t\t\t\t\t\t\t\t\t\t    (change)=\"updateNodeName($event)\"/>\r\n\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t\t<!--inputs -->\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"port-container\">\r\n\t\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"port input\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t*ngFor=\"let port of node.getInputs(); let pi=index\"  \r\n\t\t\t\t\t\t\t\t\t\t\t\tid=\"n{{node_index}}pi{{pi}}\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"port-grip\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\tdraggable=true\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t[class.connected]=\"port.isConnected()\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(dragstart)=\"portDragStart($event, port, [node_index, pi])\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(drag)=\"portDragging($event, port)\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(dragend)=\"portDragEnd($event, port)\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(drop)=\"portDrop($event, port, [node_index, pi])\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t\t<span class=\"port-name\">{{ port.getName() }}</span>\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t\t<!-- outputs -->\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"port-container\">\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"port output\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t*ngFor=\"let port of node.getOutputs(); let po=index;\"\r\n\t\t\t\t\t\t\t\t\t\t\t\tid=\"n{{node_index}}po{{po}}\">\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t\t<span class=\"port-name\">{{port.getName()}}</span>\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"port-grip\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\tdraggable=true\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t[class.selected]=\"isPortSelected(node_index, po)\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t[class.connected]=\"port.isConnected()\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(click)=\"clickPort($event, node_index, po)\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(dragstart)=\"portDragStart($event, port, [node_index, po])\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(drag)=\"portDragging($event, port)\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(dragend)=\"portDragEnd($event, port)\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(drop)=\"portDrop($event, port, [node_index, po])\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t</div> \r\n\r\n\r\n\t\t\t\t\t\t\t\t\t\t<!-- <div class=\"fromLibrary\"  style=\"font-size: 8px; text-align: center\">\r\n\t\t\t\t\t\t\t\t\t\t\tLibrary Node\r\n\t\t\t\t\t\t\t\t\t\t</div> -->\r\n\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t</split-area>\r\n\r\n\t\t</split>\r\n\r\n\t</div>\r\n\t\r\n\r\n</div>\r\n<!-- </mat-expansion-panel> -->\r\n\r\n\r\n\r\n"
 
 /***/ }),
 
@@ -5588,6 +5831,15 @@ let FlowchartViewerComponent = class FlowchartViewerComponent extends __WEBPACK_
             start: { x: 0, y: 0 },
             current: { x: 0, y: 0 }
         };
+        // bad bad bad!
+        let self = this;
+        document.addEventListener("keydown", function (e) {
+            if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+                e.preventDefault();
+                self.save(true);
+                //your implementation or function calls
+            }
+        }, false);
     }
     reset() {
         this._selectedNode = undefined;
@@ -5972,8 +6224,15 @@ let FlowchartViewerComponent = class FlowchartViewerComponent extends __WEBPACK_
         }
         this.flowchartService.loadFile(url);
     }
-    save() {
-        this.flowchartService.saveFile();
+    loadFromMemory() {
+        this.flowchartService.checkSavedFile();
+    }
+    save(value) {
+        this.flowchartService.saveFile(true);
+        this.layoutService.showConsole();
+    }
+    newfile() {
+        this.flowchartService.newFile();
     }
 };
 __decorate([
@@ -7452,7 +7711,7 @@ NodeLibraryComponent = __decorate([
 /***/ "../../../../../src/app/ui-components/viewers/parameter-viewer/parameter-viewer.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"viewer\">\r\n\r\n\t<div class=\"container\">\r\n\r\n\t\t<div class=\"default\" *ngIf='_inputs == undefined || _inputs.length == 0'>\r\n\t\t\tThis node has no inputs\r\n\t\t</div>\r\n \r\n\t\t<div class='paramater-container' *ngFor=\"let inp of _inputs\" >\r\n\t\t\t\r\n\t\t\t<div class=\"info\">\r\n\t\t\t\t<div class='param'>\r\n\t\t\t\t\t<!--<span class='label'>Name</span>-->\r\n\t\t\t\t\t<span class='content'>{{ inp.getName() }}</span>\r\n\t\t\t\t</div>\r\n\t\t\t</div>\r\n\t\r\n\r\n\t\t\t<!-- if input type == Input -->\r\n\t\t\t<div class=\"value\" *ngIf=\"inp.getType() == InputPortTypes.Input\">\r\n\t\t\t\t<form  class='content'>\r\n\t\t\t\t\t<mat-form-field>\r\n\t\t\t\t\t\t<textarea matInput \r\n\t\t\t\t\t\t\tmatTextareaAutosize \r\n\t\t\t\t\t\t\tmatAutosizeMinRows=\"1\"\r\n\t            \t\t\tmatAutosizeMaxRows=\"5\" \r\n\t            \t\t\t(change)=\"updateComputedValue($event, inp)\"\r\n\t            \t\t\tvalue=\"{{ getValue(inp) }}\">\r\n\t            \t\t</textarea>\r\n\t\t\t\t\t</mat-form-field>\r\n\t\t\t\t</form>\r\n\t\t\t</div> \r\n\r\n\t\t\t<!-- if input type == Slider -->\r\n\t\t\t<div class=\"value\" \r\n\t\t\t\t*ngIf=\"inp.getType() == InputPortTypes.Slider\">\r\n\t\t\t\t<mat-slider min=\"{{inp.getOpts().min}}\" \r\n\t\t\t\t\t\t\tmax=\"{{inp.getOpts().max}}\" \r\n\t\t\t\t\t\t\tstep=\"{{inp.getOpts().step}}\" \r\n\t\t\t\t\t\t\t[thumb-label]=\"true\"\r\n\t\t\t\t\t\t\t#val\r\n\t\t\t\t\t\t\t[(ngModel)]=\"val.value\"\r\n\t\t\t\t\t\t\t(change)=\"updateComputedValue($event, inp, val.value)\"\r\n\t\t\t\t\t\t\tvalue=\"{{ getValue(inp) }}\"></mat-slider>\r\n\t\t\t</div>\r\n\r\n\t\t</div>\r\n\r\n\t\t\t<!-- todo: disable if port is connected -->\r\n\t\t\t<!-- ui options based on type -->\r\n\t\t\t<!-- todo: -->\r\n\t</div>\r\n\t<button id=\"execute\" mat-raised-button color=\"accent\" (click)=\"executeFlowchart($event)\">Execute Flowchart</button>  \r\n\r\n</div>\r\n\r\n"
+module.exports = "<div class=\"viewer\">\r\n\r\n\t<div class=\"container\">\r\n\r\n\t\t<div class=\"default\" *ngIf='_inputs == undefined || _inputs.length == 0'>\r\n\t\t\tThis node has no inputs\r\n\t\t</div>\r\n \r\n\t\t<div class='paramater-container' *ngFor=\"let inp of _inputs\" >\r\n\t\t\t\r\n\t\t\t<div class=\"info\">\r\n\t\t\t\t<div class='param'>\r\n\t\t\t\t\t<!--<span class='label'>Name</span>-->\r\n\t\t\t\t\t<span class='content'>{{ inp.getName() }}</span>\r\n\t\t\t\t</div>\r\n\t\t\t</div>\r\n\r\n\t\t\t<!-- if input type == Input -->\r\n\t\t\t<div class=\"value\" *ngIf=\"inp.getType() == InputPortTypes.Input\">\r\n\t\t\t\t<form  class='content'>\r\n\t\t\t\t\t<mat-form-field>\r\n\t\t\t\t\t\t<textarea matInput \r\n\t\t\t\t\t\t\tmatTextareaAutosize \r\n\t\t\t\t\t\t\tmatAutosizeMinRows=\"1\"\r\n\t            \t\t\tmatAutosizeMaxRows=\"5\" \r\n\t            \t\t\t(change)=\"updateComputedValue($event, inp)\"\r\n\t            \t\t\tvalue=\"{{ getValue(inp) }}\">\r\n\t            \t\t</textarea>\r\n\t\t\t\t\t</mat-form-field>\r\n\t\t\t\t</form>\r\n\t\t\t</div> \r\n\r\n\t\t\t<!-- if input type == Slider -->\r\n\t\t\t<div class=\"value\" \r\n\t\t\t\t*ngIf=\"inp.getType() == InputPortTypes.Slider\">\r\n\t\t\t\t<mat-slider min=\"{{inp.getOpts().min}}\" \r\n\t\t\t\t\t\t\tmax=\"{{inp.getOpts().max}}\" \r\n\t\t\t\t\t\t\tstep=\"{{inp.getOpts().step}}\" \r\n\t\t\t\t\t\t\t[thumb-label]=\"true\"\r\n\t\t\t\t\t\t\t#val\r\n\t\t\t\t\t\t\t[(ngModel)]=\"val.value\"\r\n\t\t\t\t\t\t\t(change)=\"updateComputedValue($event, inp, val.value)\"\r\n\t\t\t\t\t\t\tvalue=\"{{ getValue(inp) }}\"></mat-slider>\r\n\t\t\t</div>\r\n\r\n\t\t</div>\r\n\r\n\t\t\t<!-- todo: disable if port is connected -->\r\n\t\t\t<!-- ui options based on type -->\r\n\t\t\t<!-- todo: -->\r\n\t</div>\r\n\t<button id=\"execute\" mat-raised-button color=\"accent\" (click)=\"executeFlowchart($event)\">Execute Flowchart</button>  \r\n\r\n</div>\r\n\r\n"
 
 /***/ }),
 
@@ -7501,6 +7760,7 @@ let ParameterViewerComponent = class ParameterViewerComponent extends __WEBPACK_
         this.InputPortTypes = __WEBPACK_IMPORTED_MODULE_2__base_classes_port_PortModule__["b" /* InputPortTypes */];
     }
     ngOnInit() {
+        this.update();
     }
     reset() {
         this._node = undefined;
@@ -7712,8 +7972,7 @@ let ViewerContainerComponent = class ViewerContainerComponent extends __WEBPACK_
     constructor(injector, layoutService) {
         super(injector, "Viewer Container", "Contains all the viewers");
         this.layoutService = layoutService;
-        this.group = { value: undefined };
-        this._lock = false;
+        this.group = { value: 5 };
         this._layout_subscription = this.layoutService.getMessage().subscribe(message => {
             if (message.text.startsWith("Module: ")) {
                 this.switchToHelp();
@@ -7723,37 +7982,32 @@ let ViewerContainerComponent = class ViewerContainerComponent extends __WEBPACK_
             }
         });
     }
+    reset() {
+    }
     updateGroupValue(value) {
         this.group.value = value;
         this.layoutService.setViewContainer(value);
     }
     switchToHelp() {
         this.updateGroupValue(4);
-        this._lock = true;
     }
     switchToConsole() {
         this.updateGroupValue(3);
-        this._lock = true;
     }
     update() {
-        if (!this._lock) {
-            let port = this.flowchartService.getSelectedPort();
-            if (port == undefined) {
-                this.updateGroupValue(this.layoutService.getViewContainer());
-            }
-            else {
-                this.updateGroupValue(this.flowchartService.getSelectedPort().getType());
-            }
+        let port = this.flowchartService.getSelectedPort();
+        if (port == undefined) {
+            this.updateGroupValue(this.layoutService.getViewContainer());
         }
-    }
-    lock() {
-        this._lock = !this._lock;
+        else {
+            console.log(this.flowchartService.getSelectedPort().getType());
+            this.updateGroupValue(this.flowchartService.getSelectedPort().getType());
+        }
     }
     ngOnInit() {
         this.updateGroupValue(this.layoutService.getViewContainer());
     }
     changed() {
-        this._lock = false;
         this.layoutService.setViewContainer(this.group.value);
     }
 };

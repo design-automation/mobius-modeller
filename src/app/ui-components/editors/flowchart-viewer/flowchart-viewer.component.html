@@ -17,17 +17,26 @@
 				<split-area class="sidebar"
 					[size]="30"
 			        order="1">
+							
 						<section>
-							<div (click)="save()">Save Flowchart</div>
+							<div (click)="addNode($event, undefined)">New Empty Node</div>
+							<div class="disabled">New Subnet</div>
+						</section>
+
+						<section>
+							<div (click)="newfile()">New Flowchart</div>
+						</section>
+
+						<section>
+							<div (click)="loadFromMemory()">Revert</div>
+						</section>
+
+						<section>
+							<div (click)="save()">Download Flowchart</div>
 							<div (click)="openPicker()">Load Flowchart
 								<input #fileInput style="display: none;"
 						  		type="file" (change)="loadFile()"/>
 							</div>
-						</section>
-						
-						<section>
-							<div (click)="addNode($event, undefined)">New Empty Node</div>
-							<div class="disabled">New Subnet</div>
 						</section>
 						
 						<!--<section>

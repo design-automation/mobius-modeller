@@ -1,7 +1,7 @@
 export enum OutputPortTypes{
-    Three, 
+    Three,
     Code,
-    Text, 
+    Text,
     Console
 }  
 

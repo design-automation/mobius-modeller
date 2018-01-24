@@ -8,42 +8,50 @@
 #point{
   margin-left:25px;
   font-size:20px;
-  background-color:transparent;
+  background:transparent;
   border:0;
+  font-family:sans-serif;
 }
 #vertice{
   font-size:22px;
   background-color:transparent;
   border:0;
+  font-family:sans-serif;
 }
 #edge{
   font-size:22px;
   background-color:transparent;
   border:0;
+  font-family:sans-serif;
 }
 #wire{
   font-size:22px;
   background-color:transparent;
   border:0;
+  font-family:sans-serif;
 }
 #face{
   font-size:22px;
   background-color:transparent;
   border:0;
+  font-family:sans-serif;
 }
 #object{
   font-size:20px;
   background-color:transparent;
   border:0;
+  font-family:sans-serif;
 }
 #selected{
   margin-left:30px;
 }
 .visible{
-  color: grey;
+  background-color: white !important;
+  color:#395d73;
 }
 .selectvisible{
-  color: grey;
+  background-color:  white !important;
+  color:#395d73;
 }
 #table{
   width:100% ;
@@ -58,9 +66,9 @@
   width:100%;
   border:0;
 }
-.selectid{
+/*.selectid{
   background-color:#66CCFF;
-}
+}*/
 #select{
   position: relative;
   float:right;

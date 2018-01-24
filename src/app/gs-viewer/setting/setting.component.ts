@@ -87,37 +87,29 @@ export class SettingComponent implements OnInit {
 
   changegrid(){
     this.gridVisible = !this.gridVisible;
-    var maxX=4;
-    var maxY=4;
-    /*for(var j=0;j<this.scene.children.length;j++){
-      if(this.scene.children[j].type==="Scene"){
-        for(var i=0;i<this.scene.children[j].children.length;i++){
-          maxX=Math.max(maxX,Math.abs(this.scene.children[j].children[i].children[0]["geometry"].boundingBox.max.x));
-          maxY=Math.max(maxY,Math.abs(this.scene.children[j].children[i].children[0]["geometry"].boundingBox.max.y));
-        }
-      }
-    }*/
-    
+    var max=8;
+    var center=new THREE.Vector3(0,0,0);
     for(var i=0;i<this.scene.children.length;i++){
       if(this.scene.children[i].type==="Scene"){
         for(var j=0;j<this.scene.children[i].children.length;j++){
           if(this.scene.children[i].children[j]["geometry"].boundingSphere.radius!==0){
-            maxX=Math.max(maxX,Math.abs(this.scene.children[i].children[j]["geometry"].boundingBox.max.x));
-            maxY=Math.max(maxY,Math.abs(this.scene.children[i].children[j]["geometry"].boundingBox.max.y));
+            center=this.scene.children[i].children[j]["geometry"].boundingSphere.center;
+            var radius:number=this.scene.children[i].children[j]["geometry"].boundingSphere.radius;
+            max=Math.ceil(radius+Math.max(Math.abs(center.x),Math.abs(center.y),Math.abs(center.z))*1.2);
             break;
           }
         }
       }
     }
-    var max=Math.ceil(Math.max(maxX,maxY)*1.3)*2;
     if(this.gridVisible){
-      var gridhelper=new THREE.GridHelper( max, max );
+      var gridhelper=new THREE.GridHelper( max, max);
       gridhelper.name="GridHelper";
       var vector=new THREE.Vector3(0,1,0);
       gridhelper.lookAt(vector);
+      gridhelper.position.set(center.x,center.y,0);
       this.scene.add( gridhelper);
-    }
-    else{
+
+    }else{
       this.scene.remove(this.scene.getObjectByName("GridHelper"));
     }
     this.dataService.addgrid(this.gridVisible);
@@ -125,22 +117,20 @@ export class SettingComponent implements OnInit {
 
   changeaxis(){
     this.axisVisible = !this.axisVisible;
-    var maxX=4;
-    var maxY=4;
-    var maxZ=4;
+    var max=8;
+    var center=new THREE.Vector3(0,0,0);
     for(var i=0;i<this.scene.children.length;i++){
       if(this.scene.children[i].type==="Scene"){
         for(var j=0;j<this.scene.children[i].children.length;j++){
           if(this.scene.children[i].children[j]["geometry"].boundingSphere.radius!==0){
-            maxX=Math.max(maxX,Math.abs(this.scene.children[i].children[j]["geometry"].boundingBox.max.x));
-            maxY=Math.max(maxY,Math.abs(this.scene.children[i].children[j]["geometry"].boundingBox.max.y));
-            maxZ=Math.max(maxZ,Math.abs(this.scene.children[i].children[j]["geometry"].boundingBox.max.z));
+            center=this.scene.children[i].children[j]["geometry"].boundingSphere.center;
+            var radius:number=this.scene.children[i].children[j]["geometry"].boundingSphere.radius;
+            max=radius;
             break;
           }
         }
       }
     }
-    var max=Math.ceil(Math.max(maxX,maxY,maxZ)*1.2);
     if(this.axisVisible){
       var axishelper = new THREE.AxisHelper( max );
       axishelper.name="AxisHelper";

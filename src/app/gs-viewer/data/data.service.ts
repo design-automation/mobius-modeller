@@ -41,7 +41,7 @@ export class DataService {
   selecting:any = [];
   object:any;
   axis:boolean;
-  grid:boolean;
+  grid:boolean=true;
   shadow:boolean;
   frame:boolean;
   opacity:number;
@@ -55,11 +55,22 @@ export class DataService {
           scene: gs.IThreeScene, 
           faces_map: Map<number, gs.ITopoPathData>, 
           wires_map: Map<number, gs.ITopoPathData>, 
-          edges_map: Map<number, gs.ITopoPathData>} ;
+          edges_map: Map<number, gs.ITopoPathData>,
+          vertices_map: Map<number, gs.ITopoPathData>} ;
   scenechildren:Array<any>=[];
   red:number;
   green:number;
   blue:number;
+  center:THREE.Vector3;
+  radius:number;
+  scenemaps:{
+          scene: gs.IThreeScene, 
+          faces_map: Map<number, gs.ITopoPathData>, 
+          wires_map: Map<number, gs.ITopoPathData>, 
+          edges_map: Map<number, gs.ITopoPathData>,
+          vertices_map: Map<number, gs.ITopoPathData>} ;
+  textlabels:Array<any>=[];
+  attributevertix:Array<any>;
 
 
   // ---- 
@@ -89,7 +100,6 @@ export class DataService {
     // scene
     let scene: THREE.Scene = new THREE.Scene();
     scene.background = new THREE.Color( 0xcccccc );
-    
 
     // renderer
     let renderer: THREE.WebGLRenderer =  new THREE.WebGLRenderer( {antialias: true} );
@@ -129,14 +139,6 @@ export class DataService {
     hemi_light.color.setHSL( default_hue, default_saturation, default_saturation);
     scene.add( hemi_light );
 
-    // var self=this;
-    // self.;
-    // self._controls.addEventListener( 'change',  function() {
-    //   self.light.position.copy( self._camera.position );
-    // } );
-    // self.light.target.position.set( 0, 0, 0 );
-    // this._scene.add( self.light );
-    
     this._scene = scene;
     this._renderer = renderer;
     this._camera = camera; 
@@ -149,9 +151,8 @@ export class DataService {
     // add it to alight - what does alight do?
     this._alight = [];
     this._alight.push(hemi_light);
+    
   }
-
-
 
   //
   //  Getter and Setting for gs-model
@@ -162,25 +163,23 @@ export class DataService {
 
   setGsModel(model: gs.IModel){
     this._gsModel = model;
+    if(this._gsModel!==undefined){
+      this.updateModel();
+    }
     this.sendMessage("model_update");
   }
-  updateModel():any{
+  updateModel():void{
     var scene_and_maps: {
           scene: gs.IThreeScene, 
           faces_map: Map<number, gs.ITopoPathData>, 
           wires_map: Map<number, gs.ITopoPathData>, 
-          edges_map: Map<number, gs.ITopoPathData>}= gs.genThreeOptModelAndMaps( this._gsModel );
-    return scene_and_maps;
+          edges_map: Map<number, gs.ITopoPathData>,
+          vertices_map: Map<number, gs.ITopoPathData>}= gs.genThreeOptModelAndMaps( this._gsModel );
+    this.scenemaps=scene_and_maps;
   }
-
-
-  //
-  // Getter and Setter for Scene
-  //
-  // addScene(scene: THREE.Scene): void{
-  //   console.warn("Three Scene is being reset");
-  // 	this._scene = scene;
-  // }
+  getscememaps():any{
+    return this.scenemaps;
+  }
 
   getScene(width?: number, height?: number): THREE.Scene{
     if(width && height){
@@ -286,6 +285,15 @@ export class DataService {
   getselecting(){
     return this.selecting;
   }
+
+  addattrvertix(attributevertix){
+    this.attributevertix=attributevertix;
+  }
+
+  getattrvertix(){
+    return this.attributevertix;
+  }
+
   addgrid(grid){
     this.grid=grid;
   }
@@ -333,64 +341,5 @@ export class DataService {
    this.sendMessage();
    return this.scenechildren;
  }
-
-   zoomfit(){
-    if(this.selecting.length===0){
-      const obj=new THREE.Object3D();
-      for(var i=0;i<this._scene.children.length;i++){
-        if(this._scene.children[i].name!=="GridHelper"){
-          obj.children.push(this._scene.children[i]);
-        }
-      }
-      var boxHelper = new THREE.BoxHelper(obj);
-      boxHelper["geometry"].computeBoundingBox();
-      boxHelper["geometry"].computeBoundingSphere();
-      var boundingSphere=boxHelper["geometry"].boundingSphere;
-      var center = boundingSphere.center;
-      var radius = boundingSphere.radius;
-      var fov=this._camera.fov * ( Math.PI / 180 );
-      var vec_centre_to_pos: THREE.Vector3 = new THREE.Vector3();
-      vec_centre_to_pos.subVectors(this._camera.position, center);
-      var tmp_vec=new THREE.Vector3( center.x+Math.abs( radius / Math.sin( fov / 2 )),
-                                     center.y+Math.abs( radius / Math.sin( fov / 2 ) ),
-                                     center.z+Math.abs( radius / Math.sin( fov / 2 )));
-      vec_centre_to_pos.setLength(tmp_vec.length());
-      var perspectiveNewPos: THREE.Vector3 = new THREE.Vector3();
-      perspectiveNewPos.addVectors(center, vec_centre_to_pos);
-      var newLookAt = new THREE.Vector3(center.x,center.y,center.z)
-      this._camera.position.copy(perspectiveNewPos);
-      this._camera.lookAt(newLookAt);
-      this._camera.updateProjectionMatrix();
-      this._orbitControls.target.set(newLookAt.x, newLookAt.y,newLookAt.z);
-    }else{
-      event.preventDefault();
-      var axisX,axisY,axisZ,centerX,centerY,centerZ=0;
-      var radius=0;
-      for(var i=0;i<this.selecting.length;i++){
-        axisX+=this.selecting[i].geometry.boundingSphere.center.x;
-        axisY+=this.selecting[i].geometry.boundingSphere.center.y;
-        axisZ+=this.selecting[i].geometry.boundingSphere.center.z;
-        radius=Math.max(this.selecting[i].geometry.boundingSphere.radius,radius);
-      }
-      centerX=axisX/this._scene.children[1].children.length;
-      centerY=axisY/this._scene.children[1].children.length;
-      centerY=axisY/this._scene.children[1].children.length;
-      var center = new THREE.Vector3(centerX,centerY,centerZ);
-      var fov=this._camera.fov * ( Math.PI / 180 );
-      var vec_centre_to_pos: THREE.Vector3 = new THREE.Vector3();
-      vec_centre_to_pos.subVectors(this._camera.position, center);
-      var tmp_vec=new THREE.Vector3(center.x+Math.abs( radius / Math.sin( fov / 2 )),
-                                    center.y+Math.abs( radius / Math.sin( fov / 2 ) ),
-                                    center.z+Math.abs( radius / Math.sin( fov / 2 )));
-      vec_centre_to_pos.setLength(tmp_vec.length());
-      var perspectiveNewPos: THREE.Vector3 = new THREE.Vector3();
-      perspectiveNewPos.addVectors(center, vec_centre_to_pos);
-      var newLookAt = new THREE.Vector3(center.x,center.y,center.z)
-      this._camera.position.copy(perspectiveNewPos);
-      this._camera.lookAt(newLookAt);
-      this._camera.updateProjectionMatrix();
-      this._orbitControls.target.set(newLookAt.x, newLookAt.y,newLookAt.z);
-    }
-  }
 
 }

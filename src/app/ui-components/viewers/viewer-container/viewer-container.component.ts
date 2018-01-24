@@ -5,6 +5,7 @@ import { Viewer } from '../../../base-classes/viz/Viewer';
 import { LayoutService } from '../../../global-services/layout.service';
 import { Subscription } from 'rxjs/Subscription';
 
+
 @Component({
   selector: 'app-viewer-container',
   templateUrl: './viewer-container.component.html',
@@ -12,9 +13,7 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class ViewerContainerComponent extends Viewer implements OnInit {
 
-  	group = {value: undefined};
-  	_lock: boolean = false;
-
+  	group: {value: number} = {value: 5};
   	private _layout_subscription: Subscription;
 
 	constructor(injector: Injector, private layoutService: LayoutService){ 
@@ -30,36 +29,31 @@ export class ViewerContainerComponent extends Viewer implements OnInit {
   		});
 	}
 
+	reset(): void{
+	}
+
 	updateGroupValue(value: number): void{
 		this.group.value = value;
 		this.layoutService.setViewContainer(value); 
 	}
 
 	switchToHelp(): void{
-		
 		this.updateGroupValue(4);
-		this._lock = true;
 	}
 
 	switchToConsole(): void{
 		this.updateGroupValue(3);
-		this._lock = true;
 	}
 
 	update() {
-		if(!this._lock){
-			let port = this.flowchartService.getSelectedPort(); 
-			if(port == undefined){
-				this.updateGroupValue(this.layoutService.getViewContainer());
-			}
-			else{
-				this.updateGroupValue( this.flowchartService.getSelectedPort().getType());
-			}
+		let port = this.flowchartService.getSelectedPort(); 
+		if(port == undefined){
+			this.updateGroupValue(this.layoutService.getViewContainer());
 		}
-	}
-
-	lock(){
-		this._lock = !this._lock;
+		else{
+			console.log(this.flowchartService.getSelectedPort().getType() )
+			this.updateGroupValue( this.flowchartService.getSelectedPort().getType() );
+		}
 	}
 
   	ngOnInit() {
@@ -67,7 +61,6 @@ export class ViewerContainerComponent extends Viewer implements OnInit {
   	}
 
   	changed(): void{
-  		this._lock = false;
   		this.layoutService.setViewContainer(this.group.value);
   	}
 

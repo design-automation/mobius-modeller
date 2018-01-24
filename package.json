@@ -2,11 +2,17 @@
   "name": "mobius-modeller",
   "version": "0.0.0",
   "license": "MIT",
+  "config": {
+    "dev_url": "https://akshatamohanty.github.io/mobius-modeller/",
+    "prod_url": "https://phtj.github.io/mobius-modeller/"
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "test": "ng test",
+    "build-dev": "ng build --base-href=%npm_package_config_dev_url% && rm -r ./docs && cp -r ./dist ./docs && rm -r ./dist",
+    "build-prod": "ng build --base-href=%npm_package_config_prod_url% && rm -r ./docs && cp -r ./dist ./docs && rm -r ./dist",
+    "test": "echo 'Tests disabled' && exit 0",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
@@ -31,7 +37,7 @@
     "circular-json": "^0.4.0",
     "core-js": "^2.4.1",
     "gs-json": "^0.1.27",
-    "gs-modelling": "^0.1.16",
+    "gs-modelling": "^0.1.20",
     "hammerjs": "^2.0.8",
     "js-beautify": "^1.7.4",
     "ng2-ace-editor": "^0.3.4",
