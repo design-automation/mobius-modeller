@@ -607,7 +607,7 @@ export class FlowchartViewerComponent extends Viewer{
   }
 
   save(value: boolean): void{
-    this.flowchartService.saveFile(true);
+    this.flowchartService.saveFile(value);
     this.layoutService.showConsole();
   }
 

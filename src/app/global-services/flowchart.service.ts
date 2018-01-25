@@ -83,7 +83,6 @@ export class FlowchartService {
 
     if(message){
       if (confirm(message)) {
-        console.log(storageString);
          this.loadFile(storageString);
       } else {
           this.newFile();
