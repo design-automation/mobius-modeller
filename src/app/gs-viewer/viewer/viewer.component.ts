@@ -221,7 +221,6 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
       this.controls.target.set(this.center.x,this.center.y,this.center.z);
       this.controls.update();
       this.scene.add(objectData);
-      console.log(this.scene);
     }
     catch(ex){
       console.error("Error displaying model:", ex);

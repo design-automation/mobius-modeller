@@ -249,6 +249,8 @@ export class ProcedureEditorComponent extends Viewer implements OnInit{
 				prod.data.getLeftComponent().expression.replace(/[^\w\[\]]/gi, '');
 		}
 
+		this._variableList = this._node.getVariableList();
+
 		// let procedure: IProcedure = prod.data;
 
 		// if(property == "left"){	
