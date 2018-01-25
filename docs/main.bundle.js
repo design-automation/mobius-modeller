@@ -1033,7 +1033,7 @@ class Flowchart {
             if (outVal.constructor.name == "Model") {
                 console.log("original model: ", outVal);
                 let modelData = outVal.toJSON();
-                let model = new __WEBPACK_IMPORTED_MODULE_0_gs_json__["a" /* Model */](modelData);
+                let model = new __WEBPACK_IMPORTED_MODULE_0_gs_json__["c" /* Model */](modelData);
                 model["_kernel"]._objs = JSON.parse(JSON.stringify(outVal["_kernel"]._objs));
                 model["_kernel"]._points = JSON.parse(JSON.stringify(outVal["_kernel"]._points));
                 console.log("new model: ", model);
@@ -3184,7 +3184,7 @@ let DataService = class DataService {
         this.sendMessage("model_update");
     }
     updateModel() {
-        var scene_and_maps = __WEBPACK_IMPORTED_MODULE_3_gs_json__["b" /* genThreeOptModelAndMaps */](this._gsModel);
+        var scene_and_maps = __WEBPACK_IMPORTED_MODULE_3_gs_json__["e" /* genThreeOptModelAndMaps */](this._gsModel);
         this.scenemaps = scene_and_maps;
     }
     getscememaps() {
