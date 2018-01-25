@@ -529,7 +529,7 @@ export class FlowchartService {
       this._selectedPort = undefined;
       this._selectedProcedure = undefined;
 
-      this.disconnectNode(node_index);
+      //this.disconnectNode(node_index);
       this._flowchart.deleteNode(node_index);
 
       // print message to console
