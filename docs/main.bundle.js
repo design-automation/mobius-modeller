@@ -1028,20 +1028,16 @@ class Flowchart {
             // should this be from within the node?
             let outputPort = node.getOutputByIndex(edge.output_address[1]);
             let inputPort = inputNode.getInputByIndex(edge.input_address[1]);
+            inputPort.setComputedValue(outputPort.getValue());
             let outVal = outputPort.getValue();
-            // var bookmark = vc.getVersion();
-            // vc.gotoVersion(bookmark);
             if (outVal.constructor.name == "Model") {
+                console.log("original model: ", outVal);
                 let modelData = outVal.toJSON();
                 let model = new __WEBPACK_IMPORTED_MODULE_0_gs_json__["c" /* Model */](modelData);
-                console.log(model === outVal);
-                inputPort.setComputedValue(model);
-                // var vc = new VersionControlled(outVal);
-                // console.log(vc);
-                // outputPort.setComputedValue(vc.data); 
-            }
-            else {
-                inputPort.setComputedValue(outputPort.getValue());
+                model["_kernel"]._objs = JSON.parse(JSON.stringify(outVal["_kernel"]._objs));
+                model["_kernel"]._points = JSON.parse(JSON.stringify(outVal["_kernel"]._points));
+                console.log("new model: ", model);
+                outputPort.setComputedValue(model);
             }
             // let value = outputPort.getValue();
             // if( value["_kernel"] && value["_id"] ){
