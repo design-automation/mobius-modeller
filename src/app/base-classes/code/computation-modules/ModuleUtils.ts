@@ -32,7 +32,6 @@ export class ModuleUtils{
 					}
 
 					if(prop == name && typeof(submod) == "object"){
-						console.log(submod);
 						imod = this.createModule(prop, submod);
 					}
 
@@ -84,6 +83,7 @@ export class ModuleUtils{
 		if(result === null || result[0]==""){
 		 	result = [];
 		}
+
 
 		let final_result = result.map(function(r){ 
 			r = r.trim();

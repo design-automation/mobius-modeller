@@ -53,8 +53,6 @@ export class FlowchartService {
       this.checkSavedNodes();
       //this.checkSavedFile();
       this.autoSave(60*5);
-
-      console.log("d", ModuleSet);
   };
 
   autoSave(time_in_seconds: number): void{
