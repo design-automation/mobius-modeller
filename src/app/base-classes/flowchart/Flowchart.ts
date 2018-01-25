@@ -382,9 +382,6 @@ export class Flowchart implements IFlowchart{
 				let model = new gs.Model(modelData);
 				console.log(model === outVal);
 				inputPort.setComputedValue( model );
-				// var vc = new VersionControlled(outVal);
-				// console.log(vc);
-				// outputPort.setComputedValue(vc.data); 
 			}
 			else{
 				inputPort.setComputedValue( outputPort.getValue() );
