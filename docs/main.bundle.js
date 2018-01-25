@@ -3144,7 +3144,7 @@ let DataService = class DataService {
         this.sendMessage("model_update");
     }
     updateModel() {
-        var scene_and_maps = __WEBPACK_IMPORTED_MODULE_3_gs_json__["a" /* genThreeOptModelAndMaps */](this._gsModel);
+        var scene_and_maps = __WEBPACK_IMPORTED_MODULE_3_gs_json__["e" /* genThreeOptModelAndMaps */](this._gsModel);
         this.scenemaps = scene_and_maps;
     }
     getscememaps() {
