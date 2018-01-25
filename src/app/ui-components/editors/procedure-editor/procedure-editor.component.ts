@@ -43,7 +43,6 @@ export class ProcedureEditorComponent extends Viewer implements OnInit{
 		this._node = this.flowchartService.getSelectedNode();
 		this._procedureArr = this._node.getProcedure();	
 		this._variableList = this._node.getVariableList();
-		console.log(this._variableList);
 	}
 
 	update(message: string){
@@ -60,7 +59,6 @@ export class ProcedureEditorComponent extends Viewer implements OnInit{
 			}
 
 			this._variableList = this._node.getVariableList();
-			console.log(this._variableList);
 			
 			//this.tree.treeModel.expandAll();
 		}

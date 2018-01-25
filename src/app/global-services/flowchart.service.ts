@@ -525,12 +525,11 @@ export class FlowchartService {
 
   deleteNode(node_index: number): void{
 
-      if(this._selectedNode == node_index){
-        this._selectedNode = undefined;
-        this._selectedPort = undefined;
-        this._selectedProcedure = undefined;
-      }
+      this._selectedNode = undefined;
+      this._selectedPort = undefined;
+      this._selectedProcedure = undefined;
 
+      this.disconnectNode(node_index);
       this._flowchart.deleteNode(node_index);
 
       // print message to console
