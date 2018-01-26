@@ -82,16 +82,18 @@ export class GraphNode implements IGraphNode{
 			// loading from file
 			this._id = nodeData["_id"];
 			this.position = nodeData["position"];
-			this._name = nodeData["_name"]
+			this._name = nodeData["_name"];
 		}
 		else{
 			// creating from library
 			this.position = [0,0];
 		}
 
+
 		// map direct properties
 		this.portCounter = nodeData["portCounter"];
 		this._isDisabled = nodeData["_isDisabled"];
+
 
 		// add inputs
 		let inputs: InputPort[] = nodeData["_inputs"];
@@ -102,7 +104,7 @@ export class GraphNode implements IGraphNode{
 			input.update(inp_data, "inp");
 			this._inputs.push(input);
 		}
-
+			
 		// add outputs
 		let outputs: OutputPort[] = nodeData["_outputs"];
 		for( let output_index in outputs ){
