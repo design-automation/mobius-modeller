@@ -4,6 +4,8 @@ import { Viewer } from '../../../base-classes/viz/Viewer';
 import { IGraphNode } from '../../../base-classes/node/NodeModule';
 import { IPort } from '../../../base-classes/port/PortModule';
 
+import CircularJSON from 'circular-json';
+
 @Component({
   selector: 'app-text-viewer',
   templateUrl: './text-viewer.component.html',
@@ -43,7 +45,7 @@ export class TextViewerComponent extends Viewer implements OnInit {
 	getType(output: IPort): string{
 
 		if(output.getValue()){
-			return JSON.stringify(output.getValue());
+			return CircularJSON.stringify(output.getValue());
 		}
 		else{
 			return "no-value-available";

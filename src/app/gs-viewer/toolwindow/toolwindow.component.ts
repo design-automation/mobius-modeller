@@ -185,6 +185,7 @@ export class ToolwindowComponent extends DataSubscriber implements OnInit {
 
   getpoints():Array<any>{
     var attrubtepoints=[];
+    //console.log(this.model.getGeom().getAllPoints());
     for(var i=0;i<this.model.getGeom().getAllPoints().length;i++){
       var attributepoint:any=[];
       attributepoint.id=this.model.getGeom().getAllPoints()[i].getLabel();
