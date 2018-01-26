@@ -4,7 +4,7 @@
 
     <mat-accordion *ngIf='!fnObj'>
 
-        <mat-expansion-panel [expanded]='true' class="panel">
+        <mat-expansion-panel [expanded]='false' class="panel">
             <mat-expansion-panel-header>
                 <mat-panel-title>
                     ABOUT
@@ -31,6 +31,20 @@
 
         </mat-expansion-panel>
 
+        <!-- model -->
+        <mat-expansion-panel class="panel">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    MODEL
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            
+            <div class="panel-content"> 
+                <app-help-model></app-help-model>
+            </div>
+
+        </mat-expansion-panel>
+
     </mat-accordion>
 
-</div>
+</div>    CodeViewerComponent,
