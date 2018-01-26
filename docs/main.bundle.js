@@ -2534,18 +2534,18 @@ let FlowchartService = class FlowchartService {
         this.loadModules([
             { _name: "String", _version: 0.1, _author: "Patrick" },
             { _name: "List", _version: 0.1, _author: "Patrick" },
-            { _name: "Math", _version: 0.1, _author: "Patrick" } //,
-            // {_name: "Model", _version: 0.1, _author: "Patrick"},
-            // {_name: "Point", _version: 0.1, _author: "Patrick"},
-            // {_name: "Pline", _version: 0.1, _author: "Patrick"},
-            // {_name: "PMesh", _version: 0.1, _author: "Patrick"},
-            // {_name: "Circle", _version: 0.1, _author: "Patrick"},
-            // {_name: "Plane", _version: 0.1, _author: "Patrick"},
-            // {_name: "Split", _version: 0.1, _author: "Patrick"},
-            // {_name: "Intersect", _version: 0.1, _author: "Patrick"},
-            // {_name: "Calc", _version: 0.1, _author: "Patrick"},
-            // {_name: "Obj", _version: 0.1, _author: "Patrick"}
-            //{_name: "Calc", _version: 0.1, _author: "Patrick"}
+            { _name: "Math", _version: 0.1, _author: "Patrick" },
+            { _name: "Model", _version: 0.1, _author: "Patrick" },
+            { _name: "Point", _version: 0.1, _author: "Patrick" },
+            { _name: "Pline", _version: 0.1, _author: "Patrick" },
+            { _name: "PMesh", _version: 0.1, _author: "Patrick" },
+            { _name: "Circle", _version: 0.1, _author: "Patrick" },
+            { _name: "Plane", _version: 0.1, _author: "Patrick" },
+            { _name: "Split", _version: 0.1, _author: "Patrick" },
+            { _name: "Intersect", _version: 0.1, _author: "Patrick" },
+            { _name: "Calc", _version: 0.1, _author: "Patrick" },
+            { _name: "Obj", _version: 0.1, _author: "Patrick" },
+            { _name: "Calc", _version: 0.1, _author: "Patrick" }
         ]);
         // print message to console
         this.consoleService.addMessage("New file created.");
@@ -5404,7 +5404,7 @@ ConsoleComponent = __decorate([
 /***/ "../../../../../src/app/ui-components/controls/flowchart-controls/flowchart-controls.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!--- Not in use -->\n<div class=\"viewer\">\n\t\n\t<div class=\"header\">\n\t\t\n\t\t<div class=\"title\">Flowchart Controls</div>\n\t\t<div class=\"buttons\">\n\t\t\t<button (click)=\"newfile()\">New File</button>\n\t\t\t<button type=\"submit\" (click)=\"loadFile()\">Load File</button>\n\t\t\t<button (click)=\"execute()\">Run Code</button>\n\t\t\t<button (click)=\"save()\">Save Flowchart</button>\n\t\t</div>\n\n\t</div>\n\n\t<div class=\"container\">\n\t\t\n\t</div>\n\n</div>\n"
+module.exports = "<!--- Not in use -->\r\n<div class=\"viewer\">\r\n\t\r\n\t<div class=\"header\">\r\n\t\t\r\n\t\t<div class=\"title\">Flowchart Controls</div>\r\n\t\t<div class=\"buttons\">\r\n\t\t\t<button (click)=\"newfile()\">New File</button>\r\n\t\t\t<button type=\"submit\" (click)=\"loadFile()\">Load File</button>\r\n\t\t\t<button (click)=\"execute()\">Run Code</button>\r\n\t\t\t<button (click)=\"save()\">Save Flowchart</button>\r\n\t\t</div>\r\n\r\n\t</div>\r\n\r\n\t<div class=\"container\">\r\n\t\t\r\n\t</div>\r\n\r\n</div>\r\n"
 
 /***/ }),
 
@@ -5484,7 +5484,7 @@ FlowchartControlsComponent = __decorate([
 /***/ "../../../../../src/app/ui-components/controls/main-menu/menu.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<mat-toolbar style=\"min-height: 45px;\">\n  <mat-toolbar-row class=\"menu-bar\">\n    <div class='section'>\n\t\t<ul class='menu'>\n\t\t\t<li class='menu-item' [matMenuTriggerFor]=\"file_menu\">\n\t\t\t\tFile\n\t\t\t</li>\n\t\t\t\n\t\t\t<li class='menu-item'>Node</li>\n\t\t\t<li class='menu-item'>Code</li>\n\t\t\t<li class='menu-item'>Help</li>\n\t\t</ul>\n\t</div>\n\t<div class='section'>\n\t\t<span id='branding'>Mobius v2.0</span>\n\t</div>\n  </mat-toolbar-row>\n</mat-toolbar>\n\n<mat-menu class=\"menu\" #file_menu=\"matMenu\" yPosition=\"above\" [overlapTrigger]=\"false\">\n  <span mat-menu-item (click)=\"newfile()\">New File</span>\n  <span mat-menu-item (click)=\"save()\">Save File</span>\n  <span mat-menu-item (click)=\"openPicker()\">\n  \t\t<input #fileInput style=\"display: none;\"\n  \t\ttype=\"file\" (change)=\"loadFile()\"/>\n  \t\tLoad File\n  </span>\n  <span mat-menu-item (click)=\"execute()\">Run File</span>\n</mat-menu>\n"
+module.exports = "<mat-toolbar style=\"min-height: 45px;\">\r\n  <mat-toolbar-row class=\"menu-bar\">\r\n    <div class='section'>\r\n\t\t<ul class='menu'>\r\n\t\t\t<li class='menu-item' [matMenuTriggerFor]=\"file_menu\">\r\n\t\t\t\tFile\r\n\t\t\t</li>\r\n\t\t\t\r\n\t\t\t<li class='menu-item'>Node</li>\r\n\t\t\t<li class='menu-item'>Code</li>\r\n\t\t\t<li class='menu-item'>Help</li>\r\n\t\t</ul>\r\n\t</div>\r\n\t<div class='section'>\r\n\t\t<span id='branding'>Mobius v2.0</span>\r\n\t</div>\r\n  </mat-toolbar-row>\r\n</mat-toolbar>\r\n\r\n<mat-menu class=\"menu\" #file_menu=\"matMenu\" yPosition=\"above\" [overlapTrigger]=\"false\">\r\n  <span mat-menu-item (click)=\"newfile()\">New File</span>\r\n  <span mat-menu-item (click)=\"save()\">Save File</span>\r\n  <span mat-menu-item (click)=\"openPicker()\">\r\n  \t\t<input #fileInput style=\"display: none;\"\r\n  \t\ttype=\"file\" (change)=\"loadFile()\"/>\r\n  \t\tLoad File\r\n  </span>\r\n  <span mat-menu-item (click)=\"execute()\">Run File</span>\r\n</mat-menu>\r\n"
 
 /***/ }),
 
@@ -7290,7 +7290,7 @@ InfoViewerComponent = __decorate([
 /***/ "../../../../../src/app/ui-components/layout/panel/panel.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"header\">\n\t<div class=\"title\">{{heading}}{{_selectedNodeName}}</div>\n\t<div class=\"data\"></div>\n\t<div class=\"btn-group\">\n\t\t<div (click)=\"maximize()\">\n\t\t\t<span matTooltip=\"Expand\">\n\t\t\t\t<mat-icon [class.disabled]=\"panel_id == 'main'\">aspect_ratio</mat-icon>\n\t\t\t</span>\n\t\t</div>\n\t\t<!-- <div (click)=\"minimize()\">\n\t\t\t<span matTooltip=\"Minimize\">\n\t\t\t\t<mat-icon  [class.disabled]=\"true\" >remove</mat-icon>\n\t\t\t</span>\n\t\t</div>\n\t\t<div (click)=\"restore()\">\n\t\t\t<span matTooltip=\"Restore\">\n\t\t\t\t<mat-icon  [class.disabled]=\"true\">open_in_new</mat-icon>\n\t\t\t</span>\n\t\t</div> -->\n\t</div>\n</div>\n\n\n<app-viewer-container *ngIf='heading === EV.Viewer'></app-viewer-container>        \n<app-flowchart-viewer *ngIf='heading === EV.Flowchart'></app-flowchart-viewer>\n<app-editor  *ngIf='heading === EV.Editor'></app-editor>\n<app-parameter-viewer  *ngIf='heading === EV.Parameter'></app-parameter-viewer>\n\n"
+module.exports = "<div class=\"header\">\r\n\t<div class=\"title\">{{heading}}{{_selectedNodeName}}</div>\r\n\t<div class=\"data\"></div>\r\n\t<div class=\"btn-group\">\r\n\t\t<div (click)=\"maximize()\">\r\n\t\t\t<span matTooltip=\"Expand\">\r\n\t\t\t\t<mat-icon [class.disabled]=\"panel_id == 'main'\">aspect_ratio</mat-icon>\r\n\t\t\t</span>\r\n\t\t</div>\r\n\t\t<!-- <div (click)=\"minimize()\">\r\n\t\t\t<span matTooltip=\"Minimize\">\r\n\t\t\t\t<mat-icon  [class.disabled]=\"true\" >remove</mat-icon>\r\n\t\t\t</span>\r\n\t\t</div>\r\n\t\t<div (click)=\"restore()\">\r\n\t\t\t<span matTooltip=\"Restore\">\r\n\t\t\t\t<mat-icon  [class.disabled]=\"true\">open_in_new</mat-icon>\r\n\t\t\t</span>\r\n\t\t</div> -->\r\n\t</div>\r\n</div>\r\n\r\n\r\n<app-viewer-container *ngIf='heading === EV.Viewer'></app-viewer-container>        \r\n<app-flowchart-viewer *ngIf='heading === EV.Flowchart'></app-flowchart-viewer>\r\n<app-editor  *ngIf='heading === EV.Editor'></app-editor>\r\n<app-parameter-viewer  *ngIf='heading === EV.Parameter'></app-parameter-viewer>\r\n\r\n"
 
 /***/ }),
 
@@ -7414,7 +7414,7 @@ var EViewer;
 /***/ "../../../../../src/app/ui-components/viewers/code-viewer/code-viewer.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"viewer\">\n\t<div class=\"ace-editor\" ace-editor [(text)]=\"code\"></div>\n</div>"
+module.exports = "<div class=\"viewer\">\r\n\t<div class=\"ace-editor\" ace-editor [(text)]=\"code\"></div>\r\n</div>"
 
 /***/ }),
 
@@ -7720,7 +7720,7 @@ GeometryViewerComponent = __decorate([
 /***/ "../../../../../src/app/ui-components/viewers/module-viewer/module-viewer.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<mat-expansion-panel class='viewer'>\n  \t<mat-expansion-panel-header>\n\t    <mat-panel-title class='header'>\n\t      <div class='header'>Modules</div>\n\t    </mat-panel-title>\n  \t</mat-expansion-panel-header>\n\t<div class='container'>\n\t\t<div *ngFor=\"let fn of functions\">\n\t\t\t<div class='function'>{{fn}}</div>\n\t\t</div>\n\t</div>\n</mat-expansion-panel>"
+module.exports = "<mat-expansion-panel class='viewer'>\r\n  \t<mat-expansion-panel-header>\r\n\t    <mat-panel-title class='header'>\r\n\t      <div class='header'>Modules</div>\r\n\t    </mat-panel-title>\r\n  \t</mat-expansion-panel-header>\r\n\t<div class='container'>\r\n\t\t<div *ngFor=\"let fn of functions\">\r\n\t\t\t<div class='function'>{{fn}}</div>\r\n\t\t</div>\r\n\t</div>\r\n</mat-expansion-panel>"
 
 /***/ }),
 
