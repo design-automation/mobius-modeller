@@ -15,6 +15,7 @@ export class ViewerContainerComponent extends Viewer implements OnInit {
 
   	group: {value: number} = {value: 5};
   	private _layout_subscription: Subscription;
+  	_lock:  boolean = false;
 
 	constructor(injector: Injector, private layoutService: LayoutService){ 
 		super(injector, "Viewer Container", "Contains all the viewers");  
@@ -42,7 +43,10 @@ export class ViewerContainerComponent extends Viewer implements OnInit {
 	}
 
 	switchToConsole(): void{
-		this.updateGroupValue(3);
+		let self = this;
+		setTimeout(function(){
+			self.updateGroupValue(3);
+		}, 100);
 	}
 
 	update() {
@@ -51,7 +55,6 @@ export class ViewerContainerComponent extends Viewer implements OnInit {
 			this.updateGroupValue(this.layoutService.getViewContainer());
 		}
 		else{
-			console.log(this.flowchartService.getSelectedPort().getType() )
 			this.updateGroupValue( this.flowchartService.getSelectedPort().getType() );
 		}
 	}

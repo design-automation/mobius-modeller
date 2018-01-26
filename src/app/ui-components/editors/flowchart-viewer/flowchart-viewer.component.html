@@ -151,7 +151,7 @@
 											<div class="port input" 
 												*ngFor="let port of node.getInputs(); let pi=index"  
 												id="n{{node_index}}pi{{pi}}">
-												
+
 												<div class="port-grip" 
 													draggable=true
 													[class.connected]="port.isConnected()" 

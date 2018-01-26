@@ -40,6 +40,17 @@ export class TextViewerComponent extends Viewer implements OnInit {
 		return value;
 	}
 
+	getType(output: IPort): string{
+
+		if(output.getValue()){
+			return JSON.stringify(output.getValue());
+		}
+		else{
+			return "no-value-available";
+		}	
+
+	}
+
 	update() :void{
 		try{
 			this._selectedNode = this.flowchartService.getSelectedNode();	

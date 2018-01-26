@@ -92,6 +92,9 @@ let AppComponent = class AppComponent {
         else if ((navigator.userAgent.indexOf("MSIE") != -1) || (!!document["documentMode"] == true)) {
             brw = 'IE';
         }
+        else if (window.navigator.userAgent.indexOf("Edge") > -1) {
+            brw = 'Edge';
+        }
         else {
             brw = 'unknown';
         }
@@ -376,7 +379,6 @@ class ModuleUtils {
                         break;
                     }
                     if (prop == name && typeof (submod) == "object") {
-                        console.log(submod);
                         imod = this.createModule(prop, submod);
                     }
                 }
@@ -739,12 +741,15 @@ class CodeGeneratorJS extends __WEBPACK_IMPORTED_MODULE_0__CodeGenerator__["a" /
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_gs_json__ = __webpack_require__("../../../../gs-json/dist2015/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_gs_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_gs_json__);
 //
 //	Flowchart class 
 //  Implement IFlowchart
 //	
 //
 //
+
 class Flowchart {
     //
     //	constructor needs 2 arguments  - username and icodegenerator
@@ -788,6 +793,8 @@ class Flowchart {
             throw Error("Invalid arguments for edge");
         }
         let edge = { output_address: outputAddress, input_address: inputAddress };
+        this.getNodeByIndex(outputAddress[0]).getOutputByIndex(outputAddress[1]).connect();
+        this.getNodeByIndex(inputAddress[0]).getInputByIndex(inputAddress[1]).connect();
         // todo: check for valid input/output addresses and port address
         this._edges.push(edge);
         return this._edges.length;
@@ -1023,6 +1030,16 @@ class Flowchart {
             let outputPort = node.getOutputByIndex(edge.output_address[1]);
             let inputPort = inputNode.getInputByIndex(edge.input_address[1]);
             inputPort.setComputedValue(outputPort.getValue());
+            let outVal = outputPort.getValue();
+            if (outVal.constructor.name == "Model") {
+                console.log("original model: ", outVal);
+                let modelData = outVal.toJSON();
+                let model = new __WEBPACK_IMPORTED_MODULE_0_gs_json__["Model"](modelData);
+                model["_kernel"]._objs = JSON.parse(JSON.stringify(outVal["_kernel"]._objs));
+                model["_kernel"]._points = JSON.parse(JSON.stringify(outVal["_kernel"]._points));
+                console.log("new model: ", model);
+                outputPort.setComputedValue(model);
+            }
             // let value = outputPort.getValue();
             // if( value["_kernel"] && value["_id"] ){
             // 	console.log(value);
@@ -1458,6 +1475,31 @@ class GraphNode {
         }
         return final_values;
     }
+    getVariableList() {
+        let varList = [];
+        //push undefined
+        varList.push("undefined");
+        //push names of inputs and outputs
+        this._inputs.map(function (inp) {
+            varList.push(inp.getName());
+        });
+        this._outputs.map(function (out) {
+            varList.push(out.getName());
+        });
+        // push names of left components in procedure
+        this._procedure.map(function (prod) {
+            let type = prod.getType();
+            if (type == __WEBPACK_IMPORTED_MODULE_1__procedure_ProcedureModule__["b" /* ProcedureTypes */].Data || type == __WEBPACK_IMPORTED_MODULE_1__procedure_ProcedureModule__["b" /* ProcedureTypes */].ForLoopControl ||
+                type == __WEBPACK_IMPORTED_MODULE_1__procedure_ProcedureModule__["b" /* ProcedureTypes */].Action) {
+                let var_name = prod.getLeftComponent().expression;
+                if (var_name.length > 0) {
+                    varList.push(var_name);
+                }
+                ;
+            }
+        });
+        return varList;
+    }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = GraphNode;
 
@@ -1892,7 +1934,7 @@ class Procedure {
     update(prodData, parent) {
         this._disabled = prodData._disabled;
         this._leftComponent = prodData._leftComponent;
-        this._rightComponent = prodData._rightComponent;
+        this._rightComponent = JSON.parse(JSON.stringify(prodData._rightComponent));
         this._parent = parent;
         this._level = prodData._level;
         this.hasChildren = prodData.hasChildren;
@@ -2139,7 +2181,8 @@ class Viewer {
     //	checks if the flowchart service has a flowchart and calls update function for the viewer
     //
     notify(message) {
-        if (this.flowchartService.hasFlowchart() && this.flowchartService.getNodes().length > 0) {
+        if (this.flowchartService.hasFlowchart() && this.flowchartService.getNodes().length > 0
+            && this.flowchartService.getSelectedNode()) {
             this.update(message);
         }
         else {
@@ -2356,7 +2399,6 @@ let FlowchartService = class FlowchartService {
         }
         if (message) {
             if (confirm(message)) {
-                console.log(storageString);
                 this.loadFile(storageString);
             }
             else {
@@ -2491,6 +2533,7 @@ let FlowchartService = class FlowchartService {
             { _name: "String", _version: 0.1, _author: "Patrick" },
             { _name: "List", _version: 0.1, _author: "Patrick" },
             { _name: "Math", _version: 0.1, _author: "Patrick" },
+            { _name: "Model", _version: 0.1, _author: "Patrick" },
             { _name: "Point", _version: 0.1, _author: "Patrick" },
             { _name: "Pline", _version: 0.1, _author: "Patrick" },
             { _name: "PMesh", _version: 0.1, _author: "Patrick" },
@@ -2498,7 +2541,9 @@ let FlowchartService = class FlowchartService {
             { _name: "Plane", _version: 0.1, _author: "Patrick" },
             { _name: "Split", _version: 0.1, _author: "Patrick" },
             { _name: "Intersect", _version: 0.1, _author: "Patrick" },
-            { _name: "Model", _version: 0.1, _author: "Patrick" },
+            { _name: "Calc", _version: 0.1, _author: "Patrick" },
+            { _name: "Obj", _version: 0.1, _author: "Patrick" }
+            //{_name: "Calc", _version: 0.1, _author: "Patrick"}
         ]);
         // print message to console
         this.consoleService.addMessage("New file created.");
@@ -2691,11 +2736,10 @@ let FlowchartService = class FlowchartService {
         this.update();
     }
     deleteNode(node_index) {
-        if (this._selectedNode == node_index) {
-            this._selectedNode = undefined;
-            this._selectedPort = undefined;
-            this._selectedProcedure = undefined;
-        }
+        this._selectedNode = undefined;
+        this._selectedPort = undefined;
+        this._selectedProcedure = undefined;
+        //this.disconnectNode(node_index);
         this._flowchart.deleteNode(node_index);
         // print message to console
         this.consoleService.addMessage("Node was deleted");
@@ -3042,7 +3086,8 @@ class DataSubscriber {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm2015/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_Subject__ = __webpack_require__("../../../../rxjs/_esm2015/Subject.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_three__ = __webpack_require__("../../../../three/build/three.module.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_gs_json__ = __webpack_require__("../../../../gs-json/dist/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_gs_json__ = __webpack_require__("../../../../gs-json/dist2015/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_gs_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_gs_json__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_three_orbit_controls__ = __webpack_require__("../../../../three-orbit-controls/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_three_orbit_controls___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_three_orbit_controls__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -3138,10 +3183,18 @@ let DataService = class DataService {
         if (this._gsModel !== undefined) {
             this.updateModel();
         }
+        else {
+            // remove all children from the scene
+            for (var i = 0; i < this._scene.children.length; i++) {
+                if (this._scene.children[i].type === "Scene") {
+                    this._scene.remove(this._scene.children[i]);
+                }
+            }
+        }
         this.sendMessage("model_update");
     }
     updateModel() {
-        var scene_and_maps = __WEBPACK_IMPORTED_MODULE_3_gs_json__["a" /* genThreeOptModelAndMaps */](this._gsModel);
+        var scene_and_maps = __WEBPACK_IMPORTED_MODULE_3_gs_json__["genThreeOptModelAndMaps"](this._gsModel);
         this.scenemaps = scene_and_maps;
     }
     getscememaps() {
@@ -3334,7 +3387,8 @@ module.exports = module.exports.toString();
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return GSViewerComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm2015/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__data_data_service__ = __webpack_require__("../../../../../src/app/gs-viewer/data/data.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_gs_json__ = __webpack_require__("../../../../gs-json/dist/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_gs_json__ = __webpack_require__("../../../../gs-json/dist2015/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_gs_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_gs_json__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -3553,13 +3607,14 @@ let SettingComponent = class SettingComponent {
         this.gridVisible = !this.gridVisible;
         var max = 8;
         var center = new __WEBPACK_IMPORTED_MODULE_0_three__["Vector3"](0, 0, 0);
+        var radius = 0;
         for (var i = 0; i < this.scene.children.length; i++) {
             if (this.scene.children[i].type === "Scene") {
                 for (var j = 0; j < this.scene.children[i].children.length; j++) {
-                    if (this.scene.children[i].children[j]["geometry"].boundingSphere.radius !== 0) {
+                    if (this.scene.children[i].children[j]["geometry"].boundingSphere.radius > radius) {
                         center = this.scene.children[i].children[j]["geometry"].boundingSphere.center;
-                        var radius = this.scene.children[i].children[j]["geometry"].boundingSphere.radius;
-                        max = Math.ceil(radius + Math.max(Math.abs(center.x), Math.abs(center.y), Math.abs(center.z)) * 1.2);
+                        radius = this.scene.children[i].children[j]["geometry"].boundingSphere.radius;
+                        max = Math.ceil(radius + Math.max(Math.abs(center.x), Math.abs(center.y), Math.abs(center.z))) * 2;
                         break;
                     }
                 }
@@ -3791,7 +3846,6 @@ let ToolwindowComponent = class ToolwindowComponent extends __WEBPACK_IMPORTED_M
     constructor(injector, myElement) {
         super(injector);
         this.Visible = "Objs";
-        this.SelectVisible = "Faces";
         this.scene = this.dataService.getScene();
         this.selectedVisible = false;
         this.attribute = [];
@@ -3803,7 +3857,12 @@ let ToolwindowComponent = class ToolwindowComponent extends __WEBPACK_IMPORTED_M
     ngOnInit() {
         this.model = this.dataService.getGsModel();
         this.Visible = this.dataService.visible;
-        this.scene_and_maps = this.dataService.getscememaps();
+        if (this.model !== undefined) {
+            this.scene_and_maps = this.dataService.getscememaps();
+        }
+        else {
+            return undefined;
+        }
         this.object(this.Visible);
         //this.objectselect(this.SelectVisible);
         this.getvertices();
@@ -3830,6 +3889,8 @@ let ToolwindowComponent = class ToolwindowComponent extends __WEBPACK_IMPORTED_M
                 this.edgecheck();
             if (this.Visible === "Vertices")
                 this.verticecheck();
+            if (this.Visible === "Points")
+                this.pointcheck();
         }
         this.dataService.visible = this.Visible;
     }
@@ -3869,7 +3930,8 @@ let ToolwindowComponent = class ToolwindowComponent extends __WEBPACK_IMPORTED_M
             const path = this.scene_and_maps.wires_map.get(i);
             const wire = this.model.getGeom().getTopo(path);
             const label = wire.getLabel();
-            attributewire.push(label);
+            if (attributewire.indexOf(label) === -1)
+                attributewire.push(label);
         }
         return attributewire;
     }
@@ -3907,117 +3969,6 @@ let ToolwindowComponent = class ToolwindowComponent extends __WEBPACK_IMPORTED_M
         }
         return children;
     }
-    /*objectselect(SelectVisible){
-      this.SelectVisible="Objs";
-      this.object(this.Visible);
-      document.getElementById("object").style.color=null;
-      document.getElementById("face").style.color=null;
-      document.getElementById("wire").style.color=null;
-      document.getElementById("edge").style.color=null;
-      document.getElementById("vertice").style.color=null;
-      var scenechildren=[];
-      var children=this.getchildren();
-      for(var i=0;i<children.length;i++){
-        if(children[i].name==="All wires") children[i]["material"].opacity=0;
-        if(children[i].name==="All edges") children[i]["material"].opacity=0;
-        if(children[i].name==="All vertices") children[i]["material"].opacity=0;
-        if(children[i].name==="All objs"||children[i].name==="All faces"){
-          children[i]["material"].opacity=0.8;
-          children[i].name="All objs";
-          scenechildren.push(children[i]);
-        }
-      }
-      this.dataService.addscenechild(scenechildren);
-    }
-  
-    faceselect(SelectVisible){
-      this.SelectVisible="Faces";
-      this.face(this.Visible);
-      document.getElementById("object").style.color="grey";
-      document.getElementById("face").style.color=null;
-      document.getElementById("wire").style.color=null;
-      document.getElementById("edge").style.color=null;
-      document.getElementById("vertice").style.color=null;
-      var scenechildren=[];
-      var children=this.getchildren();
-      for(var i=0;i<children.length;i++){
-        if(children[i].name==="All wires") children[i]["material"].opacity=0.1;
-        if(children[i].name==="All edges") children[i]["material"].opacity=0.1;
-        if(children[i].name==="All vertices") children[i]["material"].opacity=0.1;
-        if(children[i].name==="All objs"||children[i].name==="All faces"){
-          children[i]["material"].opacity=0.8;
-          children[i].name="All faces";
-          scenechildren.push(children[i]);
-        }
-      }
-      this.dataService.addscenechild(scenechildren);
-    }
-  
-    wireselect(SelectVisible){
-      this.SelectVisible="Wires";
-      this.wire(this.Visible);
-      document.getElementById("object").style.color="grey";
-      document.getElementById("face").style.color="grey";
-      document.getElementById("wire").style.color=null;
-      document.getElementById("edge").style.color=null;
-      document.getElementById("vertice").style.color=null;
-      var scenechildren=[];
-      var children=this.getchildren();
-      for(var i=0;i<children.length;i++){
-        if(children[i].name==="All objs"||children[i].name==="All faces") children[i]["material"].opacity=0.1;
-        if(children[i].name==="All edges") children[i]["material"].opacity=0.1;
-        if(children[i].name==="All vertices") children[i]["material"].opacity=0.1;
-        if(children[i].name==="All wires"){
-          children[i]["material"].opacity=0.6;
-          scenechildren.push(children[i]);
-        }
-      }
-      this.dataService.addscenechild(scenechildren);
-    }
-    edgeselect(SelectVisible){
-      this.SelectVisible="Edges";
-      this.edge(this.Visible);
-      document.getElementById("object").style.color="grey";
-      document.getElementById("face").style.color="grey";
-      document.getElementById("wire").style.color="grey";
-      document.getElementById("edge").style.color=null;
-      document.getElementById("vertice").style.color=null;
-      var scenechildren=[];
-      var children=this.getchildren();
-      for(var i=0;i<children.length;i++){
-        if(children[i].name==="All objs"||children[i].name==="All faces") children[i]["material"].opacity=0.1;
-        if(children[i].name==="All wires") children[i]["material"].opacity=0.1;
-        if(children[i].name==="All vertices") children[i]["material"].opacity=0.1;
-        if(children[i].name==="All edges"){
-          children[i]["material"].opacity=0.4;
-          scenechildren.push(children[i]);
-        }
-      }
-      this.dataService.addscenechild(scenechildren);
-    }
-  
-    verticeselect(SelectVisible){
-      this.SelectVisible="Vertices";
-      this.vertice(this.Visible);
-      document.getElementById("object").style.color="grey";
-      document.getElementById("face").style.color="grey";
-      document.getElementById("wire").style.color="grey";
-      document.getElementById("edge").style.color="grey";
-      document.getElementById("vertice").style.color=null;
-      var scenechildren=[];
-      var children=this.getchildren();
-      for(var i=0;i<children.length;i++){
-        console.log(children);
-        if(children[i].name==="All objs"||children[i].name==="All faces") children[i]["material"].opacity=0.1;
-        if(children[i].name==="All wires") children[i]["material"].opacity=0.1;
-        if(children[i].name==="All edges") children[i]["material"].opacity=0.1;
-        if(children[i].name==="All vertices"){
-          children[i]["material"].opacity=1;
-          scenechildren.push(children[i]);
-        }
-      }
-      this.dataService.addscenechild(scenechildren);
-    }*/
     getscenechildren() {
         var scenechildren = [];
         for (var n = 0; n < this.scene.children.length; n++) {
@@ -4049,21 +4000,102 @@ let ToolwindowComponent = class ToolwindowComponent extends __WEBPACK_IMPORTED_M
         }
         return attrubtepoints;
     }
-    getverticescheck() {
-        var points = this.getpoints();
+    point(Visible) {
+        this.Visible = "Points";
+        this.attribute = this.getpoints();
+        if (this.selectedVisible == true) {
+            this.pointcheck();
+        }
+        this.dataService.visible = this.Visible;
+        this.clearsprite();
+    }
+    pointcheck() {
+        this.attribute = [];
+        var selecting = this.dataService.getselecting();
+        for (var i = 0; i < selecting.length; i++) {
+            var attributepoint = [];
+            attributepoint.id = this.model.getGeom().getAllPoints()[selecting[i].index].getLabel();
+            attributepoint.x = this.model.getGeom().getAllPoints()[selecting[i].index].getPosition()[0];
+            attributepoint.y = this.model.getGeom().getAllPoints()[selecting[i].index].getPosition()[1];
+            attributepoint.z = this.model.getGeom().getAllPoints()[selecting[i].index].getPosition()[2];
+            this.attribute.push(attributepoint);
+        }
+    }
+    pointtovertix() {
+        /*var attributevertix=[];
+        var selecting=this.dataService.getselecting();
+        var points=this.getpoints();
+        for(var i =0;i<selecting.length;i++){
+          var path=selecting[i].path;
+          const vertices: gs.IVertex = this.model.getGeom().getTopo(path) as gs.IVertex;
+          const label: string = vertices.getLabel();
+          const verts_xyz: gs.XYZ = vertices.getLabelCentroid();
+          var attributes:any=[];
+          for(var j=0;j<points.length;j++){
+            if(points[j].x===verts_xyz[0]&&points[j].y===verts_xyz[1]&&points[j].z===verts_xyz[2]){
+               attributes.pointid=points[j].id;
+            }
+          }
+          attributes.vertixlabel=label;
+          attributevertix.push(attributes);
+        }
+        this.dataService.addattrvertix(attributevertix);
+        return attributevertix;*/
         var attributes = [];
-        for (var i = 0; i < this.selectObj.length; i++) {
-            for (var j = 0; j < this.selectObj[i].children.length; j++) {
-                if (this.selectObj[i].children[j].name === "Vertices") {
-                    for (var n = 0; n < this.selectObj[i].children[j].children.length; n++) {
-                        for (var m = 0; m < points.length; m++) {
-                            if (points[m].x === this.selectObj[i].children[j].children[n].position.x &&
-                                points[m].y === this.selectObj[i].children[j].children[n].position.y &&
-                                points[m].z === this.selectObj[i].children[j].children[n].position.z) {
-                                var attributevertice = [];
-                                attributevertice.id = this.selectObj[i].children[j].children[n].name;
-                                attributevertice.pointid = points[m].id;
-                                attributes.push(attributevertice);
+        var vertices = this.getvertices();
+        var selecting = this.dataService.getselecting();
+        var char;
+        var labels = [];
+        if (selecting.length !== 0) {
+            for (var i = 0; i < selecting.length; i++) {
+                for (var j = 0; j < vertices.length; j++) {
+                    if (selecting[i]["id"] === vertices[j].pointid) {
+                        attributes.push(vertices[j]);
+                    }
+                    if (selecting[i]["id"].indexOf("e") > -1) {
+                        const path = this.scene_and_maps.edges_map.get(selecting[i]["index"]);
+                        const edge = this.model.getGeom().getTopo(path);
+                        const verts = edge.getVertices();
+                        for (var n = 0; n < verts.length; n++) {
+                            var label = verts[n].getLabel();
+                            if (label === vertices[j].vertixlabel && attributes.indexOf(vertices[j]) == -1) {
+                                attributes.push(vertices[j]);
+                            }
+                        }
+                    }
+                    if (selecting[i]["id"].length < 8 && selecting[i]["id"].indexOf("w") > -1) {
+                        const path = this.scene_and_maps.wires_map.get(selecting[i]["index"]);
+                        const wire = this.model.getGeom().getTopo(path);
+                        const verts = wire.getVertices();
+                        for (var n = 0; n < verts.length; n++) {
+                            var label = verts[n].getLabel();
+                            if (label === vertices[j].vertixlabel && attributes.indexOf(vertices[j]) == -1) {
+                                attributes.push(vertices[j]);
+                            }
+                        }
+                    }
+                    if (selecting[i]["id"].length < 8 && selecting[i]["id"].indexOf("f") > -1) {
+                        const path = this.scene_and_maps.faces_map.get(selecting[i]["index"]);
+                        const face = this.model.getGeom().getTopo(path);
+                        const verts = face.getVertices();
+                        for (var n = 0; n < verts.length; n++) {
+                            var label = verts[n].getLabel();
+                            if (label === vertices[j].vertixlabel && attributes.indexOf(vertices[j]) == -1) {
+                                attributes.push(vertices[j]);
+                            }
+                        }
+                    }
+                    if (selecting[i]["id"].length < 5 && selecting[i]["id"].indexOf("p") == -1) {
+                        const path = this.scene_and_maps.faces_map.get(selecting[i]["index"]);
+                        const face = this.model.getGeom().getTopo(path);
+                        const faces = face.getObj().getFaces();
+                        for (var f = 0; f < faces.length; f++) {
+                            const verts = faces[f].getVertices();
+                            for (var n = 0; n < verts.length; n++) {
+                                var label = verts[n].getLabel();
+                                if (label === vertices[j].vertixlabel && this.attribute.indexOf(vertices[j]) == -1) {
+                                    attributes.push(vertices[j]);
+                                }
                             }
                         }
                     }
@@ -4071,17 +4103,6 @@ let ToolwindowComponent = class ToolwindowComponent extends __WEBPACK_IMPORTED_M
             }
         }
         return attributes;
-    }
-    point(Visible) {
-        this.Visible = "Points";
-        this.attribute = [];
-        this.attribute = this.getpoints();
-        this.dataService.visible = this.Visible;
-        this.clearsprite();
-    }
-    pointcheck() {
-        this.attribute = [];
-        this.attribute = this.getpoints();
     }
     vertice(Visible) {
         this.Visible = "Vertices";
@@ -4093,8 +4114,33 @@ let ToolwindowComponent = class ToolwindowComponent extends __WEBPACK_IMPORTED_M
         this.clearsprite();
     }
     verticecheck() {
-        this.attribute = [];
-        this.attribute = this.getverticescheck();
+        this.attribute = this.pointtovertix();
+        /*this.attribute=[];
+        var points=this.getpoints();
+        var vertices=this.getvertices();
+        var selecting=this.dataService.selecting;
+    
+        for(var i =0;i<selecting.length;i++){
+          //const path: gs.ITopoPathData = this.scene_and_maps.vertices_map.get(i);
+          const label:string=this.model.getGeom().getAllPoints()[selecting[i].index].getLabel();
+          for(var j=0;j<vertices.length;j++){
+    
+          }
+          const vertices: gs.IVertex = this.model.getGeom().getTopo(selecting[i].index) as gs.IVertex;
+          //const label: string = vertices.getLabel();
+          const verts_xyz: gs.XYZ = this.model.getGeom().getAllPoints()[selecting[i].index].getPosition();
+          console.log(verts_xyz);
+          //const verts_xyz: gs.XYZ = vertices.getLabelCentroid();
+          var attributes:any=[];
+          for(var j=0;j<points.length;j++){
+            if(points[j].x===verts_xyz[0]&&points[j].y===verts_xyz[1]&&points[j].z===verts_xyz[2]){
+               attributes.pointid=points[j].id;
+            }
+          }
+          attributes.vertixlabel=label;
+          this.attribute.push(attributes);
+        }
+        //this.dataService.addattrvertix(this.attribute);*/
     }
     edge(Visible) {
         this.Visible = "Edges";
@@ -4108,15 +4154,39 @@ let ToolwindowComponent = class ToolwindowComponent extends __WEBPACK_IMPORTED_M
     }
     edgecheck() {
         this.attribute = [];
-        for (var i = 0; i < this.selectObj.length; i++) {
-            for (var j = 0; j < this.selectObj[i].children.length; j++) {
-                if (this.selectObj[i].children[j].name === "Edges") {
-                    for (var n = 0; n < this.selectObj[i].children[j].children.length; n++) {
-                        var attributeedge = [];
-                        attributeedge.id = this.selectObj[i].children[j].children[n].name;
-                        this.attribute.push(attributeedge);
+        var edges = this.getedges();
+        var selecting = this.dataService.getselecting();
+        if (selecting.length !== 0) {
+            for (var i = 0; i < selecting.length; i++) {
+                for (var j = 0; j < edges.length; j++) {
+                    if (selecting[i]["id"] === edges[j]) {
+                        this.attribute.push(edges[j]);
                     }
-                    break;
+                    if (selecting[i]["id"].length < 8 && selecting[i]["id"].indexOf("f") > -1) {
+                        const path = this.scene_and_maps.faces_map.get(selecting[i]["index"]);
+                        const face = this.model.getGeom().getTopo(path);
+                        const verts = face.getEdges();
+                        for (var n = 0; n < verts.length; n++) {
+                            var label = verts[n].getLabel();
+                            if (label === edges[j] && this.attribute.indexOf(edges[j]) == -1) {
+                                this.attribute.push(edges[j]);
+                            }
+                        }
+                    }
+                    if (selecting[i]["id"].length < 5 && selecting[i]["id"].indexOf("p") == -1) {
+                        const path = this.scene_and_maps.faces_map.get(selecting[i]["index"]);
+                        const face = this.model.getGeom().getTopo(path);
+                        const faces = face.getObj().getFaces();
+                        for (var f = 0; f < faces.length; f++) {
+                            const verts = faces[f].getEdges();
+                            for (var n = 0; n < verts.length; n++) {
+                                var label = verts[n].getLabel();
+                                if (label === edges[j] && this.attribute.indexOf(edges[j]) == -1) {
+                                    this.attribute.push(edges[j]);
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -4133,13 +4203,24 @@ let ToolwindowComponent = class ToolwindowComponent extends __WEBPACK_IMPORTED_M
     }
     wirecheck() {
         this.attribute = [];
-        for (var i = 0; i < this.selectObj.length; i++) {
-            for (var j = 0; j < this.selectObj[i].children.length; j++) {
-                if (this.selectObj[i].children[j].name === "Wires") {
-                    for (var n = 0; n < this.selectObj[i].children[j].children.length; n++) {
-                        var attributewire = [];
-                        attributewire.id = this.selectObj[i].children[j].children[n].name;
-                        this.attribute.push(attributewire);
+        var wires = this.getwires();
+        var selecting = this.dataService.getselecting();
+        if (selecting.length !== 0) {
+            for (var i = 0; i < selecting.length; i++) {
+                for (var j = 0; j < wires.length; j++) {
+                    if (selecting[i]["id"] === wires[j]) {
+                        this.attribute.push(wires[j]);
+                    }
+                    if (selecting[i]["id"].length < 5 && selecting[i]["id"].indexOf("p") == -1) {
+                        const path = this.scene_and_maps.faces_map.get(selecting[i]["index"]);
+                        const face = this.model.getGeom().getTopo(path);
+                        const wireses = face.getObj().getWires();
+                        for (var w = 0; w < wireses.length; w++) {
+                            var label = wireses[w].getLabel();
+                            if (label === wires[j] && this.attribute.indexOf(wires[j]) == -1) {
+                                this.attribute.push(wires[j]);
+                            }
+                        }
                     }
                 }
             }
@@ -4171,13 +4252,24 @@ let ToolwindowComponent = class ToolwindowComponent extends __WEBPACK_IMPORTED_M
     }
     facecheck() {
         this.attribute = [];
-        for (var i = 0; i < this.selectObj.length; i++) {
-            for (var j = 0; j < this.selectObj[i].children.length; j++) {
-                if (this.selectObj[i].children[j].name === "Faces") {
-                    for (var n = 0; n < this.selectObj[i].children[j].children.length; n++) {
-                        var attributeface = [];
-                        attributeface.id = this.selectObj[i].children[j].children[n].name;
-                        this.attribute.push(attributeface);
+        var faces = this.getfaces();
+        var selecting = this.dataService.getselecting();
+        if (selecting.length !== 0) {
+            for (var i = 0; i < selecting.length; i++) {
+                for (var j = 0; j < faces.length; j++) {
+                    if (selecting[i]["id"] === faces[j]) {
+                        this.attribute.push(faces[j]);
+                    }
+                    if (selecting[i]["id"].length < 5 && selecting[i]["id"].indexOf("p") == -1) {
+                        const path = this.scene_and_maps.faces_map.get(selecting[i]["index"]);
+                        const face = this.model.getGeom().getTopo(path);
+                        const faceses = face.getObj().getFaces();
+                        for (var f = 0; f < faceses.length; f++) {
+                            var label = faceses[f].getLabel();
+                            if (label === faces[j] && this.attribute.indexOf(faces[j]) == -1) {
+                                this.attribute.push(faces[j]);
+                            }
+                        }
                     }
                 }
             }
@@ -4195,17 +4287,29 @@ let ToolwindowComponent = class ToolwindowComponent extends __WEBPACK_IMPORTED_M
     }
     objectcheck() {
         this.attribute = [];
-        for (var i = 0; i < this.selectObj.length; i++) {
-            for (var j = 0; j < this.selectObj[i].children.length; j++) {
-                if (this.selectObj[i].children[j].name === "Objs") {
-                    for (var n = 0; n < this.selectObj[i].children[j].children.length; n++) {
-                        var attributeface = [];
-                        attributeface.id = this.selectObj[i].children[j].children[n].name;
-                        this.attribute.push(attributeface);
+        var object = this.getoject();
+        var selecting = this.dataService.getselecting();
+        if (selecting.length !== 0) {
+            for (var i = 0; i < selecting.length; i++) {
+                for (var j = 0; j < object.length; j++) {
+                    if (selecting[i]["id"] === object[j]) {
+                        this.attribute.push(object[j]);
                     }
                 }
             }
         }
+        /*this.attribute=[];
+        for(var i=0;i<this.selectObj.length;i++){
+          for(var j=0;j<this.selectObj[i].children.length;j++){
+            if(this.selectObj[i].children[j].name==="Objs"){
+              for(var n=0;n<this.selectObj[i].children[j].children.length;n++){
+                var attributeface:any=[];
+                attributeface.id=this.selectObj[i].children[j].children[n].name;
+                this.attribute.push(attributeface);
+              }
+            }
+          }
+        }*/
     }
     changeselected() {
         this.selectedVisible = !this.selectedVisible;
@@ -4249,17 +4353,8 @@ let ToolwindowComponent = class ToolwindowComponent extends __WEBPACK_IMPORTED_M
                         }
                     }
                 }
-                //this.scene.children[n].children
             }
         }
-        // for(var j=0;j<this.attribute.length;j++){
-        //   if(this.attribute[j].id==i){
-        //   	select=this.attribute[j].mesh;
-        //   	this.dataService.pushselecting(select);
-        //   	select.material.color.setHex(0x2E9AFE);
-        //      console.log(this.attribute[j]);
-        //   }
-        // }
     }
 };
 ToolwindowComponent = __decorate([
@@ -4283,7 +4378,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "#container {\r\n  position: relative;\r\n  height:100%;\r\n  width: 100%;\r\n  margin:0px;\r\n  overflow: hidden;\r\n  color: white;\r\n}\r\n\r\n/*#rotating{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:15px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  top: 0px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n\r\n#paning{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:15px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  top: 25px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n\r\n#zooming{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:15px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 50px;\r\n  background-color:transparent;\r\n  border:0;\r\n}*/\r\n\r\n#zoomingfit{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:15px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 30px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n\r\n#selecting{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:15px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 50px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n\r\n#points{\r\n  width: 30px;\r\n  height: 25px;\r\n  font:20px bolder;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 80px;\r\n  background-color:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n#vertices{\r\n  width: 30px;\r\n  height: 25px;\r\n  font:20px bolder;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 100px;\r\n  background-color:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n#edges{\r\n  width: 30px;\r\n  height: 25px;\r\n  font:20px bolder;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 120px;\r\n  background-color:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n#wires{\r\n  width: 30px;\r\n  height: 25px;\r\n  font:20px bolder;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 140px;\r\n  background-color:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n#faces{\r\n  width: 30px;\r\n  height: 25px;\r\n  font:20px bolder;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 160px;\r\n  background-color:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n#objects{\r\n  width: 30px;\r\n  height: 25px;\r\n  font:20px bolder;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 180px;\r\n  background-color:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n\r\n#setting{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:15px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  top: 10px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n\r\n\r\n.selected{\r\n  color: grey;\r\n\r\n}\r\n.visible{\r\n  color: grey;\r\n}\r\n\r\n.cursor {\r\n\r\n}\r\n\r\n.selectvisible{\r\n  background-color:  white !important;\r\n  color:#395d73;\r\n}", ""]);
+exports.push([module.i, "#container {\r\n  position: relative;\r\n  height:100%;\r\n  width: 100%;\r\n  margin:0px;\r\n  overflow: hidden;\r\n  color: white;\r\n}\r\n#container-top-right-resize { top: 0px; right: 0px; }\r\n\r\n/*#rotating{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:15px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  top: 0px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n\r\n#paning{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:15px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  top: 25px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n\r\n#zooming{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:15px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 50px;\r\n  background-color:transparent;\r\n  border:0;\r\n}*/\r\n\r\n#zoomingfit{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:15px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 30px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n\r\n#selecting{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:15px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 50px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n\r\n#points{\r\n  width: 30px;\r\n  height: 25px;\r\n  font:20px bolder;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 80px;\r\n  background-color:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n#vertices{\r\n  width: 30px;\r\n  height: 25px;\r\n  font:20px bolder;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 100px;\r\n  background-color:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n#edges{\r\n  width: 30px;\r\n  height: 25px;\r\n  font:20px bolder;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 120px;\r\n  background-color:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n#wires{\r\n  width: 30px;\r\n  height: 25px;\r\n  font:20px bolder;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 140px;\r\n  background-color:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n#faces{\r\n  width: 30px;\r\n  height: 25px;\r\n  font:20px bolder;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 160px;\r\n  background-color:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n#objects{\r\n  width: 30px;\r\n  height: 25px;\r\n  font:20px bolder;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 180px;\r\n  background-color:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n\r\n#setting{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:15px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  top: 10px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n\r\n\r\n.selected{\r\n  color: grey;\r\n\r\n}\r\n.visible{\r\n  color: grey;\r\n}\r\n\r\n.cursor {\r\n\r\n}\r\n\r\n.selectvisible{\r\n  background-color:  white !important;\r\n  color:#395d73;\r\n}", ""]);
 
 // exports
 
@@ -4296,7 +4391,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/gs-viewer/viewer/viewer.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"container\"  \r\n    (mousemove)=\"onDocumentMouseMove($event)\" \r\n    (mousedown)=\"mousedown($event)\"\r\n    (mouseup)=\"mouseup($event)\"\r\n\t\t(click)=\"onDocumentMouseDown($event)\">\r\n\t\r\n  \t\t<!-- <button id=\"rotating\" \r\n  \t\t\t[class.visible]=\"Visible === 'rotate'\" \r\n  \t\t\t(click)=\"rotate()\">\r\n  \t\t\t<i class=\"fa fa-refresh\"></i>\r\n  \t\t</button>\r\n\r\n  \t\t<button id=\"paning\"  \r\n  \t\t\t[class.visible]=\"Visible === 'pan'\" \r\n  \t\t\t(click)=\"pan()\">\r\n  \t\t\t<i class=\"fa fa-hand-paper-o\"></i>\r\n  \t\t</button>\r\n\r\n  \t\t<button id=\"zooming\"  \r\n  \t\t\t[class.visible]=\"Visible === 'zoom'\" \r\n  \t\t\t(click)=\"Visible='zoom'\">\r\n  \t\t\t<i class=\"fa fa-search\"></i>\r\n  \t\t</button>-->\r\n  \t\t\r\n  \t\t<button id=\"zoomingfit\"  \r\n  \t\t\t[class.visible]=\"Visible === 'zoomfit'\" \r\n  \t\t\t(click)=\"zoomfit()\">\r\n  \t\t\t<i class=\"fa fa-arrows-alt\"></i>\r\n  \t\t</button> \r\n  \t\t\r\n  \t\t<!-- <button id=\"selecting\" [class.visible]=\"Visible === 'select'\" (click)= \"select($event, Visible)\" ><i class=\"fa fa-mouse-pointer\"></i></button> -->\r\n  \t\t\r\n  \t\t<button id=\"setting\" [class.selected]=\"settingVisible\" (click)= \"settingVisible = !settingVisible\"><i class=\"fa fa-cog\"></i></button>\r\n\r\n      <button id=\"selecting\" [class.selected]=\"seVisible\" (click)= \"select(seVisible)\" ><i class=\"fa fa-mouse-pointer\"></i></button>\r\n\r\n      \t\r\n      \t<!--setting-->\r\n      \t\r\n \t\t<app-setting *ngIf=\"settingVisible == true\"></app-setting>\r\n    <div *ngIf=\"seVisible == true\">\r\n        <button id=\"points\" [class.selectvisible]=\"SelectVisible === 'Points'\" (click)=\"pointselect(SelectVisible)\">P</button>\r\n        <button id=\"vertices\" [class.selectvisible]=\"SelectVisible === 'Vertices'\" (click)=\"verticeselect(SelectVisible)\">V</button>\r\n        <button id=\"edges\" [class.selectvisible]=\"SelectVisible === 'Edges'\" (click)=\"edgeselect(SelectVisible)\">E</button>\r\n        <button id=\"wires\" [class.selectvisible]=\"SelectVisible === 'Wires'\" (click)=\"wireselect(SelectVisible)\">W</button>\r\n        <button id=\"faces\" [class.selectvisible]=\"SelectVisible === 'Faces'\" (click)=\"faceselect(SelectVisible)\">F</button>\r\n        <button id=\"objects\" [class.selectvisible]=\"SelectVisible === 'Objs'\" (click)=\"objectselect(SelectVisible)\">O</button>\r\n      </div>\r\n</div>\r\n\r\n\r\n\t\r\n\r\n\r\n"
+module.exports = "<div id=\"container\"  \r\n    (mousemove)=\"onDocumentMouseMove($event)\" \r\n    (mousedown)=\"mousedown($event)\"\r\n    (mouseup)=\"mouseup($event)\"\r\n\t\t(click)=\"onDocumentMouseDown($event)\"\r\n    (window:resize)=\"onResize($event)\">\r\n\r\n\t\r\n  \t\t<!-- <button id=\"rotating\" \r\n  \t\t\t[class.visible]=\"Visible === 'rotate'\" \r\n  \t\t\t(click)=\"rotate()\">\r\n  \t\t\t<i class=\"fa fa-refresh\"></i>\r\n  \t\t</button>\r\n\r\n  \t\t<button id=\"paning\"  \r\n  \t\t\t[class.visible]=\"Visible === 'pan'\" \r\n  \t\t\t(click)=\"pan()\">\r\n  \t\t\t<i class=\"fa fa-hand-paper-o\"></i>\r\n  \t\t</button>\r\n\r\n  \t\t<button id=\"zooming\"  \r\n  \t\t\t[class.visible]=\"Visible === 'zoom'\" \r\n  \t\t\t(click)=\"Visible='zoom'\">\r\n  \t\t\t<i class=\"fa fa-search\"></i>\r\n  \t\t</button>-->\r\n  \t\t\r\n  \t\t<button id=\"zoomingfit\"  \r\n  \t\t\t[class.visible]=\"Visible === 'zoomfit'\" \r\n  \t\t\t(click)=\"zoomfit()\">\r\n  \t\t\t<i class=\"fa fa-arrows-alt\"></i>\r\n  \t\t</button> \r\n  \t\t\r\n  \t\t<!-- <button id=\"selecting\" [class.visible]=\"Visible === 'select'\" (click)= \"select($event, Visible)\" ><i class=\"fa fa-mouse-pointer\"></i></button> -->\r\n  \t\t\r\n  \t\t<button id=\"setting\" [class.selected]=\"settingVisible\" (click)= \"settingVisible = !settingVisible\"><i class=\"fa fa-cog\"></i></button>\r\n\r\n      <button id=\"selecting\" [class.selected]=\"seVisible\" (click)= \"select(seVisible)\" ><i class=\"fa fa-mouse-pointer\"></i></button>\r\n\r\n      \t\r\n      \t<!--setting-->\r\n      \t\r\n \t\t<app-setting *ngIf=\"settingVisible == true\"></app-setting>\r\n    <div *ngIf=\"seVisible == true\">\r\n        <button id=\"points\" [class.selectvisible]=\"SelectVisible === 'Points'\" (click)=\"pointselect(SelectVisible)\">P</button>\r\n        <button id=\"vertices\" [class.selectvisible]=\"SelectVisible === 'Vertices'\" (click)=\"verticeselect(SelectVisible)\">V</button>\r\n        <button id=\"edges\" [class.selectvisible]=\"SelectVisible === 'Edges'\" (click)=\"edgeselect(SelectVisible)\">E</button>\r\n        <button id=\"wires\" [class.selectvisible]=\"SelectVisible === 'Wires'\" (click)=\"wireselect(SelectVisible)\">W</button>\r\n        <button id=\"faces\" [class.selectvisible]=\"SelectVisible === 'Faces'\" (click)=\"faceselect(SelectVisible)\">F</button>\r\n        <button id=\"objects\" [class.selectvisible]=\"SelectVisible === 'Objs'\" (click)=\"objectselect(SelectVisible)\">O</button>\r\n      </div>\r\n</div>\r\n\r\n\r\n\t\r\n\r\n\r\n"
 
 /***/ }),
 
@@ -4320,6 +4415,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+//import { ResizedEvent } from 'angular-resize-event';
 let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2__data_DataSubscriber__["a" /* DataSubscriber */] {
     constructor(injector, myElement) {
         super(injector);
@@ -4365,34 +4461,35 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
         this.sphere.visible = false;
         this.sphere.name = "sphereInter";
         this.scene.add(this.sphere);
-        console.log(this.scene_and_maps);
         // render loop
         let self = this;
         function animate() {
-            if (self.seVisible === true) {
-                self.raycaster.setFromCamera(self.mouse, self.camera);
-                self.raycaster.linePrecision = 0.05;
-                self.raycaster.params.Points.threshold = 0.05;
-                self.scenechildren = self.dataService.getscenechild();
-                var intersects = self.raycaster.intersectObjects(self.scenechildren);
-                for (var i = 0; i < self.scenechildren.length; i++) {
-                    var currObj = self.scenechildren[i];
-                    if (self.dataService.getSelectingIndex(currObj.uuid) < 0) {
-                        if (intersects[0] != undefined && intersects[0].object.uuid == currObj.uuid) {
+            self.raycaster.setFromCamera(self.mouse, self.camera);
+            //self.raycaster.linePrecision=0.05;
+            self.raycaster.linePrecision = 0.5;
+            //self.raycaster.params.Points.threshold=0.05;
+            self.raycaster.params.Points.threshold = 1;
+            self.scenechildren = self.dataService.getscenechild();
+            var intersects = self.raycaster.intersectObjects(self.scenechildren);
+            for (var i = 0; i < self.scenechildren.length; i++) {
+                var currObj = self.scenechildren[i];
+                if (self.dataService.getSelectingIndex(currObj.uuid) < 0) {
+                    if (intersects[0] != undefined && intersects[0].object.uuid == currObj.uuid) {
+                        if (self.seVisible === true) {
                             self.sphere.visible = true;
                             self.sphere.position.copy(intersects[0].point);
                         }
-                        else {
-                            self.sphere.visible = false;
-                        }
+                    }
+                    else {
+                        self.sphere.visible = false;
                     }
                 }
-                for (var i = 0; i < self.textlabels.length; i++) {
-                    self.textlabels[i].updatePosition();
-                }
-                if (self.dataService.selecting.length != 0) {
-                    self.updateview();
-                }
+            }
+            for (var i = 0; i < self.textlabels.length; i++) {
+                self.textlabels[i].updatePosition();
+            }
+            if (self.dataService.selecting.length != 0) {
+                self.updateview();
             }
             requestAnimationFrame(animate);
             self.renderer.render(self.scene, self.camera);
@@ -4402,7 +4499,7 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
         for (var i = 0; i < this.getchildren().length; i++) {
             this.getchildren()[i]["material"].transparent = false;
         }
-        this.addgrid();
+        //this.addgrid();
     }
     //
     //  checks if the flowchart service has a flowchart and calls update function for the viewer
@@ -4420,6 +4517,13 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
                 this.scene.remove(this.scene.children[i]);
             }
         }
+    }
+    onResize(event) {
+        this.width = event.target.innerWidth; //event.ClientWidth;
+        this.height = event.target.innerHeight; //event.ClientHeight;
+        this.renderer.setSize(this.width, this.height);
+        this.camera.aspect = this.width / this.height;
+        this.camera.updateProjectionMatrix();
     }
     //
     // update mode
@@ -4443,6 +4547,7 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
             let loader = new __WEBPACK_IMPORTED_MODULE_1_three__["ObjectLoader"]();
             let objectData = loader.parse(scene_data);
             if (objectData.children !== undefined) {
+                var radius = 0;
                 for (var i = 0; i < objectData.children.length; i++) {
                     let chd = objectData.children[i];
                     chd["material"].needsUpdate = true;
@@ -4453,8 +4558,12 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
                         chd["geometry"].computeVertexNormals();
                         chd["geometry"].computeBoundingBox();
                         chd["geometry"].computeBoundingSphere();
+                        if (chd.name === "All edges") {
+                            this.basicMat = chd["material"].color;
+                        }
                     }
-                    if (chd.name === "All points") {
+                    if (chd["geometry"].boundingSphere.radius > radius) {
+                        radius = chd["geometry"].boundingSphere.radius;
                         this.center = chd["geometry"].boundingSphere.center;
                     }
                 }
@@ -4462,6 +4571,7 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
             this.controls.target.set(this.center.x, this.center.y, this.center.z);
             this.controls.update();
             this.scene.add(objectData);
+            this.addgrid();
         }
         catch (ex) {
             console.error("Error displaying model:", ex);
@@ -4474,7 +4584,7 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
         var context = canvas.getContext('2d');
         context.textAlign = "center";
         context.fillText(name, canvas.width / 2, canvas.height / 2);
-        context.font = "Bold  100px Arial";
+        context.font = "Bold  100px sans-serif";
         var texture = new __WEBPACK_IMPORTED_MODULE_1_three__["Texture"](canvas);
         texture.needsUpdate = true;
         var spriteMaterial = new __WEBPACK_IMPORTED_MODULE_1_three__["SpriteMaterial"]({ map: texture, color: 0xffffff });
@@ -4494,6 +4604,7 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
         return children;
     }
     select(seVisible) {
+        event.stopPropagation();
         this.seVisible = !this.seVisible;
         if (this.seVisible) {
             if (this.SelectVisible === "Objs") {
@@ -4506,13 +4617,16 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
         else {
             for (var i = 0; i < this.getchildren().length; i++) {
                 this.getchildren()[i]["material"].transparent = false;
+                if (this.getchildren()[i].name == "All edges") {
+                    this.getchildren()[i]["material"].color = this.basicMat;
+                }
             }
         }
     }
     objectselect(SelectVisible) {
+        event.stopPropagation();
         this.SelectVisible = "Objs";
         this.dataService.visible = "Objs";
-        event.preventDefault();
         document.getElementById("object").style.color = null;
         document.getElementById("face").style.color = null;
         document.getElementById("wire").style.color = null;
@@ -4523,8 +4637,10 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
         for (var i = 0; i < children.length; i++) {
             if (children[i].name === "All wires")
                 children[i]["material"].opacity = 0;
-            if (children[i].name === "All edges")
+            if (children[i].name === "All edges") {
                 children[i]["material"].opacity = 0;
+                children[i]["material"].color = this.basicMat;
+            }
             if (children[i].name === "All vertices")
                 children[i]["material"].opacity = 0;
             if (children[i].name === "All objs" || children[i].name === "All faces") {
@@ -4536,7 +4652,7 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
         this.dataService.addscenechild(scenechildren);
     }
     faceselect(SelectVisible) {
-        event.preventDefault();
+        event.stopPropagation();
         this.SelectVisible = "Faces";
         this.dataService.visible = "Faces";
         document.getElementById("object").style.color = "grey";
@@ -4549,8 +4665,10 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
         for (var i = 0; i < children.length; i++) {
             if (children[i].name === "All wires")
                 children[i]["material"].opacity = 0.1;
-            if (children[i].name === "All edges")
+            if (children[i].name === "All edges") {
                 children[i]["material"].opacity = 0.1;
+                children[i]["material"].color = this.basicMat;
+            }
             if (children[i].name === "All vertices")
                 children[i]["material"].opacity = 0.1;
             if (children[i].name === "All objs" || children[i].name === "All faces") {
@@ -4562,7 +4680,7 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
         this.dataService.addscenechild(scenechildren);
     }
     wireselect(SelectVisible) {
-        event.preventDefault();
+        event.stopPropagation();
         this.SelectVisible = "Wires";
         document.getElementById("object").style.color = "grey";
         document.getElementById("face").style.color = "grey";
@@ -4574,8 +4692,10 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
         for (var i = 0; i < children.length; i++) {
             if (children[i].name === "All objs" || children[i].name === "All faces")
                 children[i]["material"].opacity = 0.1;
-            if (children[i].name === "All edges")
+            if (children[i].name === "All edges") {
                 children[i]["material"].opacity = 0.1;
+                children[i]["material"].color = this.basicMat;
+            }
             if (children[i].name === "All vertices")
                 children[i]["material"].opacity = 0.1;
             if (children[i].name === "All wires") {
@@ -4586,7 +4706,7 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
         this.dataService.addscenechild(scenechildren);
     }
     edgeselect(SelectVisible) {
-        event.preventDefault();
+        event.stopPropagation();
         this.SelectVisible = "Edges";
         document.getElementById("object").style.color = "grey";
         document.getElementById("face").style.color = "grey";
@@ -4604,14 +4724,15 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
             if (children[i].name === "All vertices")
                 children[i]["material"].opacity = 0.1;
             if (children[i].name === "All edges") {
-                children[i]["material"].opacity = 0.4;
+                children[i]["material"].opacity = 0.5;
+                children[i]["material"].color = new __WEBPACK_IMPORTED_MODULE_1_three__["Color"](255, 255, 0);
                 scenechildren.push(children[i]);
             }
         }
         this.dataService.addscenechild(scenechildren);
     }
     verticeselect(SelectVisible) {
-        event.preventDefault();
+        event.stopPropagation();
         this.SelectVisible = "Vertices";
         document.getElementById("object").style.color = "grey";
         document.getElementById("face").style.color = "grey";
@@ -4625,8 +4746,10 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
                 children[i]["material"].opacity = 0.1;
             if (children[i].name === "All wires")
                 children[i]["material"].opacity = 0.1;
-            if (children[i].name === "All edges")
+            if (children[i].name === "All edges") {
                 children[i]["material"].opacity = 0.1;
+                children[i]["material"].color = this.basicMat;
+            }
             if (children[i].name === "All vertices") {
                 children[i]["material"].opacity = 1;
                 //scenechildren.push(children[i]);
@@ -4638,7 +4761,7 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
         this.dataService.addscenechild(scenechildren);
     }
     pointselect(SelectVisible) {
-        event.preventDefault();
+        event.stopPropagation();
         this.verticeselect("Vertices");
         this.SelectVisible = "Points";
     }
@@ -4653,18 +4776,19 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
     }
     onDocumentMouseMove(event) {
         this.mouse.x = (event.offsetX / this.width) * 2 - 1;
-        this.mouse.y = -(event.clientY / this.height) * 2 + 1;
+        this.mouse.y = -(event.offsetY / this.height) * 2 + 1;
     }
     addgrid() {
         var max = 8;
         var center = new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](0, 0, 0);
+        var radius = 0;
         for (var i = 0; i < this.scene.children.length; i++) {
             if (this.scene.children[i].type === "Scene") {
                 for (var j = 0; j < this.scene.children[i].children.length; j++) {
-                    if (this.scene.children[i].children[j]["geometry"].boundingSphere.radius !== 0) {
+                    if (this.scene.children[i].children[j]["geometry"].boundingSphere.radius > radius) {
                         center = this.scene.children[i].children[j]["geometry"].boundingSphere.center;
-                        var radius = this.scene.children[i].children[j]["geometry"].boundingSphere.radius;
-                        max = Math.ceil(radius + Math.max(Math.abs(center.x), Math.abs(center.y), Math.abs(center.z)) * 1.2);
+                        radius = this.scene.children[i].children[j]["geometry"].boundingSphere.radius;
+                        max = Math.ceil(radius + Math.max(Math.abs(center.x), Math.abs(center.y), Math.abs(center.z))) * 2;
                         break;
                     }
                     if (this.scene.children[i].children[j].type === "GridHelper") {
@@ -4685,30 +4809,72 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
     }
     /// selects object from three.js scene
     onDocumentMouseDown(event) {
+        //if(this.seVisible===true) console.log(event);
+        console.log(this.scene);
+        var threshold;
         if (this.seVisible === true) {
-            let threshold = 100;
-            if (Math.abs(this.mDownTime - this.mUpTime) > threshold) {
-                this.mDownTime = 0;
-                this.mUpTime = 0;
-                return;
-            }
-            event.preventDefault();
-            var selectedObj, intersects;
-            var select = false;
-            this.scenechildren = this.dataService.getscenechild();
-            this.raycaster.setFromCamera(this.mouse, this.camera);
-            this.raycaster.linePrecision = 0.05;
-            this.raycaster.params.Points.threshold = 0.05;
-            intersects = this.raycaster.intersectObjects(this.scenechildren);
-            if (intersects.length > 0) {
-                selectedObj = intersects[0].object;
-                if (this.scenechildren[0].name === "All objs") {
-                    const path = this.scene_and_maps.faces_map.get(Math.floor(intersects[0].faceIndex / 2));
-                    const face = this._model.getGeom().getTopo(path);
-                    const label = "o" + path.id;
-                    const label_xyz = face.getLabelCentroid();
-                    const faces = face.getObj().getFaces();
-                    if (this.textlabels.length === 0) {
+            threshold = 100;
+        }
+        else {
+            threshold = 0.1;
+        }
+        if (Math.abs(this.mDownTime - this.mUpTime) > threshold) {
+            this.mDownTime = 0;
+            this.mUpTime = 0;
+            return;
+        }
+        var selectedObj, intersects;
+        var select = false;
+        this.scenechildren = this.dataService.getscenechild();
+        this.raycaster.setFromCamera(this.mouse, this.camera);
+        //this.raycaster.linePrecision = 0.05;
+        this.raycaster.linePrecision = 0.5;
+        //this.raycaster.params.Points.threshold=0.05;
+        this.raycaster.params.Points.threshold = 1;
+        intersects = this.raycaster.intersectObjects(this.scenechildren);
+        if (intersects.length > 0) {
+            selectedObj = intersects[0].object;
+            if (this.scenechildren[0].name === "All objs") {
+                const index = Math.floor(intersects[0].faceIndex / 2);
+                const path = this.scene_and_maps.faces_map.get(index);
+                const face = this._model.getGeom().getTopo(path);
+                const label = "o" + path.id;
+                const label_xyz = face.getLabelCentroid();
+                const faces = face.getObj().getFaces();
+                if (this.textlabels.length === 0) {
+                    for (var n = 0; n < faces.length; n++) {
+                        var verts = faces[n].getVertices();
+                        var verts_xyz = verts.map((v) => v.getPoint().getPosition());
+                        var geometry = new __WEBPACK_IMPORTED_MODULE_1_three__["Geometry"]();
+                        for (var i = 0; i < verts_xyz.length; i++) {
+                            geometry.vertices.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](verts_xyz[i][0], verts_xyz[i][1], verts_xyz[i][2]));
+                        }
+                        geometry.faces.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Face3"](0, 2, 1));
+                        geometry.faces.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Face3"](0, 3, 2));
+                        var mesh = new __WEBPACK_IMPORTED_MODULE_1_three__["Mesh"](geometry, new __WEBPACK_IMPORTED_MODULE_1_three__["MeshPhongMaterial"]({ color: 0x00ff00, side: __WEBPACK_IMPORTED_MODULE_1_three__["DoubleSide"] }));
+                        mesh["geometry"].computeVertexNormals();
+                        mesh.userData.id = label;
+                        mesh.name = "selects";
+                        this.scene.add(mesh);
+                    }
+                    this.addTextLabel(label, label_xyz, label, index, path);
+                }
+                else {
+                    for (var j = 0; j < this.scene.children.length; j++) {
+                        if (label === this.scene.children[j].userData.id) {
+                            select = true;
+                            this.scene.remove(this.scene.children[j]);
+                            j = j - 1;
+                        }
+                    }
+                    for (var j = 0; j < this.textlabels.length; j++) {
+                        if (label === this.textlabels[j]["id"]) {
+                            select = true;
+                            this.removeTextLabel(this.textlabels[j]["id"]);
+                            j = j - 1;
+                        }
+                    }
+                    if (select == false) {
                         for (var n = 0; n < faces.length; n++) {
                             var verts = faces[n].getVertices();
                             var verts_xyz = verts.map((v) => v.getPoint().getPosition());
@@ -4719,57 +4885,51 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
                             geometry.faces.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Face3"](0, 2, 1));
                             geometry.faces.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Face3"](0, 3, 2));
                             var mesh = new __WEBPACK_IMPORTED_MODULE_1_three__["Mesh"](geometry, new __WEBPACK_IMPORTED_MODULE_1_three__["MeshPhongMaterial"]({ color: 0x00ff00, side: __WEBPACK_IMPORTED_MODULE_1_three__["DoubleSide"] }));
+                            mesh.userData.id = label;
                             mesh["geometry"].computeVertexNormals();
-                            mesh.userData.id = path.id;
                             mesh.name = "selects";
                             this.scene.add(mesh);
                         }
-                        this.addTextLabel(label, label_xyz, label);
-                    }
-                    else {
-                        for (var j = 0; j < this.scene.children.length; j++) {
-                            if (path.id === this.scene.children[j].userData.id) {
-                                select = true;
-                                this.scene.remove(this.scene.children[j]);
-                                j = j - 1;
-                            }
-                        }
-                        for (var j = 0; j < this.textlabels.length; j++) {
-                            if (label === this.textlabels[j]["id"]) {
-                                select = true;
-                                this.removeTextLabel(this.textlabels[j]["id"]);
-                                j = j - 1;
-                            }
-                        }
-                        if (select == false) {
-                            for (var n = 0; n < faces.length; n++) {
-                                var verts = faces[n].getVertices();
-                                var verts_xyz = verts.map((v) => v.getPoint().getPosition());
-                                var geometry = new __WEBPACK_IMPORTED_MODULE_1_three__["Geometry"]();
-                                for (var i = 0; i < verts_xyz.length; i++) {
-                                    geometry.vertices.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](verts_xyz[i][0], verts_xyz[i][1], verts_xyz[i][2]));
-                                }
-                                geometry.faces.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Face3"](0, 2, 1));
-                                geometry.faces.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Face3"](0, 3, 2));
-                                var mesh = new __WEBPACK_IMPORTED_MODULE_1_three__["Mesh"](geometry, new __WEBPACK_IMPORTED_MODULE_1_three__["MeshPhongMaterial"]({ color: 0x00ff00, side: __WEBPACK_IMPORTED_MODULE_1_three__["DoubleSide"] }));
-                                mesh.userData.id = Math.floor(intersects[0].faceIndex / 2);
-                                mesh["geometry"].computeVertexNormals();
-                                mesh.userData.id = path.id;
-                                mesh.name = "selects";
-                                this.scene.add(mesh);
-                            }
-                            this.addTextLabel(label, label_xyz, label);
-                        }
+                        this.addTextLabel(label, label_xyz, label, index, path);
                     }
                 }
-                if (this.scenechildren[0].name === "All faces") {
-                    const path = this.scene_and_maps.faces_map.get(Math.floor(intersects[0].faceIndex / 2));
-                    const face = this._model.getGeom().getTopo(path);
-                    const label = face.getLabel();
-                    const label_xyz = face.getLabelCentroid();
-                    const verts = face.getVertices();
-                    const verts_xyz = verts.map((v) => v.getPoint().getPosition());
-                    if (this.textlabels.length === 0) {
+            }
+            if (this.scenechildren[0].name === "All faces") {
+                const index = Math.floor(intersects[0].faceIndex / 2);
+                const path = this.scene_and_maps.faces_map.get(index);
+                const face = this._model.getGeom().getTopo(path);
+                const label = face.getLabel();
+                const label_xyz = face.getLabelCentroid();
+                const verts = face.getVertices();
+                const verts_xyz = verts.map((v) => v.getPoint().getPosition());
+                if (this.textlabels.length === 0) {
+                    var geometry = new __WEBPACK_IMPORTED_MODULE_1_three__["Geometry"]();
+                    for (var i = 0; i < verts_xyz.length; i++) {
+                        geometry.vertices.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](verts_xyz[i][0], verts_xyz[i][1], verts_xyz[i][2]));
+                    }
+                    geometry.faces.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Face3"](0, 2, 1));
+                    geometry.faces.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Face3"](0, 3, 2));
+                    var mesh = new __WEBPACK_IMPORTED_MODULE_1_three__["Mesh"](geometry, new __WEBPACK_IMPORTED_MODULE_1_three__["MeshPhongMaterial"]({ color: 0x00ff00, side: __WEBPACK_IMPORTED_MODULE_1_three__["DoubleSide"] }));
+                    mesh.userData.id = label;
+                    mesh["geometry"].computeVertexNormals();
+                    mesh.name = "selects";
+                    this.scene.add(mesh);
+                    this.addTextLabel(label, label_xyz, label, index, path);
+                }
+                else {
+                    for (var j = 0; j < this.scene.children.length; j++) {
+                        if (label === this.scene.children[j].userData.id) {
+                            select = true;
+                            this.scene.remove(this.scene.children[j]);
+                        }
+                    }
+                    for (var j = 0; j < this.textlabels.length; j++) {
+                        if (label === this.textlabels[j]["id"]) {
+                            select = true;
+                            this.removeTextLabel(this.textlabels[j]["id"]);
+                        }
+                    }
+                    if (select == false) {
                         var geometry = new __WEBPACK_IMPORTED_MODULE_1_three__["Geometry"]();
                         for (var i = 0; i < verts_xyz.length; i++) {
                             geometry.vertices.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](verts_xyz[i][0], verts_xyz[i][1], verts_xyz[i][2]));
@@ -4777,214 +4937,190 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
                         geometry.faces.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Face3"](0, 2, 1));
                         geometry.faces.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Face3"](0, 3, 2));
                         var mesh = new __WEBPACK_IMPORTED_MODULE_1_three__["Mesh"](geometry, new __WEBPACK_IMPORTED_MODULE_1_three__["MeshPhongMaterial"]({ color: 0x00ff00, side: __WEBPACK_IMPORTED_MODULE_1_three__["DoubleSide"] }));
-                        mesh.userData.id = Math.floor(intersects[0].faceIndex / 2);
+                        mesh.userData.id = label;
                         mesh["geometry"].computeVertexNormals();
                         mesh.name = "selects";
                         this.scene.add(mesh);
-                        this.addTextLabel(label, label_xyz, Math.floor(intersects[0].faceIndex / 2));
-                    }
-                    else {
-                        for (var j = 0; j < this.scene.children.length; j++) {
-                            if (Math.floor(intersects[0].faceIndex / 2) === this.scene.children[j].userData.id) {
-                                select = true;
-                                this.scene.remove(this.scene.children[j]);
-                            }
-                        }
-                        for (var j = 0; j < this.textlabels.length; j++) {
-                            if (Math.floor(intersects[0].faceIndex / 2) === this.textlabels[j]["id"]) {
-                                select = true;
-                                this.removeTextLabel(this.textlabels[j]["id"]);
-                            }
-                        }
-                        if (select == false) {
-                            var geometry = new __WEBPACK_IMPORTED_MODULE_1_three__["Geometry"]();
-                            for (var i = 0; i < verts_xyz.length; i++) {
-                                geometry.vertices.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](verts_xyz[i][0], verts_xyz[i][1], verts_xyz[i][2]));
-                            }
-                            geometry.faces.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Face3"](0, 2, 1));
-                            geometry.faces.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Face3"](0, 3, 2));
-                            var mesh = new __WEBPACK_IMPORTED_MODULE_1_three__["Mesh"](geometry, new __WEBPACK_IMPORTED_MODULE_1_three__["MeshPhongMaterial"]({ color: 0x00ff00, side: __WEBPACK_IMPORTED_MODULE_1_three__["DoubleSide"] }));
-                            mesh.userData.id = Math.floor(intersects[0].faceIndex / 2);
-                            mesh["geometry"].computeVertexNormals();
-                            mesh.name = "selects";
-                            this.scene.add(mesh);
-                            this.addTextLabel(label, label_xyz, Math.floor(intersects[0].faceIndex / 2));
-                        }
+                        this.addTextLabel(label, label_xyz, label, index, path);
                     }
                 }
-                if (this.scenechildren[0].name == "All wires") {
-                    const path = this.scene_and_maps.wires_map.get(Math.floor(intersects[0].index / 2));
-                    const wire = this._model.getGeom().getTopo(path);
-                    const label = wire.getLabel();
-                    const label_xyz = wire.getLabelCentroid();
-                    const verts = wire.getVertices();
-                    const verts_xyz = verts.map((v) => v.getPoint().getPosition());
-                    if (wire.isClosed()) {
-                        verts_xyz.push(verts_xyz[0]);
+            }
+            if (this.scenechildren[0].name == "All wires") {
+                const index = Math.floor(intersects[0].index / 2);
+                console.log(index);
+                console.log(this.scene_and_maps.wires_map);
+                const path = this.scene_and_maps.wires_map.get(index);
+                const wire = this._model.getGeom().getTopo(path);
+                const label = wire.getLabel();
+                const label_xyz = wire.getLabelCentroid();
+                const verts = wire.getVertices();
+                const verts_xyz = verts.map((v) => v.getPoint().getPosition());
+                if (wire.isClosed()) {
+                    verts_xyz.push(verts_xyz[0]);
+                }
+                if (this.textlabels.length === 0) {
+                    var geometry = new __WEBPACK_IMPORTED_MODULE_1_three__["Geometry"]();
+                    for (var i = 0; i < verts_xyz.length; i++) {
+                        geometry.vertices.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](verts_xyz[i][0], verts_xyz[i][1], verts_xyz[i][2]));
                     }
-                    if (this.textlabels.length === 0) {
+                    var material = new __WEBPACK_IMPORTED_MODULE_1_three__["LineBasicMaterial"]({ color: 0x00ff00, side: __WEBPACK_IMPORTED_MODULE_1_three__["DoubleSide"] });
+                    const line = new __WEBPACK_IMPORTED_MODULE_1_three__["Line"](geometry, material);
+                    line.userData.id = label;
+                    line["material"].needsUpdate = true;
+                    line.name = "selects";
+                    this.scene.add(line);
+                    this.addTextLabel(label, label_xyz, label, index, path);
+                }
+                else {
+                    for (var j = 0; j < this.scene.children.length; j++) {
+                        if (label === this.scene.children[j].userData.id) {
+                            select = true;
+                            this.scene.remove(this.scene.children[j]);
+                        }
+                    }
+                    for (var j = 0; j < this.textlabels.length; j++) {
+                        if (label === this.textlabels[j]["id"]) {
+                            select = true;
+                            this.removeTextLabel(this.textlabels[j]["id"]);
+                        }
+                    }
+                    if (select == false) {
                         var geometry = new __WEBPACK_IMPORTED_MODULE_1_three__["Geometry"]();
                         for (var i = 0; i < verts_xyz.length; i++) {
                             geometry.vertices.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](verts_xyz[i][0], verts_xyz[i][1], verts_xyz[i][2]));
                         }
                         var material = new __WEBPACK_IMPORTED_MODULE_1_three__["LineBasicMaterial"]({ color: 0x00ff00, side: __WEBPACK_IMPORTED_MODULE_1_three__["DoubleSide"] });
                         const line = new __WEBPACK_IMPORTED_MODULE_1_three__["Line"](geometry, material);
-                        line.userData.id = Math.floor(intersects[0].index / 2);
+                        line.userData.id = label;
                         line["material"].needsUpdate = true;
                         line.name = "selects";
                         this.scene.add(line);
-                        this.addTextLabel(label, label_xyz, Math.floor(intersects[0].index / 2));
-                    }
-                    else {
-                        for (var j = 0; j < this.scene.children.length; j++) {
-                            if (Math.floor(intersects[0].index / 2) === this.scene.children[j].userData.id) {
-                                select = true;
-                                this.scene.remove(this.scene.children[j]);
-                            }
-                        }
-                        for (var j = 0; j < this.textlabels.length; j++) {
-                            if (Math.floor(intersects[0].index / 2) === this.textlabels[j]["id"]) {
-                                select = true;
-                                this.removeTextLabel(this.textlabels[j]["id"]);
-                            }
-                        }
-                        if (select == false) {
-                            var geometry = new __WEBPACK_IMPORTED_MODULE_1_three__["Geometry"]();
-                            for (var i = 0; i < verts_xyz.length; i++) {
-                                geometry.vertices.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](verts_xyz[i][0], verts_xyz[i][1], verts_xyz[i][2]));
-                            }
-                            var material = new __WEBPACK_IMPORTED_MODULE_1_three__["LineBasicMaterial"]({ color: 0x00ff00, side: __WEBPACK_IMPORTED_MODULE_1_three__["DoubleSide"] });
-                            const line = new __WEBPACK_IMPORTED_MODULE_1_three__["Line"](geometry, material);
-                            line.userData.id = Math.floor(intersects[0].index / 2);
-                            line["material"].needsUpdate = true;
-                            line.name = "selects";
-                            this.scene.add(line);
-                            this.addTextLabel(label, label_xyz, Math.floor(intersects[0].index / 2));
-                        }
+                        this.addTextLabel(label, label_xyz, label, index, path);
                     }
                 }
-                if (this.scenechildren[0].name == "All edges") {
-                    const path = this.scene_and_maps.edges_map.get(Math.floor(intersects[0].index / 2));
-                    const edge = this._model.getGeom().getTopo(path);
-                    const label = edge.getLabel();
-                    const label_xyz = edge.getLabelCentroid();
-                    const verts = edge.getVertices();
-                    const verts_xyz = verts.map((v) => v.getPoint().getPosition());
-                    if (this.textlabels.length === 0) {
+            }
+            if (this.scenechildren[0].name == "All edges") {
+                const index = Math.floor(intersects[0].index / 2);
+                const path = this.scene_and_maps.edges_map.get(index);
+                const edge = this._model.getGeom().getTopo(path);
+                const label = edge.getLabel();
+                const label_xyz = edge.getLabelCentroid();
+                const verts = edge.getVertices();
+                const verts_xyz = verts.map((v) => v.getPoint().getPosition());
+                if (this.textlabels.length === 0) {
+                    var geometry = new __WEBPACK_IMPORTED_MODULE_1_three__["Geometry"]();
+                    for (var i = 0; i < verts_xyz.length; i++) {
+                        geometry.vertices.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](verts_xyz[i][0], verts_xyz[i][1], verts_xyz[i][2]));
+                    }
+                    var material = new __WEBPACK_IMPORTED_MODULE_1_three__["LineBasicMaterial"]({ color: 0x00ff00, side: __WEBPACK_IMPORTED_MODULE_1_three__["DoubleSide"] });
+                    const line = new __WEBPACK_IMPORTED_MODULE_1_three__["Line"](geometry, material);
+                    line.userData.id = label;
+                    line["material"].needsUpdate = true;
+                    line.name = "selects";
+                    this.scene.add(line);
+                    this.addTextLabel(label, label_xyz, label, index, path);
+                }
+                else {
+                    for (var j = 0; j < this.scene.children.length; j++) {
+                        if (label === this.scene.children[j].userData.id) {
+                            select = true;
+                            this.scene.remove(this.scene.children[j]);
+                        }
+                    }
+                    for (var j = 0; j < this.textlabels.length; j++) {
+                        if (label === this.textlabels[j]["id"]) {
+                            select = true;
+                            this.removeTextLabel(this.textlabels[j]["id"]);
+                        }
+                    }
+                    if (select == false) {
                         var geometry = new __WEBPACK_IMPORTED_MODULE_1_three__["Geometry"]();
                         for (var i = 0; i < verts_xyz.length; i++) {
                             geometry.vertices.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](verts_xyz[i][0], verts_xyz[i][1], verts_xyz[i][2]));
                         }
                         var material = new __WEBPACK_IMPORTED_MODULE_1_three__["LineBasicMaterial"]({ color: 0x00ff00, side: __WEBPACK_IMPORTED_MODULE_1_three__["DoubleSide"] });
                         const line = new __WEBPACK_IMPORTED_MODULE_1_three__["Line"](geometry, material);
-                        line.userData.id = Math.floor(intersects[0].index / 2);
-                        line["material"].needsUpdate = true;
+                        line.userData.id = label;
                         line.name = "selects";
                         this.scene.add(line);
-                        this.addTextLabel(label, label_xyz, Math.floor(intersects[0].index / 2));
-                    }
-                    else {
-                        for (var j = 0; j < this.scene.children.length; j++) {
-                            if (Math.floor(intersects[0].index / 2) === this.scene.children[j].userData.id) {
-                                select = true;
-                                this.scene.remove(this.scene.children[j]);
-                            }
-                        }
-                        for (var j = 0; j < this.textlabels.length; j++) {
-                            if (Math.floor(intersects[0].index / 2) === this.textlabels[j]["id"]) {
-                                select = true;
-                                this.removeTextLabel(this.textlabels[j]["id"]);
-                            }
-                        }
-                        if (select == false) {
-                            var geometry = new __WEBPACK_IMPORTED_MODULE_1_three__["Geometry"]();
-                            for (var i = 0; i < verts_xyz.length; i++) {
-                                geometry.vertices.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](verts_xyz[i][0], verts_xyz[i][1], verts_xyz[i][2]));
-                            }
-                            var material = new __WEBPACK_IMPORTED_MODULE_1_three__["LineBasicMaterial"]({ color: 0x00ff00, side: __WEBPACK_IMPORTED_MODULE_1_three__["DoubleSide"] });
-                            const line = new __WEBPACK_IMPORTED_MODULE_1_three__["Line"](geometry, material);
-                            line.userData.id = Math.floor(intersects[0].index / 2);
-                            line.name = "selects";
-                            this.scene.add(line);
-                            this.addTextLabel(label, label_xyz, Math.floor(intersects[0].index / 2));
-                        }
+                        this.addTextLabel(label, label_xyz, label, index, path);
                     }
                 }
-                if (this.scenechildren[0].name === "All points") {
-                    const attributevertix = this.dataService.getattrvertix();
-                    //const path: gs.ITopoPathData = this.scene_and_maps.vertices_map.get(intersects[ 0 ].index);
-                    //const vertices: gs.IVertex = this._model.getGeom().getTopo(path) as gs.IVertex;
-                    //const points: gs.IPoint = this._model.getGeom().getTopo(path) as gs.IPoint;
-                    const id = this._model.getGeom().getAllPoints()[intersects[0].index].getLabel();
+            }
+            if (this.scenechildren[0].name === "All points") {
+                const index = intersects[0].index;
+                const attributevertix = this.dataService.getattrvertix();
+                const id = this._model.getGeom().getAllPoints()[index].getLabel();
+                var label = "";
+                if (this.SelectVisible == "Points") {
+                    label = id;
+                }
+                else {
                     for (var i = 0; i < attributevertix.length; i++) {
                         if (id === attributevertix[i].pointid) {
-                            var label = attributevertix[i].vertixlabel;
+                            var str = attributevertix[i].vertixlabel;
+                            if (label === "")
+                                label = str;
+                            else
+                                label = label + "<br/>" + str;
                         }
                     }
-                    const verts_xyz = this._model.getGeom().getAllPoints()[intersects[0].index].getPosition(); //vertices.getPoint().getPosition();
-                    console.log(intersects[0].index, verts_xyz);
-                    console.log(this.scene);
-                    //const verts: gs.IVertex[] = vertices.getVertices();
-                    //const verts_xyz: gs.XYZ[] = vertices.getPoint().getPosition();
-                    if (this.textlabels.length === 0) {
+                }
+                const verts_xyz = this._model.getGeom().getAllPoints()[index].getPosition(); //vertices.getPoint().getPosition();
+                if (this.textlabels.length === 0) {
+                    var geometry = new __WEBPACK_IMPORTED_MODULE_1_three__["Geometry"]();
+                    geometry.vertices.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](verts_xyz[0], verts_xyz[1], verts_xyz[2]));
+                    var pointsmaterial = new __WEBPACK_IMPORTED_MODULE_1_three__["PointsMaterial"]({ color: 0x00ff00, size: 0.2 });
+                    const points = new __WEBPACK_IMPORTED_MODULE_1_three__["Points"](geometry, pointsmaterial);
+                    points.userData.id = id;
+                    points["material"].needsUpdate = true;
+                    points.name = "selects";
+                    this.scene.add(points);
+                    this.addTextLabel(label, verts_xyz, id, index, id);
+                }
+                else {
+                    for (var j = 0; j < this.scene.children.length; j++) {
+                        if (id === this.scene.children[j].userData.id) {
+                            select = true;
+                            this.scene.remove(this.scene.children[j]);
+                        }
+                    }
+                    for (var j = 0; j < this.textlabels.length; j++) {
+                        if (id === this.textlabels[j]["id"]) {
+                            select = true;
+                            this.removeTextLabel(this.textlabels[j]["id"]);
+                        }
+                    }
+                    if (select == false) {
                         var geometry = new __WEBPACK_IMPORTED_MODULE_1_three__["Geometry"]();
                         geometry.vertices.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](verts_xyz[0], verts_xyz[1], verts_xyz[2]));
                         var pointsmaterial = new __WEBPACK_IMPORTED_MODULE_1_three__["PointsMaterial"]({ color: 0x00ff00, size: 0.2 });
                         const points = new __WEBPACK_IMPORTED_MODULE_1_three__["Points"](geometry, pointsmaterial);
-                        points.userData.id = label;
+                        points.userData.id = id;
                         points["material"].needsUpdate = true;
                         points.name = "selects";
                         this.scene.add(points);
-                        this.addTextLabel(label, verts_xyz, label);
-                    }
-                    else {
-                        for (var j = 0; j < this.scene.children.length; j++) {
-                            if (label === this.scene.children[j].userData.id) {
-                                select = true;
-                                this.scene.remove(this.scene.children[j]);
-                            }
-                        }
-                        for (var j = 0; j < this.textlabels.length; j++) {
-                            if (label === this.textlabels[j]["id"]) {
-                                select = true;
-                                this.removeTextLabel(this.textlabels[j]["id"]);
-                            }
-                        }
-                        if (select == false) {
-                            var geometry = new __WEBPACK_IMPORTED_MODULE_1_three__["Geometry"]();
-                            geometry.vertices.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](verts_xyz[0], verts_xyz[1], verts_xyz[2]));
-                            var pointsmaterial = new __WEBPACK_IMPORTED_MODULE_1_three__["PointsMaterial"]({ color: 0x00ff00, size: 0.2 });
-                            const points = new __WEBPACK_IMPORTED_MODULE_1_three__["Points"](geometry, pointsmaterial);
-                            points.userData.id = label[0];
-                            points["material"].needsUpdate = true;
-                            points.name = "selects";
-                            this.scene.add(points);
-                            this.addTextLabel(label, verts_xyz, label);
-                        }
+                        this.addTextLabel(label, verts_xyz, id, index, id);
                     }
                 }
-            }
-            else {
-                for (var i = 0; i < this.dataService.sprite.length; i++) {
-                    this.dataService.sprite[i].visible = false;
-                }
-                for (var i = 0; i < this.scene.children.length; i++) {
-                    if (this.scene.children[i].name == "selects") {
-                        this.scene.remove(this.scene.children[i]);
-                        i = i - 1;
-                    }
-                }
-                for (var i = 0; i < this.textlabels.length; i++) {
-                    this.removeTextLabel(this.textlabels[i]["id"]);
-                    i = i - 1;
-                }
-                //var sprite=[];
-                //this.dataService.pushsprite(sprite);
-                //var select=[];
-                //this.dataService.addselecting(select);
             }
         }
-        //this.updateview();
+        else {
+            for (var i = 0; i < this.dataService.sprite.length; i++) {
+                this.dataService.sprite[i].visible = false;
+            }
+            for (var i = 0; i < this.scene.children.length; i++) {
+                if (this.scene.children[i].name == "selects") {
+                    this.scene.remove(this.scene.children[i]);
+                    i = i - 1;
+                }
+            }
+            for (var i = 0; i < this.textlabels.length; i++) {
+                this.removeTextLabel(this.textlabels[i]["id"]);
+                i = i - 1;
+            }
+        }
+        //}
     }
     updateview() {
         this.Visible = this.dataService.visible;
@@ -5022,10 +5158,10 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
         }
     }
     //To add text labels just provide label text, label position[x,y,z] and its id
-    addTextLabel(label, label_xyz, id) {
+    addTextLabel(label, label_xyz, id, index, path) {
         let container = this.myElement.nativeElement.children.namedItem("container");
         let star = this.creatStarGeometry(label_xyz);
-        let textLabel = this.createTextLabel(label, star, id);
+        let textLabel = this.createTextLabel(label, star, id, index, path);
         this.starsGeometry.vertices.push(star);
         this.textlabels.push(textLabel);
         this.dataService.pushselecting(textLabel);
@@ -5049,7 +5185,6 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
         if (i < this.textlabels.length) {
             this.textlabels.splice(i, 1);
             this.dataService.spliceselecting(i, 1);
-            console.log(this.dataService.selecting);
         }
     }
     creatStarGeometry(label_xyz) {
@@ -5059,11 +5194,13 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
         star.z = label_xyz[2];
         return star;
     }
-    createTextLabel(label, star, id) {
+    createTextLabel(label, star, id, index, path) {
         let div = this.createLabelDiv();
         var self = this;
         let textLabel = {
             id: id,
+            index: index,
+            path: path,
             element: div,
             parent: false,
             position: new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](0, 0, 0),
@@ -5744,7 +5881,7 @@ EditorComponent = __decorate([
 /***/ "../../../../../src/app/ui-components/editors/flowchart-viewer/flowchart-viewer.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!-- <mat-expansion-panel class='viewer' \r\n\t\t[expanded]=\"panelOpenState\">\r\n  \t<mat-expansion-panel-header>\r\n\t    <mat-panel-title class='header'> -->\r\n\r\n<div class=\"viewer\">\r\n\r\n\t<div class=\"container\">\r\n\t\t\r\n\t\t<!-- @Derek: Modify gutterSize/gutterColor/size -->\r\n\t\t<!-- https://bertrandg.github.io/angular-split/#/documentation -->\r\n\t\t<split  direction=\"horizontal\" \r\n              [gutterSize]=\"7\" \r\n              [useTransition]=\"true\" gutterColor=white\r\n              >\r\n\r\n\t\t\t\t<split-area class=\"sidebar\"\r\n\t\t\t\t\t[size]=\"30\"\r\n\t\t\t        order=\"1\">\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t<section>\r\n\t\t\t\t\t\t\t<div (click)=\"addNode($event, undefined)\">New Empty Node</div>\r\n\t\t\t\t\t\t\t<div class=\"disabled\">New Subnet</div>\r\n\t\t\t\t\t\t</section>\r\n\r\n\t\t\t\t\t\t<section>\r\n\t\t\t\t\t\t\t<div (click)=\"newfile()\">New Flowchart</div>\r\n\t\t\t\t\t\t</section>\r\n\r\n\t\t\t\t\t\t<section>\r\n\t\t\t\t\t\t\t<div (click)=\"loadFromMemory()\">Revert</div>\r\n\t\t\t\t\t\t</section>\r\n\r\n\t\t\t\t\t\t<section>\r\n\t\t\t\t\t\t\t<div (click)=\"save()\">Download Flowchart</div>\r\n\t\t\t\t\t\t\t<div (click)=\"openPicker()\">Load Flowchart\r\n\t\t\t\t\t\t\t\t<input #fileInput style=\"display: none;\"\r\n\t\t\t\t\t\t  \t\ttype=\"file\" (change)=\"loadFile()\"/>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</section>\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t<!--<section>\r\n\t\t\t\t\t\t\t<div>Save Node</div>\r\n\t\t\t\t\t\t</section>-->\r\n\r\n\t\t\t\t\t\t<section>\r\n\t\t\t\t\t\t\t<app-node-library></app-node-library>\r\n\t\t\t\t\t\t</section>\r\n\t\t\t\t\t\t\r\n\t\t\t\t</split-area>\r\n\t\t\t\t\r\n\t\t\r\n\t\t\t\t<split-area order=\"2\" [size]=\"70\">\r\n\t\t\t\t    \t<div class=\"info-container\" \r\n\t\t\t\t    \t\tstyle=\"position: absolute; \r\n\t\t\t\t    \t\ttop: 30px; \r\n\t\t\t\t    \t\tright: 30px\">\r\n\t\t\t\t    \t\t<!-- Zoom: {{zoom}} -->\r\n\t\t\t\t    \t</div>\r\n\r\n\t\t\t\t        <!-- svg canvas to draw the edges -->\r\n\t\t\t\t\t\t<svg xmlns=\"http://www.w3.org/2000/svg\" \r\n\t\t\t\t\t\t\tclass=\"graph-container\" \r\n\t\t\t\t\t\t\tid=\"graph-edges\" \r\n\t\t\t\t\t\t\t[style.zoom]=\"zoom\">\r\n\r\n\t\t\t\t\t\t\t<g class=\"edge\" *ngFor=\"let edge of _edges\" >\r\n\t\t\t\t\t\t\t\t<path \r\n\t\t\t\t\t\t\t\t  [attr.d]=\"edge.path\" \r\n\t\t\t\t\t\t\t\t  stroke=\"#7469FF\"\r\n\t\t\t\t\t\t\t\t  stroke-width=\"3\" fill=\"none\" />\r\n\t\t\t\t\t\t\t</g>\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t<!-- dragging path -->\r\n\t\t\t\t\t\t\t<g id=\"temporary-edge\" [class.hidden]=\"!_linkMode\" >\r\n\t\t\t\t\t\t\t\t<path \r\n\t\t\t\t\t\t\t\t[attr.d]=\"edgeString(mouse_pos.start, mouse_pos.current)\" \r\n\t\t\t\t\t\t\t\t \tstroke=\"#7469FF\"\r\n\t\t\t\t\t\t\t\t \tstroke-width=\"5\" \r\n\t\t\t\t\t\t\t\t \tfill=\"none\" \r\n\t\t\t\t\t\t\t\t \tstroke-dasharray=\"5, 5\"/>\r\n\t\t\t\t\t\t\t\t\t<circle id=\"pointC\" [attr.cx]=\"mouse_pos.current.x\" [attr.cy]=\"mouse_pos.current.y\" r=\"5\" />\r\n\t\t\t\t\t\t\t\t</g>\r\n\r\n\t\t\t\t\t\t</svg>\r\n\r\n\t\t\t\t\t\t<!-- div container for the nodes -->\r\n\t\t\t\t\t\t<div class=\"graph-container\" \r\n\t\t\t\t\t\t\tid=\"graph-nodes\" ondragover=\"return false\" [style.zoom]=\"zoom\" >\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t<!-- all nodes -->\r\n\t\t\t\t\t\t\t<div class=\"node-container\">\r\n\r\n\t\t\t\t\t\t\t\t<!-- one node -->\r\n\t\t\t\t\t\t\t\t<div  class=\"node\"\r\n\t\t\t\t\t\t\t\t\t\t*ngFor=\"let node of _nodes; let node_index = index\" \r\n\t\t\t\t\t\t\t\t\t\t[style.left.px]=\"node.position[0]\" \r\n\t\t\t\t\t\t\t\t\t\t[style.top.px]=\"node.position[1]\" >\r\n\r\n\t\t\t\t\t\t\t\t\t<div class=\"btn-container\" *ngIf=\"node_index == _selectedNodeIndex\" >\r\n\t\t\t\t\t\t\t\t\t\t<!-- <div class=\"btn-group node-btns\">\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"action-button\" (click)=\"addPort(node_index, 'in')\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t<mat-icon>input</mat-icon>\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"action-button\" (click)=\"addPort(node_index, 'out')\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t<mat-icon>add_to_queue</mat-icon>\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t</div> -->\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"btn-group port-btns\">\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"action-button\" (click)=\"deleteNode(node_index)\" \t\t\r\n\t\t\t\t\t\t\t\t\t\t\t\tmatTooltip=\"Delete Node\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t<mat-icon>delete</mat-icon>\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"action-button\" (click)=\"toggleNode(node)\"\r\n\t\t\t\t\t\t\t\t\t\t\t\tmatTooltip=\"Disable Node\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t<mat-icon *ngIf='!node.isDisabled()'>check_circle</mat-icon>\r\n\t\t\t\t\t\t\t\t\t\t\t\t<mat-icon *ngIf='node.isDisabled()'>highlight_off</mat-icon>\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"action-button\" (click)=\"saveNode(node_index)\" \r\n\t\t\t\t\t\t\t\t\t\t\t\tmatTooltip=\"Save Node To Library\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t*ngIf=\"!isSaved(node)\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t<mat-icon>file_download</mat-icon>\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t<!-- node body -->\r\n\t\t\t\t\t\t\t\t\t<div class=\"node-body\" \r\n\t\t\t\t\t\t\t\t\t\t[class.library]=\"node.getType() !== undefined\"\r\n\t\t\t\t\t\t\t\t\t\t[class.error]=\"node._hasError\"\r\n\t\t\t\t\t\t\t\t\t\t[class.disabled] =\"node.isDisabled()\"\r\n\t\t\t\t\t\t\t\t\t\t(click)=\"clickNode($event, node_index)\"\r\n\t\t\t\t\t\t\t\t\t\tdraggable=true  \r\n\t\t\t\t\t\t\t\t\t\t(dragstart)=\"nodeDragStart($event, node)\" \r\n\t\t\t\t\t\t\t\t\t\t(drag)=\"nodeDragging($event, node, node_index)\" \r\n\t\t\t\t\t\t\t\t\t\t(dragend)=\"nodeDragEnd($event, node)\">\r\n\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"node-name\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t[class.selected]=\"node_index == _selectedNodeIndex\"\r\n\t\t\t\t\t\t\t\t\t\t\t\tmatTooltip=\"{{node.getName()}}\">\r\n\t\t\t\t\t\t\t\t\t\t\t    <input matInput\r\n\t\t\t\t\t\t\t\t\t\t\t    style=\"margin: 2px; min-width: 50px; width: 50px;\"\r\n\t\t\t\t\t\t\t\t\t\t\t    placeholder=\"Value\" value=\"{{ node.getName() }}\"\r\n\t\t\t\t\t\t\t\t\t\t\t    (change)=\"updateNodeName($event)\"/>\r\n\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t\t<!--inputs -->\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"port-container\">\r\n\t\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"port input\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t*ngFor=\"let port of node.getInputs(); let pi=index\"  \r\n\t\t\t\t\t\t\t\t\t\t\t\tid=\"n{{node_index}}pi{{pi}}\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"port-grip\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\tdraggable=true\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t[class.connected]=\"port.isConnected()\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(dragstart)=\"portDragStart($event, port, [node_index, pi])\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(drag)=\"portDragging($event, port)\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(dragend)=\"portDragEnd($event, port)\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(drop)=\"portDrop($event, port, [node_index, pi])\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t\t<span class=\"port-name\">{{ port.getName() }}</span>\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t\t<!-- outputs -->\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"port-container\">\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"port output\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t*ngFor=\"let port of node.getOutputs(); let po=index;\"\r\n\t\t\t\t\t\t\t\t\t\t\t\tid=\"n{{node_index}}po{{po}}\">\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t\t<span class=\"port-name\">{{port.getName()}}</span>\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"port-grip\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\tdraggable=true\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t[class.selected]=\"isPortSelected(node_index, po)\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t[class.connected]=\"port.isConnected()\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(click)=\"clickPort($event, node_index, po)\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(dragstart)=\"portDragStart($event, port, [node_index, po])\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(drag)=\"portDragging($event, port)\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(dragend)=\"portDragEnd($event, port)\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(drop)=\"portDrop($event, port, [node_index, po])\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t</div> \r\n\r\n\r\n\t\t\t\t\t\t\t\t\t\t<!-- <div class=\"fromLibrary\"  style=\"font-size: 8px; text-align: center\">\r\n\t\t\t\t\t\t\t\t\t\t\tLibrary Node\r\n\t\t\t\t\t\t\t\t\t\t</div> -->\r\n\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t</split-area>\r\n\r\n\t\t</split>\r\n\r\n\t</div>\r\n\t\r\n\r\n</div>\r\n<!-- </mat-expansion-panel> -->\r\n\r\n\r\n\r\n"
+module.exports = "<!-- <mat-expansion-panel class='viewer' \r\n\t\t[expanded]=\"panelOpenState\">\r\n  \t<mat-expansion-panel-header>\r\n\t    <mat-panel-title class='header'> -->\r\n\r\n<div class=\"viewer\">\r\n\r\n\t<div class=\"container\">\r\n\t\t\r\n\t\t<!-- @Derek: Modify gutterSize/gutterColor/size -->\r\n\t\t<!-- https://bertrandg.github.io/angular-split/#/documentation -->\r\n\t\t<split  direction=\"horizontal\" \r\n              [gutterSize]=\"7\" \r\n              [useTransition]=\"true\" gutterColor=white\r\n              >\r\n\r\n\t\t\t\t<split-area class=\"sidebar\"\r\n\t\t\t\t\t[size]=\"30\"\r\n\t\t\t        order=\"1\">\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t<section>\r\n\t\t\t\t\t\t\t<div (click)=\"addNode($event, undefined)\">New Empty Node</div>\r\n\t\t\t\t\t\t\t<div class=\"disabled\">New Subnet</div>\r\n\t\t\t\t\t\t</section>\r\n\r\n\t\t\t\t\t\t<section>\r\n\t\t\t\t\t\t\t<div (click)=\"newfile()\">New Flowchart</div>\r\n\t\t\t\t\t\t</section>\r\n\r\n\t\t\t\t\t\t<section>\r\n\t\t\t\t\t\t\t<div (click)=\"loadFromMemory()\">Revert</div>\r\n\t\t\t\t\t\t</section>\r\n\r\n\t\t\t\t\t\t<section>\r\n\t\t\t\t\t\t\t<div (click)=\"save()\">Download Flowchart</div>\r\n\t\t\t\t\t\t\t<div (click)=\"openPicker()\">Load Flowchart\r\n\t\t\t\t\t\t\t\t<input #fileInput style=\"display: none;\"\r\n\t\t\t\t\t\t  \t\ttype=\"file\" (change)=\"loadFile()\"/>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</section>\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t<!--<section>\r\n\t\t\t\t\t\t\t<div>Save Node</div>\r\n\t\t\t\t\t\t</section>-->\r\n\r\n\t\t\t\t\t\t<section>\r\n\t\t\t\t\t\t\t<app-node-library></app-node-library>\r\n\t\t\t\t\t\t</section>\r\n\t\t\t\t\t\t\r\n\t\t\t\t</split-area>\r\n\t\t\t\t\r\n\t\t\r\n\t\t\t\t<split-area order=\"2\" [size]=\"70\">\r\n\t\t\t\t    \t<div class=\"info-container\" \r\n\t\t\t\t    \t\tstyle=\"position: absolute; \r\n\t\t\t\t    \t\ttop: 30px; \r\n\t\t\t\t    \t\tright: 30px\">\r\n\t\t\t\t    \t\t<!-- Zoom: {{zoom}} -->\r\n\t\t\t\t    \t</div>\r\n\r\n\t\t\t\t        <!-- svg canvas to draw the edges -->\r\n\t\t\t\t\t\t<svg xmlns=\"http://www.w3.org/2000/svg\" \r\n\t\t\t\t\t\t\tclass=\"graph-container\" \r\n\t\t\t\t\t\t\tid=\"graph-edges\" \r\n\t\t\t\t\t\t\t[style.zoom]=\"zoom\">\r\n\r\n\t\t\t\t\t\t\t<g class=\"edge\" *ngFor=\"let edge of _edges\" >\r\n\t\t\t\t\t\t\t\t<path \r\n\t\t\t\t\t\t\t\t  [attr.d]=\"edge.path\" \r\n\t\t\t\t\t\t\t\t  stroke=\"#7469FF\"\r\n\t\t\t\t\t\t\t\t  stroke-width=\"3\" fill=\"none\" />\r\n\t\t\t\t\t\t\t</g>\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t<!-- dragging path -->\r\n\t\t\t\t\t\t\t<g id=\"temporary-edge\" [class.hidden]=\"!_linkMode\" >\r\n\t\t\t\t\t\t\t\t<path \r\n\t\t\t\t\t\t\t\t[attr.d]=\"edgeString(mouse_pos.start, mouse_pos.current)\" \r\n\t\t\t\t\t\t\t\t \tstroke=\"#7469FF\"\r\n\t\t\t\t\t\t\t\t \tstroke-width=\"5\" \r\n\t\t\t\t\t\t\t\t \tfill=\"none\" \r\n\t\t\t\t\t\t\t\t \tstroke-dasharray=\"5, 5\"/>\r\n\t\t\t\t\t\t\t\t\t<circle id=\"pointC\" [attr.cx]=\"mouse_pos.current.x\" [attr.cy]=\"mouse_pos.current.y\" r=\"5\" />\r\n\t\t\t\t\t\t\t\t</g>\r\n\r\n\t\t\t\t\t\t</svg>\r\n\r\n\t\t\t\t\t\t<!-- div container for the nodes -->\r\n\t\t\t\t\t\t<div class=\"graph-container\" \r\n\t\t\t\t\t\t\tid=\"graph-nodes\" ondragover=\"return false\" [style.zoom]=\"zoom\" >\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t<!-- all nodes -->\r\n\t\t\t\t\t\t\t<div class=\"node-container\">\r\n\r\n\t\t\t\t\t\t\t\t<!-- one node -->\r\n\t\t\t\t\t\t\t\t<div  class=\"node\"\r\n\t\t\t\t\t\t\t\t\t\t*ngFor=\"let node of _nodes; let node_index = index\" \r\n\t\t\t\t\t\t\t\t\t\t[style.left.px]=\"node.position[0]\" \r\n\t\t\t\t\t\t\t\t\t\t[style.top.px]=\"node.position[1]\" >\r\n\r\n\t\t\t\t\t\t\t\t\t<div class=\"btn-container\" *ngIf=\"node_index == _selectedNodeIndex\" >\r\n\t\t\t\t\t\t\t\t\t\t<!-- <div class=\"btn-group node-btns\">\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"action-button\" (click)=\"addPort(node_index, 'in')\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t<mat-icon>input</mat-icon>\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"action-button\" (click)=\"addPort(node_index, 'out')\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t<mat-icon>add_to_queue</mat-icon>\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t</div> -->\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"btn-group port-btns\">\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"action-button\" (click)=\"deleteNode(node_index)\" \t\t\r\n\t\t\t\t\t\t\t\t\t\t\t\tmatTooltip=\"Delete Node\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t<mat-icon>delete</mat-icon>\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"action-button\" (click)=\"toggleNode(node)\"\r\n\t\t\t\t\t\t\t\t\t\t\t\tmatTooltip=\"Disable Node\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t<mat-icon *ngIf='!node.isDisabled()'>check_circle</mat-icon>\r\n\t\t\t\t\t\t\t\t\t\t\t\t<mat-icon *ngIf='node.isDisabled()'>highlight_off</mat-icon>\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"action-button\" (click)=\"saveNode(node_index)\" \r\n\t\t\t\t\t\t\t\t\t\t\t\tmatTooltip=\"Save Node To Library\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t*ngIf=\"!isSaved(node)\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t<mat-icon>file_download</mat-icon>\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t<!-- node body -->\r\n\t\t\t\t\t\t\t\t\t<div class=\"node-body\" \r\n\t\t\t\t\t\t\t\t\t\t[class.library]=\"node.getType() !== undefined\"\r\n\t\t\t\t\t\t\t\t\t\t[class.error]=\"node._hasError\"\r\n\t\t\t\t\t\t\t\t\t\t[class.disabled] =\"node.isDisabled()\"\r\n\t\t\t\t\t\t\t\t\t\t(click)=\"clickNode($event, node_index)\"\r\n\t\t\t\t\t\t\t\t\t\tdraggable=true  \r\n\t\t\t\t\t\t\t\t\t\t(dragstart)=\"nodeDragStart($event, node)\" \r\n\t\t\t\t\t\t\t\t\t\t(drag)=\"nodeDragging($event, node, node_index)\" \r\n\t\t\t\t\t\t\t\t\t\t(dragend)=\"nodeDragEnd($event, node)\">\r\n\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"node-name\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t[class.selected]=\"node_index == _selectedNodeIndex\"\r\n\t\t\t\t\t\t\t\t\t\t\t\tmatTooltip=\"{{node.getName()}}\">\r\n\t\t\t\t\t\t\t\t\t\t\t    <input matInput\r\n\t\t\t\t\t\t\t\t\t\t\t    style=\"margin: 2px; min-width: 50px; width: 50px;\"\r\n\t\t\t\t\t\t\t\t\t\t\t    placeholder=\"Value\" value=\"{{ node.getName() }}\"\r\n\t\t\t\t\t\t\t\t\t\t\t    (change)=\"updateNodeName($event)\"/>\r\n\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t\t<!--inputs -->\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"port-container\">\r\n\t\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"port input\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t*ngFor=\"let port of node.getInputs(); let pi=index\"  \r\n\t\t\t\t\t\t\t\t\t\t\t\tid=\"n{{node_index}}pi{{pi}}\">\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"port-grip\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\tdraggable=true\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t[class.connected]=\"port.isConnected()\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(dragstart)=\"portDragStart($event, port, [node_index, pi])\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(drag)=\"portDragging($event, port)\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(dragend)=\"portDragEnd($event, port)\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(drop)=\"portDrop($event, port, [node_index, pi])\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t\t<span class=\"port-name\">{{ port.getName() }}</span>\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t\t<!-- outputs -->\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"port-container\">\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"port output\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t*ngFor=\"let port of node.getOutputs(); let po=index;\"\r\n\t\t\t\t\t\t\t\t\t\t\t\tid=\"n{{node_index}}po{{po}}\">\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t\t<span class=\"port-name\">{{port.getName()}}</span>\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"port-grip\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\tdraggable=true\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t[class.selected]=\"isPortSelected(node_index, po)\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t[class.connected]=\"port.isConnected()\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(click)=\"clickPort($event, node_index, po)\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(dragstart)=\"portDragStart($event, port, [node_index, po])\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(drag)=\"portDragging($event, port)\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(dragend)=\"portDragEnd($event, port)\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(drop)=\"portDrop($event, port, [node_index, po])\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t</div> \r\n\r\n\r\n\t\t\t\t\t\t\t\t\t\t<!-- <div class=\"fromLibrary\"  style=\"font-size: 8px; text-align: center\">\r\n\t\t\t\t\t\t\t\t\t\t\tLibrary Node\r\n\t\t\t\t\t\t\t\t\t\t</div> -->\r\n\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t</split-area>\r\n\r\n\t\t</split>\r\n\r\n\t</div>\r\n\t\r\n\r\n</div>\r\n<!-- </mat-expansion-panel> -->\r\n\r\n\r\n\r\n"
 
 /***/ }),
 
@@ -5842,11 +5979,16 @@ let FlowchartViewerComponent = class FlowchartViewerComponent extends __WEBPACK_
         }, false);
     }
     reset() {
-        this._selectedNode = undefined;
-        this._selectedNodeIndex = undefined;
-        this._selectedPortIndex = undefined;
-        this._nodes = [];
-        this._edges = [];
+        if (this.flowchartService.getNodes().length) {
+            this.update();
+        }
+        else {
+            this._selectedNode = undefined;
+            this._selectedNodeIndex = undefined;
+            this._selectedPortIndex = undefined;
+            this._nodes = [];
+            this._edges = [];
+        }
     }
     editNode() {
         //this.layoutService.toggleEditor();
@@ -6228,7 +6370,7 @@ let FlowchartViewerComponent = class FlowchartViewerComponent extends __WEBPACK_
         this.flowchartService.checkSavedFile();
     }
     save(value) {
-        this.flowchartService.saveFile(true);
+        this.flowchartService.saveFile(value);
         this.layoutService.showConsole();
     }
     newfile() {
@@ -6552,7 +6694,7 @@ module.exports = "<h2>Input Name: {{input.getName()}}</h2>\r\n<h3>Input Type: {{
 /***/ "../../../../../src/app/ui-components/editors/procedure-editor/procedure-editor.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"viewer\">\r\n\t<mat-accordion>\r\n\t\t<mat-expansion-panel [expanded]=\"true\">\r\n\t\t\t\t\t<mat-expansion-panel-header>\r\n\t\t\t\t\t\t<mat-panel-title>\r\n\t\t\t\t\t\t  Procedure ({{_procedureArr.length}})\r\n\t\t\t\t\t\t</mat-panel-title>\r\n\t\t\t\t\t\t<mat-panel-description>\r\n\t\t\t\t\t\t  <!-- This is a summary of the content -->\r\n\t\t\t\t\t\t</mat-panel-description>\r\n\t\t\t\t\t</mat-expansion-panel-header>\r\n\r\n\r\n\t\t\t\t\t<div class=\"tree\">    \r\n\r\n\t\t\t\t\t\t<tree-root #tree \t\r\n\t\t\t\t\t\t\t\t\t[nodes]='_procedureArr' \r\n\t\t\t\t\t\t\t\t\t[options]='_tree_options'  \r\n\t\t\t\t\t\t\t\t\t(moveNode)=\"onMoveNode($event)\">\r\n\t\t\t\t\t\t\t\t  <ng-template #treeNodeTemplate \r\n\t\t\t\t\t\t\t\t  \t\tlet-prod \r\n\t\t\t\t\t\t\t\t  \t\tlet-index=\"index\" \r\n\t\t\t\t\t\t\t\t  \t\tclass=\"tree-node-wrapper\">\r\n\t\t\t\t\t\t\t\t  \t\t<div class = \"full-container\" (click)=\"focus($event, prod)\">\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t<!--<div class = \"seg3\" *ngIf=\"prod.data.getType() != 'Else' && prod.data.getType() != 'If'\">\r\n\t\t\t\t\t    \t\t\t\t\t   \t<button mat-button \r\n\t\t\t\t\t\t\t\t\t\t\t\t    *ngIf=\"prod.data.getType() =='Action'\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(click)=\"openHelp($event, prod)\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t<mat-icon>help_outline</mat-icon>\r\n\t\t\t\t\t\t\t\t\t\t\t\t</button>\r\n\r\n\t\t\t\t\t\t    \t\t\t\t</div>-->\r\n\t\t\t\t\t\t\t\t  \t\t\t<div class = \"seg1\" \r\n\t\t\t\t\t\t\t\t  \t\t\t\t[class.error]=\"prod.data.hasError\" \r\n\t\t\t\t\t\t\t\t  \t\t\t\t[class.print]=\"prod.data.printToConsole()\"\r\n\t\t\t\t\t\t\t\t  \t\t\t\t[class.disabled]=\"prod.data.isDisabled()\">\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t\t<!-- template for data -->\r\n\t\t\t\t\t\t\t\t\t\t\t\t<div *ngIf=\"prod.data.getType() == 'Data'\"> \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t<div class='procedure-item'>\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<input matInput class=\"tree-input\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t[(ngModel)]=\"prod.data.getLeftComponent().expression\" #ctrl=\"ngModel\" required\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t(change)=\"updateProcedure($event, prod, 'left')\" spellcheck=\"false\">\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<!-- <input width=50 class=\"tree-input\" [(ngModel)]=\"prod.data.getLeftComponent().expression\" #ctrl=\"ngModel\" required\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t(change)=\"updateProcedure($event, prod, 'left')\"> -->\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<span class=\"equal\">=</span>\r\n\t\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<input matInput class=\"tree-input\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t[(ngModel)]=\"prod.data.getRightComponent().expression\" #ctrl=\"ngModel\" required\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t(change)=\"updateProcedure($event, prod, 'right')\" spellcheck=\"false\">\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<!-- <input width=50 class=\"tree-input\" [(ngModel)]=\"prod.data.getRightComponent().expression\" #ctrl=\"ngModel\" required\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t(change)=\"updateProcedure($event, prod, 'right')\"> -->\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t\t<div *ngIf=\"prod.data.getType() == 'IfElse'\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t<div class='procedure-item'>\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<span>if-else</span>\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t\t<div *ngIf=\"prod.data.getType() == 'If'\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t<div class='procedure-item'>\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t <span>if</span> ( <input matInput class=\"tree-input\"  [(ngModel)]=\"prod.data.getLeftComponent().expression\" #ctrl=\"ngModel\" required\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t(change)=\"updateProcedure($event, prod, 'left')\" spellcheck=\"false\"> )\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t\t<div *ngIf=\"prod.data.getType() == 'Else'\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t<div class='procedure-item'>\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t <span>else</span>\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t\t<div *ngIf=\"prod.data.getType() == 'For Loop'\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t<div class='procedure-item'>\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t <span>for (</span> \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t  <input matInput class=\"tree-input\"  [(ngModel)]=\"prod.data.getLeftComponent().expression\" #ctrl=\"ngModel\" required (change)=\"updateProcedure($event, prod, 'left')\" spellcheck=\"false\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t <span>in</span>  \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t  <input matInput class=\"tree-input\" [(ngModel)]=\"prod.data.getRightComponent().expression\" #ctrl=\"ngModel\" required (change)=\"updateProcedure($event, prod, 'right')\" spellcheck=\"false\"> \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t  )\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t\t<div *ngIf=\"prod.data.getType() == 'Action'\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t<div class='procedure-item'>\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<input matInput class=\"tree-input\" [(ngModel)]=\"prod.data.getLeftComponent().expression\" #ctrl=\"ngModel\" required\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t(change)=\"updateProcedure($event, prod, 'left')\" spellcheck=\"false\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<span class=\"equal\">=</span>\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<span class=\"module\">{{prod.data.getRightComponent().module}}</span>\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t.\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t  <span class=\"function\">{{prod.data.getRightComponent().fn_name}}</span> \r\n\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t( <span *ngIf=\"prod.data.getRightComponent().params.length>0\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"param-container\" \t\t\t\t\t\t\t\t\t\t\t\t\t\t*ngFor=\"let p of prod.data.getRightComponent().params; let i=index\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<input matInput class=\"tree-input\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t [(ngModel)]=\"prod.data.getRightComponent().params[i].value\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t #ctrl=\"ngModel\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t required\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t (change)=\"updateProcedure($event, prod, 'right')\" spellcheck=\"false\">\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<span *ngIf='i<prod.data.getRightComponent().params.length-1'>,</span>\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<!-- <input width=50 class=\"tree-input\" [(ngModel)]=\"p\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t placeholder=\"Input something here\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t #ctrl=\"ngModel\" required \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t (change)=\"updateProcedure($event, prod, 'right')\"> --> \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</div> \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</span>\t)\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t<div class = \"divider\">\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t<div class = \"seg2\" *ngIf=\"prod.data.getType() != 'Else' && prod.data.getType() != 'If'\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t<button mat-button \r\n\t\t\t\t\t\t\t\t\t\t\t\t    *ngIf=\"prod.data.getType() =='Action'\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(click)=\"openHelp($event, prod)\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t<mat-icon>help_outline</mat-icon>\r\n\t\t\t\t\t\t\t\t\t\t\t\t</button>\r\n\t\t\t\t\t\t\t\t\t\t\t   <button mat-button\r\n\t\t\t\t\t\t\t\t\t\t\t   \t\t(click)=\"togglePrint(prod.data)\" \r\n\t\t\t\t\t\t\t\t\t\t\t   \t\tmatTooltip=\"Print value to console\"\r\n\t\t\t\t\t\t\t\t\t\t\t   \t\t*ngIf=\"prod.data.getType() =='Action' || prod.data.getType() =='Data'\">\r\n\t\t\t\t    \t\t\t\t\t    \t\t<mat-icon>print</mat-icon>\r\n\t\t\t\t\t    \t\t\t\t\t    </button>\r\n\t\t\t\t\t\t\t\t\t\t\t\t <button mat-button (click)=\"toggle(prod.data)\" matTooltip=\"Enable/Disable Line\">\r\n\t\t\t\t    \t\t\t\t\t    \t\t<mat-icon>check_circle</mat-icon>\r\n\t\t\t\t\t    \t\t\t\t\t    </button>\r\n\t\t\t\t\t\t\t\t\t\t        <button mat-button (click)=\"deleteProcedure(prod)\" matTooltip=\"Delete Line\">\r\n\t\t\t\t    \t\t\t\t\t    \t\t<mat-icon>delete</mat-icon>\r\n\t\t\t\t\t    \t\t\t\t\t    </button>\r\n\t\t\t\t\t    \t\t\t\t\t    <!-- <button (click)=\"disableProcedure(prod, $event)\">Disable</button>\r\n\t\t\t\t\t    \t\t\t\t\t    <button (click)=\"go($event)\">Copy</button> -->\r\n\t\t\t\t\t\t    \t\t\t\t</div>\r\n\t\t\t\t\t\t    \t\t\t</div>\r\n\t\t\t\t\t\t\t\t  </ng-template>\r\n\t\t\t\t\t\t</tree-root> \r\n\t\t\t\t\t\t\r\n\t\t\t\t\t</div>\r\n\t\t</mat-expansion-panel>\r\n\t</mat-accordion>\r\n</div>"
+module.exports = "<div class=\"viewer\">\r\n\t<mat-accordion>\r\n\t\t<mat-expansion-panel [expanded]=\"true\">\r\n\t\t\t\t\t<mat-expansion-panel-header>\r\n\t\t\t\t\t\t<mat-panel-title>\r\n\t\t\t\t\t\t  Procedure ({{_procedureArr.length}})\r\n\t\t\t\t\t\t</mat-panel-title>\r\n\t\t\t\t\t\t<mat-panel-description>\r\n\t\t\t\t\t\t  <!-- This is a summary of the content -->\r\n\t\t\t\t\t\t</mat-panel-description>\r\n\t\t\t\t\t</mat-expansion-panel-header>\r\n\r\n\r\n\t\t\t\t\t<div class=\"tree\">\r\n\t\t\t\t\t\t<datalist id=\"variable-suggestions\" >\r\n\t\t\t\t\t\t    <option *ngFor='let v of _variableList' value=\"{{v}}\"></option>\r\n\t\t\t\t\t\t</datalist>\r\n\r\n\t\t\t\t\t\t<tree-root #tree \t\r\n\t\t\t\t\t\t\t\t\t[nodes]='_procedureArr' \r\n\t\t\t\t\t\t\t\t\t[options]='_tree_options'  \r\n\t\t\t\t\t\t\t\t\t(moveNode)=\"onMoveNode($event)\">\r\n\t\t\t\t\t\t\t\t  <ng-template #treeNodeTemplate \r\n\t\t\t\t\t\t\t\t  \t\tlet-prod \r\n\t\t\t\t\t\t\t\t  \t\tlet-index=\"index\" \r\n\t\t\t\t\t\t\t\t  \t\tclass=\"tree-node-wrapper\">\r\n\t\t\t\t\t\t\t\t  \t\t<div class = \"full-container\" (click)=\"focus($event, prod)\">\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t<!--<div class = \"seg3\" *ngIf=\"prod.data.getType() != 'Else' && prod.data.getType() != 'If'\">\r\n\t\t\t\t\t    \t\t\t\t\t   \t<button mat-button \r\n\t\t\t\t\t\t\t\t\t\t\t\t    *ngIf=\"prod.data.getType() =='Action'\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(click)=\"openHelp($event, prod)\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t<mat-icon>help_outline</mat-icon>\r\n\t\t\t\t\t\t\t\t\t\t\t\t</button>\r\n\r\n\t\t\t\t\t\t    \t\t\t\t</div>-->\r\n\t\t\t\t\t\t\t\t  \t\t\t<div class = \"seg1\" \r\n\t\t\t\t\t\t\t\t  \t\t\t\t[class.error]=\"prod.data.hasError\" \r\n\t\t\t\t\t\t\t\t  \t\t\t\t[class.print]=\"prod.data.printToConsole()\"\r\n\t\t\t\t\t\t\t\t  \t\t\t\t[class.disabled]=\"prod.data.isDisabled()\">\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t\t<!-- template for data -->\r\n\t\t\t\t\t\t\t\t\t\t\t\t<div *ngIf=\"prod.data.getType() == 'Data'\"> \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t<div class='procedure-item'>\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<input matInput class=\"tree-input\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t[(ngModel)]=\"prod.data.getLeftComponent().expression\" #ctrl=\"ngModel\" required\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t(change)=\"updateProcedure($event, prod, 'left')\" spellcheck=\"false\" list=\"variable-suggestions\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<!-- <input width=50 class=\"tree-input\" [(ngModel)]=\"prod.data.getLeftComponent().expression\" #ctrl=\"ngModel\" required\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t(change)=\"updateProcedure($event, prod, 'left')\"> -->\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<span class=\"equal\">=</span>\r\n\t\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<input matInput class=\"tree-input\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t[(ngModel)]=\"prod.data.getRightComponent().expression\" #ctrl=\"ngModel\" required\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t(change)=\"updateProcedure($event, prod, 'right')\" spellcheck=\"false\" list=\"variable-suggestions\">\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<!-- <input width=50 class=\"tree-input\" [(ngModel)]=\"prod.data.getRightComponent().expression\" #ctrl=\"ngModel\" required\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t(change)=\"updateProcedure($event, prod, 'right')\"> -->\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t\t<div *ngIf=\"prod.data.getType() == 'IfElse'\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t<div class='procedure-item'>\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<span>if-else</span>\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t\t<div *ngIf=\"prod.data.getType() == 'If'\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t<div class='procedure-item'>\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t <span>if</span> ( <input matInput class=\"tree-input\"  [(ngModel)]=\"prod.data.getLeftComponent().expression\" #ctrl=\"ngModel\" required\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t(change)=\"updateProcedure($event, prod, 'left')\" spellcheck=\"false\"> )\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t\t<div *ngIf=\"prod.data.getType() == 'Else'\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t<div class='procedure-item'>\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t <span>else</span>\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t\t<div *ngIf=\"prod.data.getType() == 'For Loop'\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t<div class='procedure-item'>\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t <span>for (</span> \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t  <input matInput class=\"tree-input\"  [(ngModel)]=\"prod.data.getLeftComponent().expression\" #ctrl=\"ngModel\" required (change)=\"updateProcedure($event, prod, 'left')\" spellcheck=\"false\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t <span>in</span>  \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t  <input matInput class=\"tree-input\" [(ngModel)]=\"prod.data.getRightComponent().expression\" #ctrl=\"ngModel\" required (change)=\"updateProcedure($event, prod, 'right')\" spellcheck=\"false\" list=\"variable-suggestions\"> \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t  )\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t\t<div *ngIf=\"prod.data.getType() == 'Action'\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t<div class='procedure-item'>\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<input matInput class=\"tree-input\" [(ngModel)]=\"prod.data.getLeftComponent().expression\" #ctrl=\"ngModel\" required\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t(change)=\"updateProcedure($event, prod, 'left')\" spellcheck=\"false\" list=\"variable-suggestions\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<span class=\"equal\">=</span>\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<span class=\"module\">{{prod.data.getRightComponent().module}}</span>\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t.\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t  <span class=\"function\">{{prod.data.getRightComponent().fn_name}}</span> \r\n\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t( <span *ngIf=\"prod.data.getRightComponent().params.length>0\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"param-container\" \t\t\t\t\t\t\t\t\t\t\t\t\t\t*ngFor=\"let p of prod.data.getRightComponent().params; let i=index\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<input matInput class=\"tree-input\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t [(ngModel)]=\"prod.data.getRightComponent().params[i].value\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t #ctrl=\"ngModel\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t required\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t (change)=\"updateProcedure($event, prod, 'right')\" spellcheck=\"false\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t list=\"variable-suggestions\">\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<span *ngIf='i<prod.data.getRightComponent().params.length-1'>,</span>\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<!-- <input width=50 class=\"tree-input\" [(ngModel)]=\"p\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t placeholder=\"Input something here\" \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t #ctrl=\"ngModel\" required \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t (change)=\"updateProcedure($event, prod, 'right')\"> --> \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</div> \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</span>\t)\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t<div class = \"divider\">\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t\t\t<div class = \"seg2\" *ngIf=\"prod.data.getType() != 'Else' && prod.data.getType() != 'If'\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t<button mat-button \r\n\t\t\t\t\t\t\t\t\t\t\t\t    *ngIf=\"prod.data.getType() =='Action'\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t(click)=\"openHelp($event, prod)\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t<mat-icon>help_outline</mat-icon>\r\n\t\t\t\t\t\t\t\t\t\t\t\t</button>\r\n\t\t\t\t\t\t\t\t\t\t\t   <button mat-button\r\n\t\t\t\t\t\t\t\t\t\t\t   \t\t(click)=\"togglePrint(prod.data)\" \r\n\t\t\t\t\t\t\t\t\t\t\t   \t\tmatTooltip=\"Print value to console\"\r\n\t\t\t\t\t\t\t\t\t\t\t   \t\t*ngIf=\"prod.data.getType() =='Action' || prod.data.getType() =='Data'\">\r\n\t\t\t\t    \t\t\t\t\t    \t\t<mat-icon>print</mat-icon>\r\n\t\t\t\t\t    \t\t\t\t\t    </button>\r\n\t\t\t\t\t\t\t\t\t\t\t\t <button mat-button (click)=\"toggle(prod.data)\" matTooltip=\"Enable/Disable Line\">\r\n\t\t\t\t    \t\t\t\t\t    \t\t<mat-icon>check_circle</mat-icon>\r\n\t\t\t\t\t    \t\t\t\t\t    </button>\r\n\t\t\t\t\t\t\t\t\t\t        <button mat-button (click)=\"deleteProcedure(prod)\" matTooltip=\"Delete Line\">\r\n\t\t\t\t    \t\t\t\t\t    \t\t<mat-icon>delete</mat-icon>\r\n\t\t\t\t\t    \t\t\t\t\t    </button>\r\n\t\t\t\t\t    \t\t\t\t\t    <!-- <button (click)=\"disableProcedure(prod, $event)\">Disable</button>\r\n\t\t\t\t\t    \t\t\t\t\t    <button (click)=\"go($event)\">Copy</button> -->\r\n\t\t\t\t\t\t    \t\t\t\t</div>\r\n\t\t\t\t\t\t    \t\t\t</div>\r\n\t\t\t\t\t\t\t\t  </ng-template>\r\n\t\t\t\t\t\t</tree-root> \r\n\t\t\t\t\t\t\r\n\t\t\t\t\t</div>\r\n\t\t</mat-expansion-panel>\r\n\t</mat-accordion>\r\n</div>"
 
 /***/ }),
 
@@ -6621,21 +6763,16 @@ let ProcedureEditorComponent = class ProcedureEditorComponent extends __WEBPACK_
             }
         };
     }
-    getString(type) {
-        return type.toString();
-    }
-    openHelp($event, prod) {
-        $event.stopPropagation();
-        if (prod.data._type == "Action") {
-            let fn = prod.data.getRightComponent().expression.split(".");
-            fn = { module: fn[0], name: fn[1] };
-            this.layoutService.showHelp(fn);
-        }
-    }
     reset() {
         this._procedureArr = [];
         this._node = undefined;
+        this._variableList = [];
         //this._treeNodes = [];
+    }
+    setProperties() {
+        this._node = this.flowchartService.getSelectedNode();
+        this._procedureArr = this._node.getProcedure();
+        this._variableList = this._node.getVariableList();
     }
     update(message) {
         if (message == "procedure") {
@@ -6648,22 +6785,31 @@ let ProcedureEditorComponent = class ProcedureEditorComponent extends __WEBPACK_
                     n.parent.expand();
                 }
             }
+            this._variableList = this._node.getVariableList();
             //this.tree.treeModel.expandAll();
         }
         else {
-            this._node = this.flowchartService.getSelectedNode();
-            this._procedureArr = this._node.getProcedure();
+            this.setProperties();
             //this.updateProcedureTree();
         }
     }
     ngOnInit() {
-        this._node = this.flowchartService.getSelectedNode();
-        this._procedureArr = this._node.getProcedure();
-        //this._treeNodes = this._procedureArr; 
+        this.setProperties();
         this.tree.treeModel.update();
     }
     ngAfterViewInit() {
         this.tree.treeModel.expandAll();
+    }
+    getString(type) {
+        return type.toString();
+    }
+    openHelp($event, prod) {
+        $event.stopPropagation();
+        if (prod.data._type == "Action") {
+            let fn = prod.data.getRightComponent().expression.split(".");
+            fn = { module: fn[0], name: fn[1] };
+            this.layoutService.showHelp(fn);
+        }
     }
     toggle(prod) {
         if (prod.isDisabled()) {
@@ -6774,12 +6920,12 @@ let ProcedureEditorComponent = class ProcedureEditorComponent extends __WEBPACK_
     // 	})
     // }
     updateProcedure($event, prod, property) {
-        //
         // todo: change this string attachment!
         if (property == 'left' && prod.data._type !== "If") {
             prod.data.getLeftComponent().expression =
                 prod.data.getLeftComponent().expression.replace(/[^\w\[\]]/gi, '');
         }
+        this._variableList = this._node.getVariableList();
         // let procedure: IProcedure = prod.data;
         // if(property == "left"){	
         // 	let comp = procedure.getLeftComponent(); 
@@ -7841,7 +7987,7 @@ ParameterViewerComponent = __decorate([
 /***/ "../../../../../src/app/ui-components/viewers/text-viewer/text-viewer.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"default\" *ngIf=\"_selectedNode === undefined\">\r\n\tNo Node Selected\r\n</div>\r\n\r\n<div class=\"container\" *ngIf=\"_selectedNode != undefined\">\r\n\t<!-- <h3>Selected Node: {{_selectedNode.getName()}}</h3>\r\n\t<hr> -->\r\n\t<mat-accordion multi=\"true\" [displayMode]=\"flat\">\r\n\t\t\t<!-- inputs -->\r\n\t\t\t<mat-expansion-panel [expanded]=\"true\" *ngFor=\"let output of _selectedNode.getOutputs()\">\r\n\t\t\t\t\r\n\t\t\t\t<mat-expansion-panel-header>\r\n\t\t\t\t\t<mat-panel-title>\r\n\t\t\t\t\t  {{ output.getName() }}\r\n\t\t\t\t\t</mat-panel-title>\r\n\t\t\t\t\t<mat-panel-description>\r\n\t\t\t\t\t  <!-- This is a summary of the content -->\r\n\t\t\t\t\t</mat-panel-description>\r\n\t\t\t\t</mat-expansion-panel-header>\r\n\r\n\t\t\t\t<p>{{ output.getValue() }}</p>\r\n\r\n\t\t\t</mat-expansion-panel>\r\n\t\t\t\r\n\t</mat-accordion>\r\n</div>"
+module.exports = "<div class=\"default\" *ngIf=\"_selectedNode === undefined\">\r\n\tNo Node Selected\r\n</div>\r\n\r\n<div class=\"container\" *ngIf=\"_selectedNode != undefined\">\r\n\t<!-- <h3>Selected Node: {{_selectedNode.getName()}}</h3>\r\n\t<hr> -->\r\n\t<mat-accordion multi=\"true\" [displayMode]=\"flat\">\r\n\t\t\t<!-- inputs -->\r\n\t\t\t<mat-expansion-panel [expanded]=\"true\" *ngFor=\"let output of _selectedNode.getOutputs()\">\r\n\t\t\t\t\r\n\t\t\t\t<mat-expansion-panel-header>\r\n\t\t\t\t\t<mat-panel-title>\r\n\t\t\t\t\t  {{ output.getName() }}\r\n\t\t\t\t\t</mat-panel-title>\r\n\t\t\t\t\t<mat-panel-description>\r\n\t\t\t\t\t  <!-- This is a summary of the content -->\r\n\t\t\t\t\t</mat-panel-description>\r\n\t\t\t\t</mat-expansion-panel-header>\r\n\r\n\t\t\t\t<p>{{ getType(output) }}</p>\r\n\r\n\t\t\t</mat-expansion-panel>\r\n\t\t\t\r\n\t</mat-accordion>\r\n</div>"
 
 /***/ }),
 
@@ -7900,6 +8046,14 @@ let TextViewerComponent = class TextViewerComponent extends __WEBPACK_IMPORTED_M
             value = JSON.stringify(value);
         }
         return value;
+    }
+    getType(output) {
+        if (output.getValue()) {
+            return JSON.stringify(output.getValue());
+        }
+        else {
+            return "no-value-available";
+        }
     }
     update() {
         try {
@@ -7973,6 +8127,7 @@ let ViewerContainerComponent = class ViewerContainerComponent extends __WEBPACK_
         super(injector, "Viewer Container", "Contains all the viewers");
         this.layoutService = layoutService;
         this.group = { value: 5 };
+        this._lock = false;
         this._layout_subscription = this.layoutService.getMessage().subscribe(message => {
             if (message.text.startsWith("Module: ")) {
                 this.switchToHelp();
@@ -7992,7 +8147,10 @@ let ViewerContainerComponent = class ViewerContainerComponent extends __WEBPACK_
         this.updateGroupValue(4);
     }
     switchToConsole() {
-        this.updateGroupValue(3);
+        let self = this;
+        setTimeout(function () {
+            self.updateGroupValue(3);
+        }, 100);
     }
     update() {
         let port = this.flowchartService.getSelectedPort();
@@ -8000,7 +8158,6 @@ let ViewerContainerComponent = class ViewerContainerComponent extends __WEBPACK_
             this.updateGroupValue(this.layoutService.getViewContainer());
         }
         else {
-            console.log(this.flowchartService.getSelectedPort().getType());
             this.updateGroupValue(this.flowchartService.getSelectedPort().getType());
         }
     }
@@ -8029,10 +8186,15 @@ ViewerContainerComponent = __decorate([
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Calc", function() { return Calc; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "List", function() { return List; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Math", function() { return Math; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "String", function() { return String; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Circle", function() { return Circle; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Model", function() { return Model; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Attrib", function() { return Attrib; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Examples", function() { return Examples; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Intersect", function() { return Intersect; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Model", function() { return Model; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Obj", function() { return Obj; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Plane", function() { return Plane; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Pline", function() { return Pline; });
@@ -8042,32 +8204,30 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Ray", function() { return Ray; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Split", function() { return Split; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Topo", function() { return Topo; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "List", function() { return List; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Math", function() { return Math; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "String", function() { return String; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__ = __webpack_require__("../../../../../src/app/base-classes/code/CodeModule.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_gs_modelling__ = __webpack_require__("../../../../gs-modelling/dist/index.js");
 
 
 //// version for dev
 let Attrib = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Attrib", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["a" /* attrib */]);
-let Circle = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Circle", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["b" /* circle */]);
-let Ellipse = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Ellipse", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["c" /* ellipse */]);
-let Examples = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Examples", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["d" /* examples */]);
-let Intersect = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Intersect", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["e" /* intersect */]);
-let Model = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Model", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["h" /* model */]);
-let Obj = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Obj", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["i" /* object */]);
-let Plane = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Plane", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["j" /* plane */]);
-let Pline = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Pline", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["k" /* pline */]);
-let PMesh = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("PMesh", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["l" /* pmesh */]);
-let Point = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Point", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["m" /* point */]);
-let Query = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Query", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["n" /* query */]);
-let Ray = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Ray", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["o" /* ray */]);
-let Split = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Split", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["p" /* split */]);
-let Topo = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Topo", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["r" /* topo */]);
-let List = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("List", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["f" /* list */]);
-let Math = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Math", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["g" /* math */]);
-let String = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("String", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["q" /* string */]);
+let Circle = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Circle", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["c" /* circle */]);
+let Ellipse = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Ellipse", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["d" /* ellipse */]);
+let Examples = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Examples", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["e" /* examples */]);
+let Intersect = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Intersect", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["f" /* intersect */]);
+let Model = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Model", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["i" /* model */]);
+let Obj = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Obj", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["j" /* object */]);
+let Plane = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Plane", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["k" /* plane */]);
+let Pline = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Pline", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["l" /* pline */]);
+let PMesh = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("PMesh", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["m" /* pmesh */]);
+let Point = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Point", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["n" /* point */]);
+let Query = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Query", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["o" /* query */]);
+let Ray = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Ray", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["p" /* ray */]);
+let Split = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Split", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["q" /* split */]);
+let Topo = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Topo", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["s" /* topo */]);
+let List = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("List", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["g" /* list */]);
+let Math = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Math", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["h" /* math */]);
+let String = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("String", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["r" /* string */]);
+let Calc = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Calc", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["b" /* calc */]);
 
 
 

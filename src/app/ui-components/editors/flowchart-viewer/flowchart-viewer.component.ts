@@ -57,11 +57,18 @@ export class FlowchartViewerComponent extends Viewer{
   }
 
   reset(){ 
-    this._selectedNode = undefined;
-    this._selectedNodeIndex = undefined;
-    this._selectedPortIndex = undefined;
-    this._nodes = [];
-    this._edges = [];
+
+    if( this.flowchartService.getNodes().length ){
+         this.update();
+    }
+    else{
+      this._selectedNode = undefined;
+      this._selectedNodeIndex = undefined;
+      this._selectedPortIndex = undefined;
+      this._nodes = [];
+      this._edges = [];
+    }
+
   }
 
   editNode(): void{
@@ -600,7 +607,7 @@ export class FlowchartViewerComponent extends Viewer{
   }
 
   save(value: boolean): void{
-    this.flowchartService.saveFile(true);
+    this.flowchartService.saveFile(value);
     this.layoutService.showConsole();
   }
 

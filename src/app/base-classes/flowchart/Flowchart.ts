@@ -72,6 +72,9 @@ export class Flowchart implements IFlowchart{
 		}
 
 		let edge: IEdge = { output_address: outputAddress, input_address: inputAddress };
+
+		this.getNodeByIndex(outputAddress[0]).getOutputByIndex(outputAddress[1]).connect();
+		this.getNodeByIndex(inputAddress[0]).getInputByIndex(inputAddress[1]).connect();
 		
 		// todo: check for valid input/output addresses and port address
 		this._edges.push(edge);
@@ -370,7 +373,21 @@ export class Flowchart implements IFlowchart{
 			let outputPort = node.getOutputByIndex(edge.output_address[1]);
 			let inputPort = inputNode.getInputByIndex(edge.input_address[1]);
 
-			inputPort.setComputedValue(outputPort.getValue());
+			inputPort.setComputedValue( outputPort.getValue() );
+
+			let outVal = outputPort.getValue();
+			if(outVal.constructor.name == "Model"){
+				console.log("original model: ", outVal);
+				let modelData: gs.IModelData = outVal.toJSON();
+        		let model = new gs.Model(modelData);
+        		model["_kernel"]._objs = JSON.parse(JSON.stringify(outVal["_kernel"]._objs));
+        		model["_kernel"]._points = JSON.parse(JSON.stringify(outVal["_kernel"]._points));
+				console.log("new model: ", model);
+
+				outputPort.setComputedValue( model );
+			}
+			
+
 
 			// let value = outputPort.getValue();
 			// if( value["_kernel"] && value["_id"] ){
@@ -489,3 +506,4 @@ export class Flowchart implements IFlowchart{
 	}
 
 }
+

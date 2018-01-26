@@ -6,6 +6,7 @@
   overflow: hidden;
   color: white;
 }
+#container-top-right-resize { top: 0px; right: 0px; }
 
 /*#rotating{
   width: 30px;

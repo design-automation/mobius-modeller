@@ -83,7 +83,6 @@ export class FlowchartService {
 
     if(message){
       if (confirm(message)) {
-        console.log(storageString);
          this.loadFile(storageString);
       } else {
           this.newFile();
@@ -263,6 +262,7 @@ export class FlowchartService {
                         {_name: "String", _version: 0.1, _author: "Patrick"},
                         {_name: "List", _version: 0.1, _author: "Patrick"},
                         {_name: "Math", _version: 0.1, _author: "Patrick"},
+                        {_name: "Model", _version: 0.1, _author: "Patrick"},
                         {_name: "Point", _version: 0.1, _author: "Patrick"},
                         {_name: "Pline", _version: 0.1, _author: "Patrick"},
                         {_name: "PMesh", _version: 0.1, _author: "Patrick"},
@@ -270,14 +270,14 @@ export class FlowchartService {
                         {_name: "Plane", _version: 0.1, _author: "Patrick"},
                         {_name: "Split", _version: 0.1, _author: "Patrick"},
                         {_name: "Intersect", _version: 0.1, _author: "Patrick"},
-                        {_name: "Model", _version: 0.1, _author: "Patrick"},
+                        {_name: "Calc", _version: 0.1, _author: "Patrick"},
+                        {_name: "Obj", _version: 0.1, _author: "Patrick"}
                         //{_name: "Calc", _version: 0.1, _author: "Patrick"}
                       ]
                     );
 
     // print message to console
     this.consoleService.addMessage("New file created.");
-
     this.update();
 
     return this._flowchart;
@@ -525,12 +525,11 @@ export class FlowchartService {
 
   deleteNode(node_index: number): void{
 
-      if(this._selectedNode == node_index){
-        this._selectedNode = undefined;
-        this._selectedPort = undefined;
-        this._selectedProcedure = undefined;
-      }
+      this._selectedNode = undefined;
+      this._selectedPort = undefined;
+      this._selectedProcedure = undefined;
 
+      //this.disconnectNode(node_index);
       this._flowchart.deleteNode(node_index);
 
       // print message to console

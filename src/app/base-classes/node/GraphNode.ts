@@ -330,4 +330,34 @@ export class GraphNode implements IGraphNode{
 	}
 
 
+	getVariableList(): string[]{
+
+		let varList: string[] = [];
+
+		//push undefined
+		varList.push("undefined");
+
+		//push names of inputs and outputs
+		this._inputs.map(function(inp){
+			varList.push(inp.getName());
+		});
+
+		this._outputs.map(function(out){
+			varList.push(out.getName());
+		});
+
+		// push names of left components in procedure
+		this._procedure.map(function(prod){
+			let type = prod.getType();
+			if(type == ProcedureTypes.Data || type == ProcedureTypes.ForLoopControl || 
+				type ==ProcedureTypes.Action){
+				let var_name: string = prod.getLeftComponent().expression;
+				if(var_name.length > 0){
+					varList.push(var_name)
+				};
+			}
+		});
+
+		return varList;
+	}
 }

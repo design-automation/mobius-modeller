@@ -25,6 +25,58 @@ export class ProcedureEditorComponent extends Viewer implements OnInit{
   	_procedureArr: IProcedure[] = [];
   	_node: IGraphNode;
 
+  	_variableList: string[];
+
+	constructor(injector: Injector, private layoutService: LayoutService){  
+		super(injector, "procedure-editor"); 
+	}
+
+
+	reset():void{
+		this._procedureArr = [];
+		this._node = undefined;
+		this._variableList = [];
+		//this._treeNodes = [];
+	}
+
+	setProperties(): void{
+		this._node = this.flowchartService.getSelectedNode();
+		this._procedureArr = this._node.getProcedure();	
+		this._variableList = this._node.getVariableList();
+	}
+
+	update(message: string){
+		if(message == "procedure"){
+			this.tree.treeModel.update();
+
+			let id: number = this.flowchartService.getSelectedProcedure()["id"];
+			if(id){
+				let n = this.tree.treeModel.getNodeById(id);
+			 	n.expand();
+			 	if(n.parent){
+			 		n.parent.expand();
+			 	}
+			}
+
+			this._variableList = this._node.getVariableList();
+			
+			//this.tree.treeModel.expandAll();
+		}
+		else{
+			this.setProperties();
+			//this.updateProcedureTree();
+		}
+	}		
+
+	ngOnInit(){
+		this.setProperties();
+		this.tree.treeModel.update();
+	}
+
+	ngAfterViewInit() {
+    	this.tree.treeModel.expandAll();
+  	}
+
   	//_treeNodes = [];
 	_tree_options = {
 	  allowDrag: function(element){
@@ -50,10 +102,6 @@ export class ProcedureEditorComponent extends Viewer implements OnInit{
 		return type.toString()
 	}
 
-	constructor(injector: Injector, private layoutService: LayoutService){  
-		super(injector, "procedure-editor"); 
-	}
-
 	openHelp($event, prod): void{
 		$event.stopPropagation();
 
@@ -64,46 +112,6 @@ export class ProcedureEditorComponent extends Viewer implements OnInit{
 		}
 		
 	}
-
-	reset():void{
-		this._procedureArr = [];
-		this._node = undefined;
-		//this._treeNodes = [];
-	}
-
-	update(message: string){
-		if(message == "procedure"){
-			this.tree.treeModel.update();
-
-			let id: number = this.flowchartService.getSelectedProcedure()["id"];
-			if(id){
-				let n = this.tree.treeModel.getNodeById(id);
-			 	n.expand();
-			 	if(n.parent){
-			 		n.parent.expand();
-			 	}
-			}
-			
-			//this.tree.treeModel.expandAll();
-		}
-		else{
-			this._node = this.flowchartService.getSelectedNode();
-			this._procedureArr = this._node.getProcedure();
-			//this.updateProcedureTree();
-		}
-	}		
-
-	ngOnInit(){
-		this._node = this.flowchartService.getSelectedNode();
-		this._procedureArr = this._node.getProcedure();
-		//this._treeNodes = this._procedureArr; 
-		this.tree.treeModel.update();
-
-	}
-
-	ngAfterViewInit() {
-    	this.tree.treeModel.expandAll();
-  	}
 
 	toggle(prod: IProcedure): void{
 		if (prod.isDisabled()){
@@ -235,12 +243,13 @@ export class ProcedureEditorComponent extends Viewer implements OnInit{
 
 	updateProcedure($event: Event, prod: any, property: string){
 
-		//
 		// todo: change this string attachment!
 		if(property == 'left' && prod.data._type !== "If"){
 			prod.data.getLeftComponent().expression = 
 				prod.data.getLeftComponent().expression.replace(/[^\w\[\]]/gi, '');
 		}
+
+		this._variableList = this._node.getVariableList();
 
 		// let procedure: IProcedure = prod.data;
 
