@@ -166,6 +166,14 @@ export class DataService {
     if(this._gsModel!==undefined){
       this.updateModel();
     }
+    else{
+      // remove all children from the scene
+      for(var i=0;i<this._scene.children.length;i++){
+        if(this._scene.children[i].type==="Scene"){
+          this._scene.remove(this._scene.children[i]);
+        }
+      }
+    }
     this.sendMessage("model_update");
   }
   updateModel():void{

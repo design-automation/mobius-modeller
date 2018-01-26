@@ -96,7 +96,7 @@ export class SettingComponent implements OnInit {
           if(this.scene.children[i].children[j]["geometry"].boundingSphere.radius>radius){
             center=this.scene.children[i].children[j]["geometry"].boundingSphere.center;
             radius=this.scene.children[i].children[j]["geometry"].boundingSphere.radius;
-            max=Math.ceil(radius+Math.max(Math.abs(center.x),Math.abs(center.y),Math.abs(center.z))*1.5);
+            max=Math.ceil(radius+Math.max(Math.abs(center.x),Math.abs(center.y),Math.abs(center.z)))*2;
             break;
           }
         }
