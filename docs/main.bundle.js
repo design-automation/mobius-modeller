@@ -3989,6 +3989,7 @@ let ToolwindowComponent = class ToolwindowComponent extends __WEBPACK_IMPORTED_M
     }
     getpoints() {
         var attrubtepoints = [];
+        //console.log(this.model.getGeom().getAllPoints());
         for (var i = 0; i < this.model.getGeom().getAllPoints().length; i++) {
             var attributepoint = [];
             attributepoint.id = this.model.getGeom().getAllPoints()[i].getLabel();
@@ -4454,7 +4455,7 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
         this.raycaster = new __WEBPACK_IMPORTED_MODULE_1_three__["Raycaster"]();
         this.scenechildren = this.dataService.getscenechild();
         this.scenechild = new __WEBPACK_IMPORTED_MODULE_1_three__["Scene"]();
-        var geometry = new __WEBPACK_IMPORTED_MODULE_1_three__["SphereGeometry"](0.05);
+        var geometry = new __WEBPACK_IMPORTED_MODULE_1_three__["SphereGeometry"](0.3);
         var material = new __WEBPACK_IMPORTED_MODULE_1_three__["MeshBasicMaterial"]({ color: 0x00ff00 });
         this.sphere = new __WEBPACK_IMPORTED_MODULE_1_three__["Mesh"](geometry, material);
         this.sphere.visible = false;
@@ -4467,7 +4468,7 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
             //self.raycaster.linePrecision=0.05;
             self.raycaster.linePrecision = 0.5;
             //self.raycaster.params.Points.threshold=0.05;
-            self.raycaster.params.Points.threshold = 1;
+            self.raycaster.params.Points.threshold = 0.2;
             self.scenechildren = self.dataService.getscenechild();
             var intersects = self.raycaster.intersectObjects(self.scenechildren);
             for (var i = 0; i < self.scenechildren.length; i++) {
@@ -4557,7 +4558,7 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
                         chd["geometry"].computeVertexNormals();
                         chd["geometry"].computeBoundingBox();
                         chd["geometry"].computeBoundingSphere();
-                        if (chd.name === "All edges") {
+                        if (chd.name === "All edges" || chd.name === "Other lines") {
                             this.basicMat = chd["material"].color;
                         }
                     }
@@ -4616,7 +4617,7 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
         else {
             for (var i = 0; i < this.getchildren().length; i++) {
                 this.getchildren()[i]["material"].transparent = false;
-                if (this.getchildren()[i].name == "All edges") {
+                if (this.getchildren()[i].name == "All edges" || this.getchildren()[i].name == "Other edges") {
                     this.getchildren()[i]["material"].color = this.basicMat;
                 }
             }
@@ -4636,7 +4637,7 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
         for (var i = 0; i < children.length; i++) {
             if (children[i].name === "All wires")
                 children[i]["material"].opacity = 0;
-            if (children[i].name === "All edges") {
+            if (children[i].name === "All edges" || children[i].name === "Other lines") {
                 children[i]["material"].opacity = 0;
                 children[i]["material"].color = this.basicMat;
             }
@@ -4664,7 +4665,7 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
         for (var i = 0; i < children.length; i++) {
             if (children[i].name === "All wires")
                 children[i]["material"].opacity = 0.1;
-            if (children[i].name === "All edges") {
+            if (children[i].name === "All edges" || children[i].name === "Other lines") {
                 children[i]["material"].opacity = 0.1;
                 children[i]["material"].color = this.basicMat;
             }
@@ -4691,7 +4692,7 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
         for (var i = 0; i < children.length; i++) {
             if (children[i].name === "All objs" || children[i].name === "All faces")
                 children[i]["material"].opacity = 0.1;
-            if (children[i].name === "All edges") {
+            if (children[i].name === "All edges" || children[i].name === "Other lines") {
                 children[i]["material"].opacity = 0.1;
                 children[i]["material"].color = this.basicMat;
             }
@@ -4722,7 +4723,7 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
                 children[i]["material"].opacity = 0.1;
             if (children[i].name === "All vertices")
                 children[i]["material"].opacity = 0.1;
-            if (children[i].name === "All edges") {
+            if (children[i].name === "All edges" || children[i].name === "Other lines") {
                 children[i]["material"].opacity = 0.5;
                 children[i]["material"].color = new __WEBPACK_IMPORTED_MODULE_1_three__["Color"](255, 255, 0);
                 scenechildren.push(children[i]);
@@ -4745,7 +4746,7 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
                 children[i]["material"].opacity = 0.1;
             if (children[i].name === "All wires")
                 children[i]["material"].opacity = 0.1;
-            if (children[i].name === "All edges") {
+            if (children[i].name === "All edges" || children[i].name === "Other lines") {
                 children[i]["material"].opacity = 0.1;
                 children[i]["material"].color = this.basicMat;
             }
@@ -4790,11 +4791,11 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
                         max = Math.ceil(radius + Math.max(Math.abs(center.x), Math.abs(center.y), Math.abs(center.z))) * 2;
                         break;
                     }
-                    if (this.scene.children[i].children[j].type === "GridHelper") {
-                        this.scene.remove(this.scene.children[i].children[j]);
-                        j = j - 1;
-                    }
                 }
+            }
+            if (this.scene.children[i].type === "GridHelper") {
+                this.scene.remove(this.scene.children[i]);
+                j = j - 1;
             }
         }
         if (this.dataService.grid) {
@@ -4809,6 +4810,7 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
     /// selects object from three.js scene
     onDocumentMouseDown(event) {
         //if(this.seVisible===true) console.log(event);
+        //console.log(this.scene_and_maps);
         var threshold;
         if (this.seVisible === true) {
             threshold = 100;
@@ -4828,7 +4830,7 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
         //this.raycaster.linePrecision = 0.05;
         this.raycaster.linePrecision = 0.5;
         //this.raycaster.params.Points.threshold=0.05;
-        this.raycaster.params.Points.threshold = 1;
+        this.raycaster.params.Points.threshold = 0.2;
         intersects = this.raycaster.intersectObjects(this.scenechildren);
         if (intersects.length > 0) {
             selectedObj = intersects[0].object;
@@ -4945,8 +4947,8 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
             }
             if (this.scenechildren[0].name == "All wires") {
                 const index = Math.floor(intersects[0].index / 2);
-                console.log(index);
-                console.log(this.scene_and_maps.wires_map);
+                /*console.log(index);
+                console.log(this.scene_and_maps.wires_map);*/
                 const path = this.scene_and_maps.wires_map.get(index);
                 const wire = this._model.getGeom().getTopo(path);
                 const label = wire.getLabel();
@@ -4997,7 +4999,7 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
                     }
                 }
             }
-            if (this.scenechildren[0].name == "All edges") {
+            if (this.scenechildren[0].name == "All edges" || this.scenechildren[0].name == "Other lines") {
                 const index = Math.floor(intersects[0].index / 2);
                 const path = this.scene_and_maps.edges_map.get(index);
                 const edge = this._model.getGeom().getTopo(path);
@@ -5045,13 +5047,22 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
                     }
                 }
             }
+            /*if(this.scenechildren[0].name=="Other lines"){
+      
+            }*/
             if (this.scenechildren[0].name === "All points") {
-                const index = intersects[0].index;
-                const attributevertix = this.dataService.getattrvertix();
-                const id = this._model.getGeom().getAllPoints()[index].getLabel();
+                //for(var n=0;n<intersects.length;n++){
+                //console.log(intersects);
+                var index = intersects[0].index;
+                var attributevertix = this.dataService.getattrvertix();
+                var id = this._model.getGeom().getAllPoints()[index].getLabel();
+                //console.log(id);
                 var label = "";
                 if (this.SelectVisible == "Points") {
-                    label = id;
+                    if (label === "")
+                        label = id;
+                    else
+                        label = label + "<br/>" + id;
                 }
                 else {
                     for (var i = 0; i < attributevertix.length; i++) {
@@ -5063,12 +5074,13 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
                                 label = label + "<br/>" + str;
                         }
                     }
+                    //}
                 }
                 const verts_xyz = this._model.getGeom().getAllPoints()[index].getPosition(); //vertices.getPoint().getPosition();
                 if (this.textlabels.length === 0) {
                     var geometry = new __WEBPACK_IMPORTED_MODULE_1_three__["Geometry"]();
                     geometry.vertices.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](verts_xyz[0], verts_xyz[1], verts_xyz[2]));
-                    var pointsmaterial = new __WEBPACK_IMPORTED_MODULE_1_three__["PointsMaterial"]({ color: 0x00ff00, size: 0.2 });
+                    var pointsmaterial = new __WEBPACK_IMPORTED_MODULE_1_three__["PointsMaterial"]({ color: 0x00ff00, size: 1 });
                     const points = new __WEBPACK_IMPORTED_MODULE_1_three__["Points"](geometry, pointsmaterial);
                     points.userData.id = id;
                     points["material"].needsUpdate = true;
@@ -5092,7 +5104,7 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
                     if (select == false) {
                         var geometry = new __WEBPACK_IMPORTED_MODULE_1_three__["Geometry"]();
                         geometry.vertices.push(new __WEBPACK_IMPORTED_MODULE_1_three__["Vector3"](verts_xyz[0], verts_xyz[1], verts_xyz[2]));
-                        var pointsmaterial = new __WEBPACK_IMPORTED_MODULE_1_three__["PointsMaterial"]({ color: 0x00ff00, size: 0.2 });
+                        var pointsmaterial = new __WEBPACK_IMPORTED_MODULE_1_three__["PointsMaterial"]({ color: 0x00ff00, size: 1 });
                         const points = new __WEBPACK_IMPORTED_MODULE_1_three__["Points"](geometry, pointsmaterial);
                         points.userData.id = id;
                         points["material"].needsUpdate = true;
@@ -5164,7 +5176,6 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
         this.textlabels.push(textLabel);
         this.dataService.pushselecting(textLabel);
         container.appendChild(textLabel.element);
-        console.log(this.dataService.selecting);
     }
     //To remove text labels just provide its id
     removeTextLabel(id) {
@@ -8014,6 +8025,8 @@ module.exports = module.exports.toString();
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TextViewerComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm2015/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__base_classes_viz_Viewer__ = __webpack_require__("../../../../../src/app/base-classes/viz/Viewer.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_circular_json__ = __webpack_require__("../../../../circular-json/build/circular-json.node.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_circular_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_circular_json__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8023,6 +8036,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
 
 
 let TextViewerComponent = class TextViewerComponent extends __WEBPACK_IMPORTED_MODULE_1__base_classes_viz_Viewer__["a" /* Viewer */] {
@@ -8047,7 +8061,7 @@ let TextViewerComponent = class TextViewerComponent extends __WEBPACK_IMPORTED_M
     }
     getType(output) {
         if (output.getValue()) {
-            return JSON.stringify(output.getValue());
+            return __WEBPACK_IMPORTED_MODULE_2_circular_json___default.a.stringify(output.getValue());
         }
         else {
             return "no-value-available";
