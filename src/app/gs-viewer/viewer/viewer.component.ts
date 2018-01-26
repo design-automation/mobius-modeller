@@ -473,7 +473,6 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
 
   onDocumentMouseDown(event){
     //if(this.seVisible===true) console.log(event);
-    console.log(this.scene);
     var threshold: number;
     if(this.seVisible===true) {
       threshold= 100;
