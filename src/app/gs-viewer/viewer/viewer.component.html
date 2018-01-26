@@ -1,6 +1,8 @@
 <div id="container"  
-		(mousemove)="onDocumentMouseMove($event)" 
-		(click)="Mousedown($event)">
+    (mousemove)="onDocumentMouseMove($event)" 
+    (mousedown)="mousedown($event)"
+    (mouseup)="mouseup($event)"
+		(click)="onDocumentMouseDown($event)">
 	
   		<!-- <button id="rotating" 
   			[class.visible]="Visible === 'rotate'" 
@@ -18,15 +20,15 @@
   			[class.visible]="Visible === 'zoom'" 
   			(click)="Visible='zoom'">
   			<i class="fa fa-search"></i>
-  		</button>
+  		</button>-->
   		
   		<button id="zoomingfit"  
   			[class.visible]="Visible === 'zoomfit'" 
   			(click)="zoomfit()">
   			<i class="fa fa-arrows-alt"></i>
-  		</button> -->
+  		</button> 
   		
-  		<button id="selecting" [class.visible]="Visible === 'select'" (click)= "select($event)" ><i class="fa fa-mouse-pointer"></i></button>
+  		<!-- <button id="selecting" [class.visible]="Visible === 'select'" (click)= "select($event, Visible)" ><i class="fa fa-mouse-pointer"></i></button> -->
   		
   		<button id="setting" [class.selected]="settingVisible" (click)= "settingVisible = !settingVisible">
       	

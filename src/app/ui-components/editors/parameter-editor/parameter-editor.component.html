@@ -38,8 +38,12 @@
 									<select (change)="updateType($event.target.value, inp)">
 										         	    <option *ngFor="let x of inputPortOpts" [value]="x" [selected]="inp.getType() == x">{{getInputTypeName(x)}}</option>
 										            </select>
+	
 								</span>
+
 							</div>
+
+							
 
 							<!-- <div class='row'>
 								<span class='content' contenteditable="true" (blur)="updateDefaultValue($event, inp)">
@@ -49,6 +53,9 @@
 							</div>	 -->
 						</div>			
 						<div class="controls">
+							<button mat-button (click)='openSettingsDialog(inp)'>
+								<mat-icon>settings</mat-icon>
+							</button>
 					        <button mat-button (click)='deletePort($event, "input", i)'>
 					    		<mat-icon>delete</mat-icon>
     					    </button>

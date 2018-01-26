@@ -9,6 +9,8 @@ import {IGraphNode} from './IGraphNode';
 export class GraphNode implements IGraphNode{
 
 	private portCounter: number = 0;
+	private inputPortCounter: number = 0;
+	private outputPortCounter: number = 0;
 
 	private _name: string;
 	private _id: string; 
@@ -70,6 +72,10 @@ export class GraphNode implements IGraphNode{
 		return this._version++;
 	}
 
+	saved(): void{
+		this._type = this._id;
+	}
+
 	update(nodeData: IGraphNode): void{
 
 		if(nodeData["lib"] == undefined){
@@ -125,7 +131,7 @@ export class GraphNode implements IGraphNode{
 	//
 	addInput(name?: string): number{
 
-		let default_name = /*this._name + */"in" + this.portCounter; 
+		let default_name = /*this._name + */"in" + this.inputPortCounter; 
 
 		if( name !== undefined ){
 			default_name = name;
@@ -135,6 +141,7 @@ export class GraphNode implements IGraphNode{
 		this._inputs.push(inp);
 
 		this.portCounter++;
+		this.inputPortCounter++;
 		this.removeType();
 		
 		return this._inputs.length;
@@ -142,7 +149,7 @@ export class GraphNode implements IGraphNode{
 
 	addOutput(name?: string): number{ 
 
-		let default_name = /*this._name +*/ "out" + this.portCounter; 
+		let default_name = /*this._name +*/ "out" + this.outputPortCounter; 
 
 		if(name !== undefined){
 			default_name = name;
@@ -152,6 +159,7 @@ export class GraphNode implements IGraphNode{
 		this._outputs.push(oup);
 		
 		this.portCounter++;
+		this.outputPortCounter++;
 		this.removeType();
 		
 		return this._outputs.length; 

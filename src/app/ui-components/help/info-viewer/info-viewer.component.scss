@@ -1,0 +1,15 @@
+@import '~scss/globals';
+
+.viewer{
+	@extend .viewer;
+
+	padding: $default-side-padding;
+	height: auto;
+	overflow: auto;
+
+	.panel-content{
+		max-height: 700px;
+		overflow: auto;
+	}
+	
+}

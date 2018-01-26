@@ -16,8 +16,18 @@ export class InputPort extends Port{
 			this.setDefaultValue(type.value);
 		}
 		else{
-			this._type = InputPortTypes.Default;
+			this._type = InputPortTypes.Input;
 		}
+	}
+
+	setOpts(opts: any){
+		this.opts = opts;
+
+		//todo: check if options valid for type
+	}
+
+	getOpts(): any{
+		return this.opts;
 	}
 
 }

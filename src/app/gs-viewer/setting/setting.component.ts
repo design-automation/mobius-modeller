@@ -20,6 +20,11 @@ export class SettingComponent implements OnInit {
   saturation:number;
   lightness:number;
   frameVisible:boolean;
+  gridisChecked:boolean;
+  opacity:number;
+  red:number;
+  green:number;
+  blue:number;
 
   ngOnInit(){
     if(this.hue == undefined) {
@@ -37,22 +42,31 @@ export class SettingComponent implements OnInit {
     } else {
       this.lightness=this.dataService.lightness;
     }
+    if(this.opacity==undefined){
+      this.opacity=1;
+    }else{
+      this.opacity=this.dataService.opacity;
+    }
     this.gridVisible=this.dataService.grid;
-    if(this.gridVisible==true){
-      document.getElementById("grid").setAttribute('checked', 'checked');
-    }
     this.axisVisible=this.dataService.axis;
-    if(this.axisVisible==true){
-      document.getElementById("axis").setAttribute('checked', 'checked');
-    }
     this.shadowVisible=this.dataService.shadow;
-    if(this.shadowVisible==true){
-      document.getElementById("shadow").setAttribute('checked', 'checked');
-    }
     this.frameVisible=this.dataService.frame;
-    if(this.frameVisible==true){
-      document.getElementById("frame").setAttribute('checked', 'checked');
+    if(this.red==undefined){
+      this.red=0.8;
+    }else{
+      this.red=this.dataService.red;
     }
+    if(this.green==undefined){
+      this.green=0.8;
+    }else{
+      this.green=this.dataService.green;
+    }
+    if(this.blue==undefined){
+      this.blue=0.8;
+    }else{
+      this.blue=this.dataService.blue;
+    }
+    
   }
 
   constructor(private dataService: DataService){
@@ -60,26 +74,47 @@ export class SettingComponent implements OnInit {
     // avoid manipulating the scene here
     // shift to dataservice
     this.scene = this.dataService.getScene();
-
     this.alight=[];
     this.alight=this.dataService.getalight();
     this.hue=this.dataService.hue;
     this.saturation=this.dataService.saturation;
     this.lightness=this.dataService.lightness;
+    this.opacity=this.dataService.opacity;
+    this.red=this.dataService.red;
+    this.green=this.dataService.green;
+    this.blue=this.dataService.blue;
   }
 
   changegrid(){
     this.gridVisible = !this.gridVisible;
-    var maxX=2;
-    var maxY=2;
-    for(var i=0;i<this.scene.children[1].children.length;i++){
-      maxX=Math.max(maxX,Math.abs(this.scene.children[1].children[i].children[0]["geometry"].boundingBox.max.x));
-      maxY=Math.max(maxY,Math.abs(this.scene.children[1].children[i].children[0]["geometry"].boundingBox.max.y));
+    var maxX=4;
+    var maxY=4;
+    /*for(var j=0;j<this.scene.children.length;j++){
+      if(this.scene.children[j].type==="Scene"){
+        for(var i=0;i<this.scene.children[j].children.length;i++){
+          maxX=Math.max(maxX,Math.abs(this.scene.children[j].children[i].children[0]["geometry"].boundingBox.max.x));
+          maxY=Math.max(maxY,Math.abs(this.scene.children[j].children[i].children[0]["geometry"].boundingBox.max.y));
+        }
+      }
+    }*/
+    
+    for(var i=0;i<this.scene.children.length;i++){
+      if(this.scene.children[i].type==="Scene"){
+        for(var j=0;j<this.scene.children[i].children.length;j++){
+          if(this.scene.children[i].children[j]["geometry"].boundingSphere.radius!==0){
+            maxX=Math.max(maxX,Math.abs(this.scene.children[i].children[j]["geometry"].boundingBox.max.x));
+            maxY=Math.max(maxY,Math.abs(this.scene.children[i].children[j]["geometry"].boundingBox.max.y));
+            break;
+          }
+        }
+      }
     }
     var max=Math.ceil(Math.max(maxX,maxY)*1.3)*2;
     if(this.gridVisible){
       var gridhelper=new THREE.GridHelper( max, max );
       gridhelper.name="GridHelper";
+      var vector=new THREE.Vector3(0,1,0);
+      gridhelper.lookAt(vector);
       this.scene.add( gridhelper);
     }
     else{
@@ -90,13 +125,20 @@ export class SettingComponent implements OnInit {
 
   changeaxis(){
     this.axisVisible = !this.axisVisible;
-    var maxX=2;
-    var maxY=2;
-    var maxZ=2;
-    for(var i=0;i<this.scene.children[1].children.length;i++){
-      maxX=Math.max(maxX,Math.abs(this.scene.children[1].children[i].children[0]["geometry"].boundingBox.max.x));
-      maxY=Math.max(maxY,Math.abs(this.scene.children[1].children[i].children[0]["geometry"].boundingBox.max.y));
-      maxZ=Math.max(maxZ,Math.abs(this.scene.children[1].children[i].children[0]["geometry"].boundingBox.max.z));
+    var maxX=4;
+    var maxY=4;
+    var maxZ=4;
+    for(var i=0;i<this.scene.children.length;i++){
+      if(this.scene.children[i].type==="Scene"){
+        for(var j=0;j<this.scene.children[i].children.length;j++){
+          if(this.scene.children[i].children[j]["geometry"].boundingSphere.radius!==0){
+            maxX=Math.max(maxX,Math.abs(this.scene.children[i].children[j]["geometry"].boundingBox.max.x));
+            maxY=Math.max(maxY,Math.abs(this.scene.children[i].children[j]["geometry"].boundingBox.max.y));
+            maxZ=Math.max(maxZ,Math.abs(this.scene.children[i].children[j]["geometry"].boundingBox.max.z));
+            break;
+          }
+        }
+      }
     }
     var max=Math.ceil(Math.max(maxX,maxY,maxZ)*1.2);
     if(this.axisVisible){
@@ -142,15 +184,45 @@ export class SettingComponent implements OnInit {
   changeframe(){
    this.frameVisible = !this.frameVisible;
    if(this.frameVisible){
-     for(var i=0;i<this.scene.children[1].children.length;i++){
-       this.scene.children[1].children[i].children[0]["material"].wireframe=true;
+    for(var i=0;i<this.scene.children.length;i++){
+      if(this.scene.children[i].type==="Scene"){
+        if(this.scene.children[i].children[0].type==="Mesh"){
+          this.scene.children[i].children[0].visible=false;
+        }
+      }
     }
-   }else{
-     for(var i=0;i<this.scene.children[1].children.length;i++){
-       this.scene.children[1].children[i].children[0]["material"].wireframe=false;
+  }else{
+    for(var i=0;i<this.scene.children.length;i++){
+      if(this.scene.children[i].type==="Scene"){
+        if(this.scene.children[i].children[0].type==="Mesh"){
+          this.scene.children[i].children[0].visible=true;
+        }
+      }
     }
-   }
+  }
    this.dataService.addframe(this.frameVisible);
+  }
+
+  changeopa(_opacity){
+   this.opacity=_opacity;
+   this.dataService.getopacity(_opacity);   
+   for(var i=0;i<this.scene.children.length;i++){
+      if(this.scene.children[i].type==="Scene"){
+        if(this.scene.children[i].children[0].type==="Mesh"){
+          this.scene.children[i].children[0]["material"].opacity=_opacity;
+        }
+      }
+    }
+  }
+
+  changeback(_red,_green,_blue){
+    this.red=_red;
+    this.green=_green;
+    this.blue=_blue;
+    this.dataService.getred(_red);
+    this.dataService.getgreen(_green);
+    this.dataService.getblue(_blue);
+    this.scene.background=new THREE.Color(_red,_green,_blue);
   }
 
   setting(event){

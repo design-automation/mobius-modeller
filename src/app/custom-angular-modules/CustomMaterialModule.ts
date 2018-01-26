@@ -3,7 +3,8 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatMenuModule, MatExpansionModule, 
 	MatButtonModule, MatCheckboxModule, MatTooltipModule, 
 	MatDialogModule, MatToolbarModule, MatIconModule, 
-	MatButtonToggleModule, MatTabsModule, MatInputModule, MatListModule} from '@angular/material';
+	MatButtonToggleModule, MatTabsModule, MatInputModule, MatListModule,
+  MatSliderModule} from '@angular/material';
 
 
 /*
@@ -14,10 +15,10 @@ import {MatMenuModule, MatExpansionModule,
   imports: [BrowserAnimationsModule, MatExpansionModule, 
   			MatMenuModule, MatButtonModule, MatCheckboxModule, 
   			MatTooltipModule, MatDialogModule, MatToolbarModule, MatIconModule, 
-  			MatButtonToggleModule, MatTabsModule, MatInputModule, MatListModule],
+  			MatButtonToggleModule, MatTabsModule, MatInputModule, MatListModule, MatSliderModule],
   exports: [BrowserAnimationsModule, MatExpansionModule,  
   			MatMenuModule, MatButtonModule, MatCheckboxModule, 
   			MatTooltipModule, MatDialogModule, MatToolbarModule, MatIconModule,
-  			MatButtonToggleModule, MatTabsModule, MatInputModule, MatListModule]
+  			MatButtonToggleModule, MatTabsModule, MatInputModule, MatListModule, MatSliderModule]
 })
 export class CustomMaterialModule { }

@@ -21,12 +21,22 @@ export class Flowchart implements IFlowchart{
 	private _sortOrder: number[];
 	private _selected: number;
 
+	private _lastSaved: Date;
+
 	//
 	//	constructor needs 2 arguments  - username and icodegenerator
 	//
 	constructor(username: string){ 
 		this._author = username; 
 	};
+
+	setSavedTime(date: Date){
+		this._lastSaved = date;
+	}
+
+	getSavedTime(): Date{
+		return this._lastSaved;
+	}
 
 	//	gets author of the flowchart
 	getAuthor(): string{

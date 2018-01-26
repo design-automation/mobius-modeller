@@ -1,12 +1,21 @@
 <div id="settingview" (click)="setting($event)">
-  <input id="grid" type="checkbox" (click)="changegrid()"> <label id="gridname" value="gridVisible">grid</label>
-  <input id="axis"  type="checkbox" (click)="changeaxis()"> <label id="axisname" value="axisVisible">axis</label>
-  <input id="shadow"  type="checkbox" (click)="changeshadow()"> <label id="fogname" value="shadowVisible">shadow</label>
-  <input id="frame"  type="checkbox" (click)="changeframe()"> <label id="framename" value="frameVisible">frame</label><br/><hr/>&nbsp;&nbsp;&nbsp;&nbsp;Hemisphere Light&nbsp;&nbsp;<br/>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hue
-  <mat-slider name="range" id="huerange" min=0 max=360 step=1  value={{hue}} #slider (change)="changelight(slider.value,slider1.value,slider2.value)" ></mat-slider>{{slider.value.toPrecision(2)}}<br/>
-  &nbsp;&nbsp;&nbsp;saturation
-  <mat-slider name="range" id="satrange" min=0 max=1 step=0.01 value={{saturation}} #slider1 (change)="changelight(slider.value,slider1.value,slider2.value)" ></mat-slider>{{slider1.value.toPrecision(2)}}<br/>
-  &nbsp;&nbsp;&nbsp;&nbsp;lightness
-  <mat-slider name="range" id="lirange" min=0 max=1 step=0.01 value={{lightness}} #slider2 (change)="changelight(slider.value,slider1.value,slider2.value)" ></mat-slider>{{slider2.value.toPrecision(2)}}<br/>
+  <input id="grid" #grid type="checkbox" [checked]="gridVisible" (click)="changegrid()"> <label id="name" value="gridVisible">grid</label>
+  <input id="axis"  type="checkbox" [checked]="axisVisible" (click)="changeaxis()"> <label id="name" value="axisVisible">axis</label>
+  <input id="shadow"  type="checkbox" [checked]="shadowVisible" (click)="changeshadow()"> <label id="name" value="shadowVisible">shadow</label>
+  <input id="frame"  type="checkbox" [checked]="frameVisible" (click)="changeframe()"> <label id="name" value="frameVisible">frame</label><br/><hr/>&nbsp;&nbsp;&nbsp;&nbsp;<label id="name" >Hemisphere Light</label>&nbsp;&nbsp;<br/>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label id="name" >hue</label>
+  <mat-slider class="slider" name="range" id="huerange" min=0 max=360 step=1  value={{hue}} #slider (change)="changelight(slider.value,slider1.value,slider2.value)" ></mat-slider><label id="name" >{{slider.value.toPrecision(2)}}</label><br/>
+  &nbsp;&nbsp;&nbsp;<label id="name" >saturation</label>
+  <mat-slider name="range" id="satrange" min=0 max=1 step=0.01 value={{saturation}} #slider1 (change)="changelight(slider.value,slider1.value,slider2.value)" ></mat-slider><label id="name" >{{slider1.value.toPrecision(2)}}</label><br/>
+  &nbsp;&nbsp;&nbsp;&nbsp;<label id="name" >lightness</label>
+  <mat-slider name="range" id="lirange" min=0 max=1 step=0.01 value={{lightness}} #slider2 (change)="changelight(slider.value,slider1.value,slider2.value)" ></mat-slider><label id="name" >{{slider2.value.toPrecision(2)}}</label><br/>
+  <!-- &nbsp;&nbsp;&nbsp;&nbsp;<label id="name" >opacity</label>&nbsp;&nbsp;&nbsp;
+  <mat-slider name="range" id="oprange" min=0 max=1 step=0.01 value={{opacity}} #slider3 (change)="changeopa(slider3.value)" ></mat-slider><label id="name" >{{slider3.value.toPrecision(2)}}</label><br/> -->
+  <hr/>&nbsp;&nbsp;&nbsp;&nbsp;<label id="name" >Backeground Color</label>&nbsp;&nbsp;<br/>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label id="name" >R</label>
+  <mat-slider  name="range" id="redrange" min=0 max=1 step=0.01  value={{red}} #slider4 (change)="changeback(slider4.value,slider5.value,slider6.value)" ></mat-slider><label id="name" >{{slider4.value.toPrecision(2)}}</label><br/>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label id="name" >G</label>
+  <mat-slider name="range" id="greenrange" min=0 max=1 step=0.01 value={{green}} #slider5 (change)="changeback(slider4.value,slider5.value,slider6.value)" ></mat-slider><label id="name" >{{slider5.value.toPrecision(2)}}</label><br/>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label id="name" >B</label>
+  <mat-slider name="range" id="bluerange" min=0 max=1 step=0.01 value={{blue}} #slider6 (change)="changeback(slider4.value,slider5.value,slider6.value)" ></mat-slider><label id="name" >{{slider6.value.toPrecision(2)}}</label><br/>
 </div>

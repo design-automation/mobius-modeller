@@ -1,7 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
@@ -21,6 +20,7 @@ import { MenuComponent } from './ui-components/controls/main-menu/menu.component
 
 import { ProcedureEditorComponent } from './ui-components/editors/procedure-editor/procedure-editor.component';
 import { ParameterEditorComponent } from './ui-components/editors/parameter-editor/parameter-editor.component';
+import { ParameterSettingsDialogComponent } from './ui-components/editors/parameter-editor/parameter-settings-dialog.component';
 import { FlowchartViewerComponent } from './ui-components/editors/flowchart-viewer/flowchart-viewer.component';
 
 import { CodeViewerComponent } from './ui-components/viewers/code-viewer/code-viewer.component';
@@ -31,15 +31,18 @@ import { ModuleboxComponent } from './ui-components/controls/modulebox/modulebox
 import { EditorComponent } from './ui-components/editors/editor/editor.component';
 import { ViewerContainerComponent } from './ui-components/viewers/viewer-container/viewer-container.component';
 import { TextViewerComponent } from './ui-components/viewers/text-viewer/text-viewer.component';
-import { HelpViewerComponent } from './ui-components/viewers/help-viewer/help-viewer.component';
 import { NodeLibraryComponent } from './ui-components/viewers/node-library/node-library.component';
 import { PanelComponent } from './ui-components/layout/panel/panel.component';
 import { ConsoleComponent } from './ui-components/console/console.component';
-import { InfoViewerComponent } from './ui-components/viewers/info-viewer/info-viewer.component';
 
+import { InfoViewerComponent } from './ui-components/help/info-viewer/info-viewer.component';
+import { HelpViewerComponent } from './ui-components/help/help-viewer/help-viewer.component';
+import { MobiusAbout, HelpFundamentals } from './ui-components/help/info-viewer/help.template';
 
 import { GSViewer } from './gs-viewer/gs-viewer.module';
 import { ConsoleService } from './global-services/console.service';
+
+import { FileLoadDialogComponent } from './ui-components/dialogs/file-load-dialog.component';
 
 @NgModule({
   declarations: [
@@ -57,14 +60,20 @@ import { ConsoleService } from './global-services/console.service';
     EditorComponent,
     ViewerContainerComponent,
     TextViewerComponent,
-    HelpViewerComponent,
     NodeLibraryComponent,
     PanelComponent,
     ConsoleComponent,
-    InfoViewerComponent
+    ParameterSettingsDialogComponent,
+    HelpViewerComponent,
+    InfoViewerComponent,
+    MobiusAbout, 
+    HelpFundamentals,
+    FileLoadDialogComponent
   ],
   entryComponents: [
-    ModuleboxComponent
+    ModuleboxComponent,
+    ParameterSettingsDialogComponent,
+    FileLoadDialogComponent
   ],
   imports: [
     BrowserModule,

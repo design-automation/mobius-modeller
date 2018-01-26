@@ -23,6 +23,8 @@ export interface IProcedure{
 	hasChildren: boolean; 
 	children: IProcedure[];
 
+	getLevel(): number;
+
 	getType(): ProcedureTypes; 
 
 	update(prodData: any, parent: IProcedure): void;
