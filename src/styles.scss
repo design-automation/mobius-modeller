@@ -197,8 +197,8 @@ split-gutter{
 				display: flex !important;
 				flex-flow: row wrap !important;
 
-				align-items: center !important;
-				justify-content: center !important;
+				//align-items: center !important;
+				//justify-content: center !important;
 
 				span{
 					font-weight: bold !important;
@@ -393,6 +393,38 @@ span.addBtn{
 .mat-input-underline{
 	display: none !important;
 }
+
+mat-dialog-container{
+	color: $color1 !important;
+	h2{
+		border-bottom: 1px solid $color3;
+		padding-bottom: 5px;
+	}
+	mat-form-field{
+		width: 100%;
+	}
+}
+
+.mat-slider-track-fill,
+.mat-slider-thumb,
+.mat-slider-thumb-label {
+    background-color: $color1 !important;
+}
+
+.mat-slider-thumb-label-text {
+    color: $color1 !important;
+    font-size: $fsize2!important;
+}
+
+.mat-slider-thumb-label{
+    height: 15px !important;
+    width: 15px !important;
+    top: -20px !important;
+    right: -7px !important;
+    background-color: white !important;
+    border: 1px solid $pcolor3 !important;
+}
+
 
 // split-area.sidebar.flowchart{
 // 	width: 150px !important;

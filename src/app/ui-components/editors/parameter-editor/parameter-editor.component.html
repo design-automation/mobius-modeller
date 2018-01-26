@@ -53,7 +53,9 @@
 							</div>	 -->
 						</div>			
 						<div class="controls">
-							<mat-icon (click)='openSettingsDialog(inp)'>settings</mat-icon>
+							<button mat-button (click)='openSettingsDialog(inp)'>
+								<mat-icon>settings</mat-icon>
+							</button>
 					        <button mat-button (click)='deletePort($event, "input", i)'>
 					    		<mat-icon>delete</mat-icon>
     					    </button>
