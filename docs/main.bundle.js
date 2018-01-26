@@ -1029,16 +1029,15 @@ class Flowchart {
             // should this be from within the node?
             let outputPort = node.getOutputByIndex(edge.output_address[1]);
             let inputPort = inputNode.getInputByIndex(edge.input_address[1]);
-            inputPort.setComputedValue(outputPort.getValue());
             let outVal = outputPort.getValue();
-            if (outVal.constructor.name == "Model") {
-                console.log("original model: ", outVal);
+            if (outVal && outVal.constructor.name == "Model") {
                 let modelData = outVal.toJSON();
-                let model = new __WEBPACK_IMPORTED_MODULE_0_gs_json__["Model"](modelData);
-                model["_kernel"]._objs = JSON.parse(JSON.stringify(outVal["_kernel"]._objs));
-                model["_kernel"]._points = JSON.parse(JSON.stringify(outVal["_kernel"]._points));
-                console.log("new model: ", model);
-                outputPort.setComputedValue(model);
+                let model = new __WEBPACK_IMPORTED_MODULE_0_gs_json__["Model"](JSON.parse(modelData));
+                // todo: change in kernel
+                //model["_kernel"]._objs = JSON.parse(JSON.stringify(outVal["_kernel"]._objs));
+                //model["_kernel"]._points = JSON.parse(JSON.stringify(outVal["_kernel"]._points));
+                // console.log( JSON.stringify(model["_kernel"]["_objs"]) );
+                inputPort.setComputedValue(model);
             }
             // let value = outputPort.getValue();
             // if( value["_kernel"] && value["_id"] ){
@@ -4810,7 +4809,6 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
     /// selects object from three.js scene
     onDocumentMouseDown(event) {
         //if(this.seVisible===true) console.log(event);
-        console.log(this.scene);
         var threshold;
         if (this.seVisible === true) {
             threshold = 100;
@@ -6987,7 +6985,7 @@ ProcedureEditorComponent = __decorate([
 /***/ "../../../../../src/app/ui-components/help/help-viewer/help-viewer.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"viewer\">\r\n\t\r\n\t<h1>Möbius Functions</h1>\r\n\r\n\t<mat-accordion *ngIf='!fnObj'>\r\n\r\n\t\t<!-- functions -->\r\n\t \t<mat-expansion-panel \r\n\t \t\t*ngFor=\"let m of _helpMods\"\r\n\t \t\t[expanded]=\"getModName(m.name) ==_activeMod\">\r\n\t    \t<mat-expansion-panel-header>\r\n\t    \t\t<mat-panel-title>\r\n\t\t\t      {{ getModName(m.name) }} \r\n\t\t\t    </mat-panel-title>\r\n\t    \t</mat-expansion-panel-header>\r\n\r\n\t\t\t<mat-list id=\"{{getModName(m.name)}}\" \r\n\t\t\t\tstyle=\"max-height: 500px; overflow: auto;\">\r\n\t\t\t\t<!-- <h3 mat-subheader>{{m.comment.shortText}}</h3> -->\r\n\r\n\t\t\t\t<h3 mat-subheader>Functions</h3>\r\n\t\t\t \t<mat-list-item *ngFor=\"let fn of m.children\">\r\n\t\t\t \t\t<div class = \"content\">\r\n\t\t\t\t \t\t<h4 mat-line>{{fn.name}}</h4>\r\n\t    \t\t\t\t<p class=\"head-descr\" mat-line>{{fn.signatures[0].comment.shortText}}</p>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<!-- @derek: parameters-->\r\n\t\t\t\t\t\t<div  class=\"parameters\" mat-line *ngIf='fn.signatures[0].parameters'>\r\n\t\t\t\t\t\t\t<div *ngFor=\"let pa of fn.signatures[0].parameters\">\r\n\t\t\t\t\t\t\t\t<!--<span class=\"topic\">Name: </span>-->\r\n\t\t\t\t\t\t\t\t<span class=\"topic\">{{pa.name}}: </span>\r\n\t\t\t\t\t\t\t\t<!-- <span *ngIf=\"pa.type\">Type: {{pa.type.type}}</span> -->\r\n\t\t\t\t\t\t\t\t<!--<span class=\"topic\">Description: </span>-->\r\n\t\t\t\t\t\t\t\t<span class=\"descr\" *ngIf=\"pa.comment\">{{pa.comment.text}}</span>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t<div class=\"return-block\">\r\n\t\t    \t\t\t\t<span class=\"topic\">Returns: </span>\r\n\t\t    \t\t\t\t<span class=\"descr\">{{fn.signatures[0].comment.returns}}</span>\r\n\t\t    \t\t\t</div>\r\n\r\n\t\t    \t\t\t\r\n\t    \t\t\t\t<p mat-line>\t\r\n\t    \t\t\t\t\t<a href=\"https://phtj.github.io/gs-modelling/docs/modules/{{getUrl(m.name, fn.name)}}\" target=\"_blank\">More</a>\r\n\t    \t\t\t\t</p>\r\n\r\n    \t\t\t\t</div>\r\n\t\t\t \t</mat-list-item>\r\n\t\t\t \t<mat-divider></mat-divider>\r\n\t\t\t</mat-list>\r\n\r\n\t \t</mat-expansion-panel>\r\n\t \t\r\n\t</mat-accordion>\r\n\r\n\t<!-- specific function -->\r\n\t<div *ngIf='fnObj && fnObj.name'>\r\n\t\t\r\n\t\t<h4>Module: {{fnObj.module}}</h4>\r\n\t\t<h3>{{fnObj.name}}</h3>\r\n\t\t\r\n\t\t<div>\r\n\t\t\t{{fnObj.content.signatures[0].comment.shortText}}\r\n\t\t\tReturns: {{fnObj.content.signatures[0].comment.returns}}\r\n\t\t\t\t<a href=\"https://phtj.github.io/gs-modelling/docs/modules/{{getUrl(fnObj.module, fnObj.name)}}\" target=\"_blank\">\r\n\t\t\t\tMore\r\n\t\t\t\t</a>\r\n\t\t</div>\r\n\t\r\n\t\t<hr>\r\n\t\t\r\n\t\t<div (click)=\"showAll()\" style=\"cursor: pointer;\">[Show All]</div>\r\n\t\r\n\t</div>\r\n\r\n</div>"
+module.exports = "<div class=\"viewer\">\r\n\t\r\n\t<h1>Möbius Functions</h1>\r\n\r\n\t<mat-accordion *ngIf='!fnObj'>\r\n\r\n\t\t<!-- functions -->\r\n\t \t<mat-expansion-panel \r\n\t \t\t*ngFor=\"let m of _helpMods\"\r\n\t \t\t[expanded]=\"getModName(m.name) ==_activeMod\">\r\n\t    \t<mat-expansion-panel-header>\r\n\t    \t\t<mat-panel-title>\r\n\t\t\t      {{ getModName(m.name) }} \r\n\t\t\t    </mat-panel-title>\r\n\t    \t</mat-expansion-panel-header>\r\n\r\n\t\t\t<mat-list id=\"{{getModName(m.name)}}\" \r\n\t\t\t\tstyle=\"max-height: 500px; overflow: auto;\">\r\n\t\t\t\t<!-- <h3 mat-subheader>{{m.comment.shortText}}</h3> -->\r\n\r\n\t\t\t\t<h3 mat-subheader>Functions</h3>\r\n\t\t\t \t<mat-list-item *ngFor=\"let fn of m.children\">\r\n\t\t\t \t\t<div class = \"content\">\r\n\t\t\t\t \t\t<h4 mat-line>{{fn.name}}</h4>\r\n\t    \t\t\t\t<p class=\"head-descr\" mat-line>{{fn.signatures[0].comment.shortText}}</p>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<!-- @derek: parameters-->\r\n\t\t\t\t\t\t<div  class=\"parameters\" mat-line *ngIf='fn.signatures[0].parameters'>\r\n\t\t\t\t\t\t\t<div *ngFor=\"let pa of fn.signatures[0].parameters\">\r\n\t\t\t\t\t\t\t\t<!--<span class=\"topic\">Name: </span>-->\r\n\t\t\t\t\t\t\t\t<span class=\"topic\">{{pa.name}}: </span>\r\n\t\t\t\t\t\t\t\t<!-- <span *ngIf=\"pa.type\">Type: {{pa.type.type}}</span> -->\r\n\t\t\t\t\t\t\t\t<!--<span class=\"topic\">Description: </span>-->\r\n\t\t\t\t\t\t\t\t<span class=\"descr\" *ngIf=\"pa.comment\">{{pa.comment.text}}</span>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t<div class=\"return-block\">\r\n\t\t    \t\t\t\t<span class=\"topic\">Returns: </span>\r\n\t\t    \t\t\t\t<span class=\"descr\">{{fn.signatures[0].comment.returns}}</span>\r\n\t\t    \t\t\t</div>\r\n\r\n\t\t    \t\t\t\r\n\t    \t\t\t\t<p mat-line>\t\r\n\t    \t\t\t\t\t<a href=\"https://phtj.github.io/gs-modelling/docs/modules/{{getUrl(m.name, fn.name)}}\" target=\"_blank\">More</a>\r\n\t    \t\t\t\t</p>\r\n\r\n    \t\t\t\t</div>\r\n\t\t\t \t</mat-list-item>\r\n\t\t\t \t<mat-divider></mat-divider>\r\n\t\t\t</mat-list>\r\n\r\n\t \t</mat-expansion-panel>\r\n\t \t\r\n\t</mat-accordion>\r\n\r\n\t<!-- specific function -->\r\n\t<div *ngIf='fnObj && fnObj.name'>\r\n\t\t\r\n\t\t<h4>Module: {{fnObj.module}}</h4>\r\n\t\t<h3>{{fnObj.name}}</h3>\r\n\t\t\r\n\t\t<div *ngIf='fnObj.content'>\r\n\t\t\t{{fnObj.content.signatures[0].comment.shortText}}\r\n\t\t\tReturns: {{fnObj.content.signatures[0].comment.returns}}\r\n\t\t\t\t<a href=\"https://phtj.github.io/gs-modelling/docs/modules/{{getUrl(fnObj.module, fnObj.name)}}\" target=\"_blank\">\r\n\t\t\t\tMore\r\n\t\t\t\t</a>\r\n\t\t</div>\r\n\t\r\n\t\t<hr>\r\n\t\t\r\n\t\t<div (click)=\"showAll()\" style=\"cursor: pointer;\">[Show All]</div>\r\n\t\r\n\t</div>\r\n\r\n</div>"
 
 /***/ }),
 
