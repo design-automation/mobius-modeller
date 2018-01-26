@@ -2542,7 +2542,7 @@ let FlowchartService = class FlowchartService {
             { _name: "Split", _version: 0.1, _author: "Patrick" },
             { _name: "Intersect", _version: 0.1, _author: "Patrick" },
             { _name: "Calc", _version: 0.1, _author: "Patrick" },
-            { _name: "Examples", _version: 0.1, _author: "Patrick" }
+            { _name: "Obj", _version: 0.1, _author: "Patrick" }
             //{_name: "Calc", _version: 0.1, _author: "Patrick"}
         ]);
         // print message to console
