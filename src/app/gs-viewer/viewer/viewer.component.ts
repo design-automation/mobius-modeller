@@ -172,9 +172,11 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
   /// clears all children from the scene
   clearScene(): void{
     /// remove children from scene
+    console.log(this.scene);
     for(var i=0; i < this.scene.children.length; i++){
       if( this.scene.children[i].type === "Scene" ){
          this.scene.remove(this.scene.children[i]);
+         console.log("remove child");
       }
     }
   }
@@ -439,7 +441,6 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
   }
 
   addgrid(){
-    console.log("in add grid function")
     var max=8;
     var center=new THREE.Vector3(0,0,0);
     var radius:number=0
