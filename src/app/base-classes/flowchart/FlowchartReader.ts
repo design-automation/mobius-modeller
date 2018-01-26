@@ -15,13 +15,12 @@ export abstract class FlowchartReader{
 	    let edges: IEdge[] = data["_edges"];
 
 	    // add nodes
-	    for(let index in nodes){
+	    for(let index=0; index < nodes.length; index++ ){
 	      let n_data = nodes[index];
 	      let node: IGraphNode = new GraphNode(n_data["name"], n_data["type"]);
 	      node.update(n_data);
-
+	      console.log("updated node");
 	      fc.addNode(node);
-
 	    }  
 
 	    // add edges
@@ -39,6 +38,7 @@ export abstract class FlowchartReader{
 
 	    	}
 	    }
+
 
 	    return fc;
 	}

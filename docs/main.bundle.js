@@ -1166,10 +1166,11 @@ class FlowchartReader {
         let nodes = data["_nodes"];
         let edges = data["_edges"];
         // add nodes
-        for (let index in nodes) {
+        for (let index = 0; index < nodes.length; index++) {
             let n_data = nodes[index];
             let node = new __WEBPACK_IMPORTED_MODULE_1__node_NodeModule__["a" /* GraphNode */](n_data["name"], n_data["type"]);
             node.update(n_data);
+            console.log("updated node");
             fc.addNode(node);
         }
         // add edges
