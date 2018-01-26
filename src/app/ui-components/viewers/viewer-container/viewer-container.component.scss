@@ -51,6 +51,10 @@
 		flex-grow:1!important;
 		flex-shrink: 0!important;
 	}
+
+	.mat-button-toggle-checked{
+		background-color: $color3 !important;
+	}
 }
 
 .viewer-toggle-btn:hover{

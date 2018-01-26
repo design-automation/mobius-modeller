@@ -373,18 +373,16 @@ export class Flowchart implements IFlowchart{
 			let outputPort = node.getOutputByIndex(edge.output_address[1]);
 			let inputPort = inputNode.getInputByIndex(edge.input_address[1]);
 
-			inputPort.setComputedValue( outputPort.getValue() );
 
 			let outVal = outputPort.getValue();
-			if(outVal.constructor.name == "Model"){
-				console.log("original model: ", outVal);
-				let modelData: gs.IModelData = outVal.toJSON();
-        		let model = new gs.Model(modelData);
-        		model["_kernel"]._objs = JSON.parse(JSON.stringify(outVal["_kernel"]._objs));
-        		model["_kernel"]._points = JSON.parse(JSON.stringify(outVal["_kernel"]._points));
-				console.log("new model: ", model);
-
-				outputPort.setComputedValue( model );
+			if(outVal && outVal.constructor.name == "Model"){
+				let modelData: string = outVal.toJSON();
+				let model = new gs.Model(JSON.parse(modelData));
+				// todo: change in kernel
+        		//model["_kernel"]._objs = JSON.parse(JSON.stringify(outVal["_kernel"]._objs));
+        		//model["_kernel"]._points = JSON.parse(JSON.stringify(outVal["_kernel"]._points));
+				// console.log( JSON.stringify(model["_kernel"]["_objs"]) );
+				inputPort.setComputedValue( model );
 			}
 			
 

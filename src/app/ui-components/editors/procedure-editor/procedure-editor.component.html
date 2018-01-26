@@ -10,7 +10,9 @@
 						</mat-panel-description>
 					</mat-expansion-panel-header>
 
-
+					
+					<!-- <button (click)="showProd=!showProd">Procedure</button>
+					<div *ngIf='showProd'> -->
 					<div class="tree">
 						<datalist id="variable-suggestions" >
 						    <option *ngFor='let v of _variableList' value="{{v}}"></option>
@@ -151,8 +153,10 @@
 						    			</div>
 								  </ng-template>
 						</tree-root> 
-						
-					</div>
+					</div>	
+					<!-- </div>	 -->					
+
+					
 		</mat-expansion-panel>
 	</mat-accordion>
 </div>

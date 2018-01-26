@@ -49,14 +49,14 @@ export class ProcedureEditorComponent extends Viewer implements OnInit{
 		if(message == "procedure"){
 			this.tree.treeModel.update();
 
-			let id: number = this.flowchartService.getSelectedProcedure()["id"];
-			if(id){
-				let n = this.tree.treeModel.getNodeById(id);
-			 	n.expand();
-			 	if(n.parent){
-			 		n.parent.expand();
-			 	}
-			}
+			// let id: number = this.flowchartService.getSelectedProcedure()["id"];
+			// if(id){
+			// 	let n = this.tree.treeModel.getNodeById(id);
+			//  	n.expand();
+			//  	if(n.parent){
+			//  		n.parent.expand();
+			//  	}
+			// }
 
 			this._variableList = this._node.getVariableList();
 			
