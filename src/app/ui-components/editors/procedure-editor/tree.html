@@ -1,19 +1,4 @@
-<div class="viewer">
-	<mat-accordion>
-		<mat-expansion-panel [expanded]="true">
-					<mat-expansion-panel-header>
-						<mat-panel-title>
-						  Procedure ({{_procedureArr.length}})
-						</mat-panel-title>
-						<mat-panel-description>
-						  <!-- This is a summary of the content -->
-						</mat-panel-description>
-					</mat-expansion-panel-header>
-
-					
-					<!-- <button (click)="showProd=!showProd">Procedure</button>
-					<div *ngIf='showProd'> -->
-					<div class="tree">
+<div class="tree">
 						<datalist id="variable-suggestions" >
 						    <option *ngFor='let v of _variableList' value="{{v}}"></option>
 						</datalist>
@@ -153,10 +138,5 @@
 						    			</div>
 								  </ng-template>
 						</tree-root> 
-					</div>	
-					<!-- </div>	 -->					
-
-					
-		</mat-expansion-panel>
-	</mat-accordion>
-</div>
+						
+					</div>

@@ -439,12 +439,14 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
   }
 
   addgrid(){
+    console.log("in add grid function")
     var max=8;
     var center=new THREE.Vector3(0,0,0);
     var radius:number=0
     for(var i=0;i<this.scene.children.length;i++){
       if(this.scene.children[i].type==="Scene"){
         for(var j=0;j<this.scene.children[i].children.length;j++){
+
           if(this.scene.children[i].children[j]["geometry"].boundingSphere.radius>radius){
             center=this.scene.children[i].children[j]["geometry"].boundingSphere.center;
             radius=this.scene.children[i].children[j]["geometry"].boundingSphere.radius;
@@ -454,9 +456,9 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
           
         }
       }
-      if(this.scene.children[i].type==="GridHelper") {
+      if(this.scene.children[i].name==="GridHelper") {
             this.scene.remove(this.scene.children[i]);
-            j=j-1;
+            i=i-1;
       }
     }
     if(this.dataService.grid){
