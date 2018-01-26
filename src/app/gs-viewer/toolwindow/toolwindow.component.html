@@ -1,14 +1,20 @@
 <div id="toolwindow">
   <div id="toolbar">
-    <button id="point" [class.visible]="Visible === 'Points'" (click)="point(Visible)"><i class="fa fa-dot-circle-o"></i></button>
-    <button id="vertice" [class.visible]="Visible === 'Vertices'" (click)="vertice(Visible)">V</button>
-    <button id="edge" [class.visible]="Visible === 'Edges'" (click)="edge(Visible)">E</button>
-    <button id="wire" [class.visible]="Visible === 'Wires'" (click)="wire(Visible)">W</button>
-    <button id="face" [class.visible]="Visible === 'Faces'" (click)="face(Visible)">F</button>
-    <button id="object" [class.visible]="Visible === 'Objs'" (click)="object(Visible)"><i class="fa fa-map"></i></button>
-    <input id="selected" type="checkbox" (click)="changeselected()">
-    <label id="selectedname" value="selected">Show selected only</label>
-    <div id="select">
+    <div class="sec1">
+      <button id="point" [class.visible]="Visible === 'Points'" (click)="point(Visible)"><i class="fa fa-dot-circle-o"></i></button>
+      <button id="vertice" [class.visible]="Visible === 'Vertices'" (click)="vertice(Visible)">V</button>
+      <button id="edge" [class.visible]="Visible === 'Edges'" (click)="edge(Visible)">E</button>
+      <button id="wire" [class.visible]="Visible === 'Wires'" (click)="wire(Visible)">W</button>
+      <button id="face" [class.visible]="Visible === 'Faces'" (click)="face(Visible)">F</button>
+      <button id="object" [class.visible]="Visible === 'Objs'" (click)="object(Visible)"><i class="fa fa-map"></i></button>
+    </div>
+    
+    <div class="sec2">
+      <input id="selected" type="checkbox" (click)="changeselected()">
+      <label id="selectedname" value="selected">Show selected only</label>
+    </div>
+
+    <div class="sec3" id="select">
       <button id="vertice" [class.selectvisible]="SelectVisible === 'Vertices'" (click)="verticeselect(SelectVisible)">V</button>
       <button id="edge" [class.selectvisible]="SelectVisible === 'Edges'" (click)="edgeselect(SelectVisible)">E</button>
       <button id="wire" [class.selectvisible]="SelectVisible === 'Wires'" (click)="wireselect(SelectVisible)">W</button>

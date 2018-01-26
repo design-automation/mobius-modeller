@@ -1,4 +1,5 @@
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css");
+@import '~scss/globals';
 
 @font-face{
   font-family: "FontAwesome";
@@ -201,3 +202,5 @@ a { text-decoration: none; color: #fff; text-transform: uppercase; }
     border-bottom: 30px solid transparent;
 
 }
+
+
