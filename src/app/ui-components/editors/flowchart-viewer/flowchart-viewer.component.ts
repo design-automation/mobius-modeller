@@ -104,6 +104,7 @@ export class FlowchartViewerComponent extends Viewer{
   }
 
   scale($event): void{
+    console.log("scale");
     // let scaleFactor: number = 0.1;
     // let value: number = this.zoom  + (Math.sign($event.wheelDelta))*scaleFactor;
     
