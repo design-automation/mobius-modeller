@@ -453,11 +453,11 @@ export class FlowchartViewerComponent extends Viewer{
 
     if(type == "pi"){
       x = node_pos[0];
-      y = node_pos[1] + this.zoom*(port_pos_y + port_size/2);
+      y = node_pos[1] + (port_pos_y + port_size/2);
     } 
     else if(type == "po"){
-      x = node_pos[0] + this.zoom*node_width;
-      y = node_pos[1] + this.zoom*(port_pos_y + port_size/2);
+      x = node_pos[0] + node_width;
+      y = node_pos[1] + (port_pos_y + port_size/2);
     }
     else{
       throw Error("Unknown port type");
@@ -465,7 +465,6 @@ export class FlowchartViewerComponent extends Viewer{
 
     return {x: x, y: y};
   }
-
 
 
   getZoomStyle(): string{

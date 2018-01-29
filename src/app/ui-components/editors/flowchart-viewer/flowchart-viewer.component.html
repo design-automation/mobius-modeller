@@ -50,7 +50,7 @@
 				
 		
 				<split-area order="2" [size]="70"
-					style="overflow: hidden;">
+					style="overflow: hidden; position: relative;">
 
 						<!-- zoom -->
 				    	<div class="info-container" 
@@ -65,17 +65,17 @@
 							class="graph-container" 
 							id="graph-edges">
 
-							<g class="edge" *ngFor="let edge of _edges" >
-								<path 
+								<g class="edge" *ngFor="let edge of _edges">
+									<path 
 								  [attr.d]="edge.path" 
 								  stroke="#7469FF"
 								  stroke-width="3" fill="none" />
-							</g>
+								</g>
 															
-							<!-- dragging path -->
-							<g id="temporary-edge" [class.hidden]="!_linkMode" >
+								<!-- dragging path -->
+								<g id="temporary-edge" [class.hidden]="!_linkMode" >
 								<path 
-								[attr.d]="edgeString(mouse_pos.start, mouse_pos.current)" 
+									[attr.d]="edgeString(mouse_pos.start, mouse_pos.current)" 
 								 	stroke="#7469FF"
 								 	stroke-width="5" 
 								 	fill="none" 
@@ -83,24 +83,25 @@
 									<circle id="pointC" [attr.cx]="mouse_pos.current.x" [attr.cy]="mouse_pos.current.y" r="5" />
 								</g>
 
+
 						</svg>
 
 						<!-- div container for the nodes -->
 						<div class="graph-container" 
-							id="graph-nodes" ondragover="return false" 
+						 	ondragover="return false" 
+							id="graph-nodes"
 							(wheel)="scale($event)"
 							(mousedown)="pan($event)">
 							
 							<!-- all nodes -->
-							<div class="node-container">
+							<div class="node-container content-wrapper">
 
 								<!-- one node -->
 								<div  class="node" 
 										*ngFor="let node of _nodes; let node_index = index" 
 										id="n{{node_index}}"
 										[style.left.px]="node.position[0]" 
-										[style.top.px]="node.position[1]" 
-										[style.transform]="getZoomStyle()">
+										[style.top.px]="node.position[1]">
 
 									<div class="btn-container" *ngIf="node_index == _selectedNodeIndex" >
 										<!-- <div class="btn-group node-btns">
@@ -205,6 +206,8 @@
 							
 							</div>
 						</div>
+
+
 				</split-area>
 
 		</split>

@@ -65,6 +65,13 @@ split-area{
 
 	}
 
+	.content-wrapper{
+		position: relative;
+		height: 100%;
+		width: 100%;
+		transform-origin: top left;
+	}
+
 	.graph-container{
 		position: absolute; 
 		//top: 0px; 
@@ -73,10 +80,12 @@ split-area{
 		width: 100%;
 		//box-sizing: content-box !important;
 		//overflow: auto !important;
+		
+		transform-origin: top left;
 
 		#graph-edges{
 			background-color: transparent;
-			z-index: 1;
+			z-index: 1000;
 
 			#temporary-edge{
 				.hidden{
@@ -88,7 +97,7 @@ split-area{
 		#graph-nodes{
 			background-color: transparent;
 			overflow: hidden;
-			z-index: 1;
+			z-index: 1000;
 		}
 	}
 
