@@ -103,15 +103,18 @@ export class FlowchartViewerComponent extends Viewer{
 
   }
 
+  //
+  //  node class is assigned a zoom value based on this value
+  //  this position of this node is absolute coordinates
+  //
   scale($event): void{
-    console.log("scale");
-    // let scaleFactor: number = 0.1;
-    // let value: number = this.zoom  + (Math.sign($event.wheelDelta))*scaleFactor;
+    let scaleFactor: number = 0.1;
+    let value: number = this.zoom  + (Math.sign($event.wheelDelta))*scaleFactor;
     
-    // if(value > 0.5 && value < 1.5){
-    //   this.zoom = Number( (value).toPrecision(2) );
-    //   this.updateEdges();
-    // }
+    if(value > 0.5 && value < 1.5){
+      this.zoom = Number( (value).toPrecision(2) );
+      this.updateEdges();
+    }
 
   }
 
@@ -443,17 +446,24 @@ export class FlowchartViewerComponent extends Viewer{
 
     if(type == "pi"){
       x = node_pos[0];
-      y = node_pos[1] + port_pos_y + port_size/2;
+      y = node_pos[1] + this.zoom*(port_pos_y + port_size/2);
     } 
     else if(type == "po"){
-      x = node_pos[0] + node_width;
-      y = node_pos[1] + port_pos_y + port_size/2;
+      x = node_pos[0] + this.zoom*node_width;
+      y = node_pos[1] + this.zoom*(port_pos_y + port_size/2);
     }
     else{
       throw Error("Unknown port type");
     }
 
-    return {x: x, y: y}
+    return {x: x, y: y};
+  }
+
+
+
+  getZoomStyle(): string{
+    let value: string = "scale(" + this.zoom + ")";
+    return value;
   }
 
   //
@@ -461,9 +471,10 @@ export class FlowchartViewerComponent extends Viewer{
   //
   getEdgePath(edge: IEdge): string{
 
-    return this.edgeString( 
-          this.getPortPosition(edge.output_address[0], edge.output_address[1], "po"), 
-          this.getPortPosition(edge.input_address[0], edge.input_address[1], "pi") );
+    let output_position =  this.getPortPosition(edge.output_address[0], edge.output_address[1], "po");
+    let input_position = this.getPortPosition(edge.input_address[0], edge.input_address[1], "pi");
+    
+    return this.edgeString( output_position, input_position );
   }
 
 

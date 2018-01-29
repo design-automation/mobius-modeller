@@ -11,8 +11,7 @@
 		<!-- https://bertrandg.github.io/angular-split/#/documentation -->
 		<split  direction="horizontal" 
               [gutterSize]="7" 
-              [useTransition]="true" gutterColor=white
-              >
+              [useTransition]="true" gutterColor=white>
 
 				<split-area class="sidebar"
 					[size]="30"
@@ -50,21 +49,21 @@
 				</split-area>
 				
 		
-				<split-area order="2" [size]="70">
+				<split-area order="2" [size]="70"
+					style="overflow: hidden;">
 
 						<!-- zoom -->
 				    	<div class="info-container" 
 				    		style="position: absolute; 
-				    		top: 30px; 
-				    		right: 30px">
-				    		Zoom: {{zoom}}
+				    		top: 15px; 
+				    		right: 15px">
+				    		<b>ZOOM</b>: {{zoom}}
 				    	</div>
 
 				        <!-- svg canvas to draw the edges -->
 						<svg xmlns="http://www.w3.org/2000/svg" 
 							class="graph-container" 
-							id="graph-edges" 
-							[style.zoom]="zoom">
+							id="graph-edges">
 
 							<g class="edge" *ngFor="let edge of _edges" >
 								<path 
@@ -88,16 +87,19 @@
 
 						<!-- div container for the nodes -->
 						<div class="graph-container" 
-							id="graph-nodes" ondragover="return false" [style.zoom]="zoom" >
+							id="graph-nodes" ondragover="return false" 
+							(wheel)="scale($event)">
 							
 							<!-- all nodes -->
 							<div class="node-container">
 
 								<!-- one node -->
-								<div  class="node"
+								<div  class="node" 
 										*ngFor="let node of _nodes; let node_index = index" 
+										id="n{{node_index}}"
 										[style.left.px]="node.position[0]" 
-										[style.top.px]="node.position[1]" >
+										[style.top.px]="node.position[1]" 
+										[style.transform]="getZoomStyle()">
 
 									<div class="btn-container" *ngIf="node_index == _selectedNodeIndex" >
 										<!-- <div class="btn-group node-btns">

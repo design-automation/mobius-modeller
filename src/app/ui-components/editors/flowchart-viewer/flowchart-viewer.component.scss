@@ -97,6 +97,7 @@ split-area{
 	
 		.node{
 			position: absolute;
+			transform-origin: top left;
 			z-index: 3;
 			margin: 0px;
 			color: $color1;
