@@ -88,7 +88,8 @@
 						<!-- div container for the nodes -->
 						<div class="graph-container" 
 							id="graph-nodes" ondragover="return false" 
-							(wheel)="scale($event)">
+							(wheel)="scale($event)"
+							(mousedown)="pan($event)">
 							
 							<!-- all nodes -->
 							<div class="node-container">

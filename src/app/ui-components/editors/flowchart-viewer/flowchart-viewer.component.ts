@@ -104,6 +104,13 @@ export class FlowchartViewerComponent extends Viewer{
   }
 
   //
+  //
+  //
+  pan($event): void{
+    console.log("mousedown", $event);
+  }
+
+  //
   //  node class is assigned a zoom value based on this value
   //  this position of this node is absolute coordinates
   //
