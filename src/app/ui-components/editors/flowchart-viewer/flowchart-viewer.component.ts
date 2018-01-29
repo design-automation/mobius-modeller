@@ -288,8 +288,8 @@ export class FlowchartViewerComponent extends Viewer{
     this.pan_mode = false;
     let relX: number = $event.pageX - this.dragStart.x; 
     let relY: number = $event.pageY - this.dragStart.y;
-    node.position[0] += relX; 
-    node.position[1] += relY; 
+    node.position[0] += relX/this.zoom; 
+    node.position[1] += relY/this.zoom; 
     
     this.dragStart = {x: $event.pageX, y: $event.pageY};
 
@@ -369,8 +369,8 @@ export class FlowchartViewerComponent extends Viewer{
       let relX: number = $event.clientX - this.dragStart.x; 
       let relY: number = $event.clientY - this.dragStart.y;
 
-      this.mouse_pos.current.x += relX; 
-      this.mouse_pos.current.y += relY; 
+      this.mouse_pos.current.x += relX/this.zoom; 
+      this.mouse_pos.current.y += relY/this.zoom; 
 
       this.dragStart = {x: $event.clientX, y: $event.clientY}; 
   }

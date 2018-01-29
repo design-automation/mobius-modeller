@@ -60,6 +60,8 @@
 				    		<b>ZOOM</b>: {{zoom}}
 				    	</div>
 
+				    	<div class="content-wrapper" [style.transform]="getZoomStyle()">
+
 				        <!-- svg canvas to draw the edges -->
 						<svg xmlns="http://www.w3.org/2000/svg" 
 							class="graph-container" 
@@ -206,7 +208,8 @@
 							
 							</div>
 						</div>
-
+	
+						</div>
 
 				</split-area>
 
