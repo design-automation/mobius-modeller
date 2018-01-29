@@ -54,6 +54,7 @@ export class HelpViewerComponent implements OnInit {
 
             let mo = this._helpMods[m];
             let mname = this.getModName(mo.name);
+            console.log(mname, mo);
 
             if(mname.toLowerCase() == fnObj.module.toLowerCase()){
               for(let f=0; f < mo.children.length; f++){
