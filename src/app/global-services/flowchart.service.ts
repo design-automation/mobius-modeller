@@ -224,7 +224,7 @@ export class FlowchartService {
               moduleMap[name] = modClass;
           }
           else{
-              console.warn(moduleMap[name] + " module not compatible. Please check version / author");
+              console.warn(name + " module not compatible. Please check version / author");
           }
     })
 

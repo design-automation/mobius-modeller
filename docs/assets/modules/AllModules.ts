@@ -3,6 +3,7 @@ import {ModuleUtils, IModule} from "../../app/base-classes/code/CodeModule";
 import * as GSS from "gs-modelling";
 
 //// version for dev
+/// Be careful - name for module and variable name should be the same
 let Attrib: IModule = ModuleUtils.createModule("Attrib", GSS.attrib);
 let Circle: IModule = ModuleUtils.createModule("Circle", GSS.circle);
 let Ellipse: IModule = ModuleUtils.createModule("Ellipse", GSS.ellipse);
