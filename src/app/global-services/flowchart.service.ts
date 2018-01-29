@@ -261,7 +261,7 @@ export class FlowchartService {
                       [
                          {_name: "Calc", _version: 0.1, _author: "Patrick"},
                          {_name: "Circle", _version: 0.1, _author: "Patrick"},
-                         {_name: "ISect", _version: 0.1, _author: "Patrick"},
+                         {_name: "Intersect", _version: 0.1, _author: "Patrick"},
                          {_name: "List", _version: 0.1, _author: "Patrick"},
                          {_name: "Math", _version: 0.1, _author: "Patrick"},
                          {_name: "Model", _version: 0.1, _author: "Patrick"},

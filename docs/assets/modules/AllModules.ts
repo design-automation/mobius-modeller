@@ -3,12 +3,11 @@ import {ModuleUtils, IModule} from "../../app/base-classes/code/CodeModule";
 import * as GSS from "gs-modelling";
 
 //// version for dev
-/// Be careful - name for module and variable name should be the same
 let Attrib: IModule = ModuleUtils.createModule("Attrib", GSS.attrib);
 let Circle: IModule = ModuleUtils.createModule("Circle", GSS.circle);
 let Ellipse: IModule = ModuleUtils.createModule("Ellipse", GSS.ellipse);
 let Examples: IModule = ModuleUtils.createModule("Examples", GSS.examples);
-let ISect: IModule = ModuleUtils.createModule("ISect", GSS.isect);
+let Intersect: IModule = ModuleUtils.createModule("Intersect", GSS.isect);
 let Model: IModule = ModuleUtils.createModule("Model", GSS.model);
 let Obj: IModule = ModuleUtils.createModule("Obj", GSS.object);
 let Plane: IModule = ModuleUtils.createModule("Plane", GSS.plane);
@@ -24,4 +23,4 @@ let Math: IModule = ModuleUtils.createModule("Math", GSS.math);
 let String: IModule = ModuleUtils.createModule("String", GSS.string);
 let Calc: IModule = ModuleUtils.createModule("Calc", GSS.calc);
 
-export {Calc,List, Math, String, Circle, Model, Attrib, Examples, ISect, Obj, Plane, Pline, PMesh, Point, Query, Ray, Split, Topo};
+export {Calc,List, Math, String, Circle, Model, Attrib, Examples, Intersect, Obj, Plane, Pline, PMesh, Point, Query, Ray, Split, Topo};
