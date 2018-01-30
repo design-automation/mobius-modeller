@@ -36,7 +36,6 @@ export class FlowchartViewerComponent extends Viewer{
 
   showLibrary: boolean = false;
 
-
   showDialog: {status: boolean, position: number[]} = {status: false, position: [0,0]};
 
   constructor(injector: Injector, 
@@ -107,7 +106,7 @@ export class FlowchartViewerComponent extends Viewer{
   //
   //
   pan($event): void{
-    console.log("mousedown", $event);
+    //console.log("mousedown", $event);
   }
 
   //
@@ -480,6 +479,9 @@ export class FlowchartViewerComponent extends Viewer{
     let output_position =  this.getPortPosition(edge.output_address[0], edge.output_address[1], "po");
     let input_position = this.getPortPosition(edge.input_address[0], edge.input_address[1], "pi");
     
+    edge["inputPosition"] = input_position;
+    edge["outputPosition"] = output_position;
+
     return this.edgeString( output_position, input_position );
   }
 

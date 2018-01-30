@@ -43,6 +43,7 @@ import { GSViewer } from './gs-viewer/gs-viewer.module';
 import { ConsoleService } from './global-services/console.service';
 
 import { FileLoadDialogComponent } from './ui-components/dialogs/file-load-dialog.component';
+import { GraphEdgeComponent } from './ui-components/graph/graph-edge/graph-edge.component';
 
 @NgModule({
   declarations: [
@@ -69,7 +70,8 @@ import { FileLoadDialogComponent } from './ui-components/dialogs/file-load-dialo
     MobiusAbout, 
     HelpFundamentals,
     HelpModel,
-    FileLoadDialogComponent
+    FileLoadDialogComponent,
+    GraphEdgeComponent
   ],
   entryComponents: [
     ModuleboxComponent,
