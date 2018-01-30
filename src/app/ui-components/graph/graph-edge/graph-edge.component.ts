@@ -23,11 +23,11 @@ export class GraphEdgeComponent implements OnInit {
   }
 
   getWidth(): number{
-  	return Math.abs(this.edge.inputPosition.x - this.edge.outputPosition.x);//this.edge.outputPosition[0];
+  	return Math.max(10, Math.abs(this.edge.inputPosition.x - this.edge.outputPosition.x));//this.edge.outputPosition[0];
   }
 
   getHeight(): number{
-    return Math.abs(this.edge.inputPosition.y - this.edge.outputPosition.y);
+    return Math.max(10, Math.abs(this.edge.inputPosition.y - this.edge.outputPosition.y));
   }
 
   getPosition(edge): string{
@@ -112,7 +112,7 @@ export class GraphEdgeComponent implements OnInit {
             // fn(x) = (0.3*2/Math.PI)*tanh(x) + (1/ln(x + e^100))
             //let x: number = this.getWidth();
             //let distance_factor: number = (0.3*2/Math.PI)*Math.tanh(x) + (1/Math.log(x + Math.exp(100)));
-            let distance_factor: number = 0.25;
+            let distance_factor: number = 0.20;//canvas.width < canvas.height ? (canvas.width/canvas.height) : (canvas.height/canvas.width);
 
             var distance = distance_factor*Math.round(Math.sqrt(Math.pow((x3-x0),2)+Math.pow((y3-y0),2)));
             var pSlope =(x0-x3)/(y3-y0);
@@ -143,8 +143,6 @@ export class GraphEdgeComponent implements OnInit {
   ngOnInit() {
         let canvas: HTMLCanvasElement = this.canvas.nativeElement;
         let context  = canvas.getContext('2d');
-
-        
 
         this.drawEdge();
   }

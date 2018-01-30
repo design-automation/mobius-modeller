@@ -63,16 +63,16 @@
 				    	<div class="content-wrapper" [style.transform]="getZoomStyle()">
 
 				        <!-- svg canvas to draw the edges -->
-						<!-- <svg xmlns="http://www.w3.org/2000/svg" 
+						<svg xmlns="http://www.w3.org/2000/svg" 
 							class="graph-container" 
 							id="graph-edges">
 						
-								<g class="edge" *ngFor="let edge of _edges">
+								<!-- <g class="edge" *ngFor="let edge of _edges">
 									<path 
 								  [attr.d]="edge.path" 
 								  stroke="#7469FF"
 								  stroke-width="3" fill="none" />
-								</g>
+								</g> -->
 															
 								<g id="temporary-edge" [class.hidden]="!_linkMode" >
 								<path 
@@ -84,8 +84,7 @@
 									<circle id="pointC" [attr.cx]="mouse_pos.current.x" [attr.cy]="mouse_pos.current.y" r="5" />
 								</g>
 						
-						
-						</svg> -->
+						</svg>
 
 						<!-- <div class="graph-container" id="graph-edges">
 							
