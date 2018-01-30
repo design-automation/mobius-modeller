@@ -269,9 +269,13 @@ export class FlowchartService {
                          {_name: "Plane", _version: 0.1, _author: "Patrick"},
                          {_name: "Point", _version: 0.1, _author: "Patrick"},
                          {_name: "Split", _version: 0.1, _author: "Patrick"},
-                         {_name: "String", _version: 0.1, _author: "Patrick"}
-                         /*{_name: "Pline", _version: 0.1, _author: "Patrick"},
-                         {_name: "PMesh", _version: 0.1, _author: "Patrick"},*/
+                         {_name: "String", _version: 0.1, _author: "Patrick"},
+                         {_name: "Pline", _version: 0.1, _author: "Patrick"},
+                         {_name: "PMesh", _version: 0.1, _author: "Patrick"},
+                         {_name: "Attrib", _version: 0.1, _author: "Patrick"},
+                         {_name: "Query", _version: 0.1, _author: "Patrick"},
+                         {_name: "Ray", _version: 0.1, _author: "Patrick"},
+                         {_name: "Topo", _version: 0.1, _author: "Patrick"}
                       ]
                     );
 
