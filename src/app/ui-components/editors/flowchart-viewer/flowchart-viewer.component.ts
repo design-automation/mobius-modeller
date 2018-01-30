@@ -287,9 +287,15 @@ export class FlowchartViewerComponent extends Viewer{
     this.pan_mode = false;
     let relX: number = $event.pageX - this.dragStart.x; 
     let relY: number = $event.pageY - this.dragStart.y;
+
+    // if node is going beyond canvas, do nothing
+    if( (node.position[0] + relX/this.zoom) < 0 || (node.position[1] + relY/this.zoom) < 0){
+      return;
+    }
+    
     node.position[0] += relX/this.zoom; 
     node.position[1] += relY/this.zoom; 
-    
+
     this.dragStart = {x: $event.pageX, y: $event.pageY};
 
     if(relX && relY){
@@ -311,6 +317,11 @@ export class FlowchartViewerComponent extends Viewer{
     this.pan_mode = false;
     let relX: number = $event.pageX - this.dragStart.x; 
     let relY: number = $event.pageY - this.dragStart.y;
+
+    if( (node.position[0] + relX/this.zoom) < 0 || (node.position[1] + relY/this.zoom) < 0){
+      return;
+    }
+    
     node.position[0] += relX; 
     node.position[1] += relY; 
 
