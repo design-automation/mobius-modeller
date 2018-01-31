@@ -10,11 +10,13 @@ export class GraphEdgeComponent implements OnInit {
   @Input() edge;
   @ViewChild('canvas') canvas: ElementRef;
 
+  _buffer: number = 10;
+
   constructor() { }
 
   getTop(): number{
     // return smallest y value
-    return Math.min(this.edge.outputPosition.y, this.edge.inputPosition.y);
+    return Math.min(this.edge.outputPosition.y, this.edge.inputPosition.y) - this._buffer;
   }	
 
   getLeft(): number{
@@ -27,7 +29,7 @@ export class GraphEdgeComponent implements OnInit {
   }
 
   getHeight(): number{
-    return Math.max(10, Math.abs(this.edge.inputPosition.y - this.edge.outputPosition.y));
+    return 2*this._buffer + Math.max(10, Math.abs(this.edge.inputPosition.y - this.edge.outputPosition.y));
   }
 
   getPosition(edge): string{
@@ -63,8 +65,8 @@ export class GraphEdgeComponent implements OnInit {
             //    |__ep
             //
 
-            startPoint = [0, 0];
-            endPoint = [ this.getWidth(), this.getHeight()  ];
+            startPoint = [ 0, this._buffer ];
+            endPoint = [ this.getWidth(), this.getHeight() - this._buffer ];
         }
         else{
             //    __ep
@@ -73,13 +75,13 @@ export class GraphEdgeComponent implements OnInit {
             //    sp---
             //    
 
-            startPoint = [0, this.getHeight() ];
-            endPoint = [this.getWidth(), 0];
+            startPoint = [0, this.getHeight() - this._buffer ];
+            endPoint = [this.getWidth(), this._buffer ];
             
         }
 
         // move downwards/upwards in straight line
-        let translate: number = 3; 
+        let translate: number = 10; 
         let shifted_startPoint: number[] = [ startPoint[0]  + translate, startPoint[1] ];
         let shifted_endPoint: number[] = [ endPoint[0]  - translate, endPoint[1] ];
 
@@ -98,8 +100,8 @@ export class GraphEdgeComponent implements OnInit {
             var x3 =  shifted_endPoint[0];
             var y3 = endPoint[1] ;
         
-            let seg1 = 0.60; 
-            let seg2 = 0.40;
+            let seg1 = 0.75; 
+            let seg2 = 0.25;
 
             var mx1=seg1*x0+seg2*x3;
             var mx2=seg2*x0+seg1*x3;
@@ -112,7 +114,7 @@ export class GraphEdgeComponent implements OnInit {
             // fn(x) = (0.3*2/Math.PI)*tanh(x) + (1/ln(x + e^100))
             //let x: number = this.getWidth();
             //let distance_factor: number = (0.3*2/Math.PI)*Math.tanh(x) + (1/Math.log(x + Math.exp(100)));
-            let distance_factor: number = 0.20;//canvas.width < canvas.height ? (canvas.width/canvas.height) : (canvas.height/canvas.width);
+            let distance_factor: number = 0.25;//canvas.width < canvas.height ? (canvas.width/canvas.height) : (canvas.height/canvas.width);
 
             var distance = distance_factor*Math.round(Math.sqrt(Math.pow((x3-x0),2)+Math.pow((y3-y0),2)));
             var pSlope =(x0-x3)/(y3-y0);
