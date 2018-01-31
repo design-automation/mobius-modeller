@@ -105,7 +105,7 @@ AppComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
         selector: 'app-root',
         template: __webpack_require__("../../../../../src/app/app.component.html"),
-        styles: [__webpack_require__("../../../../../src/app/app.component.scss")]
+        styles: [__webpack_require__("../../../../../src/app/app.component.scss")],
     }),
     __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__global_services_layout_service__["a" /* LayoutService */]])
 ], AppComponent);
@@ -741,6 +741,7 @@ class CodeGeneratorJS extends __WEBPACK_IMPORTED_MODULE_0__CodeGenerator__["a" /
             node.hasError();
             let prodWithError = prodArr.pop();
             console.log("Procedure with Id: ", prodWithError);
+            console.log(prodArr);
             let markError = function (prod, id) {
                 if (prod["id"] == prodWithError) {
                     prod.setError(true);
@@ -2314,6 +2315,7 @@ CustomMaterialModule = __decorate([
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return EConsoleMessageType; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ConsoleService; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm2015/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_Subject__ = __webpack_require__("../../../../rxjs/_esm2015/Subject.js");
@@ -2328,6 +2330,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
+var EConsoleMessageType;
+(function (EConsoleMessageType) {
+    EConsoleMessageType["Print"] = "print";
+    EConsoleMessageType["Error"] = "error";
+    EConsoleMessageType["General"] = "general";
+})(EConsoleMessageType || (EConsoleMessageType = {}));
 let ConsoleService = class ConsoleService {
     constructor() {
         // 
@@ -2345,10 +2353,11 @@ let ConsoleService = class ConsoleService {
     getMessage() {
         return this.subject.asObservable();
     }
-    addMessage(message) {
+    addMessage(message, type = EConsoleMessageType.General) {
         let obj = {};
         obj["time"] = new Date();
         obj["message"] = message;
+        obj["type"] = type;
         this._messages.push(obj);
         this.sendMessage();
     }
@@ -2528,7 +2537,7 @@ let FlowchartService = class FlowchartService {
         }
         catch (err) {
             this.newFile();
-            this.consoleService.addMessage("Error loading file: " + err);
+            this.consoleService.addMessage("Error loading file: " + err, __WEBPACK_IMPORTED_MODULE_8__console_service__["b" /* EConsoleMessageType */].Error);
             this.layoutService.showConsole();
         }
     }
@@ -2666,8 +2675,8 @@ let FlowchartService = class FlowchartService {
             }
             catch (ex) {
                 this.consoleService.addMessage("Oops. Something went wrong while saving this node.\
-                                        Post the error message to the dev team on our Slack channel.");
-                this.consoleService.addMessage(ex);
+                                        Post the error message to the dev team on our Slack channel.", __WEBPACK_IMPORTED_MODULE_8__console_service__["b" /* EConsoleMessageType */].Error);
+                this.consoleService.addMessage(ex, __WEBPACK_IMPORTED_MODULE_8__console_service__["b" /* EConsoleMessageType */].Error);
                 this.layoutService.showConsole();
             }
         }
@@ -2678,7 +2687,7 @@ let FlowchartService = class FlowchartService {
         let property = "MOBIUS_NODES";
         let storageString = myStorage.removeItem(property);
         // print message to console
-        this.consoleService.addMessage("Node Library was cleared");
+        this.consoleService.addMessage("Node Library was cleared.");
         this.checkSavedNodes();
         this.update();
     }
@@ -2854,8 +2863,7 @@ let FlowchartService = class FlowchartService {
     //
     printConsole(consoleStrings) {
         if (consoleStrings.length > 0) {
-            let consoleHTML = "<div>\
-          <div class='console-heading'>Console Messages:</div>";
+            let consoleHTML = "<div class='console-heading'>Printed Values</div>";
             for (let i = 0; i < consoleStrings.length; i++) {
                 let split = consoleStrings[i].split(":");
                 consoleHTML += "<div class='console-line'>" +
@@ -2863,8 +2871,7 @@ let FlowchartService = class FlowchartService {
                     "<span class='var-value'>" + split[1] +
                     "</div>";
             }
-            consoleHTML += "</div>";
-            this.consoleService.addMessage(consoleHTML);
+            this.consoleService.addMessage(consoleHTML, __WEBPACK_IMPORTED_MODULE_8__console_service__["b" /* EConsoleMessageType */].Print);
         }
     }
     // 
@@ -2883,7 +2890,7 @@ let FlowchartService = class FlowchartService {
         catch (ex) {
             this.printConsole(consoleStrings);
             let errorMessage = "<div class='error'>" + ex + "</div>";
-            this.consoleService.addMessage(errorMessage);
+            this.consoleService.addMessage(errorMessage, __WEBPACK_IMPORTED_MODULE_8__console_service__["b" /* EConsoleMessageType */].Error);
             this.layoutService.showConsole();
         }
         this.update();
@@ -5386,7 +5393,7 @@ ViewerComponent = __decorate([
 /***/ "../../../../../src/app/ui-components/console/console.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\r\n\t<div class=\"btn-container\">\r\n\t\t<button mat-button (click)=\"clearConsole()\"><i class=\"fa fa-eraser\"></i></button>\r\n\t</div>\r\n\t<div class = \"console-log\">\r\n\t\t<div class=\"message-container\" *ngFor=\"let msg of _messages;\">\r\n\t\t\t<span class=\"time\">{{msg.time | date:'mediumTime'}}</span>\r\n\t\t\t<div class=\"message\"\r\n\t\t\t\t[innerHTML]=\"msg.message\">\r\n\t\t\t</div>\r\n\t\t</div>\r\n\t</div>\r\n</div>\r\n\r\n"
+module.exports = "'<div class=\"console-container\" #scrollMe>\r\n\t<div class=\"btn-container\">\r\n\t\t<button mat-button (click)=\"clearConsole()\"><i class=\"fa fa-eraser\"></i></button>\r\n\t</div>\r\n\t<div class = \"console-log\">\r\n\t\t<div class=\"message-container\" *ngFor=\"let msg of _messages;\">\r\n\t\t\t<span class=\"time\">{{msg.time | date:'mediumTime'}}</span>\r\n\t\t\t<div class=\"message {{msg.type}}\"\r\n\t\t\t\t[innerHTML]=\"msg.message\">\r\n\t\t\t</div>\r\n\t\t</div>\r\n\t</div>\r\n</div>\r\n\r\n\r\n\r\n"
 
 /***/ }),
 
@@ -5398,7 +5405,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".reset {\n  margin: 0px;\n  padding: 0px; }\n\n.default {\n  font-size: 12px;\n  color: #8AA8C0;\n  line-height: 150px;\n  text-align: center; }\n\n.viewer {\n  /* \twidth: 100%; \r\noverflow: auto;\r\n\r\npadding: 0px;\r\nmargin: 0px;\r\n\r\n.header{\r\n\r\n\tdisplay: flex; \r\n\tflex-direction: row; \r\n\tjustify-content: space-between;\r\n\r\n\tposition: relative;\r\n\tfont-size: 14px; \r\n\tfont-weight: 600; \r\n\tline-height: $header-height;\r\n\ttext-transform: uppercase;\r\n\tletter-spacing: 1.5px;\r\n\theight: $header-height;\r\n\r\n\tcolor: #ADADAD;\r\n\r\n\t.btn-group{\r\n\t\theight: $header-height; \r\n\r\n\t\tbutton{\r\n\t\t\twidth: 0.9*$header-height; \r\n\t\t\theight: 0.9*$header-height; \r\n\t\t\tmargin: 0px;\r\n\t\t\tborder: 1px solid #B4B1B1;\r\n\t\t\tbox-shadow: none;\r\n\r\n\t\t\t&:focus{\r\n\t\t\t\t\r\n\t\t\t}\r\n\t\t}\r\n\t\t\r\n\t}\r\n\r\n}\r\n\r\n.container{\r\n}\r\n\r\nbutton{\r\n\t&:focus{\r\n\t\t\r\n\t}\r\n} */ }\n  .viewer .container {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    height: 100%; }\n    .viewer .container .sidebar {\n      z-index: 100; }\n    .viewer .container .view-container {\n      box-sizing: border-box;\n      height: 100%;\n      width: 100%;\n      padding-bottom: 30px;\n      overflow: auto; }\n\n.container {\n  position: relative;\n  height: 100%;\n  overflow-y: auto !important;\n  box-sizing: border-box !important;\n  padding: 15px;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-flow: column nowrap;\n          flex-flow: column nowrap; }\n  .container .message-container {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-flow: column wrap;\n            flex-flow: column wrap;\n    margin: 7.5px;\n    -webkit-box-pack: justify;\n        -ms-flex-pack: justify;\n            justify-content: space-between;\n    -webkit-box-flex: 0;\n        -ms-flex-positive: 0;\n            flex-grow: 0;\n    -ms-flex-negative: 0;\n        flex-shrink: 0;\n    padding: 0 5 0 0 !important;\n    border-bottom: 1px solid #8AA8C0;\n    font-family: 'Ubuntu Mono', monospace; }\n    .container .message-container .time {\n      min-width: 50%;\n      font-size: 10px;\n      white-space: nowrap;\n      color: grey !important; }\n    .container .message-container .message {\n      min-width: auto;\n      font-size: 12px;\n      color: #395D73 !important; }\n      .container .message-container .message .error {\n        color: red; }\n  .container button {\n    max-width: 30px;\n    height: 30px;\n    min-width: 30px;\n    padding: 0px !important;\n    border-radius: 50%;\n    border: 1px solid #395D73;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center; }\n    .container button .fa-eraser {\n      height: 15px;\n      font-size: 15px !important;\n      color: #395D73;\n      padding: 0;\n      display: -webkit-box;\n      display: -ms-flexbox;\n      display: flex;\n      -webkit-box-align: center;\n          -ms-flex-align: center;\n              align-items: center;\n      -webkit-box-pack: center;\n          -ms-flex-pack: center;\n              justify-content: center; }\n    .container button:hover {\n      background-color: #F1F1F1 !important; }\n      .container button:hover .fa-eraser {\n        color: #F07A79 !important; }\n\n.btn-container {\n  position: absolute;\n  right: 60px;\n  top: 15px; }\n  .btn-container button {\n    position: fixed; }\n", ""]);
+exports.push([module.i, ".reset {\n  margin: 0px;\n  padding: 0px; }\n\n.default {\n  font-size: 12px;\n  color: #8AA8C0;\n  line-height: 150px;\n  text-align: center; }\n\n.viewer {\n  /* \twidth: 100%; \r\noverflow: auto;\r\n\r\npadding: 0px;\r\nmargin: 0px;\r\n\r\n.header{\r\n\r\n\tdisplay: flex; \r\n\tflex-direction: row; \r\n\tjustify-content: space-between;\r\n\r\n\tposition: relative;\r\n\tfont-size: 14px; \r\n\tfont-weight: 600; \r\n\tline-height: $header-height;\r\n\ttext-transform: uppercase;\r\n\tletter-spacing: 1.5px;\r\n\theight: $header-height;\r\n\r\n\tcolor: #ADADAD;\r\n\r\n\t.btn-group{\r\n\t\theight: $header-height; \r\n\r\n\t\tbutton{\r\n\t\t\twidth: 0.9*$header-height; \r\n\t\t\theight: 0.9*$header-height; \r\n\t\t\tmargin: 0px;\r\n\t\t\tborder: 1px solid #B4B1B1;\r\n\t\t\tbox-shadow: none;\r\n\r\n\t\t\t&:focus{\r\n\t\t\t\t\r\n\t\t\t}\r\n\t\t}\r\n\t\t\r\n\t}\r\n\r\n}\r\n\r\n.container{\r\n}\r\n\r\nbutton{\r\n\t&:focus{\r\n\t\t\r\n\t}\r\n} */ }\n  .viewer .container, .viewer .console-container {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    height: 100%; }\n    .viewer .container .sidebar, .viewer .console-container .sidebar {\n      z-index: 100; }\n    .viewer .container .view-container, .viewer .console-container .view-container {\n      box-sizing: border-box;\n      height: 100%;\n      width: 100%;\n      padding-bottom: 30px;\n      overflow: auto; }\n\n.console-container {\n  position: relative;\n  height: 100%;\n  overflow-y: auto !important;\n  box-sizing: border-box !important;\n  padding: 15px;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-flow: column nowrap;\n          flex-flow: column nowrap; }\n  .console-container .message-container {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-flow: column wrap;\n            flex-flow: column wrap;\n    margin: 7.5px;\n    -webkit-box-pack: justify;\n        -ms-flex-pack: justify;\n            justify-content: space-between;\n    -webkit-box-flex: 0;\n        -ms-flex-positive: 0;\n            flex-grow: 0;\n    -ms-flex-negative: 0;\n        flex-shrink: 0;\n    padding: 0 5 0 0 !important;\n    border-bottom: 1px solid #8AA8C0;\n    font-family: 'Ubuntu Mono', monospace; }\n    .console-container .message-container .time {\n      min-width: 50%;\n      font-size: 10px;\n      white-space: nowrap;\n      color: grey !important; }\n    .console-container .message-container .message {\n      min-width: auto;\n      font-size: 12px;\n      color: #395D73 !important; }\n      .console-container .message-container .message.error {\n        color: red !important;\n        font-weight: 300;\n        font-size: 14px;\n        padding: 5px;\n        display: inline; }\n      .console-container .message-container .message.print {\n        padding: 5px; }\n        .console-container .message-container .message.print .console-heading {\n          font-size: 14px;\n          line-height: 20px;\n          text-decoration: underline;\n          color: blue; }\n        .console-container .message-container .message.print .console-line .var-name {\n          color: purple; }\n        .console-container .message-container .message.print .console-line .var-value {\n          font-weight: 600;\n          color: green; }\n  .console-container button {\n    max-width: 30px;\n    height: 30px;\n    min-width: 30px;\n    padding: 0px !important;\n    border-radius: 50%;\n    border: 1px solid #395D73;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center; }\n    .console-container button .fa-eraser {\n      height: 15px;\n      font-size: 15px !important;\n      color: #395D73;\n      padding: 0;\n      display: -webkit-box;\n      display: -ms-flexbox;\n      display: flex;\n      -webkit-box-align: center;\n          -ms-flex-align: center;\n              align-items: center;\n      -webkit-box-pack: center;\n          -ms-flex-pack: center;\n              justify-content: center; }\n    .console-container button:hover {\n      background-color: #F1F1F1 !important; }\n      .console-container button:hover .fa-eraser {\n        color: #F07A79 !important; }\n\n.btn-container {\n  position: absolute;\n  right: 60px;\n  top: 15px; }\n  .btn-container button {\n    position: fixed; }\n", ""]);
 
 // exports
 
@@ -5434,8 +5441,18 @@ let ConsoleComponent = class ConsoleComponent {
             this.notify();
         });
     }
+    ngAfterViewChecked() {
+        this.scrollToBottom();
+    }
     ngOnInit() {
         this._messages = this.consoleService.getContent();
+        this.scrollToBottom();
+    }
+    scrollToBottom() {
+        try {
+            this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
+        }
+        catch (err) { }
     }
     notify() {
         this._messages = this.consoleService.getContent();
@@ -5444,11 +5461,16 @@ let ConsoleComponent = class ConsoleComponent {
         this.consoleService.clearConsole();
     }
 };
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_7" /* ViewChild */])('scrollMe'),
+    __metadata("design:type", __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* ElementRef */])
+], ConsoleComponent.prototype, "myScrollContainer", void 0);
 ConsoleComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
         selector: 'app-console',
         template: __webpack_require__("../../../../../src/app/ui-components/console/console.component.html"),
-        styles: [__webpack_require__("../../../../../src/app/ui-components/console/console.component.scss")]
+        styles: [__webpack_require__("../../../../../src/app/ui-components/console/console.component.scss")],
+        encapsulation: __WEBPACK_IMPORTED_MODULE_0__angular_core__["_10" /* ViewEncapsulation */].None
     }),
     __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__global_services_console_service__["a" /* ConsoleService */]])
 ], ConsoleComponent);

@@ -358,6 +358,7 @@ export class CodeGeneratorJS extends CodeGenerator{
 
 				let prodWithError: number = prodArr.pop(); 
 				console.log("Procedure with Id: ", prodWithError);
+				console.log(prodArr);
 
 				let markError = function(prod: IProcedure, id: number){
 

@@ -12,7 +12,7 @@ import * as CircularJSON from 'circular-json';
 
 import * as ModuleSet from "../../assets/modules/AllModules";
 
-import {ConsoleService} from "./console.service";
+import {ConsoleService, EConsoleMessageType} from "./console.service";
 import {LayoutService} from "./layout.service";
 
 import {MOBIUS} from './mobius.constants';
@@ -189,7 +189,7 @@ export class FlowchartService {
       }
       catch(err){
         this.newFile();
-        this.consoleService.addMessage("Error loading file: " + err);
+        this.consoleService.addMessage("Error loading file: " + err, EConsoleMessageType.Error);
         this.layoutService.showConsole();
       }
 
@@ -358,8 +358,8 @@ export class FlowchartService {
       }
       catch(ex){
         this.consoleService.addMessage("Oops. Something went wrong while saving this node.\
-                                        Post the error message to the dev team on our Slack channel.");
-        this.consoleService.addMessage(ex);
+                                        Post the error message to the dev team on our Slack channel.", EConsoleMessageType.Error);
+        this.consoleService.addMessage(ex, EConsoleMessageType.Error);
         this.layoutService.showConsole();
       }
 
@@ -375,7 +375,7 @@ export class FlowchartService {
     let storageString = myStorage.removeItem(property);
 
     // print message to console
-    this.consoleService.addMessage("Node Library was cleared");
+    this.consoleService.addMessage("Node Library was cleared.");
 
     this.checkSavedNodes();
     this.update();
@@ -606,8 +606,7 @@ export class FlowchartService {
   //
   printConsole(consoleStrings: string[]): void{
       if(consoleStrings.length > 0){
-          let consoleHTML: string = "<div>\
-          <div class='console-heading'>Console Messages:</div>";
+          let consoleHTML: string = "<div class='console-heading'>Printed Values</div>";
 
           for(let i=0; i < consoleStrings.length; i++){
                let split = consoleStrings[i].split(":");
@@ -617,9 +616,7 @@ export class FlowchartService {
                          "</div>"
           }
 
-          consoleHTML += "</div>";
-
-          this.consoleService.addMessage(consoleHTML);
+          this.consoleService.addMessage(consoleHTML, EConsoleMessageType.Print);
       }
   }
 
@@ -645,7 +642,7 @@ export class FlowchartService {
         this.printConsole(consoleStrings);
 
         let errorMessage: string = "<div class='error'>" + ex + "</div>";
-        this.consoleService.addMessage( errorMessage );
+        this.consoleService.addMessage( errorMessage, EConsoleMessageType.Error );
 
         this.layoutService.showConsole();
       }

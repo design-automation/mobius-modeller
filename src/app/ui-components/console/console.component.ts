@@ -1,11 +1,12 @@
-import { Component, OnInit, ViewChild, ElementRef} from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ViewEncapsulation} from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { ConsoleService } from '../../global-services/console.service';
 
 @Component({
   selector: 'app-console',
   templateUrl: './console.component.html',
-  styleUrls: ['./console.component.scss']
+  styleUrls: ['./console.component.scss'],
+  encapsulation: ViewEncapsulation.None 
 })
 export class ConsoleComponent implements OnInit {
 
