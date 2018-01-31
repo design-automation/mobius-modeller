@@ -2475,15 +2475,17 @@ let FlowchartService = class FlowchartService {
                 + (new Date(fc)).toTimeString() + ". Would you like to reload?";
         }
         if (message) {
-            if (confirm(message)) {
-                this.loadFile(storageString);
-            }
-            else {
+            this.loadFile(storageString);
+            /*if (confirm(message)) {
+               this.loadFile(storageString);
+            } else {
                 this.newFile();
-            }
+            }*/
         }
         else {
-            alert("Oops... We couldn't find a file in memory.");
+            this.consoleService.addMessage("Error loading file from memory", __WEBPACK_IMPORTED_MODULE_8__console_service__["b" /* EConsoleMessageType */].Error);
+            this.layoutService.showConsole();
+            this.newFile();
         }
         //let dialogRef = this.dialog.open(FileLoadDialogComponent, {
         //     height: '400px',
@@ -6171,7 +6173,10 @@ let FlowchartViewerComponent = class FlowchartViewerComponent extends __WEBPACK_
     updateEdges() {
         for (let e = 0; e < this._edges.length; e++) {
             let edge = this._edges[e];
-            edge["path"] = this.getEdgePath(edge);
+            let output_position = this.getPortPosition(edge.output_address[0], edge.output_address[1], "po");
+            let input_position = this.getPortPosition(edge.input_address[0], edge.input_address[1], "pi");
+            edge["inputPosition"] = input_position;
+            edge["outputPosition"] = output_position;
         }
     }
     update() {
@@ -6499,7 +6504,7 @@ let FlowchartViewerComponent = class FlowchartViewerComponent extends __WEBPACK_
                 console.log("Error reading file");
             };
         }
-        this.flowchartService.loadFile(url);
+        // this.flowchartService.loadFile(url);
     }
     loadFromMemory() {
         this.flowchartService.checkSavedFile();

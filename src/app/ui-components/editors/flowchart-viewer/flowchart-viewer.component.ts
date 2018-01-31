@@ -158,7 +158,11 @@ export class FlowchartViewerComponent extends Viewer{
   updateEdges(): void{ 
     for(let e=0; e< this._edges.length; e++){
       let edge: IEdge = this._edges[e];
-      edge["path"] = this.getEdgePath(edge);
+        let output_position =  this.getPortPosition(edge.output_address[0], edge.output_address[1], "po");
+        let input_position = this.getPortPosition(edge.input_address[0], edge.input_address[1], "pi");
+    
+        edge["inputPosition"] = input_position;
+        edge["outputPosition"] = output_position;
     }
   }
 
@@ -635,7 +639,7 @@ export class FlowchartViewerComponent extends Viewer{
             console.log("Error reading file");
         }
     }
-    this.flowchartService.loadFile(url);
+    // this.flowchartService.loadFile(url);
   }
 
   loadFromMemory(): void{

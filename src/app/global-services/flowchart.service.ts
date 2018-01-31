@@ -98,14 +98,17 @@ export class FlowchartService {
     }
 
     if(message){
-      if (confirm(message)) {
+      this.loadFile(storageString);
+      /*if (confirm(message)) {
          this.loadFile(storageString);
       } else {
           this.newFile();
-      }
+      }*/
     }
     else{
-      alert("Oops... We couldn't find a file in memory.");
+      this.consoleService.addMessage("Error loading file from memory", EConsoleMessageType.Error);
+      this.layoutService.showConsole();
+      this.newFile();
     }
 
     
