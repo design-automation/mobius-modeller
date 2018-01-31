@@ -52,7 +52,7 @@ export class FlowchartService {
       this.newFile();
       this.checkSavedNodes();
       //this.checkSavedFile();
-      this.autoSave(60*5);
+      //this.autoSave(60*5);
   };
 
   autoSave(time_in_seconds: number): void{
@@ -60,6 +60,22 @@ export class FlowchartService {
         // console.log("saving file");
         this.saveFile(true);
     });
+  }
+
+  getLastSaved(): Date{
+
+      if(this._flowchart.getSavedTime()){
+        return this._flowchart.getSavedTime()
+      }
+      else{
+        let myStorage = window.localStorage;
+        let property = MOBIUS.PROPERTY.FLOWCHART;
+        let storageString = myStorage.getItem(property);
+
+        let fc = CircularJSON.parse(storageString)["flowchart"]["_lastSaved"];
+        return (new Date(fc));
+      }
+
   }
 
   checkSavedFile(): void{
@@ -661,7 +677,8 @@ export class FlowchartService {
     let file = {};
     let fileString: string;
 
-    this._flowchart.setSavedTime(new Date());
+    if(local)
+        this._flowchart.setSavedTime(new Date());
 
     file["language"] = "js";
     file["modules"] = [];

@@ -8,9 +8,12 @@ import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 export class GraphEdgeComponent implements OnInit {
 
   @Input() edge;
+  @Input() inputPosition;
+  @Input() outputPosition;
+  @Input() temporary;
   @ViewChild('canvas') canvas: ElementRef;
 
-  _buffer: number = 10;
+  _buffer: number = 20;
 
   constructor() { }
 
@@ -49,7 +52,13 @@ export class GraphEdgeComponent implements OnInit {
 
         context.clearRect(0, 0, canvas.width, canvas.height);
         context.lineWidth = 3;
-        context.strokeStyle = 'blue';
+
+        context.strokeStyle = this.temporary ? 'green' : 'blue';
+
+        // if temporary edge
+        if(this.temporary){
+          context.setLineDash([5, 10])
+        };
 
         let left_point = this.edge.outputPosition.x <= this.edge.inputPosition.x ? this.edge.outputPosition : this.edge.inputPosition;
         let right_point = this.edge.outputPosition.x > this.edge.inputPosition.x ? this.edge.outputPosition : this.edge.inputPosition;

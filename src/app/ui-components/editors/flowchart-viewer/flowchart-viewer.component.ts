@@ -124,6 +124,11 @@ export class FlowchartViewerComponent extends Viewer{
 
   }
 
+  lastSaved(): Date{
+    let date: Date = this.flowchartService.getLastSaved();
+    return date;
+  }
+
   startPan($event): void{
     this.pan_mode = true;
     this.pan_init = [$event.clientX, $event.clientY];
