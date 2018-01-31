@@ -301,9 +301,12 @@ export class CodeGeneratorJS extends CodeGenerator{
 
 
 				// add children
+				// children will have nodeVars from parents 
+				// but parents should have childVars
+				let childVars = nodeVars.map(function(s){ return s; });
 				procedure.getChildren().map(function(child){ 
-					codeArr.push(prodFn(child, nodeVars, prodFn, prodArr));
-				})
+					codeArr.push(prodFn(child, childVars, prodFn, prodArr));
+				});
 
 				// add ending
 				if (prod_type !== ProcedureTypes.IfElseControl) codeArr.push("}\n")
