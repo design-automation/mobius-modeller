@@ -253,9 +253,13 @@ export class GraphNode implements IGraphNode{
 		this._hasExecuted = false;
 		this._hasError = false;
 
+		this._procedure.map(function(prod){
+			prod.reset();
+		});
+
 		this._outputs.map(function(output){
 			output.reset();
-		})
+		});
 
 		return (this._hasExecuted == false); 
 	}

@@ -116,7 +116,7 @@ export class CodeGeneratorJS extends CodeGenerator{
 			return fn_def;
 		}
 
-		getNodeCode(node: IGraphNode): string{ 	
+		getNodeCode(node: IGraphNode, prodArr ?: number[]): string{ 	
 			let nodeVars: string[] = [];
 			let fn_code :string = "";
 
@@ -169,8 +169,8 @@ export class CodeGeneratorJS extends CodeGenerator{
 					continue;
 				}
 
-				fn_code += "\n" +  this.generateProcedureCode(procedure, nodeVars, undefined); 
-
+				// if(prodArr)	fn_code += "\n" + "prodArr.push(" + procedure["id"] + ")";
+				fn_code += "\n" +  this.generateProcedureCode(procedure, nodeVars, undefined, prodArr); 
 
 			}
 
@@ -211,12 +211,12 @@ export class CodeGeneratorJS extends CodeGenerator{
 			return (nodeVars.indexOf( var_name ) > -1);
 		}
 
-		generateProcedureCode(procedure: IProcedure, nodeVars: string[]=[], prodFn ?: any){
+		generateProcedureCode(procedure: IProcedure, nodeVars: string[]=[], prodFn ?: any, prodArr ?: number[]){
 
 			// change based on type
 			let code: string; 
 			let prod_type = procedure.getType();
-			
+
 			if(prodFn == undefined){
 			 	prodFn = this.generateProcedureCode;
 			}
@@ -302,13 +302,18 @@ export class CodeGeneratorJS extends CodeGenerator{
 
 				// add children
 				procedure.getChildren().map(function(child){ 
-					codeArr.push(prodFn(child, nodeVars, prodFn));
+					codeArr.push(prodFn(child, nodeVars, prodFn, prodArr));
 				})
 
 				// add ending
 				if (prod_type !== ProcedureTypes.IfElseControl) codeArr.push("}\n")
 				code = codeArr.join("\n");
 			}
+
+			// add procedure id to track failing
+			if(prodArr){ 
+				code = "prodArr.push(" + procedure["id"] + ");\n" + code; 
+			};
 
 			return code;
 		}
@@ -332,9 +337,11 @@ export class CodeGeneratorJS extends CodeGenerator{
 							Modules: IModule[], 
 							print: Function): any{
 
+			let prodArr: number[] = [];
+
 			//let gis = this._modules["gis"];
 			let str: string = "(function(){ \
-						" + this.getNodeCode(node) + "\n" + 
+						" + this.getNodeCode(node, prodArr) + "\n" + 
 							this.getFunctionCall(node, [], true) + "\n" + 
 							"return " + node.getName() + ";" + "})(); \
 						";
@@ -345,7 +352,40 @@ export class CodeGeneratorJS extends CodeGenerator{
 			}
 			catch(ex){
 				node.hasError();
-				throw Error(ex);
+
+				let prodWithError: number = prodArr.pop(); 
+				console.log("Procedure with Id: ", prodWithError);
+
+				let markError = function(prod: IProcedure, id: number){
+
+					if(prod["id"] == prodWithError){
+						prod.setError(true);
+					}
+
+					if(prod.hasChildren){
+						prod.children.map(function(p){
+							markError(p, id);
+						});
+					}
+
+				}
+
+				node.getProcedure().map(function(prod: IProcedure){
+
+					if(prod["id"] == prodWithError){
+						prod.setError(true);
+					}
+
+					if(prod.hasChildren){
+						prod.children.map(function(p){
+							markError(p, prodWithError);
+						})
+					}
+
+				});
+
+				let error: Error = new Error(ex);
+				throw error;
 			}
 			
 			return result;//result;// return result of the node
