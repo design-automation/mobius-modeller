@@ -696,8 +696,11 @@ class CodeGeneratorJS extends __WEBPACK_IMPORTED_MODULE_0__CodeGenerator__["a" /
             }
             codeArr.push(statement);
             // add children
+            // children will have nodeVars from parents 
+            // but parents should have childVars
+            let childVars = nodeVars.map(function (s) { return s; });
             procedure.getChildren().map(function (child) {
-                codeArr.push(prodFn(child, nodeVars, prodFn, prodArr));
+                codeArr.push(prodFn(child, childVars, prodFn, prodArr));
             });
             // add ending
             if (prod_type !== __WEBPACK_IMPORTED_MODULE_1__procedure_ProcedureModule__["b" /* ProcedureTypes */].IfElseControl)
