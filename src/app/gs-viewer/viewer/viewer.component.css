@@ -7,7 +7,12 @@
   color: white;
 }
 #container-top-right-resize { top: 0px; right: 0px; }
-
+#shownumber{
+  position: absolute;
+  color:black;
+  right: 0px;
+  bottom: 0px;
+}
 /*#rotating{
   width: 30px;
   height: 25px;
