@@ -13,7 +13,7 @@ export class GraphEdgeComponent implements OnInit {
   @Input() temporary;
   @ViewChild('canvas') canvas: ElementRef;
 
-  _buffer: number = 20;
+  _buffer: number = 50;
 
   constructor() { }
 
