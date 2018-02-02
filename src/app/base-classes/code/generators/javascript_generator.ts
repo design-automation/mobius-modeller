@@ -235,7 +235,7 @@ export class CodeGeneratorJS extends CodeGenerator{
 				code =  init + procedure.getLeftComponent().expression + " = " + procedure.getRightComponent().expression + ";";
 
 				if(procedure.printToConsole()){
-					code = code + "\n" + "print(" + "\'" + procedure.getLeftComponent().expression + ":\' +" + procedure.getLeftComponent().expression + ");\n";
+					code = code + "\n" + "print(" + "\'" + procedure.getLeftComponent().expression + "\', " + procedure.getLeftComponent().expression + ");\n";
 				}
 
 			}
@@ -271,7 +271,7 @@ export class CodeGeneratorJS extends CodeGenerator{
 						+ "." + right.fn_name + "( " + paramList.join(",") + " );\n";
 
 				if(procedure.printToConsole()){
-					code = code + "\n" + "print(" + "\'" + procedure.getLeftComponent().expression + ":\' +" + procedure.getLeftComponent().expression + ");\n";
+					code = code + "\n" + "print(" + "\'" + procedure.getLeftComponent().expression + "\', " + procedure.getLeftComponent().expression + ");\n";
 				}
 
 			}
@@ -357,8 +357,6 @@ export class CodeGeneratorJS extends CodeGenerator{
 				node.hasError();
 
 				let prodWithError: number = prodArr.pop(); 
-				console.log("Procedure with Id: ", prodWithError);
-				console.log(prodArr);
 
 				let markError = function(prod: IProcedure, id: number){
 

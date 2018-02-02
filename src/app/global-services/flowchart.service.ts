@@ -579,6 +579,7 @@ export class FlowchartService {
   selectNode(nodeIndex: number, portIndex ?:number): void{
     this._selectedNode = nodeIndex;
     this._selectedPort = portIndex || 0;
+    this._selectedProcedure = undefined;
     this.update();
   }
 
@@ -628,16 +629,25 @@ export class FlowchartService {
   //
   //
   //
-  printConsole(consoleStrings: string[]): void{
-      if(consoleStrings.length > 0){
+  printConsole(consoleMessages: any[] /*[{name: string, value: any}]*/): void{
+      if(consoleMessages.length > 0){
           let consoleHTML: string = "<div class='console-heading'>Printed Values</div>";
 
-          for(let i=0; i < consoleStrings.length; i++){
-               let split = consoleStrings[i].split(":");
-               consoleHTML += "<div class='console-line'>" + 
-                       "<span class='var-name'>Value of "  + split[0] + ": " + 
-                       "<span class='var-value'>"  + split[1] + 
-                         "</div>"
+          for(let i=0; i < consoleMessages.length; i++){
+
+               let variable_name: string = consoleMessages[i].name;
+               let variable_value: string = consoleMessages[i].value; 
+
+               if(Array.isArray(variable_value)){
+                   variable_value = "[" + variable_value + "]";
+               }
+
+               if(typeof variable_value == 'string'){
+                   variable_value = "\"" + variable_value + "\"";
+               }
+
+               consoleHTML += "<div class='console-line'>" +  "<span class='var-name'>Value of "  + variable_name + ": " + 
+                       "<span class='var-value'>"  + variable_value +  "</div>"
           }
 
           this.consoleService.addMessage(consoleHTML, EConsoleMessageType.Print);
@@ -650,20 +660,20 @@ export class FlowchartService {
   //
   execute(): any{
 
-      let consoleStrings: any[] = [];
-      function printFunction(message: any){
-        consoleStrings.push(message);
+      let consoleMessages: any[] = [];
+      function printFunction(varName: string, value: any){
+        consoleMessages.push({name: varName, value: value});
       }
 
       try{
           this._flowchart.execute(this.code_generator, this._moduleMap, printFunction);
-          this.printConsole(consoleStrings);
+          this.printConsole(consoleMessages);
           this.consoleService.addMessage("Flowchart was executed.");
 
       }
       catch(ex){
         
-        this.printConsole(consoleStrings);
+        this.printConsole(consoleMessages);
 
         let errorMessage: string = "<div class='error'>" + ex + "</div>";
         this.consoleService.addMessage( errorMessage, EConsoleMessageType.Error );
