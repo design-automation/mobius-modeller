@@ -72,8 +72,12 @@ export class FlowchartService {
         let property = MOBIUS.PROPERTY.FLOWCHART;
         let storageString = myStorage.getItem(property);
 
-        let fc = CircularJSON.parse(storageString)["flowchart"]["_lastSaved"];
-        return (new Date(fc));
+        if(storageString){
+            let fc = CircularJSON.parse(storageString)["flowchart"]["_lastSaved"];
+            return (new Date(fc));
+        }
+        
+        return;
       }
 
   }
