@@ -5,7 +5,7 @@ import {ICodeGenerator} from "../code/CodeModule";
 
 export abstract class Procedure implements IProcedure{
 
-	private _error: boolean = false;
+	private _error: boolean;
 
 	private _level: number;
 
@@ -30,6 +30,7 @@ export abstract class Procedure implements IProcedure{
 		
 		this.hasChildren = this.hasChildren;
 		this.children = this.children;
+		this._error = false;
 	}	
 
 	update(prodData: any, parent: IProcedure): void{
@@ -42,6 +43,7 @@ export abstract class Procedure implements IProcedure{
 		
 		this.hasChildren = prodData.hasChildren;
 		this.children = [];
+		this._error = false; 
 	}
 
 	reset(): void{

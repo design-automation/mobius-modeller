@@ -359,8 +359,7 @@ export class CodeGeneratorJS extends CodeGenerator{
 				let prodWithError: number = prodArr.pop(); 
 
 				let markError = function(prod: IProcedure, id: number){
-
-					if(prod["id"] == prodWithError){
+					if(prod["id"] && id && prod["id"] == id){
 						prod.setError(true);
 					}
 
@@ -371,20 +370,22 @@ export class CodeGeneratorJS extends CodeGenerator{
 					}
 
 				}
+				
+				if(prodWithError){
+					node.getProcedure().map(function(prod: IProcedure){
 
-				node.getProcedure().map(function(prod: IProcedure){
+						if(prod["id"] == prodWithError){
+							prod.setError(true);
+						}
 
-					if(prod["id"] == prodWithError){
-						prod.setError(true);
-					}
+						if(prod.hasChildren){
+							prod.children.map(function(p){
+								markError(p, prodWithError);
+							})
+						}
 
-					if(prod.hasChildren){
-						prod.children.map(function(p){
-							markError(p, prodWithError);
-						})
-					}
-
-				});
+					});
+				}
 
 				let error: Error = new Error(ex);
 				throw error;

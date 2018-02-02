@@ -626,7 +626,6 @@ export class FlowchartService {
     }
     return this._flowchart.getNodeByIndex(this._selectedNode).getId() == node.getId();
   }
-
   //
   //
   //
@@ -647,7 +646,7 @@ export class FlowchartService {
                    variable_value = "\"" + variable_value + "\"";
                }
 
-               consoleHTML += "<div class='console-line'>" +  "<span class='var-name'>Value of "  + variable_name + ": " + 
+               consoleHTML += "<div class='console-line'>" +  "<span class='var-name'>Value of "  + variable_name + ": </span>" + 
                        "<span class='var-value'>"  + variable_value +  "</div>"
           }
 

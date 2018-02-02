@@ -65,6 +65,10 @@
 					
 				.console-line{
 
+					max-height: 150px; 
+					max-width: 400px;
+					overflow: auto;
+
 					.var-name{
 						color: purple;
 					}
@@ -72,6 +76,9 @@
 					.var-value{
 						font-weight: 600;
 						color: green;
+						display: inline-block;
+						word-wrap: break-word;
+						max-width: 100%;
 					}
 					
 				}
