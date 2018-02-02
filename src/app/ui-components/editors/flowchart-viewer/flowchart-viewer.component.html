@@ -50,24 +50,31 @@
 				
 		
 				<split-area order="2" [size]="70"
-					style="overflow: hidden; position: relative; display: flex; flex-direction: column;">
+					style="overflow: hidden; position: relative; display: flex; flex-direction: column;" (wheel)="scale($event)">
 
 						<!-- zoom -->
 				    	<div class="info-container" style="text-align: right; padding: 5px 15px; border-bottom: 1px solid #ddd;">
 				    		
 				    		<div class="info">
 				    			<span class="label">Last Saved </span>
+				    		</div>
+
+				    		<div class="info">
 				    			<span class="value">{{ (lastSaved() | date:'short') || "--" }}</span>
+				    		</div>
+
+				    		<div class="info">
 				    			<span class="action" (click)="loadFromMemory()" matTooltip="Reverts to last point saved with Ctrl+S">
 				    				[Revert] 
 				    			</span>
 				    		</div>
 
-				    		<div class="info">
+				    		<!-- <div class="info">
 				    			<span class="label">Zoom Level</span>
 				    			<span class="value">{{zoom*100}}%</span>
 				    			<span class="action" (click)="zoom = 1">[Reset]</span>
-				    		</div>
+				    		</div> -->
+
 				    		
 				    	</div>
 

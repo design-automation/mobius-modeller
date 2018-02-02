@@ -114,6 +114,10 @@ export class FlowchartViewerComponent extends Viewer{
   //  this position of this node is absolute coordinates
   //
   scale($event): void{
+
+    $event.preventDefault();
+    $event.stopPropagation();
+
     let scaleFactor: number = 0.1;
     let value: number = this.zoom  + (Math.sign($event.wheelDelta))*scaleFactor;
     

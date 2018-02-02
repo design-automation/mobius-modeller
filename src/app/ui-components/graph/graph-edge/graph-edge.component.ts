@@ -40,7 +40,7 @@ export class GraphEdgeComponent implements OnInit {
   }
 
   edgeClicked(): void{
-    console.log(this.edge);
+
   }
 
   drawEdge(): void{
@@ -53,7 +53,7 @@ export class GraphEdgeComponent implements OnInit {
         context.clearRect(0, 0, canvas.width, canvas.height);
         context.lineWidth = 3;
 
-        context.strokeStyle = this.temporary ? 'green' : 'blue';
+        context.strokeStyle = this.temporary ? '#8AA8C0' : '#395D73';
 
         // if temporary edge
         if(this.temporary){
