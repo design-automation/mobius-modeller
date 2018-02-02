@@ -106,7 +106,7 @@ export class ToolwindowComponent extends DataSubscriber implements OnInit {
   getvertices(){
     var attributevertix=[];
     var points=this.getpoints();
-    if(this.scene_and_maps.vertices_map.size!==0){
+    if(this.scene_and_maps.vertices_map!==undefined&&this.scene_and_maps.vertices_map.size!==0){
       for(var i =0;i<this.scene_and_maps.vertices_map.size;i++){
         const path: gs.ITopoPathData = this.scene_and_maps.vertices_map.get(i);
         const vertices: gs.IVertex = this.model.getGeom().getTopo(path) as gs.IVertex;
@@ -129,7 +129,7 @@ export class ToolwindowComponent extends DataSubscriber implements OnInit {
 
   getedges():Array<any>{
     var attributeedge=[];
-    if(this.scene_and_maps.edges_map.size!==0){
+    if(this.scene_and_maps.edges_map!==undefined&&this.scene_and_maps.edges_map.size!==0){
       for(var i =0;i<this.scene_and_maps.edges_map.size;i++){
         const path: gs.ITopoPathData = this.scene_and_maps.edges_map.get(i);
         const edge: gs.IEdge = this.model.getGeom().getTopo(path) as gs.IEdge;
@@ -142,7 +142,7 @@ export class ToolwindowComponent extends DataSubscriber implements OnInit {
 
   getwires():Array<any>{
     var attributewire=[];
-    if(this.scene_and_maps.wires_map.size!==0){
+    if(this.scene_and_maps.wires_map!==undefined&&this.scene_and_maps.wires_map.size!==0){
       for(var i =0;i<this.scene_and_maps.wires_map.size;i++){
         const path: gs.ITopoPathData = this.scene_and_maps.wires_map.get(i);
         const wire: gs.IWire = this.model.getGeom().getTopo(path) as gs.IWire;
@@ -156,7 +156,7 @@ export class ToolwindowComponent extends DataSubscriber implements OnInit {
 
   getfaces():Array<any>{
     var attributeface=[];
-    if(this.scene_and_maps.faces_map.size!==0){
+    if(this.scene_and_maps.faces_map!==undefined&&this.scene_and_maps.faces_map.size!==0){
       for(var i =0;i<this.scene_and_maps.faces_map.size;i++){
         const path: gs.ITopoPathData = this.scene_and_maps.faces_map.get(i);
         const face: gs.IFace = this.model.getGeom().getTopo(path) as gs.IFace;
@@ -169,7 +169,7 @@ export class ToolwindowComponent extends DataSubscriber implements OnInit {
 
   getoject():Array<any>{
     var attributeobject=[];
-    if(this.scene_and_maps.faces_map.size!==0){
+    if(this.scene_and_maps.faces_map!==undefined&&this.scene_and_maps.faces_map.size!==0){
       for(var i =0;i<this.scene_and_maps.faces_map.size;i++){
         const path: gs.ITopoPathData = this.scene_and_maps.faces_map.get(i);
         if(i===0||path.id!==this.scene_and_maps.faces_map.get(i-1).id){
@@ -217,7 +217,7 @@ export class ToolwindowComponent extends DataSubscriber implements OnInit {
 
   getpoints():Array<any>{
     var attrubtepoints=[];
-    if(this.scene_and_maps.points_map.size!==0){
+    if(this.scene_and_maps.points_map!==undefined&&this.scene_and_maps.points_map.size!==0){
       for(var i=0;i<this.scene_and_maps.points_map.size;i++){
         const points: gs.IPoint = this.model.getGeom().getPoint(i) as gs.IPoint;
         const label: string = points.getLabel();

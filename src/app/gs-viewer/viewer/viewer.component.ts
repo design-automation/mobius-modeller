@@ -67,11 +67,9 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
   containery:number;
   containerwidth:number;
   containerheight:number;
-  FaceNo:number;
-  PointsNo:number;
-  VerticesNo:number;
   distance:number;
   settingVisible:boolean=false;
+  LineNo:number=0;
 
 
   constructor(injector: Injector, myElement: ElementRef) { 
@@ -275,6 +273,9 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
                 this.basicMat=chd["material"].color;
               }else if(chd.name==="Other lines"){
                 this.basicMat=chd["material"].color;
+              }
+              if(chd.type==="LineSegments"&&chd["geometry"].index.count!==undefined){
+                this.LineNo=this.LineNo+chd["geometry"].index.count;
               }
           }
           if(chd["geometry"]!=undefined&&chd["geometry"].boundingSphere.radius!==null){
@@ -1110,10 +1111,8 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
     event.stopPropagation();
     if(this.dataService.selecting.length===0){
       const obj=new THREE.Object3D();
-      for(var i=0;i<this.scene.children.length;i++){
-        if(this.scene.children[i].name!=="GridHelper"){
-          obj.children.push(this.scene.children[i]);
-        }
+      for(var i=0;i<this.getchildren().length;i++){
+        obj.children.push(this.getchildren()[i]);
       }
       var boxHelper = new THREE.BoxHelper(obj);
       boxHelper["geometry"].computeBoundingBox();

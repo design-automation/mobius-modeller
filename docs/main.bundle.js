@@ -3603,12 +3603,21 @@ let GSViewerComponent = class GSViewerComponent {
         this.dataService = dataService;
     }
     ;
+    setModel(data) {
+        try {
+            this.dataService.setGsModel(data);
+        }
+        catch (ex) {
+            this.data = undefined;
+            console.error("Error generating model");
+        }
+    }
     ngOnInit() {
-        this.dataService.setGsModel(this.data);
+        this.setModel(this.data);
     }
     ngDoCheck() {
         if (this.dataService.getGsModel() !== this.data) {
-            this.dataService.setGsModel(this.data);
+            this.setModel(this.data);
         }
     }
 };
@@ -4227,7 +4236,7 @@ let ToolwindowComponent = class ToolwindowComponent extends __WEBPACK_IMPORTED_M
     getvertices() {
         var attributevertix = [];
         var points = this.getpoints();
-        if (this.scene_and_maps.vertices_map.size !== 0) {
+        if (this.scene_and_maps.vertices_map !== undefined && this.scene_and_maps.vertices_map.size !== 0) {
             for (var i = 0; i < this.scene_and_maps.vertices_map.size; i++) {
                 const path = this.scene_and_maps.vertices_map.get(i);
                 const vertices = this.model.getGeom().getTopo(path);
@@ -4249,7 +4258,7 @@ let ToolwindowComponent = class ToolwindowComponent extends __WEBPACK_IMPORTED_M
     }
     getedges() {
         var attributeedge = [];
-        if (this.scene_and_maps.edges_map.size !== 0) {
+        if (this.scene_and_maps.edges_map !== undefined && this.scene_and_maps.edges_map.size !== 0) {
             for (var i = 0; i < this.scene_and_maps.edges_map.size; i++) {
                 const path = this.scene_and_maps.edges_map.get(i);
                 const edge = this.model.getGeom().getTopo(path);
@@ -4261,7 +4270,7 @@ let ToolwindowComponent = class ToolwindowComponent extends __WEBPACK_IMPORTED_M
     }
     getwires() {
         var attributewire = [];
-        if (this.scene_and_maps.wires_map.size !== 0) {
+        if (this.scene_and_maps.wires_map !== undefined && this.scene_and_maps.wires_map.size !== 0) {
             for (var i = 0; i < this.scene_and_maps.wires_map.size; i++) {
                 const path = this.scene_and_maps.wires_map.get(i);
                 const wire = this.model.getGeom().getTopo(path);
@@ -4274,7 +4283,7 @@ let ToolwindowComponent = class ToolwindowComponent extends __WEBPACK_IMPORTED_M
     }
     getfaces() {
         var attributeface = [];
-        if (this.scene_and_maps.faces_map.size !== 0) {
+        if (this.scene_and_maps.faces_map !== undefined && this.scene_and_maps.faces_map.size !== 0) {
             for (var i = 0; i < this.scene_and_maps.faces_map.size; i++) {
                 const path = this.scene_and_maps.faces_map.get(i);
                 const face = this.model.getGeom().getTopo(path);
@@ -4286,7 +4295,7 @@ let ToolwindowComponent = class ToolwindowComponent extends __WEBPACK_IMPORTED_M
     }
     getoject() {
         var attributeobject = [];
-        if (this.scene_and_maps.faces_map.size !== 0) {
+        if (this.scene_and_maps.faces_map !== undefined && this.scene_and_maps.faces_map.size !== 0) {
             for (var i = 0; i < this.scene_and_maps.faces_map.size; i++) {
                 const path = this.scene_and_maps.faces_map.get(i);
                 if (i === 0 || path.id !== this.scene_and_maps.faces_map.get(i - 1).id) {
@@ -4331,7 +4340,7 @@ let ToolwindowComponent = class ToolwindowComponent extends __WEBPACK_IMPORTED_M
     }
     getpoints() {
         var attrubtepoints = [];
-        if (this.scene_and_maps.points_map.size !== 0) {
+        if (this.scene_and_maps.points_map !== undefined && this.scene_and_maps.points_map.size !== 0) {
             for (var i = 0; i < this.scene_and_maps.points_map.size; i++) {
                 const points = this.model.getGeom().getPoint(i);
                 const label = points.getLabel();
@@ -4662,7 +4671,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "#container {\r\n  position: relative;\r\n  height:100%;\r\n  width: 100%;\r\n  margin:0px;\r\n  overflow: hidden;\r\n  color: white;\r\n}\r\n#container-top-right-resize { top: 0px; right: 0px; }\r\n#shownumber{\r\n  position: absolute;\r\n  color:black;\r\n  right: 0px;\r\n  bottom: 0px;\r\n}\r\n/*#rotating{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:15px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  top: 0px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n\r\n#paning{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:15px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  top: 25px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n\r\n#zooming{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:15px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 50px;\r\n  background-color:transparent;\r\n  border:0;\r\n}*/\r\n\r\n#zoomingfit{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:15px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 30px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n\r\n#selecting{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:15px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 50px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n\r\n#points{\r\n  width: 30px;\r\n  height: 25px;\r\n  font:20px bolder;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 80px;\r\n  background-color:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n#vertices{\r\n  width: 30px;\r\n  height: 25px;\r\n  font:20px bolder;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 100px;\r\n  background-color:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n#edges{\r\n  width: 30px;\r\n  height: 25px;\r\n  font:20px bolder;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 120px;\r\n  background-color:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n#wires{\r\n  width: 30px;\r\n  height: 25px;\r\n  font:20px bolder;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 140px;\r\n  background-color:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n#faces{\r\n  width: 30px;\r\n  height: 25px;\r\n  font:20px bolder;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 160px;\r\n  background-color:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n#objects{\r\n  width: 30px;\r\n  height: 25px;\r\n  font:20px bolder;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 180px;\r\n  background-color:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n\r\n#setting{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:15px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  top: 10px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n\r\n\r\n.selected{\r\n  color: grey;\r\n\r\n}\r\n.visible{\r\n  color: grey;\r\n}\r\n\r\n.cursor {\r\n\r\n}\r\n\r\n.selectvisible{\r\n  background-color:  white !important;\r\n  color:#395d73;\r\n}", ""]);
+exports.push([module.i, "#container {\r\n  position: relative;\r\n  height:100%;\r\n  width: 100%;\r\n  margin:0px;\r\n  overflow: hidden;\r\n  color: white;\r\n}\r\n#container-top-right-resize { top: 0px; right: 0px; }\r\n#shownumber{\r\n  position: absolute;\r\n  color:black;\r\n  right: 0px;\r\n  bottom: 0px;\r\n}\r\n/*#rotating{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:15px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  top: 0px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n\r\n#paning{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:15px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  top: 25px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n\r\n#zooming{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:15px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 50px;\r\n  background-color:transparent;\r\n  border:0;\r\n}*/\r\n\r\n#zoomingfit{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:14px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 35px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n\r\n#selecting{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:14px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 60px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n\r\n#points{\r\n  width: 30px;\r\n  height: 25px;\r\n  font:14px bolder;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 95px;\r\n  background-color:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n#vertices{\r\n  width: 30px;\r\n  height: 25px;\r\n  font:14px bolder;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 120px;\r\n  background-color:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n#edges{\r\n  width: 30px;\r\n  height: 25px;\r\n  font:14px bolder;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 145px;\r\n  background-color:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n#wires{\r\n  width: 30px;\r\n  height: 25px;\r\n  font:14px bolder;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 170px;\r\n  background-color:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n#faces{\r\n  width: 30px;\r\n  height: 25px;\r\n  font:14px bolder;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 195px;\r\n  background-color:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n#objects{\r\n  width: 30px;\r\n  height: 25px;\r\n  font:14px bolder;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  margin-top: 220px;\r\n  background-color:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n\r\n#setting{\r\n  width: 30px;\r\n  height: 25px;\r\n  font-size:14px;\r\n  right:0px; \r\n  text-align:center;\r\n  position: absolute;\r\n  top: 10px;\r\n  background-color:transparent;\r\n  border:0;\r\n}\r\n\r\n\r\n.selected{\r\n  color: grey;\r\n\r\n}\r\n.visible{\r\n  color: grey;\r\n}\r\n\r\n.cursor {\r\n\r\n}\r\n\r\n.selectvisible{\r\n  background-color:  white !important;\r\n  color:#395d73;\r\n}", ""]);
 
 // exports
 
@@ -4675,7 +4684,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/gs-viewer/viewer/viewer.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"container\"  \r\n    (mousemove)=\"onDocumentMouseMove($event)\" \r\n    (mousedown)=\"mousedown($event)\"\r\n    (mouseup)=\"mouseup($event)\"\r\n\t\t(click)=\"onDocumentMouseDown($event)\">\r\n\r\n    <!-- (window:resize)=\"onResize($event)\" -->\r\n\r\n\t\r\n  \t\t<!-- <button id=\"rotating\" \r\n  \t\t\t[class.visible]=\"Visible === 'rotate'\" \r\n  \t\t\t(click)=\"rotate()\">\r\n  \t\t\t<i class=\"fa fa-refresh\"></i>\r\n  \t\t</button>\r\n\r\n  \t\t<button id=\"paning\"  \r\n  \t\t\t[class.visible]=\"Visible === 'pan'\" \r\n  \t\t\t(click)=\"pan()\">\r\n  \t\t\t<i class=\"fa fa-hand-paper-o\"></i>\r\n  \t\t</button>\r\n\r\n  \t\t<button id=\"zooming\"  \r\n  \t\t\t[class.visible]=\"Visible === 'zoom'\" \r\n  \t\t\t(click)=\"Visible='zoom'\">\r\n  \t\t\t<i class=\"fa fa-search\"></i>\r\n  \t\t</button>-->\r\n  \t\t\r\n  \t\t<button id=\"zoomingfit\"  \r\n  \t\t\t[class.visible]=\"Visible === 'zoomfit'\" \r\n  \t\t\t(click)=\"zoomfit()\">\r\n  \t\t\t<i class=\"fa fa-arrows-alt\"></i>\r\n  \t\t</button> \r\n  \t\t\r\n  \t\t<!-- <button id=\"selecting\" [class.visible]=\"Visible === 'select'\" (click)= \"select($event, Visible)\" ><i class=\"fa fa-mouse-pointer\"></i></button> -->\r\n  \t\t\r\n  \t\t<button id=\"setting\" [class.selected]=\"settingVisible\" (click)= \"setting(settingVisible)\"><i class=\"fa fa-cog\"></i></button>\r\n\r\n      <button id=\"selecting\" [class.selected]=\"seVisible\" (click)= \"select(seVisible)\" ><i class=\"fa fa-mouse-pointer\"></i></button>\r\n      <div id=\"shownumber\">\r\n        <tr>\r\n        <td  align=center width=\"50%\">Triangles</td>\r\n        <td  align=center width=\"40%\">{{renderer.info.render.faces}}</td>\r\n        </tr>\r\n        <tr>\r\n        <td  align=center width=\"50%\">Points</td>\r\n        <td  align=center width=\"40%\">{{renderer.info.render.points}}</td>\r\n        </tr>\r\n        <tr>\r\n        <td  align=center width=\"50%\">Vertices</td>\r\n        <td  align=center width=\"40%\">{{renderer.info.render.vertices}}</td>\r\n        </tr>\r\n      </div>\r\n\r\n      \t\r\n      \t<!--setting-->\r\n      \t\r\n \t\t<app-setting *ngIf=\"settingVisible == true\"></app-setting>\r\n    <div *ngIf=\"seVisible == true\">\r\n        <button id=\"points\" [class.selectvisible]=\"SelectVisible === 'Points'\" (click)=\"pointselect(SelectVisible)\">P</button>\r\n        <button id=\"vertices\" [class.selectvisible]=\"SelectVisible === 'Vertices'\" (click)=\"verticeselect(SelectVisible)\">V</button>\r\n        <button id=\"edges\" [class.selectvisible]=\"SelectVisible === 'Edges'\" (click)=\"edgeselect(SelectVisible)\">E</button>\r\n        <button id=\"wires\" [class.selectvisible]=\"SelectVisible === 'Wires'\" (click)=\"wireselect(SelectVisible)\">W</button>\r\n        <button id=\"faces\" [class.selectvisible]=\"SelectVisible === 'Faces'\" (click)=\"faceselect(SelectVisible)\">F</button>\r\n        <button id=\"objects\" [class.selectvisible]=\"SelectVisible === 'Objs'\" (click)=\"objectselect(SelectVisible)\">O</button>\r\n      </div>\r\n</div>\r\n\r\n\r\n\t\r\n\r\n\r\n"
+module.exports = "<div id=\"container\"  \r\n    (mousemove)=\"onDocumentMouseMove($event)\" \r\n    (mousedown)=\"mousedown($event)\"\r\n    (mouseup)=\"mouseup($event)\"\r\n\t\t(click)=\"onDocumentMouseDown($event)\">\r\n\r\n    <!-- (window:resize)=\"onResize($event)\" -->\r\n\r\n\t\r\n  \t\t<!-- <button id=\"rotating\" \r\n  \t\t\t[class.visible]=\"Visible === 'rotate'\" \r\n  \t\t\t(click)=\"rotate()\">\r\n  \t\t\t<i class=\"fa fa-refresh\"></i>\r\n  \t\t</button>\r\n\r\n  \t\t<button id=\"paning\"  \r\n  \t\t\t[class.visible]=\"Visible === 'pan'\" \r\n  \t\t\t(click)=\"pan()\">\r\n  \t\t\t<i class=\"fa fa-hand-paper-o\"></i>\r\n  \t\t</button>\r\n\r\n  \t\t<button id=\"zooming\"  \r\n  \t\t\t[class.visible]=\"Visible === 'zoom'\" \r\n  \t\t\t(click)=\"Visible='zoom'\">\r\n  \t\t\t<i class=\"fa fa-search\"></i>\r\n  \t\t</button>-->\r\n  \t\t\r\n  \t\t<button id=\"zoomingfit\"  \r\n  \t\t\t[class.visible]=\"Visible === 'zoomfit'\" \r\n  \t\t\t(click)=\"zoomfit()\">\r\n  \t\t\t<i class=\"fa fa-arrows-alt\"></i>\r\n  \t\t</button> \r\n  \t\t\r\n  \t\t<!-- <button id=\"selecting\" [class.visible]=\"Visible === 'select'\" (click)= \"select($event, Visible)\" ><i class=\"fa fa-mouse-pointer\"></i></button> -->\r\n  \t\t\r\n  \t\t<button id=\"setting\" [class.selected]=\"settingVisible\" (click)= \"setting(settingVisible)\"><i class=\"fa fa-cog\"></i></button>\r\n\r\n      <button id=\"selecting\" [class.selected]=\"seVisible\" (click)= \"select(seVisible)\" ><i class=\"fa fa-mouse-pointer\"></i></button>\r\n      <div id=\"shownumber\">\r\n        <tr>\r\n        <td  align=center width=\"50%\">Triangles</td>\r\n        <td  align=center width=\"40%\">{{renderer.info.render.faces}}</td>\r\n        </tr>\r\n        <tr>\r\n        <td  align=center width=\"50%\">Lines</td>\r\n        <td  align=center width=\"40%\">{{LineNo}}</td>\r\n        </tr>\r\n        <!-- <tr>\r\n        <td  align=center width=\"50%\">Vertices</td>\r\n        <td  align=center width=\"40%\">{{renderer.info.render.vertices}}</td>\r\n        </tr> -->\r\n      </div>\r\n\r\n      \t\r\n      \t<!--setting-->\r\n      \t\r\n \t\t<app-setting *ngIf=\"settingVisible == true\"></app-setting>\r\n    <div *ngIf=\"seVisible == true\">\r\n        <button id=\"points\" [class.selectvisible]=\"SelectVisible === 'Points'\" (click)=\"pointselect(SelectVisible)\">P</button>\r\n        <button id=\"vertices\" [class.selectvisible]=\"SelectVisible === 'Vertices'\" (click)=\"verticeselect(SelectVisible)\">V</button>\r\n        <button id=\"edges\" [class.selectvisible]=\"SelectVisible === 'Edges'\" (click)=\"edgeselect(SelectVisible)\">E</button>\r\n        <button id=\"wires\" [class.selectvisible]=\"SelectVisible === 'Wires'\" (click)=\"wireselect(SelectVisible)\">W</button>\r\n        <button id=\"faces\" [class.selectvisible]=\"SelectVisible === 'Faces'\" (click)=\"faceselect(SelectVisible)\">F</button>\r\n        <button id=\"objects\" [class.selectvisible]=\"SelectVisible === 'Objs'\" (click)=\"objectselect(SelectVisible)\">O</button>\r\n      </div>\r\n</div>\r\n\r\n\r\n\t\r\n\r\n\r\n"
 
 /***/ }),
 
@@ -4710,6 +4719,7 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
         this.seVisible = false;
         this.SelectVisible = 'Objs';
         this.settingVisible = false;
+        this.LineNo = 0;
         this.myElement = myElement;
     }
     ngOnInit() {
@@ -4884,6 +4894,9 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
                         }
                         else if (chd.name === "Other lines") {
                             this.basicMat = chd["material"].color;
+                        }
+                        if (chd.type === "LineSegments" && chd["geometry"].index.count !== undefined) {
+                            this.LineNo = this.LineNo + chd["geometry"].index.count;
                         }
                     }
                     if (chd["geometry"] != undefined && chd["geometry"].boundingSphere.radius !== null) {
@@ -5728,10 +5741,8 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
         event.stopPropagation();
         if (this.dataService.selecting.length === 0) {
             const obj = new __WEBPACK_IMPORTED_MODULE_1_three__["Object3D"]();
-            for (var i = 0; i < this.scene.children.length; i++) {
-                if (this.scene.children[i].name !== "GridHelper") {
-                    obj.children.push(this.scene.children[i]);
-                }
+            for (var i = 0; i < this.getchildren().length; i++) {
+                obj.children.push(this.getchildren()[i]);
             }
             var boxHelper = new __WEBPACK_IMPORTED_MODULE_1_three__["BoxHelper"](obj);
             boxHelper["geometry"].computeBoundingBox();
