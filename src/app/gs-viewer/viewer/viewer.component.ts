@@ -167,6 +167,7 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
     }
     //this.shownumber();
     this.dataService.addraycaster(this.raycaster);
+    this.addgrid();
   }
   //
   //  checks if the data service has a data and calls update function for the viewer
@@ -290,9 +291,8 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
       this.controls.update();
       
       // adding the object to the scene
-      this.scene.add(objectData);      
-      // add the grid based on size of the object
-      this.addgrid();
+      this.scene.add(objectData);   
+
     }
     catch(ex){
       console.error("Error displaying model:", ex);
@@ -398,7 +398,7 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
           scenechildren.push(children[i]);
         }
       }
-      if(children[i].name==="All edges"||children[i].name==="Other lines") {children[i]["material"].opacity=0;children[i]["material"].color=this.basicMat;}
+      if(children[i].name==="All edges"||children[i].name==="Other lines") {children[i]["material"].opacity=0.1;children[i]["material"].color=this.basicMat;}
       if(children[i].name==="All vertices") children[i]["material"].opacity=0;
     }
     this.dataService.addscenechild(scenechildren);
@@ -1013,8 +1013,8 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
 
   //To add text labels just provide label text, label position[x,y,z] and its id
   addTextLabel(label, label_xyz, id,index,path,type) {
-    //let container = this.myElement.nativeElement.children.namedItem("container");
-    let container=document.getElementsByTagName("app-viewer")[0].children.namedItem("container");
+    let container = this.myElement.nativeElement.children.namedItem("container");
+    //let container=document.getElementsByTagName("app-viewer")[0].children.namedItem("container");
     let star = this.creatStarGeometry(label_xyz);
     let textLabel=this.createTextLabel(label, star, id,index,path,type);
     this.starsGeometry.vertices.push( star );
@@ -1124,9 +1124,9 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
       var fov=this.camera.fov * ( Math.PI / 180 );
       var vec_centre_to_pos: THREE.Vector3 = new THREE.Vector3();
       vec_centre_to_pos.subVectors(this.camera.position, center);
-      var tmp_vec=new THREE.Vector3( center.x+Math.abs( radius / Math.sin( fov / 2 )),
-                                     center.y+Math.abs( radius / Math.sin( fov / 2 ) ),
-                                     center.z+Math.abs( radius / Math.sin( fov / 2 )));
+      var tmp_vec=new THREE.Vector3( Math.abs( radius / Math.sin( fov / 2 )/2),
+                                     Math.abs( radius / Math.sin( fov / 2 )/2 ),
+                                     Math.abs( radius / Math.sin( fov / 2 )/2));
       vec_centre_to_pos.setLength(tmp_vec.length());
       var perspectiveNewPos: THREE.Vector3 = new THREE.Vector3();
       perspectiveNewPos.addVectors(center, vec_centre_to_pos);

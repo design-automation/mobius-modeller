@@ -276,8 +276,9 @@ export class FlowchartService {
   //
   newFile(): IFlowchart{
     this._flowchart = new Flowchart(this._user);
-    this._selectedNode = 0;
-    this._selectedPort = 0;
+    this._selectedNode = undefined;
+    this._selectedPort = undefined;
+    this._selectedProcedure = undefined;
     this.update();
 
     this.loadModules(

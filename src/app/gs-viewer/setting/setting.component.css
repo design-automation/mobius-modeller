@@ -91,6 +91,10 @@
   margin-left:10px;
   margin-right:30px;
 }
+.name{
+  margin-left: 15px;
+}
+
 
 ::ng-deep .mat-accent .mat-slider-thumb {
     background-color: #395d73;
