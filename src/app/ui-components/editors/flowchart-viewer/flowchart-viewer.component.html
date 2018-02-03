@@ -11,8 +11,7 @@
 		<!-- https://bertrandg.github.io/angular-split/#/documentation -->
 		<split  direction="horizontal" 
               [gutterSize]="7" 
-              [useTransition]="true" gutterColor=white
-              >
+              [useTransition]="true" gutterColor=white>
 
 				<split-area class="sidebar"
 					[size]="30"
@@ -50,158 +49,166 @@
 				</split-area>
 				
 		
-				<split-area order="2" [size]="70">
+				<split-area order="2" [size]="70"
+					style="overflow: hidden; position: relative; display: flex; flex-direction: column;" (wheel)="scale($event)">
 
 						<!-- zoom -->
-				    	<div class="info-container" 
-				    		style="position: absolute; 
-				    		top: 30px; 
-				    		right: 30px">
-				    		Zoom: {{zoom}}
+				    	<div class="info-container" style="text-align: right; padding: 5px 15px; border-bottom: 1px solid #ddd;">
+				    		
+				    		<div class="info">
+				    			<span class="label">Last Saved </span>
+				    		</div>
+
+				    		<div class="info">
+				    			<span class="value">{{ (lastSaved() | date:'short') || "--" }}</span>
+				    		</div>
+
+				    		<div class="info">
+				    			<span class="action" (click)="loadFromMemory()" matTooltip="Reverts to last point saved with Ctrl+S">
+				    				[Revert] 
+				    			</span>
+				    		</div>
+
+				    		<!-- <div class="info">
+				    			<span class="label">Zoom Level</span>
+				    			<span class="value">{{zoom*100}}%</span>
+				    			<span class="action" (click)="zoom = 1">[Reset]</span>
+				    		</div> -->
+
+				    		
 				    	</div>
 
-				        <!-- svg canvas to draw the edges -->
-						<svg xmlns="http://www.w3.org/2000/svg" 
-							class="graph-container" 
-							id="graph-edges" 
-							[style.zoom]="zoom">
-
-							<g class="edge" *ngFor="let edge of _edges" >
-								<path 
-								  [attr.d]="edge.path" 
-								  stroke="#7469FF"
-								  stroke-width="3" fill="none" />
-							</g>
-															
-							<!-- dragging path -->
-							<g id="temporary-edge" [class.hidden]="!_linkMode" >
-								<path 
-								[attr.d]="edgeString(mouse_pos.start, mouse_pos.current)" 
-								 	stroke="#7469FF"
-								 	stroke-width="5" 
-								 	fill="none" 
-								 	stroke-dasharray="5, 5"/>
-									<circle id="pointC" [attr.cx]="mouse_pos.current.x" [attr.cy]="mouse_pos.current.y" r="5" />
-								</g>
-
-						</svg>
-
-						<!-- div container for the nodes -->
-						<div class="graph-container" 
-							id="graph-nodes" ondragover="return false" [style.zoom]="zoom" >
-							
-							<!-- all nodes -->
-							<div class="node-container">
-
-								<!-- one node -->
-								<div  class="node"
-										*ngFor="let node of _nodes; let node_index = index" 
-										[style.left.px]="node.position[0]" 
-										[style.top.px]="node.position[1]" >
-
-									<div class="btn-container" *ngIf="node_index == _selectedNodeIndex" >
-										<!-- <div class="btn-group node-btns">
-											<div class="action-button" (click)="addPort(node_index, 'in')">
-												<mat-icon>input</mat-icon>
-											</div>
-											<div class="action-button" (click)="addPort(node_index, 'out')">
-												<mat-icon>add_to_queue</mat-icon>
-											</div>
-										</div> -->
-										<div class="btn-group port-btns">
-											<div class="action-button" (click)="deleteNode(node_index)" 		
-												matTooltip="Delete Node">
-												<mat-icon>delete</mat-icon>
-											</div>
-											<div class="action-button" (click)="toggleNode(node)"
-												matTooltip="Disable Node">
-												<mat-icon *ngIf='!node.isDisabled()'>check_circle</mat-icon>
-												<mat-icon *ngIf='node.isDisabled()'>highlight_off</mat-icon>
-											</div>
-											<!-- <div class="action-button" (click)="saveNode(node_index)" 
-												matTooltip="Save Node To Library"
-												*ngIf="!isSaved(node)">
-												<mat-icon>file_download</mat-icon>
-											</div> -->
-										</div>
-									</div>
-
-									
-									<!-- node body -->
-									<div class="node-body" 
-										[class.library]="node.getType() !== undefined"
-										[class.error]="node._hasError"
-										[class.disabled] ="node.isDisabled()"
-										(click)="clickNode($event, node_index)"
-										draggable=true  
-										(dragstart)="nodeDragStart($event, node)" 
-										(drag)="nodeDragging($event, node, node_index)" 
-										(dragend)="nodeDragEnd($event, node)">
-										
-										<div class="node-name" 
-												[class.selected]="node_index == _selectedNodeIndex"
-												matTooltip="{{node.getName()}}">
-											    <input matInput
-											    style="margin: 2px; min-width: 50px; width: 50px;"
-											    placeholder="Value" value="{{ node.getName() }}"
-											    (change)="updateNodeName($event)"/>
-										</div>
-										
-										<!--inputs -->
-										<div class="port-container">
-											
-											<div class="port input" 
-												*ngFor="let port of node.getInputs(); let pi=index"  
-												id="n{{node_index}}pi{{pi}}">
-
-												<div class="port-grip" 
-													draggable=true
-													[class.connected]="port.isConnected()" 
-													(dragstart)="portDragStart($event, port, [node_index, pi])" 
-													(drag)="portDragging($event, port)" 
-													(dragend)="portDragEnd($event, port)"
-													(drop)="portDrop($event, port, [node_index, pi])">
-												</div>
-
-												<span class="port-name">{{ port.getName() }}</span>
-											</div>
-
-										</div>
-
-										<!-- outputs -->
-										<div class="port-container">
-											<div class="port output"
-												*ngFor="let port of node.getOutputs(); let po=index;"
-												id="n{{node_index}}po{{po}}">
-
-												<span class="port-name">{{port.getName()}}</span>
-
-												<div class="port-grip" 
-													draggable=true
-													[class.selected]="isPortSelected(node_index, po)"
-													[class.connected]="port.isConnected()" 
-													(click)="clickPort($event, node_index, po)"
-													(dragstart)="portDragStart($event, port, [node_index, po])" 
-													(drag)="portDragging($event, port)" 
-													(dragend)="portDragEnd($event, port)"
-													(drop)="portDrop($event, port, [node_index, po])">
-												</div>
-
-											</div>
-										</div> 
-
-
-										<!-- <div class="fromLibrary"  style="font-size: 8px; text-align: center">
-											Library Node
-										</div> -->
-
-									</div>
+				    	<div class="content-wrapper" (wheel)="scale($event)" style="flex-grow: 1;">
+							<!-- div container for the flowchart -->
+							<div class="graph-container" [style.transform]="getZoomStyle()"
+							 	ondragover="return false" 
+								id="graph-nodes"
+								(mousedown)="pan($event)">
 								
-										
+								<!-- all nodes -->
+								<div class="node-container content-wrapper">
+									<!-- one node -->
+									<div  class="node" 
+											*ngFor="let node of _nodes; let node_index = index" 
+											id="n{{node_index}}"
+											[style.left.px]="node.position[0]" 
+											[style.top.px]="node.position[1]">
+
+											<div class="btn-container" *ngIf="node_index == _selectedNodeIndex" >
+												<!-- <div class="btn-group node-btns">
+													<div class="action-button" (click)="addPort(node_index, 'in')">
+														<mat-icon>input</mat-icon>
+													</div>
+													<div class="action-button" (click)="addPort(node_index, 'out')">
+														<mat-icon>add_to_queue</mat-icon>
+													</div>
+												</div> -->
+												<div class="btn-group port-btns">
+													<div class="action-button" (click)="deleteNode(node_index)" 		
+														matTooltip="Delete Node">
+														<mat-icon>delete</mat-icon>
+													</div>
+													<div class="action-button" (click)="toggleNode(node)"
+														matTooltip="Disable Node">
+														<mat-icon *ngIf='!node.isDisabled()'>check_circle</mat-icon>
+														<mat-icon *ngIf='node.isDisabled()'>highlight_off</mat-icon>
+													</div>
+													<!-- <div class="action-button" (click)="saveNode(node_index)" 
+														matTooltip="Save Node To Library"
+														*ngIf="!isSaved(node)">
+														<mat-icon>file_download</mat-icon>
+													</div> -->
+												</div>
+											</div>
+
+											
+											<!-- node body -->
+											<div class="node-body" 
+												[class.library]="node.getType() !== undefined"
+												[class.error]="node._hasError"
+												[class.disabled] ="node.isDisabled()"
+												(click)="clickNode($event, node_index)"
+												draggable=true  
+												(dragstart)="nodeDragStart($event, node)" 
+												(drag)="nodeDragging($event, node, node_index)" 
+												(dragend)="nodeDragEnd($event, node)">
+												
+												<div class="node-name" 
+														[class.selected]="node_index == _selectedNodeIndex"
+														matTooltip="{{node.getName()}}">
+													    <input matInput
+													    style="margin: 2px; min-width: 50px; width: 50px;"
+													    placeholder="Value" value="{{ node.getName() }}"
+													    (change)="updateNodeName($event)"/>
+												</div>
+												
+												<!--inputs -->
+												<div class="port-container">
+													
+													<div class="port input" 
+														*ngFor="let port of node.getInputs(); let pi=index"  
+														id="n{{node_index}}pi{{pi}}">
+
+														<div class="port-grip" 
+															draggable=true
+															[class.connected]="port.isConnected()" 
+															(dragstart)="portDragStart($event, port, [node_index, pi])" 
+															(drag)="portDragging($event, port)" 
+															(dragend)="portDragEnd($event, port)"
+															(drop)="portDrop($event, port, [node_index, pi])">
+														</div>
+
+														<span class="port-name">{{ port.getName() }}</span>
+													</div>
+
+												</div>
+
+												<!-- outputs -->
+												<div class="port-container">
+													<div class="port output"
+														*ngFor="let port of node.getOutputs(); let po=index;"
+														id="n{{node_index}}po{{po}}">
+
+														<span class="port-name">{{port.getName()}}</span>
+
+														<div class="port-grip" 
+															draggable=true
+															[class.selected]="isPortSelected(node_index, po)"
+															[class.connected]="port.isConnected()" 
+															(click)="clickPort($event, node_index, po)"
+															(dragstart)="portDragStart($event, port, [node_index, po])" 
+															(drag)="portDragging($event, port)" 
+															(dragend)="portDragEnd($event, port)"
+															(drop)="portDrop($event, port, [node_index, po])">
+														</div>
+
+													</div>
+												</div> 
+
+
+												<!-- <div class="fromLibrary"  style="font-size: 8px; text-align: center">
+													Library Node
+												</div> -->
+
+											</div>
+									</div>
 								</div>
-							
+
+								<div class="edge-container">
+									<app-graph-edge *ngFor="let edge of _edges" [edge]="edge"></app-graph-edge>
+									
+									<!-- temporary edge -->
+									<app-graph-edge 
+											[class.hidden]="!_linkMode"
+											[edge]="{inputPosition: mouse_pos.start, outputPosition: mouse_pos.current}"
+											[temporary]="true">
+									</app-graph-edge>
+								</div>
+
 							</div>
+	
 						</div>
+
 				</split-area>
 
 		</split>

@@ -1,14 +1,16 @@
-<div class="container">
+'<div class="console-container" #scrollMe>
 	<div class="btn-container">
 		<button mat-button (click)="clearConsole()"><i class="fa fa-eraser"></i></button>
 	</div>
 	<div class = "console-log">
 		<div class="message-container" *ngFor="let msg of _messages;">
 			<span class="time">{{msg.time | date:'mediumTime'}}</span>
-			<div class="message"
+			<div class="message {{msg.type}}"
 				[innerHTML]="msg.message">
 			</div>
 		</div>
 	</div>
 </div>
+
+
 

@@ -2,6 +2,12 @@ import { Injectable } from '@angular/core';
 import {Observable} from 'rxjs';
 import {Subject} from 'rxjs/Subject';
 
+export enum EConsoleMessageType{
+	Print = "print", 
+	Error = "error", 
+	General = "general"
+}
+
 @Injectable()
 export class ConsoleService {
 
@@ -27,10 +33,11 @@ export class ConsoleService {
 	  return this.subject.asObservable();
 	}
 
-	addMessage(message: string): void{
+	addMessage(message: string, type: EConsoleMessageType = EConsoleMessageType.General): void{
   		let obj = {}
   		obj["time"] = new Date();
   		obj["message"] = message;
+  		obj["type"] = type;
   		this._messages.push(obj);
   		this.sendMessage();
 	};
@@ -45,3 +52,4 @@ export class ConsoleService {
 	}
 
 }
+

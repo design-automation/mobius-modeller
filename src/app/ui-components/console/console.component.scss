@@ -1,6 +1,9 @@
 @import '~scss/globals';
 
-.container{
+.console-container{
+
+	@extend .container;
+
 	position: relative;
 	height: 100%;
 
@@ -42,8 +45,44 @@
 			// flex-flow: row wrap;
 			color: $color1 !important;
 
-			.error{
-				color: red;
+			&.error{
+				color: red !important;
+				font-weight: 300;
+				font-size: 14px;
+				padding: 5px;
+				display: inline;
+			}
+
+			&.print{
+				padding: 5px;
+
+				.console-heading{
+					font-size: 14px; 
+					line-height: 20px;
+					text-decoration: underline;
+					color: blue;
+				}
+					
+				.console-line{
+
+					max-height: 150px; 
+					max-width: 400px;
+					overflow: auto;
+
+					.var-name{
+						color: purple;
+					}
+
+					.var-value{
+						font-weight: 600;
+						color: green;
+						display: inline-block;
+						word-wrap: break-word;
+						max-width: 100%;
+					}
+					
+				}
+
 			}
 
 		}
@@ -89,4 +128,3 @@
 		position: fixed;
 	}
 }
-

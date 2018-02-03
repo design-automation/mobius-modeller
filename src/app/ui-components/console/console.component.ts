@@ -1,13 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ViewEncapsulation} from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { ConsoleService } from '../../global-services/console.service';
 
 @Component({
   selector: 'app-console',
   templateUrl: './console.component.html',
-  styleUrls: ['./console.component.scss']
+  styleUrls: ['./console.component.scss'],
+  encapsulation: ViewEncapsulation.None 
 })
 export class ConsoleComponent implements OnInit {
+
+  @ViewChild('scrollMe') private myScrollContainer: ElementRef;
 
   _messages = [];
   _subscription; 
@@ -18,8 +21,19 @@ export class ConsoleComponent implements OnInit {
 		});
   }
 
+  ngAfterViewChecked() {        
+      this.scrollToBottom();        
+  } 
+
   ngOnInit() {
   	this._messages = this.consoleService.getContent();
+    this.scrollToBottom();
+  }
+
+  scrollToBottom(): void {
+      try {
+          this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
+      } catch(err) { }                 
   }
 
   notify(){ 

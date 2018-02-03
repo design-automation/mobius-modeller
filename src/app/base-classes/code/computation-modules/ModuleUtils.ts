@@ -84,7 +84,6 @@ export class ModuleUtils{
 		 	result = [];
 		}
 
-
 		let final_result = result.map(function(r){ 
 			r = r.trim();
 			let r_value = r.split("=");

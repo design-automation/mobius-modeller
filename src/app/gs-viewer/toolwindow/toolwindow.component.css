@@ -3,7 +3,11 @@
 }
 #toolbar{
   background-color: #E6E6E6;
+  float: left;
+  width: 50%;
   height: 28px;
+  left: 30px;
+  margin-top:0px;
 }
 #point{
   margin-left:25px;
@@ -73,4 +77,25 @@
   position: relative;
   float:right;
   margin-right: 30px;
+}
+#pagination{
+  position:relative;
+  width: 50%;
+  background-color: #E6E6E6;
+  float: right;
+  right: 0px;
+  height: 28px;
+  color:black !important;
+  top:0px;
+}
+.my-pagination /deep/ .ngx-pagination{
+  margin:0px !important;
+  color:black !important;
+  float: right;
+  margin-right:20px !important;
+}
+.my-pagination /deep/ .ngx-pagination .current {
+  margin-top:0px;
+  color:black;
+  background-color: white;
 }
