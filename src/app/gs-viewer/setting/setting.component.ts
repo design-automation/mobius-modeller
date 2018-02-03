@@ -32,6 +32,7 @@ export class SettingComponent implements OnInit {
   _linepre:number;
   _pointpre:number;
   _pointsize:number;
+  nomalVisible:boolean;
 
   ngOnInit(){
     if(this.hue == undefined) {
@@ -308,6 +309,28 @@ export class SettingComponent implements OnInit {
     this.dataService.getgreen(_green);
     this.dataService.getblue(_blue);
     this.scene.background=new THREE.Color(_red,_green,_blue);
+  }
+
+  changenormal(){
+    this.nomalVisible=!this.nomalVisible;
+    if(this.nomalVisible){
+      /*for(var i=0;i<this.scene.children.length;i++){
+        if(this.scene.children[i].type==="Scene"){
+          for(var j=0;j<this.scene.children[i].children.length;j++){
+            if(this.scene.children[i].children[j].type==="Mesh"){
+              var mesh=this.scene.children[i].children[j];
+              var faceNormalsHelper = new THREE.FaceNormalsHelper( mesh, 10 );
+              mesh.add( faceNormalsHelper );
+              var verticehelper = new THREE.VertexNormalsHelper( mesh, 10 );
+              this.scene.add(verticehelper);
+              console.log(this.scene);
+              //facehelper.visible=false;
+              //this.scene.add(verticehelper);
+            }
+          }
+        }
+      }*/
+    }
   }
 
   setting(event){

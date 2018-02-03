@@ -78,6 +78,7 @@ export class DataService {
   centery:number;
   centerz:number;
   pointsize:number;
+  clickshow:Array<any>;
 
   // ---- 
   // Subscription Handling
@@ -242,7 +243,6 @@ export class DataService {
     this._lightnessValue=lightness;
   }
 
-
   gethue(_hue):any{
     this.hue = _hue;
   }
@@ -321,6 +321,10 @@ export class DataService {
   }
   getselecting(){
     return this.selecting;
+  }
+
+  addclickshow(clickshow){
+    this.clickshow=clickshow;
   }
 
   addattrvertix(attributevertix){

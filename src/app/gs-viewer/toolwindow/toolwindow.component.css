@@ -11,37 +11,37 @@
 }
 #point{
   margin-left:25px;
-  font-size:20px;
+  font-size:15px;
   background:transparent;
   border:0;
   font-family:sans-serif;
 }
 #vertice{
-  font-size:22px;
+  font-size:15px;
   background-color:transparent;
   border:0;
   font-family:sans-serif;
 }
 #edge{
-  font-size:22px;
+  font-size:15px;
   background-color:transparent;
   border:0;
   font-family:sans-serif;
 }
 #wire{
-  font-size:22px;
+  font-size:15px;
   background-color:transparent;
   border:0;
   font-family:sans-serif;
 }
 #face{
-  font-size:22px;
+  font-size:15px;
   background-color:transparent;
   border:0;
   font-family:sans-serif;
 }
 #object{
-  font-size:20px;
+  font-size:15px;
   background-color:transparent;
   border:0;
   font-family:sans-serif;
