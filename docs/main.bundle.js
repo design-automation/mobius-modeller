@@ -3404,6 +3404,9 @@ let DataService = class DataService {
     getselecting() {
         return this.selecting;
     }
+    addclickshow(clickshow) {
+        this.clickshow = clickshow;
+    }
     addattrvertix(attributevertix) {
         this.attributevertix = attributevertix;
     }
@@ -3658,12 +3661,14 @@ GSViewerComponent = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__toolwindow_groups_component__ = __webpack_require__("../../../../../src/app/gs-viewer/toolwindow/groups.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_ngx_pagination__ = __webpack_require__("../../../../ngx-pagination/dist/ngx-pagination.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__angular_material_expansion__ = __webpack_require__("../../../material/esm2015/expansion.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__angular_platform_browser_animations__ = __webpack_require__("../../../platform-browser/esm2015/animations.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -3692,7 +3697,9 @@ GSViewer = GSViewer_1 = __decorate([
             __WEBPACK_IMPORTED_MODULE_2_angular_split__["a" /* AngularSplitModule */],
             __WEBPACK_IMPORTED_MODULE_3__angular_material_slider__["a" /* MatSliderModule */],
             __WEBPACK_IMPORTED_MODULE_10_ngx_pagination__["a" /* NgxPaginationModule */],
-            __WEBPACK_IMPORTED_MODULE_11__angular_material_expansion__["a" /* MatExpansionModule */]
+            __WEBPACK_IMPORTED_MODULE_11__angular_material_expansion__["a" /* MatExpansionModule */],
+            __WEBPACK_IMPORTED_MODULE_12__angular_platform_browser_animations__["a" /* BrowserAnimationsModule */],
+            __WEBPACK_IMPORTED_MODULE_12__angular_platform_browser_animations__["b" /* NoopAnimationsModule */]
         ],
         exports: [__WEBPACK_IMPORTED_MODULE_4__gs_viewer_component__["a" /* GSViewerComponent */]],
         declarations: [__WEBPACK_IMPORTED_MODULE_4__gs_viewer_component__["a" /* GSViewerComponent */],
@@ -3717,7 +3724,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "#settingview{\r\n  position:absolute;\r\n  background-color: white;\r\n  top:0px;\r\n  right:30px;\r\n  color:#395d73;\r\n  width:400px;\r\n  height:430px;\r\n}\r\n#grid{\r\n  margin-left: 20px;\r\n  font-family:sans-serif;\r\n}\r\n#axis{\r\n  margin-left: 30px;\r\n  font-family:sans-serif;\r\n}\r\n#shadow{\r\n  margin-left: 30px;\r\n  font-family:sans-serif;\r\n}\r\n#frame{\r\n  margin-left: 30px;\r\n  font-family:sans-serif;\r\n}\r\n#huerange{\r\n  margin-left: 41px;\r\n  width: 60%;\r\n  font-family:sans-serif;\r\n}\r\n#satrange{\r\n  margin-left: 18px;\r\n  width: 60%;\r\n  font-family:sans-serif;\r\n}\r\n#lirange{\r\n  margin-left: 20px;\r\n  width: 60%;\r\n  font-family:sans-serif;\r\n}\r\n#oprange{\r\n  margin-left: 20px;\r\n  width: 60%;\r\n  font-family:sans-serif;\r\n}\r\n#name{\r\n  font-family:sans-serif;\r\n}\r\n#redrange{\r\n  margin-left: 60px;\r\n  width: 60%;\r\n  font-family:sans-serif;\r\n}\r\n#greenrange{\r\n  margin-left: 60px;\r\n  width: 60%;\r\n  font-family:sans-serif;\r\n}\r\n#bluerange{\r\n  margin-left: 60px;\r\n  width: 60%;\r\n  font-family:sans-serif;\r\n}\r\n#linerange{\r\n  margin-left: 5px;\r\n  width: 50%;\r\n  font-family:sans-serif;\r\n}\r\n#pointrange{\r\n  margin-left: 3px;\r\n  width: 50%;\r\n  font-family:sans-serif;\r\n}\r\n#sizerange{\r\n  width: 50%;\r\n  font-family:sans-serif;\r\n}\r\n#centerx{\r\n  width:50px;\r\n  margin-left:10px;\r\n}\r\n#centery{\r\n  width:50px;\r\n  margin-left:10px;\r\n}\r\n#centerz{\r\n  width:50px;\r\n  margin-left:10px;\r\n  margin-right:30px;\r\n}\r\n.name{\r\n  margin-left: 15px;\r\n}\r\n::ng-deep .mat-accent .mat-slider-thumb {\r\n    background-color: #395d73;\r\n    font-family:sans-serif;\r\n}\r\n::ng-deep .mat-accent .mat-slider-thumb-label {\r\n    background-color: #395d73;\r\n    font-family:sans-serif;\r\n}\r\n::ng-deep .mat-accent .mat-slider-track-fill {\r\n    background-color: #395d73;\r\n    font-family:sans-serif;\r\n} ", ""]);
+exports.push([module.i, "#settingview{\r\n  position:absolute;\r\n  background-color: white;\r\n  top:0px;\r\n  right:30px;\r\n  color:#395d73;\r\n  width:400px;\r\n  height:430px;\r\n}\r\n#grid{\r\n  margin-left: 20px;\r\n  font-family:sans-serif;\r\n  margin-top:10px;\r\n}\r\n#axis{\r\n  margin-left: 30px;\r\n  font-family:sans-serif;\r\n}\r\n#shadow{\r\n  margin-left: 30px;\r\n  font-family:sans-serif;\r\n}\r\n#frame{\r\n  margin-left: 30px;\r\n  font-family:sans-serif;\r\n}\r\n#nomal{\r\n  margin-left: 20px;\r\n  font-family:sans-serif;\r\n}\r\n#huerange{\r\n  margin-left: 41px;\r\n  width: 60%;\r\n  font-family:sans-serif;\r\n}\r\n#satrange{\r\n  margin-left: 18px;\r\n  width: 60%;\r\n  font-family:sans-serif;\r\n}\r\n#lirange{\r\n  margin-left: 20px;\r\n  width: 60%;\r\n  font-family:sans-serif;\r\n}\r\n#oprange{\r\n  margin-left: 20px;\r\n  width: 60%;\r\n  font-family:sans-serif;\r\n}\r\n#name{\r\n  font-family:sans-serif;\r\n}\r\n#redrange{\r\n  margin-left: 60px;\r\n  width: 60%;\r\n  font-family:sans-serif;\r\n}\r\n#greenrange{\r\n  margin-left: 60px;\r\n  width: 60%;\r\n  font-family:sans-serif;\r\n}\r\n#bluerange{\r\n  margin-left: 60px;\r\n  width: 60%;\r\n  font-family:sans-serif;\r\n}\r\n#linerange{\r\n  margin-left: 5px;\r\n  width: 50%;\r\n  font-family:sans-serif;\r\n}\r\n#pointrange{\r\n  margin-left: 3px;\r\n  width: 50%;\r\n  font-family:sans-serif;\r\n}\r\n#sizerange{\r\n  width: 50%;\r\n  font-family:sans-serif;\r\n}\r\n#centerx{\r\n  width:50px;\r\n  margin-left:10px;\r\n}\r\n#centery{\r\n  width:50px;\r\n  margin-left:10px;\r\n}\r\n#centerz{\r\n  width:50px;\r\n  margin-left:10px;\r\n  margin-right:30px;\r\n}\r\n.name{\r\n  margin-left: 15px;\r\n}\r\n::ng-deep .mat-accent .mat-slider-thumb {\r\n    background-color: #395d73;\r\n    font-family:sans-serif;\r\n}\r\n::ng-deep .mat-accent .mat-slider-thumb-label {\r\n    background-color: #395d73;\r\n    font-family:sans-serif;\r\n}\r\n::ng-deep .mat-accent .mat-slider-track-fill {\r\n    background-color: #395d73;\r\n    font-family:sans-serif;\r\n} ", ""]);
 
 // exports
 
@@ -3730,7 +3737,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/gs-viewer/setting/setting.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"settingview\" (click)=\"setting($event)\">\r\n  <input id=\"grid\" #grid type=\"checkbox\" [checked]=\"gridVisible\" (click)=\"changegrid()\"> <label id=\"name\" value=\"gridVisible\">grid</label>\r\n  <input id=\"axis\"  type=\"checkbox\" [checked]=\"axisVisible\" (click)=\"changeaxis()\"> <label id=\"name\" value=\"axisVisible\">axis</label>\r\n  <input id=\"shadow\"  type=\"checkbox\" [checked]=\"shadowVisible\" (click)=\"changeshadow()\"> <label id=\"name\" value=\"shadowVisible\">shadow</label>\r\n  <input id=\"frame\"  type=\"checkbox\" [checked]=\"frameVisible\" (click)=\"changeframe()\"> <label id=\"name\" value=\"frameVisible\">frame</label><br/>\r\n  <hr/><label class=\"name\" >Grid Center</label><br/>\r\n  <label class=\"name\" >X</label><input type=\"text\" name=\"center\" id=\"centerx\" #centerx value={{_centerx}}>\r\n  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label id=\"name\" >Y</label><input type=\"text\" name=\"center\" #centery id=\"centery\" value={{_centery}}>\r\n  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label id=\"name\" >Z</label><input type=\"text\" name=\"center\"  #centerz id=\"centerz\" value={{_centerz}}>\r\n  <button (click)=\"changecenter(centerx.value,centery.value,centerz.value)\">Set</button>\r\n  <!-- <hr/>&nbsp;&nbsp;&nbsp;&nbsp;<label id=\"name\" >Raycaster Precision</label>&nbsp;&nbsp;<br/>-->\r\n  <label class=\"name\" >Line Precision</label>\r\n  <mat-slider class=\"slider\" name=\"range\" id=\"linerange\" min=0 max=1 step=0.01  value={{_linepre}} #linepre (change)=\"changeline(linepre.value)\" ></mat-slider><label id=\"name\" >{{linepre.value.toPrecision(2)}}</label><br/>\r\n  <!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label id=\"name\" >Point Precision</label>\r\n  <mat-slider class=\"slider\" name=\"range\" id=\"pointrange\" min=0 max=1 step=0.01  value={{_pointpre}} #pointpre (change)=\"changepoint(pointpre.value)\" ></mat-slider><label id=\"name\" >{{pointpre.value.toPrecision(2)}}</label><br/> -->\r\n  <label class=\"name\" >Points Size</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\r\n  <mat-slider class=\"slider\" name=\"range\" id=\"sizerange\" min=0 max=5 step=0.1  value={{_pointsize}} #pointsize (change)=\"changepointsize(pointsize.value)\" ></mat-slider><label id=\"name\" >{{pointsize.value.toPrecision(2)}}</label><br/>\r\n\r\n  <hr/><label class=\"name\" >Hemisphere Light</label>&nbsp;&nbsp;<br/>\r\n  &nbsp;&nbsp;&nbsp;<label class=\"name\" >hue</label>\r\n  <mat-slider class=\"slider\" name=\"range\" id=\"huerange\" min=0 max=360 step=1  value={{hue}} #slider (change)=\"changelight(slider.value,slider1.value,slider2.value)\" ></mat-slider><label id=\"name\" >{{slider.value}}</label><br/>\r\n  <label class=\"name\" >saturation</label>\r\n  <mat-slider name=\"range\" id=\"satrange\" min=0 max=1 step=0.01 value={{saturation}} #slider1 (change)=\"changelight(slider.value,slider1.value,slider2.value)\" ></mat-slider><label id=\"name\" >{{slider1.value.toPrecision(2)}}</label><br/>\r\n  <label class=\"name\" >lightness</label>\r\n  <mat-slider name=\"range\" id=\"lirange\" min=0 max=1 step=0.01 value={{lightness}} #slider2 (change)=\"changelight(slider.value,slider1.value,slider2.value)\" ></mat-slider><label id=\"name\" >{{slider2.value.toPrecision(2)}}</label><br/>\r\n  <!-- &nbsp;&nbsp;&nbsp;&nbsp;<label id=\"name\" >opacity</label>&nbsp;&nbsp;&nbsp;\r\n  <mat-slider name=\"range\" id=\"oprange\" min=0 max=1 step=0.01 value={{opacity}} #slider3 (change)=\"changeopa(slider3.value)\" ></mat-slider><label id=\"name\" >{{slider3.value.toPrecision(2)}}</label><br/> -->\r\n  <!-- <hr/>&nbsp;&nbsp;&nbsp;&nbsp;<label id=\"name\" >Backeground Color</label>&nbsp;&nbsp;<br/>\r\n  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label id=\"name\" >R</label>\r\n  <mat-slider  name=\"range\" id=\"redrange\" min=0 max=1 step=0.01  value={{red}} #slider4 (change)=\"changeback(slider4.value,slider5.value,slider6.value)\" ></mat-slider><label id=\"name\" >{{slider4.value.toPrecision(2)}}</label><br/>\r\n  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label id=\"name\" >G</label>\r\n  <mat-slider name=\"range\" id=\"greenrange\" min=0 max=1 step=0.01 value={{green}} #slider5 (change)=\"changeback(slider4.value,slider5.value,slider6.value)\" ></mat-slider><label id=\"name\" >{{slider5.value.toPrecision(2)}}</label><br/>\r\n  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label id=\"name\" >B</label>\r\n  <mat-slider name=\"range\" id=\"bluerange\" min=0 max=1 step=0.01 value={{blue}} #slider6 (change)=\"changeback(slider4.value,slider5.value,slider6.value)\" ></mat-slider><label id=\"name\" >{{slider6.value.toPrecision(2)}}</label><br/> -->\r\n</div>"
+module.exports = "<div id=\"settingview\" (click)=\"setting($event)\">\r\n  <input id=\"grid\" #grid type=\"checkbox\" [checked]=\"gridVisible\" (click)=\"changegrid()\"> <label id=\"name\" value=\"gridVisible\">grid</label>\r\n  <input id=\"axis\"  type=\"checkbox\" [checked]=\"axisVisible\" (click)=\"changeaxis()\"> <label id=\"name\" value=\"axisVisible\">axis</label>\r\n  <input id=\"shadow\"  type=\"checkbox\" [checked]=\"shadowVisible\" (click)=\"changeshadow()\"> <label id=\"name\" value=\"shadowVisible\">shadow</label>\r\n  <input id=\"frame\"  type=\"checkbox\" [checked]=\"frameVisible\" (click)=\"changeframe()\"> <label id=\"name\" value=\"frameVisible\">frame</label><br/>\r\n  <input id=\"nomal\"  type=\"checkbox\" [checked]=\"normalVisible\" (click)=\"changenormal()\"> <label id=\"name\" value=\"nomalVisible\">nomal</label><br/>\r\n  \r\n  <hr/><label class=\"name\" >Grid Center</label><br/>\r\n  <label class=\"name\" >X</label><input type=\"text\" name=\"center\" id=\"centerx\" #centerx value={{_centerx}}>\r\n  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label id=\"name\" >Y</label><input type=\"text\" name=\"center\" #centery id=\"centery\" value={{_centery}}>\r\n  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label id=\"name\" >Z</label><input type=\"text\" name=\"center\"  #centerz id=\"centerz\" value={{_centerz}}>\r\n  <button (click)=\"changecenter(centerx.value,centery.value,centerz.value)\">Set</button>\r\n  <!-- <hr/>&nbsp;&nbsp;&nbsp;&nbsp;<label id=\"name\" >Raycaster Precision</label>&nbsp;&nbsp;<br/>-->\r\n  <label class=\"name\" >Line Precision</label>\r\n  <mat-slider class=\"slider\" name=\"range\" id=\"linerange\" min=0 max=1 step=0.01  value={{_linepre}} #linepre (change)=\"changeline(linepre.value)\" ></mat-slider><label id=\"name\" >{{linepre.value.toPrecision(2)}}</label><br/>\r\n  <!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label id=\"name\" >Point Precision</label>\r\n  <mat-slider class=\"slider\" name=\"range\" id=\"pointrange\" min=0 max=1 step=0.01  value={{_pointpre}} #pointpre (change)=\"changepoint(pointpre.value)\" ></mat-slider><label id=\"name\" >{{pointpre.value.toPrecision(2)}}</label><br/> -->\r\n  <label class=\"name\" >Points Size</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\r\n  <mat-slider class=\"slider\" name=\"range\" id=\"sizerange\" min=0 max=5 step=0.1  value={{_pointsize}} #pointsize (change)=\"changepointsize(pointsize.value)\" ></mat-slider><label id=\"name\" >{{pointsize.value.toPrecision(2)}}</label><br/>\r\n\r\n  <hr/><label class=\"name\" >Hemisphere Light</label>&nbsp;&nbsp;<br/>\r\n  &nbsp;&nbsp;&nbsp;<label class=\"name\" >hue</label>\r\n  <mat-slider class=\"slider\" name=\"range\" id=\"huerange\" min=0 max=360 step=1  value={{hue}} #slider (change)=\"changelight(slider.value,slider1.value,slider2.value)\" ></mat-slider><label id=\"name\" >{{slider.value}}</label><br/>\r\n  <label class=\"name\" >saturation</label>\r\n  <mat-slider name=\"range\" id=\"satrange\" min=0 max=1 step=0.01 value={{saturation}} #slider1 (change)=\"changelight(slider.value,slider1.value,slider2.value)\" ></mat-slider><label id=\"name\" >{{slider1.value.toPrecision(2)}}</label><br/>\r\n  <label class=\"name\" >lightness</label>\r\n  <mat-slider name=\"range\" id=\"lirange\" min=0 max=1 step=0.01 value={{lightness}} #slider2 (change)=\"changelight(slider.value,slider1.value,slider2.value)\" ></mat-slider><label id=\"name\" >{{slider2.value.toPrecision(2)}}</label><br/>\r\n  <!-- &nbsp;&nbsp;&nbsp;&nbsp;<label id=\"name\" >opacity</label>&nbsp;&nbsp;&nbsp;\r\n  <mat-slider name=\"range\" id=\"oprange\" min=0 max=1 step=0.01 value={{opacity}} #slider3 (change)=\"changeopa(slider3.value)\" ></mat-slider><label id=\"name\" >{{slider3.value.toPrecision(2)}}</label><br/> -->\r\n  <!-- <hr/>&nbsp;&nbsp;&nbsp;&nbsp;<label id=\"name\" >Backeground Color</label>&nbsp;&nbsp;<br/>\r\n  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label id=\"name\" >R</label>\r\n  <mat-slider  name=\"range\" id=\"redrange\" min=0 max=1 step=0.01  value={{red}} #slider4 (change)=\"changeback(slider4.value,slider5.value,slider6.value)\" ></mat-slider><label id=\"name\" >{{slider4.value.toPrecision(2)}}</label><br/>\r\n  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label id=\"name\" >G</label>\r\n  <mat-slider name=\"range\" id=\"greenrange\" min=0 max=1 step=0.01 value={{green}} #slider5 (change)=\"changeback(slider4.value,slider5.value,slider6.value)\" ></mat-slider><label id=\"name\" >{{slider5.value.toPrecision(2)}}</label><br/>\r\n  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label id=\"name\" >B</label>\r\n  <mat-slider name=\"range\" id=\"bluerange\" min=0 max=1 step=0.01 value={{blue}} #slider6 (change)=\"changeback(slider4.value,slider5.value,slider6.value)\" ></mat-slider><label id=\"name\" >{{slider6.value.toPrecision(2)}}</label><br/> -->\r\n</div>"
 
 /***/ }),
 
@@ -4030,6 +4037,27 @@ let SettingComponent = class SettingComponent {
         this.dataService.getblue(_blue);
         this.scene.background = new __WEBPACK_IMPORTED_MODULE_0_three__["Color"](_red, _green, _blue);
     }
+    changenormal() {
+        this.nomalVisible = !this.nomalVisible;
+        if (this.nomalVisible) {
+            /*for(var i=0;i<this.scene.children.length;i++){
+              if(this.scene.children[i].type==="Scene"){
+                for(var j=0;j<this.scene.children[i].children.length;j++){
+                  if(this.scene.children[i].children[j].type==="Mesh"){
+                    var mesh=this.scene.children[i].children[j];
+                    var faceNormalsHelper = new THREE.FaceNormalsHelper( mesh, 10 );
+                    mesh.add( faceNormalsHelper );
+                    var verticehelper = new THREE.VertexNormalsHelper( mesh, 10 );
+                    this.scene.add(verticehelper);
+                    console.log(this.scene);
+                    //facehelper.visible=false;
+                    //this.scene.add(verticehelper);
+                  }
+                }
+              }
+            }*/
+        }
+    }
     setting(event) {
         event.stopPropagation();
     }
@@ -4137,7 +4165,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "#toolwindow{\r\n  background-color:white;\r\n}\r\n#toolbar{\r\n  background-color: #E6E6E6;\r\n  float: left;\r\n  width: 50%;\r\n  height: 28px;\r\n  left: 30px;\r\n  margin-top:0px;\r\n}\r\n#point{\r\n  margin-left:25px;\r\n  font-size:20px;\r\n  background:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n#vertice{\r\n  font-size:22px;\r\n  background-color:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n#edge{\r\n  font-size:22px;\r\n  background-color:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n#wire{\r\n  font-size:22px;\r\n  background-color:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n#face{\r\n  font-size:22px;\r\n  background-color:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n#object{\r\n  font-size:20px;\r\n  background-color:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n#selected{\r\n  margin-left:30px;\r\n}\r\n.visible{\r\n  background-color: white !important;\r\n  color:#395d73;\r\n}\r\n.selectvisible{\r\n  background-color:  white !important;\r\n  color:#395d73;\r\n}\r\n#table{\r\n  width:100% ;\r\n  height: 15px;\r\n}\r\n#tablename{\r\n  width:100% ;\r\n  height: 15px;\r\n  color:grey;\r\n}\r\n#numberbutton{\r\n  width:100%;\r\n  border:0;\r\n}\r\n/*.selectid{\r\n  background-color:#66CCFF;\r\n}*/\r\n#select{\r\n  position: relative;\r\n  float:right;\r\n  margin-right: 30px;\r\n}\r\n#pagination{\r\n  position:relative;\r\n  width: 50%;\r\n  background-color: #E6E6E6;\r\n  float: right;\r\n  right: 0px;\r\n  height: 28px;\r\n  color:black !important;\r\n  top:0px;\r\n}\r\n.my-pagination /deep/ .ngx-pagination{\r\n  margin:0px !important;\r\n  color:black !important;\r\n  float: right;\r\n  margin-right:20px !important;\r\n}\r\n.my-pagination /deep/ .ngx-pagination .current {\r\n  margin-top:0px;\r\n  color:black;\r\n  background-color: white;\r\n}", ""]);
+exports.push([module.i, "#toolwindow{\r\n  background-color:white;\r\n}\r\n#toolbar{\r\n  background-color: #E6E6E6;\r\n  float: left;\r\n  width: 50%;\r\n  height: 28px;\r\n  left: 30px;\r\n  margin-top:0px;\r\n}\r\n#point{\r\n  margin-left:25px;\r\n  font-size:15px;\r\n  background:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n#vertice{\r\n  font-size:15px;\r\n  background-color:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n#edge{\r\n  font-size:15px;\r\n  background-color:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n#wire{\r\n  font-size:15px;\r\n  background-color:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n#face{\r\n  font-size:15px;\r\n  background-color:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n#object{\r\n  font-size:15px;\r\n  background-color:transparent;\r\n  border:0;\r\n  font-family:sans-serif;\r\n}\r\n#selected{\r\n  margin-left:30px;\r\n}\r\n.visible{\r\n  background-color: white !important;\r\n  color:#395d73;\r\n}\r\n.selectvisible{\r\n  background-color:  white !important;\r\n  color:#395d73;\r\n}\r\n#table{\r\n  width:100% ;\r\n  height: 15px;\r\n}\r\n#tablename{\r\n  width:100% ;\r\n  height: 15px;\r\n  color:grey;\r\n}\r\n#numberbutton{\r\n  width:100%;\r\n  border:0;\r\n}\r\n/*.selectid{\r\n  background-color:#66CCFF;\r\n}*/\r\n#select{\r\n  position: relative;\r\n  float:right;\r\n  margin-right: 30px;\r\n}\r\n#pagination{\r\n  position:relative;\r\n  width: 50%;\r\n  background-color: #E6E6E6;\r\n  float: right;\r\n  right: 0px;\r\n  height: 28px;\r\n  color:black !important;\r\n  top:0px;\r\n}\r\n.my-pagination /deep/ .ngx-pagination{\r\n  margin:0px !important;\r\n  color:black !important;\r\n  float: right;\r\n  margin-right:20px !important;\r\n}\r\n.my-pagination /deep/ .ngx-pagination .current {\r\n  margin-top:0px;\r\n  color:black;\r\n  background-color: white;\r\n}", ""]);
 
 // exports
 
@@ -4150,7 +4178,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/gs-viewer/toolwindow/toolwindow.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"toolwindow\">\r\n  <div id=\"toolbar\">\r\n    <button id=\"point\" [class.visible]=\"Visible === 'Points'\" (click)=\"point(Visible)\">P</button>\r\n    <button id=\"vertice\" [class.visible]=\"Visible === 'Vertices'\" (click)=\"vertice(Visible)\">V</button>\r\n    <button id=\"edge\" [class.visible]=\"Visible === 'Edges'\" (click)=\"edge(Visible)\">E</button>\r\n    <button id=\"wire\" [class.visible]=\"Visible === 'Wires'\" (click)=\"wire(Visible)\">W</button>\r\n    <button id=\"face\" [class.visible]=\"Visible === 'Faces'\" (click)=\"face(Visible)\">F</button>\r\n    <button id=\"object\" [class.visible]=\"Visible === 'Objs'\" (click)=\"object(Visible)\">O</button>\r\n    <input id=\"selected\" type=\"checkbox\" (click)=\"changeselected()\">\r\n    <label id=\"selectedname\" value=\"selected\">Show selected only</label>\r\n\r\n    <!-- <pagination-controls id=\"pagination\" (pageChange)=\"p = $event\"></pagination-controls> -->\r\n    <!-- <div id=\"pagination\">\r\n    <ul>\r\n      <li *ngFor=\"let item of attribute | paginate: { itemsPerPage: 50, currentPage: p }\">{{item}}</li>\r\n    </ul> \r\n   <pagination-controls (pageChange)=\"p = $event\"></pagination-controls>\r\n  </div> -->\r\n    <!-- <div id=\"select\">\r\n      <button id=\"vertice\" [class.selectvisible]=\"SelectVisible === 'Vertices'\" (click)=\"verticeselect(SelectVisible)\">V</button>\r\n      <button id=\"edge\" [class.selectvisible]=\"SelectVisible === 'Edges'\" (click)=\"edgeselect(SelectVisible)\">E</button>\r\n      <button id=\"wire\" [class.selectvisible]=\"SelectVisible === 'Wires'\" (click)=\"wireselect(SelectVisible)\">W</button>\r\n      <button id=\"face\" [class.selectvisible]=\"SelectVisible === 'Faces'\" (click)=\"faceselect(SelectVisible)\">F</button>\r\n      <button id=\"object\" [class.selectvisible]=\"SelectVisible === 'Objs'\" (click)=\"objectselect(SelectVisible)\"><i class=\"fa fa-map\"></i></button>\r\n    </div> -->\r\n\r\n  </div>\r\n  <div id=\"pagination\">\r\n    <pagination-controls *ngIf=\"Visible === 'Points'\" class=\"my-pagination\" (pageChange)=\"p1 = $event\"></pagination-controls> \r\n    <pagination-controls *ngIf=\"Visible === 'Vertices'\" class=\"my-pagination\" (pageChange)=\"p2 = $event\"></pagination-controls> \r\n    <pagination-controls *ngIf=\"Visible === 'Edges'\" class=\"my-pagination\" (pageChange)=\"p3 = $event\"></pagination-controls> \r\n    <pagination-controls *ngIf=\"Visible === 'Wires'\" class=\"my-pagination\" (pageChange)=\"p4 = $event\"></pagination-controls> \r\n    <pagination-controls *ngIf=\"Visible === 'Faces'\" class=\"my-pagination\" (pageChange)=\"p5 = $event\"></pagination-controls>\r\n    <pagination-controls *ngIf=\"Visible === 'Objs'\" class=\"my-pagination\" (pageChange)=\"p6 = $event\"></pagination-controls>  \r\n  </div>\r\n  <div id=\"toolview\">\r\n    <div *ngIf=\"Visible === 'Points'\">\r\n     <!-- <div class=\"pagination\"> <pagination-controls  (pageChange)=\"p1 = $event\"></pagination-controls> </div> -->\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\" id=\"table\" name=\"table\" bordercolor=\"#d0d0d0\">\r\n        <tr>\r\n          <td name=\"Number\" align=center width=\"40%\" align=center>ID</td>\r\n          <td width=\"20%\" align=center>X</td>\r\n          <td width=\"20%\" align=center>Y</td>\r\n          <td width=\"20%\" align=center>Z</td>\r\n        </tr>\r\n      </table>\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\" id=\"tablename\" name=\"table\" bordercolor=\"#d0d0d0\" *ngFor=\"let datascale of attribute| paginate: { itemsPerPage: 50, currentPage: p1 }\">\r\n        <tr>\r\n          <button id=\"numberbutton\">{{datascale.id}}</button>\r\n          <td width=\"20%\" align=center>{{datascale.x}}</td>\r\n          <td width=\"20%\" align=center>{{datascale.y}}</td>\r\n          <td width=\"20%\" align=center>{{datascale.z}}</td>\r\n        <tr>\r\n      </table>\r\n      <!-- <pagination-controls (pageChange)=\"p1 = $event\"></pagination-controls>  -->\r\n    </div>\r\n    <div *ngIf=\"Visible === 'Vertices'\">\r\n      <!-- <pagination-controls (pageChange)=\"p2 = $event\"></pagination-controls> -->\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\" bordercolor=\"#d0d0d0\" width=\"50%\">\r\n        <tr>\r\n          <td  align=center width=\"25%\">Vertices Label</td>\r\n          <td  align=center width=\"25%\">Points ID</td>\r\n        </tr>\r\n      </table>\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\" bordercolor=\"#d0d0d0\" *ngFor=\"let datascale of attribute| paginate: { itemsPerPage: 50, currentPage: p2 }\" width=\"50%\">\r\n        <tr>\r\n          <!-- <button id=\"numberbutton\" [class.selectid]=\"ID == datascale.id\" (click)=clicktoshow(datascale.id)>{{datascale.vertixlabel}}</button> -->\r\n          <button id=\"numberbutton\" (click)=clicktoshow(datascale)>{{datascale.vertixlabel}}</button>\r\n          <td  align=center  width=\"50%\">{{datascale.pointid}}</td>\r\n        </tr>\r\n      </table>\r\n      <!-- <pagination-controls (pageChange)=\"p2 = $event\"></pagination-controls> -->\r\n    </div>\r\n    <div *ngIf=\"Visible === 'Edges'\">\r\n      <!-- <pagination-controls (pageChange)=\"p3 = $event\"></pagination-controls> -->\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" width=\"40%\">\r\n        <tr>\r\n          <td  align=center>Edge ID</td>\r\n        </tr>\r\n      </table>\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" *ngFor=\"let datascale of attribute| paginate: { itemsPerPage: 50, currentPage: p3 }\" width=\"40%\">\r\n        <tr>\r\n          <!-- <button id=\"numberbutton\"[class.selectid]=\"ID == datascale.id\" (click)=clicktoshow(datascale.id) >{{datascale.id}}</button> -->\r\n          <button id=\"numberbutton\">{{datascale}}</button>\r\n        </tr>\r\n      </table>\r\n      <!-- <pagination-controls (pageChange)=\"p3 = $event\"></pagination-controls> -->\r\n    </div>\r\n    <div *ngIf=\"Visible === 'Wires'\">\r\n      <!-- <pagination-controls (pageChange)=\"p4 = $event\"></pagination-controls> -->\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" width=\"40%\">\r\n        <tr>\r\n          <td  align=center>Wire ID</td>\r\n        </tr>\r\n      </table>\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" *ngFor=\"let datascale of attribute| paginate: { itemsPerPage: 50, currentPage: p4 }\" width=\"40%\">\r\n        <tr>\r\n          <button id=\"numberbutton\" >{{datascale}}</button>\r\n        </tr>\r\n      </table>\r\n      <!-- <pagination-controls (pageChange)=\"p4 = $event\"></pagination-controls> -->\r\n    </div>\r\n    <div *ngIf=\"Visible === 'Faces'\">\r\n      <!-- <pagination-controls (pageChange)=\"p5 = $event\"></pagination-controls> -->\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" width=\"40%\">\r\n        <tr>\r\n          <td  align=center>Face ID</td>\r\n        </tr>\r\n      </table>\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" *ngFor=\"let datascale of attribute| paginate: { itemsPerPage: 50, currentPage: p5 }\" width=\"40%\">\r\n        <tr>\r\n          <button id=\"numberbutton\" >{{datascale}}</button>\r\n        </tr>\r\n      </table>\r\n       <!-- <pagination-controls (pageChange)=\"p5 = $event\"></pagination-controls> -->\r\n    </div>\r\n    <div *ngIf=\"Visible === 'Objs'\">\r\n      <!-- <pagination-controls (pageChange)=\"p6 = $event\"></pagination-controls> -->\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" width=\"40%\">\r\n        <tr>\r\n          <td name=\"Number\" align=center  align=center>Object ID</td>\r\n        </tr>\r\n      </table>\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" *ngFor=\"let datascale of attribute| paginate: { itemsPerPage: 50, currentPage: p6 } \" width=\"40%\">\r\n        <tr>\r\n          <button  id=\"numberbutton\"  >{{datascale}}</button>\r\n        </tr>\r\n      </table>\r\n      <!-- <pagination-controls (pageChange)=\"p6 = $event\"></pagination-controls> -->\r\n    </div>\r\n  </div>\r\n"
+module.exports = "<div id=\"toolwindow\">\r\n  <div id=\"toolbar\">\r\n    <button id=\"point\" [class.visible]=\"Visible === 'Points'\" (click)=\"point(Visible)\">P</button>\r\n    <button id=\"vertice\" [class.visible]=\"Visible === 'Vertices'\" (click)=\"vertice(Visible)\">V</button>\r\n    <button id=\"edge\" [class.visible]=\"Visible === 'Edges'\" (click)=\"edge(Visible)\">E</button>\r\n    <button id=\"wire\" [class.visible]=\"Visible === 'Wires'\" (click)=\"wire(Visible)\">W</button>\r\n    <button id=\"face\" [class.visible]=\"Visible === 'Faces'\" (click)=\"face(Visible)\">F</button>\r\n    <button id=\"object\" [class.visible]=\"Visible === 'Objs'\" (click)=\"object(Visible)\">O</button>\r\n    <input id=\"selected\" type=\"checkbox\" (click)=\"changeselected()\">\r\n    <label id=\"selectedname\" value=\"selected\">Show selected only</label>\r\n\r\n    <!-- <pagination-controls id=\"pagination\" (pageChange)=\"p = $event\"></pagination-controls> -->\r\n    <!-- <div id=\"pagination\">\r\n    <ul>\r\n      <li *ngFor=\"let item of attribute | paginate: { itemsPerPage: 50, currentPage: p }\">{{item}}</li>\r\n    </ul> \r\n   <pagination-controls (pageChange)=\"p = $event\"></pagination-controls>\r\n  </div> -->\r\n    <!-- <div id=\"select\">\r\n      <button id=\"vertice\" [class.selectvisible]=\"SelectVisible === 'Vertices'\" (click)=\"verticeselect(SelectVisible)\">V</button>\r\n      <button id=\"edge\" [class.selectvisible]=\"SelectVisible === 'Edges'\" (click)=\"edgeselect(SelectVisible)\">E</button>\r\n      <button id=\"wire\" [class.selectvisible]=\"SelectVisible === 'Wires'\" (click)=\"wireselect(SelectVisible)\">W</button>\r\n      <button id=\"face\" [class.selectvisible]=\"SelectVisible === 'Faces'\" (click)=\"faceselect(SelectVisible)\">F</button>\r\n      <button id=\"object\" [class.selectvisible]=\"SelectVisible === 'Objs'\" (click)=\"objectselect(SelectVisible)\"><i class=\"fa fa-map\"></i></button>\r\n    </div> -->\r\n\r\n  </div>\r\n  <div id=\"pagination\">\r\n    <pagination-controls *ngIf=\"Visible === 'Points'\" class=\"my-pagination\" (pageChange)=\"p1 = $event\"></pagination-controls> \r\n    <pagination-controls *ngIf=\"Visible === 'Vertices'\" class=\"my-pagination\" (pageChange)=\"p2 = $event\"></pagination-controls> \r\n    <pagination-controls *ngIf=\"Visible === 'Edges'\" class=\"my-pagination\" (pageChange)=\"p3 = $event\"></pagination-controls> \r\n    <pagination-controls *ngIf=\"Visible === 'Wires'\" class=\"my-pagination\" (pageChange)=\"p4 = $event\"></pagination-controls> \r\n    <pagination-controls *ngIf=\"Visible === 'Faces'\" class=\"my-pagination\" (pageChange)=\"p5 = $event\"></pagination-controls>\r\n    <pagination-controls *ngIf=\"Visible === 'Objs'\" class=\"my-pagination\" (pageChange)=\"p6 = $event\"></pagination-controls>  \r\n  </div>\r\n  <div id=\"toolview\">\r\n    <div *ngIf=\"Visible === 'Points'\">\r\n     <!-- <div class=\"pagination\"> <pagination-controls  (pageChange)=\"p1 = $event\"></pagination-controls> </div> -->\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\" id=\"table\" name=\"table\" bordercolor=\"#d0d0d0\">\r\n        <tr>\r\n          <td name=\"Number\" align=center width=\"40%\" align=center>ID</td>\r\n          <td width=\"20%\" align=center>X</td>\r\n          <td width=\"20%\" align=center>Y</td>\r\n          <td width=\"20%\" align=center>Z</td>\r\n        </tr>\r\n      </table>\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\" id=\"tablename\" name=\"table\" bordercolor=\"#d0d0d0\" *ngFor=\"let datascale of attribute| paginate: { itemsPerPage: 50, currentPage: p1 }\">\r\n        <tr>\r\n          <button id=\"numberbutton\" (click)=Onselect(datascale)>{{datascale.id}}</button>\r\n          <td width=\"20%\" align=center>{{datascale.x}}</td>\r\n          <td width=\"20%\" align=center>{{datascale.y}}</td>\r\n          <td width=\"20%\" align=center>{{datascale.z}}</td>\r\n        <tr>\r\n      </table>\r\n      <!-- <pagination-controls (pageChange)=\"p1 = $event\"></pagination-controls>  -->\r\n    </div>\r\n    <div *ngIf=\"Visible === 'Vertices'\">\r\n      <!-- <pagination-controls (pageChange)=\"p2 = $event\"></pagination-controls> -->\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\" bordercolor=\"#d0d0d0\" width=\"50%\">\r\n        <tr>\r\n          <td  align=center width=\"25%\">Vertices Label</td>\r\n          <td  align=center width=\"25%\">Points ID</td>\r\n        </tr>\r\n      </table>\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\" bordercolor=\"#d0d0d0\" *ngFor=\"let datascale of attribute| paginate: { itemsPerPage: 50, currentPage: p2 }\" width=\"50%\">\r\n        <tr>\r\n          <!-- <button id=\"numberbutton\" [class.selectid]=\"ID == datascale.id\" (click)=clicktoshow(datascale.id)>{{datascale.vertixlabel}}</button> -->\r\n          <button id=\"numberbutton\" (click)=Onselect(datascale)>{{datascale.vertixlabel}}</button>\r\n          <td  align=center  width=\"50%\">{{datascale.pointid}}</td>\r\n        </tr>\r\n      </table>\r\n      <!-- <pagination-controls (pageChange)=\"p2 = $event\"></pagination-controls> -->\r\n    </div>\r\n    <div *ngIf=\"Visible === 'Edges'\">\r\n      <!-- <pagination-controls (pageChange)=\"p3 = $event\"></pagination-controls> -->\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" width=\"40%\">\r\n        <tr>\r\n          <td  align=center>Edge ID</td>\r\n        </tr>\r\n      </table>\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" *ngFor=\"let datascale of attribute| paginate: { itemsPerPage: 50, currentPage: p3 }\" width=\"40%\">\r\n        <tr>\r\n          <!-- <button id=\"numberbutton\"[class.selectid]=\"ID == datascale.id\" (click)=clicktoshow(datascale.id) >{{datascale.id}}</button> -->\r\n          <button id=\"numberbutton\" (click)=Onselect(datascale)>{{datascale}}</button>\r\n        </tr>\r\n      </table>\r\n      <!-- <pagination-controls (pageChange)=\"p3 = $event\"></pagination-controls> -->\r\n    </div>\r\n    <div *ngIf=\"Visible === 'Wires'\">\r\n      <!-- <pagination-controls (pageChange)=\"p4 = $event\"></pagination-controls> -->\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" width=\"40%\">\r\n        <tr>\r\n          <td  align=center>Wire ID</td>\r\n        </tr>\r\n      </table>\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" *ngFor=\"let datascale of attribute| paginate: { itemsPerPage: 50, currentPage: p4 }\" width=\"40%\">\r\n        <tr>\r\n          <button id=\"numberbutton\" >{{datascale}}</button>\r\n        </tr>\r\n      </table>\r\n      <!-- <pagination-controls (pageChange)=\"p4 = $event\"></pagination-controls> -->\r\n    </div>\r\n    <div *ngIf=\"Visible === 'Faces'\">\r\n      <!-- <pagination-controls (pageChange)=\"p5 = $event\"></pagination-controls> -->\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" width=\"40%\">\r\n        <tr>\r\n          <td  align=center>Face ID</td>\r\n        </tr>\r\n      </table>\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" *ngFor=\"let datascale of attribute| paginate: { itemsPerPage: 50, currentPage: p5 }\" width=\"40%\">\r\n        <tr>\r\n          <button id=\"numberbutton\" >{{datascale}}</button>\r\n        </tr>\r\n      </table>\r\n       <!-- <pagination-controls (pageChange)=\"p5 = $event\"></pagination-controls> -->\r\n    </div>\r\n    <div *ngIf=\"Visible === 'Objs'\">\r\n      <!-- <pagination-controls (pageChange)=\"p6 = $event\"></pagination-controls> -->\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" width=\"40%\">\r\n        <tr>\r\n          <td name=\"Number\" align=center  align=center>Object ID</td>\r\n        </tr>\r\n      </table>\r\n      <table border=\"1\" cellspacing=\"0\" cellpadding=\"0\"  bordercolor=\"#d0d0d0\" *ngFor=\"let datascale of attribute| paginate: { itemsPerPage: 50, currentPage: p6 } \" width=\"40%\">\r\n        <tr>\r\n          <button  id=\"numberbutton\"  >{{datascale}}</button>\r\n        </tr>\r\n      </table>\r\n      <!-- <pagination-controls (pageChange)=\"p6 = $event\"></pagination-controls> -->\r\n    </div>\r\n  </div>\r\n"
 
 /***/ }),
 
@@ -4638,18 +4666,76 @@ let ToolwindowComponent = class ToolwindowComponent extends __WEBPACK_IMPORTED_M
                 this.object(this.Visible);
         }
     }
-    Onselect(i) {
-        var select;
-        for (var n = 0; n < this.scene.children.length; n++) {
-            if (this.scene.children[n].type === "Scene") {
-                for (var m = 0; m < this.scene.children[n].children.length; m++) {
-                    var sprite = this.scene.children[n].children[m].children[this.scene.children[n].children[m].children.length - 1].children;
-                    for (var j = 0; j < sprite.length; j++) {
-                        if (sprite[j].name === i) {
-                        }
-                    }
-                }
+    Onselect(datascale) {
+        if (this.Visible === "Points") {
+            var point = [];
+            point.label = datascale.id;
+            point.id = datascale.id;
+            point.path = datascale.id;
+            point.type = "All points";
+            point.label_xyz = [datascale.x, datascale.y, datascale.z];
+            var geometry = new __WEBPACK_IMPORTED_MODULE_0_three__["Geometry"]();
+            geometry.vertices.push(new __WEBPACK_IMPORTED_MODULE_0_three__["Vector3"](point.label_xyz[0], point.label_xyz[1], point.label_xyz[2]));
+            var pointsmaterial = new __WEBPACK_IMPORTED_MODULE_0_three__["PointsMaterial"]({ color: 0x00ff00, size: 1 });
+            if (this.dataService.pointsize !== undefined) {
+                pointsmaterial.size = this.dataService.pointsize;
             }
+            const points = new __WEBPACK_IMPORTED_MODULE_0_three__["Points"](geometry, pointsmaterial);
+            points.userData.id = point.id;
+            points["material"].needsUpdate = true;
+            points.name = "selects";
+            this.scene.add(points);
+            this.dataService.addclickshow(point);
+        }
+        if (this.Visible === "Vertices") {
+            var vertice = [];
+            const path = datascale.path;
+            const vertices = this.model.getGeom().getTopo(path);
+            const label = vertices.getLabel();
+            const verts_xyz = vertices.getLabelCentroid();
+            vertice.label = label;
+            vertice.id = datascale.pointid;
+            vertice.path = datascale.path;
+            vertice.type = "All points";
+            vertice.label_xyz = [verts_xyz[0], verts_xyz[1], verts_xyz[2]];
+            var geometry = new __WEBPACK_IMPORTED_MODULE_0_three__["Geometry"]();
+            geometry.vertices.push(new __WEBPACK_IMPORTED_MODULE_0_three__["Vector3"](verts_xyz[0], verts_xyz[1], verts_xyz[2]));
+            var pointsmaterial = new __WEBPACK_IMPORTED_MODULE_0_three__["PointsMaterial"]({ color: 0x00ff00, size: 1 });
+            if (this.dataService.pointsize !== undefined) {
+                pointsmaterial.size = this.dataService.pointsize;
+            }
+            const points = new __WEBPACK_IMPORTED_MODULE_0_three__["Points"](geometry, pointsmaterial);
+            points.userData.id = vertice.id;
+            points["material"].needsUpdate = true;
+            points.name = "selects";
+            this.scene.add(points);
+            this.dataService.addclickshow(vertice);
+        }
+        if (this.Visible === "Vertices") {
+            var vertice = [];
+            const path = datascale.path;
+            const vertices = this.model.getGeom().getTopo(path);
+            const label = vertices.getLabel();
+            const verts_xyz = vertices.getLabelCentroid();
+            vertice.label = label;
+            vertice.id = datascale.pointid;
+            vertice.path = datascale.path;
+            vertice.type = "All points";
+            vertice.label_xyz = [verts_xyz[0], verts_xyz[1], verts_xyz[2]];
+            var geometry = new __WEBPACK_IMPORTED_MODULE_0_three__["Geometry"]();
+            geometry.vertices.push(new __WEBPACK_IMPORTED_MODULE_0_three__["Vector3"](verts_xyz[0], verts_xyz[1], verts_xyz[2]));
+            var pointsmaterial = new __WEBPACK_IMPORTED_MODULE_0_three__["PointsMaterial"]({ color: 0x00ff00, size: 1 });
+            if (this.dataService.pointsize !== undefined) {
+                pointsmaterial.size = this.dataService.pointsize;
+            }
+            const points = new __WEBPACK_IMPORTED_MODULE_0_three__["Points"](geometry, pointsmaterial);
+            points.userData.id = vertice.id;
+            points["material"].needsUpdate = true;
+            points.name = "selects";
+            this.scene.add(points);
+            this.dataService.addclickshow(vertice);
+        }
+        if (this.Visible === "Edges") {
         }
     }
 };
@@ -4764,12 +4850,6 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
         let self = this;
         function animate() {
             self.raycaster.setFromCamera(self.mouse, self.camera);
-            //self.controls.target.set(self.raycaster.ray.origin.x,self.raycaster.ray.origin.y,self.raycaster.ray.origin.z);
-            //console.log(self.raycaster.ray.origin);
-            //self.raycaster.linePrecision=0.05;
-            //self.raycaster.linePrecision=0.05;
-            //self.raycaster.params.Points.threshold=0.05;
-            //if(self.distance!==undefined) self.raycaster.params.Points.threshold=self.distance;
             self.scenechildren = self.dataService.getscenechild();
             var intersects = self.raycaster.intersectObjects(self.scenechildren);
             for (var i = 0; i < self.scenechildren.length; i++) {
@@ -4794,6 +4874,10 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
                 self.updateview();
             }
             self.onResize();
+            if (self.dataService.clickshow !== undefined && self.clickatt !== self.dataService.clickshow) {
+                self.clickatt = self.dataService.clickshow;
+                self.clickshow();
+            }
             requestAnimationFrame(animate);
             self.renderer.render(self.scene, self.camera);
         }
@@ -4945,6 +5029,13 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
             }
         }
         return children;
+    }
+    clickshow() {
+        var label = this.clickatt["label"];
+        var id = this.clickatt["id"];
+        var label_xyz = this.clickatt["label_xyz"];
+        var path = this.clickatt["path"];
+        this.addTextLabel(label, label_xyz, id, path, "All points");
     }
     /*closestpoint():number{
       var distance:number=0
@@ -5225,10 +5316,6 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
         var select = false;
         this.scenechildren = this.dataService.getscenechild();
         this.raycaster.setFromCamera(this.mouse, this.camera);
-        //this.raycaster.linePrecision = 0.05;
-        //this.raycaster.linePrecision = 0.5;
-        //this.raycaster.params.Points.threshold=0.05;
-        //this.raycaster.params.Points.threshold=this.distance;
         intersects = this.raycaster.intersectObjects(this.scenechildren);
         if (intersects.length > 0) {
             selectedObj = intersects[0].object;
@@ -5255,7 +5342,7 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
                         mesh.name = "selects";
                         this.scene.add(mesh);
                     }
-                    this.addTextLabel(label, label_xyz, label, index, path, "All objs");
+                    this.addTextLabel(label, label_xyz, label, path, "All objs");
                 }
                 else {
                     for (var j = 0; j < this.scene.children.length; j++) {
@@ -5288,7 +5375,7 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
                             mesh.name = "selects";
                             this.scene.add(mesh);
                         }
-                        this.addTextLabel(label, label_xyz, label, index, path, "All objs");
+                        this.addTextLabel(label, label_xyz, label, path, "All objs");
                     }
                 }
             }
@@ -5312,7 +5399,7 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
                     mesh["geometry"].computeVertexNormals();
                     mesh.name = "selects";
                     this.scene.add(mesh);
-                    this.addTextLabel(label, label_xyz, label, index, path, "All faces");
+                    this.addTextLabel(label, label_xyz, label, path, "All faces");
                 }
                 else {
                     for (var j = 0; j < this.scene.children.length; j++) {
@@ -5339,7 +5426,7 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
                         mesh["geometry"].computeVertexNormals();
                         mesh.name = "selects";
                         this.scene.add(mesh);
-                        this.addTextLabel(label, label_xyz, label, index, path, "All faces");
+                        this.addTextLabel(label, label_xyz, label, path, "All faces");
                     }
                 }
             }
@@ -5365,7 +5452,7 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
                     line["material"].needsUpdate = true;
                     line.name = "selects";
                     this.scene.add(line);
-                    this.addTextLabel(label, label_xyz, label, index, path, "All wires");
+                    this.addTextLabel(label, label_xyz, label, path, "All wires");
                 }
                 else {
                     for (var j = 0; j < this.scene.children.length; j++) {
@@ -5391,7 +5478,7 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
                         line["material"].needsUpdate = true;
                         line.name = "selects";
                         this.scene.add(line);
-                        this.addTextLabel(label, label_xyz, label, index, path, "All wires");
+                        this.addTextLabel(label, label_xyz, label, path, "All wires");
                     }
                 }
             }
@@ -5427,7 +5514,7 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
                         line["material"].needsUpdate = true;
                         line.name = "selects";
                         this.scene.add(line);
-                        this.addTextLabel(label, label_xyz, label, index, path, "All edges");
+                        this.addTextLabel(label, label_xyz, label, path, "All edges");
                     }
                     else {
                         for (var j = 0; j < this.scene.children.length; j++) {
@@ -5452,7 +5539,7 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
                             line.userData.id = label;
                             line.name = "selects";
                             this.scene.add(line);
-                            this.addTextLabel(label, label_xyz, label, index, path, "All edges");
+                            this.addTextLabel(label, label_xyz, label, path, "All edges");
                         }
                     }
                 }
@@ -5489,7 +5576,7 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
                         line["material"].needsUpdate = true;
                         line.name = "selects";
                         this.scene.add(line);
-                        this.addTextLabel(label, label_xyz, label, index, path, "Other lines");
+                        this.addTextLabel(label, label_xyz, label, path, "Other lines");
                     }
                     else {
                         for (var j = 0; j < this.scene.children.length; j++) {
@@ -5514,7 +5601,7 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
                             line.userData.id = label;
                             line.name = "selects";
                             this.scene.add(line);
-                            this.addTextLabel(label, label_xyz, label, index, path, "Other lines");
+                            this.addTextLabel(label, label_xyz, label, path, "Other lines");
                         }
                     }
                 }
@@ -5569,7 +5656,7 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
                     points["material"].needsUpdate = true;
                     points.name = "selects";
                     this.scene.add(points);
-                    this.addTextLabel(label, verts_xyz, id, index, id, "All points");
+                    this.addTextLabel(label, verts_xyz, id, id, "All points");
                 }
                 else {
                     for (var j = 0; j < this.scene.children.length; j++) {
@@ -5596,7 +5683,7 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
                         points["material"].needsUpdate = true;
                         points.name = "selects";
                         this.scene.add(points);
-                        this.addTextLabel(label, verts_xyz, id, index, id, "All points");
+                        this.addTextLabel(label, verts_xyz, id, id, "All points");
                     }
                 }
             }
@@ -5638,26 +5725,17 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
                     }
                 }
             }
-        } /*else{
-          this.Visible=this.dataService.visible;
-          for(var i=0;i<this.mySprites.length;i++){
-            if(this.mySprites[i].parent.name===this.Visible){
-              let spr: THREE.Sprite =this.mySprites[i];
-              spr.visible = false;
-            }
-          }
-        }*/
+        }
         for (var i = 0; i < this.dataService.sprite.length; i++) {
             let spr = this.dataService.sprite[i];
             spr.visible = true;
         }
     }
     //To add text labels just provide label text, label position[x,y,z] and its id
-    addTextLabel(label, label_xyz, id, index, path, type) {
+    addTextLabel(label, label_xyz, id, path, type) {
         let container = this.myElement.nativeElement.children.namedItem("container");
-        //let container=document.getElementsByTagName("app-viewer")[0].children.namedItem("container");
         let star = this.creatStarGeometry(label_xyz);
-        let textLabel = this.createTextLabel(label, star, id, index, path, type);
+        let textLabel = this.createTextLabel(label, star, id, path, type);
         this.starsGeometry.vertices.push(star);
         this.textlabels.push(textLabel);
         this.dataService.pushselecting(textLabel);
@@ -5689,12 +5767,11 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
         star.z = label_xyz[2];
         return star;
     }
-    createTextLabel(label, star, id, index, path, type) {
+    createTextLabel(label, star, id, path, type) {
         let div = this.createLabelDiv();
         var self = this;
         let textLabel = {
             id: id,
-            index: index,
             path: path,
             element: div,
             parent: false,
@@ -5708,6 +5785,7 @@ let ViewerComponent = class ViewerComponent extends __WEBPACK_IMPORTED_MODULE_2_
             },
             updatePosition: function () {
                 if (parent) {
+                    //this.position.copy(this.parent);
                     this.position.copy(this.parent);
                 }
                 var coords2d = this.get2DCoords(this.position, self.camera);
