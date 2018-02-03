@@ -519,18 +519,77 @@ export class ToolwindowComponent extends DataSubscriber implements OnInit {
     }
   }
 
-  Onselect(i){
-  	var select;
-    for(var n=0;n<this.scene.children.length;n++){
-      if(this.scene.children[n].type==="Scene"){
-        for(var m=0;m<this.scene.children[n].children.length;m++){
-          var sprite:Array<any>=this.scene.children[n].children[m].children[this.scene.children[n].children[m].children.length-1].children;
-          for(var j=0;j<sprite.length;j++){
-            if(sprite[j].name===i){
-            }
-          }
-        }
+  Onselect(datascale){
+    if(this.Visible==="Points"){
+      var point:any=[];
+      point.label=datascale.id;
+      point.id=datascale.id;
+      point.path=datascale.id;
+      point.type="All points";
+      point.label_xyz=[datascale.x,datascale.y,datascale.z];
+      var geometry=new THREE.Geometry();
+      geometry.vertices.push(new THREE.Vector3(point.label_xyz[0],point.label_xyz[1],point.label_xyz[2]));
+      var pointsmaterial=new THREE.PointsMaterial( { color:0x00ff00,size:1} );
+      if(this.dataService.pointsize!==undefined){
+          pointsmaterial.size=this.dataService.pointsize;
       }
+      const points = new THREE.Points( geometry, pointsmaterial);
+      points.userData.id=point.id;
+      points["material"].needsUpdate=true;
+      points.name="selects";
+      this.scene.add(points);
+      this.dataService.addclickshow(point);
+    }
+    if(this.Visible==="Vertices"){
+      var vertice:any=[];
+      const path: gs.ITopoPathData=datascale.path;
+      const vertices: gs.IVertex = this.model.getGeom().getTopo(path) as gs.IVertex;
+      const label: string = vertices.getLabel();
+      const verts_xyz: gs.XYZ = vertices.getLabelCentroid();
+      vertice.label=label;
+      vertice.id=datascale.pointid;
+      vertice.path=datascale.path;
+      vertice.type="All points";
+      vertice.label_xyz=[verts_xyz[0],verts_xyz[1],verts_xyz[2]];
+      var geometry=new THREE.Geometry();
+      geometry.vertices.push(new THREE.Vector3(verts_xyz[0],verts_xyz[1],verts_xyz[2]));
+      var pointsmaterial=new THREE.PointsMaterial( { color:0x00ff00,size:1} );
+      if(this.dataService.pointsize!==undefined){
+          pointsmaterial.size=this.dataService.pointsize;
+      }
+      const points = new THREE.Points( geometry, pointsmaterial);
+      points.userData.id=vertice.id;
+      points["material"].needsUpdate=true;
+      points.name="selects";
+      this.scene.add(points);
+      this.dataService.addclickshow(vertice);
+    }
+  	if(this.Visible==="Vertices"){
+      var vertice:any=[];
+      const path: gs.ITopoPathData=datascale.path;
+      const vertices: gs.IVertex = this.model.getGeom().getTopo(path) as gs.IVertex;
+      const label: string = vertices.getLabel();
+      const verts_xyz: gs.XYZ = vertices.getLabelCentroid();
+      vertice.label=label;
+      vertice.id=datascale.pointid;
+      vertice.path=datascale.path;
+      vertice.type="All points";
+      vertice.label_xyz=[verts_xyz[0],verts_xyz[1],verts_xyz[2]];
+      var geometry=new THREE.Geometry();
+      geometry.vertices.push(new THREE.Vector3(verts_xyz[0],verts_xyz[1],verts_xyz[2]));
+      var pointsmaterial=new THREE.PointsMaterial( { color:0x00ff00,size:1} );
+      if(this.dataService.pointsize!==undefined){
+          pointsmaterial.size=this.dataService.pointsize;
+      }
+      const points = new THREE.Points( geometry, pointsmaterial);
+      points.userData.id=vertice.id;
+      points["material"].needsUpdate=true;
+      points.name="selects";
+      this.scene.add(points);
+      this.dataService.addclickshow(vertice);
+    }
+    if(this.Visible === "Edges"){
+
     }
   }
   /*//To add text labels just provide label text, label position[x,y,z] and its id

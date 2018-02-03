@@ -3,6 +3,8 @@
   <input id="axis"  type="checkbox" [checked]="axisVisible" (click)="changeaxis()"> <label id="name" value="axisVisible">axis</label>
   <input id="shadow"  type="checkbox" [checked]="shadowVisible" (click)="changeshadow()"> <label id="name" value="shadowVisible">shadow</label>
   <input id="frame"  type="checkbox" [checked]="frameVisible" (click)="changeframe()"> <label id="name" value="frameVisible">frame</label><br/>
+  <input id="nomal"  type="checkbox" [checked]="normalVisible" (click)="changenormal()"> <label id="name" value="nomalVisible">nomal</label><br/>
+  
   <hr/><label class="name" >Grid Center</label><br/>
   <label class="name" >X</label><input type="text" name="center" id="centerx" #centerx value={{_centerx}}>
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label id="name" >Y</label><input type="text" name="center" #centery id="centery" value={{_centery}}>

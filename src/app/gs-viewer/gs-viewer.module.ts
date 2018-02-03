@@ -12,6 +12,7 @@ import { DataService } from './data/data.service';
 import { GroupsComponent } from './toolwindow/groups.component';
 import {NgxPaginationModule} from 'ngx-pagination';
 import {MatExpansionModule} from '@angular/material/expansion';
+import { BrowserAnimationsModule ,NoopAnimationsModule} from '@angular/platform-browser/animations';
 
 
 @NgModule({
@@ -19,7 +20,9 @@ import {MatExpansionModule} from '@angular/material/expansion';
     			AngularSplitModule,
 			   	MatSliderModule,
                 NgxPaginationModule,
-                MatExpansionModule
+                MatExpansionModule,
+                BrowserAnimationsModule,
+                NoopAnimationsModule
 			 ],
     exports: [ GSViewerComponent ],
     declarations: [GSViewerComponent,

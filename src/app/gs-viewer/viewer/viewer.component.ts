@@ -70,6 +70,7 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
   distance:number;
   settingVisible:boolean=false;
   LineNo:number=0;
+  clickatt:Array<any>;
 
 
   constructor(injector: Injector, myElement: ElementRef) { 
@@ -127,12 +128,6 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
     let self = this;
     function animate() {
       self.raycaster.setFromCamera(self.mouse,self.camera);
-      //self.controls.target.set(self.raycaster.ray.origin.x,self.raycaster.ray.origin.y,self.raycaster.ray.origin.z);
-      //console.log(self.raycaster.ray.origin);
-      //self.raycaster.linePrecision=0.05;
-      //self.raycaster.linePrecision=0.05;
-      //self.raycaster.params.Points.threshold=0.05;
-      //if(self.distance!==undefined) self.raycaster.params.Points.threshold=self.distance;
       self.scenechildren=self.dataService.getscenechild();
       var intersects = self.raycaster.intersectObjects(self.scenechildren);
       for (var i = 0; i < self.scenechildren.length; i++) {
@@ -156,6 +151,10 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
         self.updateview();
       }
       self.onResize();
+      if(self.dataService.clickshow!==undefined&&self.clickatt!==self.dataService.clickshow){
+        self.clickatt=self.dataService.clickshow;
+        self.clickshow();
+      }
       requestAnimationFrame( animate );
       self.renderer.render( self.scene, self.camera );
     };
@@ -166,6 +165,7 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
     //this.shownumber();
     this.dataService.addraycaster(this.raycaster);
     this.addgrid();
+    
   }
   //
   //  checks if the data service has a data and calls update function for the viewer
@@ -326,6 +326,14 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
         }
       }
     return children;
+  }
+
+  clickshow(){
+    var label=this.clickatt["label"];
+    var id=this.clickatt["id"];
+    var label_xyz=this.clickatt["label_xyz"];
+    var path=this.clickatt["path"];
+    this.addTextLabel(label,label_xyz,id,path, "All points");
   }
 
   /*closestpoint():number{
@@ -594,10 +602,6 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
     var select:boolean=false;
     this.scenechildren=this.dataService.getscenechild();
     this.raycaster.setFromCamera(this.mouse,this.camera);
-    //this.raycaster.linePrecision = 0.05;
-    //this.raycaster.linePrecision = 0.5;
-    //this.raycaster.params.Points.threshold=0.05;
-    //this.raycaster.params.Points.threshold=this.distance;
     intersects = this.raycaster.intersectObjects(this.scenechildren);
     if ( intersects.length > 0 ) {
       selectedObj=intersects[ 0 ].object;
@@ -624,7 +628,7 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
             mesh.name="selects";
             this.scene.add(mesh);
            }
-           this.addTextLabel(label,label_xyz, label,index,path,"All objs");
+           this.addTextLabel(label,label_xyz, label,path,"All objs");
         }else{
           for(var j=0;j<this.scene.children.length;j++){
             if(label===this.scene.children[j].userData.id){
@@ -656,7 +660,7 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
               mesh.name="selects";
               this.scene.add(mesh);
             }
-            this.addTextLabel(label,label_xyz, label,index,path,"All objs");
+            this.addTextLabel(label,label_xyz, label,path,"All objs");
           }
         }
 
@@ -682,7 +686,7 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
           mesh["geometry"].computeVertexNormals();
           mesh.name="selects";
           this.scene.add(mesh);
-          this.addTextLabel(label,label_xyz, label,index,path, "All faces");
+          this.addTextLabel(label,label_xyz, label,path, "All faces");
         }else{
           for(var j=0;j<this.scene.children.length;j++){
 
@@ -709,7 +713,7 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
             mesh["geometry"].computeVertexNormals();
             mesh.name="selects";
             this.scene.add(mesh);
-            this.addTextLabel(label,label_xyz,label,index,path, "All faces");
+            this.addTextLabel(label,label_xyz,label,path, "All faces");
           }
         }
       }
@@ -733,7 +737,7 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
           line["material"].needsUpdate=true;
           line.name="selects";
           this.scene.add(line);
-          this.addTextLabel(label,label_xyz, label,index,path,"All wires");
+          this.addTextLabel(label,label_xyz, label,path,"All wires");
         }else{
           for(var j=0;j<this.scene.children.length;j++){
             if(label===this.scene.children[j].userData.id){
@@ -758,7 +762,7 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
             line["material"].needsUpdate=true;
             line.name="selects";
             this.scene.add(line);
-            this.addTextLabel(label,label_xyz, label,index,path,"All wires");
+            this.addTextLabel(label,label_xyz, label,path,"All wires");
           }
         }
       }
@@ -793,7 +797,7 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
             line["material"].needsUpdate=true;
             line.name="selects";
             this.scene.add(line);
-            this.addTextLabel(label,label_xyz, label,index,path,"All edges");
+            this.addTextLabel(label,label_xyz, label,path,"All edges");
           }else{
             for(var j=0;j<this.scene.children.length;j++){
               if(label===this.scene.children[j].userData.id){
@@ -817,7 +821,7 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
               line.userData.id=label;
               line.name="selects";
               this.scene.add(line);
-              this.addTextLabel(label,label_xyz, label,index,path,"All edges");
+              this.addTextLabel(label,label_xyz, label,path,"All edges");
             }
           }
         }
@@ -853,7 +857,7 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
             line["material"].needsUpdate=true;
             line.name="selects";
             this.scene.add(line);
-            this.addTextLabel(label,label_xyz, label,index,path,"Other lines");
+            this.addTextLabel(label,label_xyz, label,path,"Other lines");
           }else{
             for(var j=0;j<this.scene.children.length;j++){
               if(label===this.scene.children[j].userData.id){
@@ -877,7 +881,7 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
               line.userData.id=label;
               line.name="selects";
               this.scene.add(line);
-              this.addTextLabel(label,label_xyz, label,index,path,"Other lines");
+              this.addTextLabel(label,label_xyz, label,path,"Other lines");
             }
           }
         }
@@ -927,7 +931,7 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
           points["material"].needsUpdate=true;
           points.name="selects";
           this.scene.add(points);
-          this.addTextLabel(label,verts_xyz, id,index,id,"All points");
+          this.addTextLabel(label,verts_xyz, id,id,"All points");
         }else{
           for(var j=0;j<this.scene.children.length;j++){
             if(id===this.scene.children[j].userData.id){
@@ -953,7 +957,7 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
             points["material"].needsUpdate=true;
             points.name="selects";
             this.scene.add(points);
-            this.addTextLabel(label,verts_xyz, id,index,id,"All points");
+            this.addTextLabel(label,verts_xyz, id,id,"All points");
           }
         }
 
@@ -997,15 +1001,7 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
           }
         }
       }
-    }/*else{
-      this.Visible=this.dataService.visible;
-      for(var i=0;i<this.mySprites.length;i++){
-        if(this.mySprites[i].parent.name===this.Visible){
-          let spr: THREE.Sprite =this.mySprites[i];
-          spr.visible = false; 
-        }
-      }
-    }*/
+    }
     for(var i=0;i<this.dataService.sprite.length;i++){
       let spr: THREE.Sprite =this.dataService.sprite[i];
       spr.visible = true;
@@ -1013,11 +1009,10 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
   }
 
   //To add text labels just provide label text, label position[x,y,z] and its id
-  addTextLabel(label, label_xyz, id,index,path,type) {
+  addTextLabel(label, label_xyz, id,path,type) {
     let container = this.myElement.nativeElement.children.namedItem("container");
-    //let container=document.getElementsByTagName("app-viewer")[0].children.namedItem("container");
     let star = this.creatStarGeometry(label_xyz);
-    let textLabel=this.createTextLabel(label, star, id,index,path,type);
+    let textLabel=this.createTextLabel(label, star, id,path,type);
     this.starsGeometry.vertices.push( star );
     this.textlabels.push(textLabel);
     this.dataService.pushselecting(textLabel);
@@ -1052,12 +1047,11 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
     return star;
   }
 
-  createTextLabel(label, star, id,index,path,type) {
+  createTextLabel(label, star, id,path,type) {
     let div = this.createLabelDiv();
     var self=this;
     let textLabel= {
       id: id,
-      index:index,
       path:path,
       element: div,
       parent: false,
@@ -1071,6 +1065,7 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
       },
       updatePosition: function() {
         if(parent) {
+          //this.position.copy(this.parent);
           this.position.copy(this.parent);
         }
         
