@@ -21,6 +21,5 @@ let Topo: IModule = ModuleUtils.createModule("Topo", GSS.topo);
 let List: IModule = ModuleUtils.createModule("List", GSS.list);
 let Math: IModule = ModuleUtils.createModule("Math", GSS.math);
 let String: IModule = ModuleUtils.createModule("String", GSS.string);
-let Calc: IModule = ModuleUtils.createModule("Calc", GSS.calc);
 
-export {Calc,List, Math, String, Circle, Model, Attrib, Examples, Intersect, Obj, Plane, Pline, PMesh, Point, Query, Ray, Split, Topo};
+export {Attrib, Examples, Intersect, Model, Obj, Plane, Pline, PMesh, Point, Query, Ray, Split, Topo, List, Math, String};
