@@ -25,7 +25,7 @@ export class GroupsComponent extends ViewerComponent implements OnInit {
   groups:Array<any>;
 
   constructor(injector: Injector, myElement: ElementRef){
-  	super(injector);
+  	super(injector, myElement);
     this.scene=this.dataService.getScene();
     this.myElement = myElement;
   }
