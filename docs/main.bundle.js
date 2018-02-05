@@ -360,11 +360,24 @@ class CodeGenerator {
 
 "use strict";
 class ModuleUtils {
-    static createModule(name, fn_list) {
+    static createModule(name, fn_list, helpname, help) {
+        let helpObj;
+        if (help && help.children) {
+            helpObj = help.children.filter(function (child) {
+                let name = child.name;
+                if (name.substr(1, name.length - 2) == helpname) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            });
+        }
         let obj = {
             _name: name,
             _version: 0.1,
-            _author: "Patrick"
+            _author: "Patrick",
+            _helpObj: helpObj
         };
         for (let prop in fn_list) {
             obj[prop] = fn_list[prop];
@@ -438,7 +451,7 @@ class ModuleUtils {
         let fn = [];
         let module_name = this.getName(mod);
         let fns = Object.getOwnPropertyNames(mod).filter(function (prop) {
-            return ["length", "prototype", "name", "_name", "_author", "_version"].indexOf(prop) == -1;
+            return ["length", "prototype", "name", "_name", "_author", "_version", "_helpObj"].indexOf(prop) == -1;
         });
         for (let f = 0; f < fns.length; f++) {
             let function_name = fns[f];
@@ -7904,7 +7917,7 @@ GraphEdgeComponent = __decorate([
 /***/ "../../../../../src/app/ui-components/help/help-viewer/help-viewer.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"viewer\">\r\n\t\r\n\t<h1>Möbius Functions</h1>\r\n\r\n\t<mat-accordion *ngIf='!fnObj'>\r\n\r\n\t\t<!-- functions -->\r\n\t \t<mat-expansion-panel \r\n\t \t\t*ngFor=\"let m of _helpMods\"\r\n\t \t\t[expanded]=\"getModName(m.name) ==_activeMod\">\r\n\t    \t<mat-expansion-panel-header>\r\n\t    \t\t<mat-panel-title>\r\n\t\t\t      {{ getModName(m.name) }} \r\n\t\t\t    </mat-panel-title>\r\n\t    \t</mat-expansion-panel-header>\r\n\r\n\t\t\t<mat-list id=\"{{getModName(m.name)}}\" \r\n\t\t\t\tstyle=\"max-height: 500px; overflow: auto;\">\r\n\t\t\t\t<!-- <h3 mat-subheader>{{m.comment.shortText}}</h3> -->\r\n\r\n\t\t\t\t<h3 mat-subheader>Functions</h3>\r\n\t\t\t \t<mat-list-item *ngFor=\"let fn of m.children\">\r\n\t\t\t \t\t<div class = \"content\">\r\n\t\t\t\t \t\t<h4 mat-line>{{fn.name}}</h4>\r\n\t    \t\t\t\t<p class=\"head-descr\" mat-line>{{fn.signatures[0].comment.shortText}}</p>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<!-- @derek: parameters-->\r\n\t\t\t\t\t\t<div  class=\"parameters\" mat-line *ngIf='fn.signatures[0].parameters'>\r\n\t\t\t\t\t\t\t<div *ngFor=\"let pa of fn.signatures[0].parameters\">\r\n\t\t\t\t\t\t\t\t<!--<span class=\"topic\">Name: </span>-->\r\n\t\t\t\t\t\t\t\t<span class=\"topic\">{{pa.name}}: </span>\r\n\t\t\t\t\t\t\t\t<!-- <span *ngIf=\"pa.type\">Type: {{pa.type.type}}</span> -->\r\n\t\t\t\t\t\t\t\t<!--<span class=\"topic\">Description: </span>-->\r\n\t\t\t\t\t\t\t\t<span class=\"descr\" *ngIf=\"pa.comment\" [innerHTML]=\"pa.comment.text\"></span>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t<div class=\"return-block\">\r\n\t\t    \t\t\t\t<span class=\"topic\">Returns: </span>\r\n\t\t    \t\t\t\t<span class=\"descr\" [innerHTML]=\"fn.signatures[0].comment.returns\"></span>\r\n\t\t    \t\t\t</div>\r\n\r\n\t\t    \t\t\t\r\n\t    \t\t\t\t<p mat-line>\t\r\n\t    \t\t\t\t\t<a href=\"https://phtj.github.io/gs-modelling/docs/modules/{{getUrl(m.name, fn.name)}}\" target=\"_blank\">More</a>\r\n\t    \t\t\t\t</p>\r\n\r\n    \t\t\t\t</div>\r\n\t\t\t \t</mat-list-item>\r\n\t\t\t \t<mat-divider></mat-divider>\r\n\t\t\t</mat-list>\r\n\r\n\t \t</mat-expansion-panel>\r\n\t \t\r\n\t</mat-accordion>\r\n\r\n\t<!-- specific function -->\r\n\t<div *ngIf='fnObj && fnObj.name'>\r\n\t\t\r\n\t\t<h4>Module: {{fnObj.module}}</h4>\r\n\t\t<h3>{{fnObj.name}}</h3>\r\n\t\t\r\n\t\t<div *ngIf='fnObj.content'>\r\n\t\t\t<div [innerHTML]=\"fnObj.content.signatures[0].comment.shortText\"></div>\r\n\t\t\t<div>\r\n\t\t\t\tReturns: \r\n\t\t\t\t<div [innerHTML]=\"fnObj.content.signatures[0].comment.returns\"></div>\r\n\r\n\t\t\t\t<br><br>\r\n\t\t\t\t\r\n\t\t\t\t<a href=\"https://phtj.github.io/gs-modelling/docs/modules/{{getUrl(fnObj.module, fnObj.name)}}\" target=\"_blank\">\r\n\t\t\t\tMore\r\n\t\t\t\t</a>\r\n\t\t    </div>\r\n\t\t</div>\r\n\t\r\n\t\t<hr>\r\n\t\t\r\n\t\t<div (click)=\"showAll()\" style=\"cursor: pointer;\">[Show All]</div>\r\n\t\r\n\t</div>\r\n\r\n</div>"
+module.exports = "<div class=\"viewer\">\r\n\t\r\n\t<h1>Möbius Functions</h1>\r\n\r\n\t<mat-accordion *ngIf='!fnObj'>\r\n\r\n\t\t<mat-expansion-panel \r\n\t \t\t*ngFor=\"let mod of _loadedModules\"\r\n\t \t\t[expanded]=\"mod._name ==_activeMod\">\r\n\t \t\t    \t<mat-expansion-panel-header>\r\n\t \t\t    \t\t<mat-panel-title>\r\n\t \t\t\t\t      {{ mod._name }} \r\n\t \t\t\t\t    </mat-panel-title>\r\n\t \t\t    \t</mat-expansion-panel-header>\r\n\t \t\r\n\t \t\t\t\t<mat-list id=\"mod._name\" \r\n\t \t\t\t\t\tstyle=\"max-height: 500px; overflow: auto;\">\r\n\t \t\r\n\t \t\t\t\t\t<h3 mat-subheader *ngIf=\"mod._helpObj[0] && mod._helpObj[0].comment && mod._helpObj[0].comment.shortText\" [innerHTML]=\"mod._helpObj[0].comment.shortText\"></h3>\r\n\t \t\r\n\t \t\t\t\t \t<mat-list-item *ngFor=\"let fn of mod._helpObj[0].children\">\r\n\t \t\t\t\t \t\t<div class=\"content\">\r\n\r\n\t \t\t\t\t\t \t\t<h4 mat-line>{{fn.name}}</h4>\r\n\t \t\t    \t\t\t\t<p class=\"head-descr\" mat-line>{{fn.signatures[0].comment.shortText}}</p>\r\n\t \t\t\t\t\t\t\r\n\t \t\t\t\t\t\t\t<div  class=\"parameters\" mat-line *ngIf='fn.signatures[0].parameters'>\r\n\t \t\t\t\t\t\t\t\t<div *ngFor=\"let pa of fn.signatures[0].parameters\">\r\n\t \t\t\t\t\t\t\t\t\t<span class=\"topic\">{{pa.name}}: </span>\r\n\t \t\t\t\t\t\t\t\t\t<!-- <span *ngIf=\"pa.type\">Type: {{pa.type.type}}</span> -->\r\n\t \t\t\t\t\t\t\t\t\t<span class=\"descr\" *ngIf=\"pa.comment\" [innerHTML]=\"pa.comment.text\"></span>\r\n\t \t\t\t\t\t\t\t\t</div>\r\n\t \t\t\t\t\t\t\t</div>\r\n\t \t\r\n\t \t\t\t\t\t\t\t<div class=\"return-block\">\r\n\t \t\t\t    \t\t\t\t<span class=\"topic\">Returns: </span>\r\n\t \t\t\t    \t\t\t\t<span class=\"descr\" [innerHTML]=\"fn.signatures[0].comment.returns\"></span>\r\n\t \t\t\t    \t\t\t</div>\r\n\t \t\r\n\t \t\t    \t\t\t\t<p mat-line>\t\r\n\t \t\t    \t\t\t\t\t<a href=\"https://phtj.github.io/gs-modelling/docs/modules/{{mod._url}}#{{fn.name}}\" target=\"_blank\">More</a>\r\n\t \t\t    \t\t\t\t</p>\r\n\t \t\r\n\t \t    \t\t\t\t</div>\r\n\t \t\t\t\t \t</mat-list-item>\r\n\r\n\t \t\t\t\t \t<mat-divider></mat-divider>\r\n\t \t\t\t\t\r\n\t \t\t\t\t</mat-list>\r\n\t \t\r\n\t \t</mat-expansion-panel>\r\n\t \t\r\n\t</mat-accordion>\r\n\r\n\t<!-- specific function -->\r\n\t<div *ngIf='fnObj && fnObj.name'>\r\n\r\n\t\t<h4 mat-line>Module: {{fnObj.module}}</h4>\r\n\t\t<h4 mat-line>{{fnObj.name}}</h4>\r\n\t\t\r\n\t\t<div *ngIf='fnObj.content'>\r\n\t\t\t<div class=\"content\">\r\n\r\n\t\t\t\t<p class=\"head-descr\" mat-line>{{fnObj.content.signatures[0].comment.shortText}}</p>\r\n\t\t\t\r\n\t\t\t\t<div  class=\"parameters\" mat-line *ngIf='fnObj.content.signatures[0].parameters'>\r\n\t\t\t\t\t<div *ngFor=\"let pa of fnObj.content.signatures[0].parameters\">\r\n\t\t\t\t\t\t<span class=\"topic\">{{pa.name}}: </span>\r\n\t\t\t\t\t\t<!-- <span *ngIf=\"pa.type\">Type: {{pa.type.type}}</span> -->\r\n\t\t\t\t\t\t<span class=\"descr\" *ngIf=\"pa.comment\" [innerHTML]=\"pa.comment.text\"></span>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\r\n\t\t\t\t<div class=\"return-block\">\r\n    \t\t\t\t<span class=\"topic\">Returns: </span>\r\n    \t\t\t\t<span class=\"descr\" [innerHTML]=\"fnObj.content.signatures[0].comment.returns\"></span>\r\n    \t\t\t</div>\r\n\r\n\t\t\t\t<p mat-line>\t\r\n\t\t\t\t\t<a href=\"https://phtj.github.io/gs-modelling/docs/modules/{{fnObj._url}}#{{fnObj.name}}\" target=\"_blank\">More</a>\r\n\t\t\t\t</p>\r\n\r\n\t\t\t</div>\t\r\n\t\t</div>\r\n\t\r\n\t\t<hr>\r\n\t\t\r\n\t\t<div (click)=\"showAll()\" style=\"cursor: pointer;\">[Show All]</div>\r\n\t\r\n\t</div>\r\n\r\n</div>"
 
 /***/ }),
 
@@ -7916,7 +7929,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".reset {\n  margin: 0px;\n  padding: 0px; }\n\n.default {\n  font-size: 12px;\n  color: #8AA8C0;\n  line-height: 150px;\n  text-align: center; }\n\n.viewer {\n  /* \twidth: 100%; \r\noverflow: auto;\r\n\r\npadding: 0px;\r\nmargin: 0px;\r\n\r\n.header{\r\n\r\n\tdisplay: flex; \r\n\tflex-direction: row; \r\n\tjustify-content: space-between;\r\n\r\n\tposition: relative;\r\n\tfont-size: 14px; \r\n\tfont-weight: 600; \r\n\tline-height: $header-height;\r\n\ttext-transform: uppercase;\r\n\tletter-spacing: 1.5px;\r\n\theight: $header-height;\r\n\r\n\tcolor: #ADADAD;\r\n\r\n\t.btn-group{\r\n\t\theight: $header-height; \r\n\r\n\t\tbutton{\r\n\t\t\twidth: 0.9*$header-height; \r\n\t\t\theight: 0.9*$header-height; \r\n\t\t\tmargin: 0px;\r\n\t\t\tborder: 1px solid #B4B1B1;\r\n\t\t\tbox-shadow: none;\r\n\r\n\t\t\t&:focus{\r\n\t\t\t\t\r\n\t\t\t}\r\n\t\t}\r\n\t\t\r\n\t}\r\n\r\n}\r\n\r\n.container{\r\n}\r\n\r\nbutton{\r\n\t&:focus{\r\n\t\t\r\n\t}\r\n} */ }\n  .viewer .container {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    height: 100%; }\n    .viewer .container .sidebar {\n      z-index: 100; }\n    .viewer .container .view-container {\n      box-sizing: border-box;\n      height: 100%;\n      width: 100%;\n      padding-bottom: 30px;\n      overflow: auto; }\n\n.viewer {\n  padding: 15px;\n  height: 100%;\n  box-sizing: border-box;\n  padding-bottom: 30px;\n  overflow: auto; }\n  .viewer h1 {\n    padding-left: 15px;\n    padding-bottom: 5px;\n    color: #395D73;\n    display: block;\n    border-bottom: 1px solid #F1F1F1; }\n\nmat-expansion-panel {\n  margin: 0 !important;\n  overflow: hidden !important; }\n  mat-expansion-panel mat-expansion-panel-header mat-panel-title {\n    color: #F3A32A !important; }\n\nmat-panel-description {\n  display: none; }\n\n.content {\n  width: 100%;\n  text-align: left !important; }\n  .content .head-descr {\n    margin-bottom: 12px;\n    font-size: 12px; }\n\n/*\r\n.mat-list-item-content{\r\n\tpadding: 0;\r\n\tborder: 0;\r\n}\r\n\r\n.mat-line{\r\n\tpadding: 0;\r\n\tborder: 0;\r\n\tline-height: $fsize1;\r\n}*/\nmat-list .mat-subheader {\n  display: none;\n  font-size: 12px;\n  color: #395D73;\n  margin: 0;\n  padding: 0; }\n\nmat-list mat-list-item h4 {\n  color: #7B52AB;\n  font-size: 12px;\n  border-bottom: 1px solid #8AA8C0;\n  font-weight: bold;\n  display: block;\n  margin: 0; }\n\nmat-list mat-list-item p {\n  font-size: 12px;\n  color: #395D73;\n  margin: 0; }\n  mat-list mat-list-item p a {\n    color: #8AA8C0;\n    font-size: 12px; }\n\nmat-list div {\n  padding: 0 !important; }\n\n.topic {\n  color: #395D73;\n  cursor: default !important;\n  font-weight: bold;\n  font-size: 12px; }\n  .topic:hover {\n    color: #395D73; }\n\n.descr {\n  font-size: 12px;\n  color: #395D73;\n  cursor: default !important; }\n\n.return-block .topic {\n  text-decoration: underline; }\n", ""]);
+exports.push([module.i, ".reset {\n  margin: 0px;\n  padding: 0px; }\n\n.default {\n  font-size: 12px;\n  color: #8AA8C0;\n  line-height: 150px;\n  text-align: center; }\n\n.viewer {\n  /* \twidth: 100%; \r\noverflow: auto;\r\n\r\npadding: 0px;\r\nmargin: 0px;\r\n\r\n.header{\r\n\r\n\tdisplay: flex; \r\n\tflex-direction: row; \r\n\tjustify-content: space-between;\r\n\r\n\tposition: relative;\r\n\tfont-size: 14px; \r\n\tfont-weight: 600; \r\n\tline-height: $header-height;\r\n\ttext-transform: uppercase;\r\n\tletter-spacing: 1.5px;\r\n\theight: $header-height;\r\n\r\n\tcolor: #ADADAD;\r\n\r\n\t.btn-group{\r\n\t\theight: $header-height; \r\n\r\n\t\tbutton{\r\n\t\t\twidth: 0.9*$header-height; \r\n\t\t\theight: 0.9*$header-height; \r\n\t\t\tmargin: 0px;\r\n\t\t\tborder: 1px solid #B4B1B1;\r\n\t\t\tbox-shadow: none;\r\n\r\n\t\t\t&:focus{\r\n\t\t\t\t\r\n\t\t\t}\r\n\t\t}\r\n\t\t\r\n\t}\r\n\r\n}\r\n\r\n.container{\r\n}\r\n\r\nbutton{\r\n\t&:focus{\r\n\t\t\r\n\t}\r\n} */ }\n  .viewer .container {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    height: 100%; }\n    .viewer .container .sidebar {\n      z-index: 100; }\n    .viewer .container .view-container {\n      box-sizing: border-box;\n      height: 100%;\n      width: 100%;\n      padding-bottom: 30px;\n      overflow: auto; }\n\n.viewer {\n  padding: 15px;\n  height: 100%;\n  box-sizing: border-box;\n  padding-bottom: 30px;\n  overflow: auto; }\n  .viewer h1 {\n    padding-left: 15px;\n    padding-bottom: 5px;\n    color: #395D73;\n    display: block;\n    border-bottom: 1px solid #F1F1F1; }\n\nmat-expansion-panel {\n  margin: 0 !important;\n  overflow: hidden !important; }\n  mat-expansion-panel mat-expansion-panel-header mat-panel-title {\n    color: #F3A32A !important; }\n\nmat-panel-description {\n  display: none; }\n\n.content {\n  width: 100%;\n  text-align: left !important; }\n  .content .head-descr {\n    margin-bottom: 12px;\n    font-size: 12px; }\n\n/*\r\n.mat-list-item-content{\r\n\tpadding: 0;\r\n\tborder: 0;\r\n}\r\n\r\n.mat-line{\r\n\tpadding: 0;\r\n\tborder: 0;\r\n\tline-height: $fsize1;\r\n}*/\nmat-list .mat-subheader {\n  font-size: 12px;\n  color: #8AA8C0; }\n\nmat-list mat-list-item h4 {\n  color: #7B52AB;\n  font-size: 12px;\n  border-bottom: 1px solid #8AA8C0;\n  font-weight: bold;\n  display: block;\n  margin: 0; }\n\nmat-list mat-list-item p {\n  font-size: 12px;\n  color: #395D73;\n  margin: 0; }\n  mat-list mat-list-item p a {\n    color: #8AA8C0;\n    font-size: 12px; }\n\nmat-list div {\n  padding: 0 !important; }\n\n.topic {\n  color: #395D73;\n  cursor: default !important;\n  font-weight: bold;\n  font-size: 12px; }\n  .topic:hover {\n    color: #395D73; }\n\n.descr {\n  font-size: 12px;\n  color: #395D73;\n  cursor: default !important; }\n\n.return-block .topic {\n  text-decoration: underline; }\n", ""]);
 
 // exports
 
@@ -7935,8 +7948,6 @@ module.exports = module.exports.toString();
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__global_services_layout_service__ = __webpack_require__("../../../../../src/app/global-services/layout.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__global_services_flowchart_service__ = __webpack_require__("../../../../../src/app/global-services/flowchart.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_platform_browser__ = __webpack_require__("../../../platform-browser/esm2015/platform-browser.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__node_modules_gs_modelling_docs_json_gs_modelling_json__ = __webpack_require__("../../../../gs-modelling/docs_json/gs-modelling.json");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__node_modules_gs_modelling_docs_json_gs_modelling_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__node_modules_gs_modelling_docs_json_gs_modelling_json__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -7946,7 +7957,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-
 
 
 
@@ -7966,10 +7976,17 @@ let HelpViewerComponent = class HelpViewerComponent {
         let mods = this.flowchartService.getModules().map(function (m) {
             return m["_name"].toLowerCase();
         });
-        this._helpMods = __WEBPACK_IMPORTED_MODULE_4__node_modules_gs_modelling_docs_json_gs_modelling_json___default.a.children.filter(function (child) {
-            let mod_name = child.name.substring(1, child.name.length - 1);
-            return mods.indexOf(mod_name) > -1;
-        });
+        this._loadedModules = this.flowchartService.getModules();
+        for (let i = 0; i < this._loadedModules.length; i++) {
+            let mod = this._loadedModules[i];
+            let originalName = mod._name;
+            if (mod._helpObj[0]) {
+                let n = mod._helpObj[0].name;
+                n = n.substr(1, n.length - 2);
+                originalName = n;
+            }
+            mod["_url"] = "_" + originalName + "_.html";
+        }
     }
     notify() {
         let url_segment = this.layoutService.getUrl();
@@ -7978,15 +7995,14 @@ let HelpViewerComponent = class HelpViewerComponent {
         let fnObj = this.layoutService.getObj();
         if (fnObj && fnObj.name) {
             this.fnObj = fnObj;
-            for (let m = 0; m < this._helpMods.length; m++) {
-                let mo = this._helpMods[m];
-                let mname = this.getModName(mo.name);
-                console.log(mname, mo);
-                if (mname.toLowerCase() == fnObj.module.toLowerCase()) {
+            for (let m = 0; m < this._loadedModules.length; m++) {
+                if (this._loadedModules[m]._name.toLowerCase() == fnObj.module.toLowerCase()) {
+                    let mo = this._loadedModules[m]._helpObj[0];
                     for (let f = 0; f < mo.children.length; f++) {
                         let child = mo.children[f];
                         if (fnObj.name.toLowerCase() == child.name.toLowerCase()) {
                             fnObj["content"] = child;
+                            fnObj["_url"] = this._loadedModules[m]["_url"];
                         }
                     }
                 }
@@ -7996,20 +8012,6 @@ let HelpViewerComponent = class HelpViewerComponent {
             this._activeMod = fnObj.module.toUpperCase();
             this.fnObj = undefined;
         }
-    }
-    getUrl(name, fn) {
-        if (name.startsWith("\"")) {
-            return "_" + name.substring(1, name.length - 1).toLowerCase() + "_.html#" + fn.toLowerCase();
-        }
-        else {
-            return "_" + name.toLowerCase() + "_.html#" + fn.toLowerCase();
-        }
-    }
-    getModName(name) {
-        return name.substring(1, name.length - 1).toUpperCase();
-    }
-    getHash(m, fn) {
-        return this.getModName(m.name) + "/" + fn.name;
     }
     showAll() {
         this.fnObj = undefined;
@@ -9179,29 +9181,32 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Group", function() { return Group; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__ = __webpack_require__("../../../../../src/app/base-classes/code/CodeModule.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_gs_modelling__ = __webpack_require__("../../../../gs-modelling/dist/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_gs_modelling_docs_json_gs_modelling_json__ = __webpack_require__("../../../../gs-modelling/docs_json/gs-modelling.json");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_gs_modelling_docs_json_gs_modelling_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_gs_modelling_docs_json_gs_modelling_json__);
+
 
 
 //// version for dev
-let Attrib = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Attrib", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["a" /* attrib */]);
-let Circle = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Circle", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["c" /* circle */]);
-let Ellipse = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Ellipse", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["d" /* ellipse */]);
-let Examples = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Examples", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["e" /* examples */]);
-let Intersect = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Intersect", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["g" /* intersect */]);
-let Model = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Model", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["j" /* model */]);
-let Obj = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Obj", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["k" /* object */]);
-let Plane = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Plane", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["l" /* plane */]);
-let Pline = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Pline", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["m" /* pline */]);
-let PMesh = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("PMesh", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["n" /* pmesh */]);
-let Point = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Point", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["o" /* point */]);
-let Query = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Query", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["p" /* query */]);
-let Ray = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Ray", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["q" /* ray */]);
-let Split = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Split", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["r" /* split */]);
-let Topo = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Topo", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["t" /* topo */]);
-let List = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("List", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["h" /* list */]);
-let Math = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Math", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["i" /* math */]);
-let String = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("String", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["s" /* string */]);
-let Calc = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Calc", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["b" /* calc */]);
-let Group = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Group", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["f" /* group */]);
+let Attrib = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Attrib", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["a" /* attrib */], "attrib", __WEBPACK_IMPORTED_MODULE_2_gs_modelling_docs_json_gs_modelling_json___default.a);
+let Circle = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Circle", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["c" /* circle */], "circle", __WEBPACK_IMPORTED_MODULE_2_gs_modelling_docs_json_gs_modelling_json___default.a);
+let Ellipse = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Ellipse", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["d" /* ellipse */], "ellipse", __WEBPACK_IMPORTED_MODULE_2_gs_modelling_docs_json_gs_modelling_json___default.a);
+let Examples = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Examples", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["e" /* examples */], "examples", __WEBPACK_IMPORTED_MODULE_2_gs_modelling_docs_json_gs_modelling_json___default.a);
+let Intersect = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Intersect", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["g" /* intersect */], "intersect", __WEBPACK_IMPORTED_MODULE_2_gs_modelling_docs_json_gs_modelling_json___default.a);
+let Model = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Model", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["j" /* model */], "model", __WEBPACK_IMPORTED_MODULE_2_gs_modelling_docs_json_gs_modelling_json___default.a);
+let Obj = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Obj", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["k" /* object */], "object", __WEBPACK_IMPORTED_MODULE_2_gs_modelling_docs_json_gs_modelling_json___default.a);
+let Plane = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Plane", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["l" /* plane */], "plane", __WEBPACK_IMPORTED_MODULE_2_gs_modelling_docs_json_gs_modelling_json___default.a);
+let Pline = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Pline", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["m" /* pline */], "pline", __WEBPACK_IMPORTED_MODULE_2_gs_modelling_docs_json_gs_modelling_json___default.a);
+let PMesh = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("PMesh", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["n" /* pmesh */], "pmesh", __WEBPACK_IMPORTED_MODULE_2_gs_modelling_docs_json_gs_modelling_json___default.a);
+let Point = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Point", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["o" /* point */], "point", __WEBPACK_IMPORTED_MODULE_2_gs_modelling_docs_json_gs_modelling_json___default.a);
+let Query = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Query", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["p" /* query */], "query", __WEBPACK_IMPORTED_MODULE_2_gs_modelling_docs_json_gs_modelling_json___default.a);
+let Ray = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Ray", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["q" /* ray */], "ray", __WEBPACK_IMPORTED_MODULE_2_gs_modelling_docs_json_gs_modelling_json___default.a);
+let Split = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Split", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["r" /* split */], "split", __WEBPACK_IMPORTED_MODULE_2_gs_modelling_docs_json_gs_modelling_json___default.a);
+let Topo = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Topo", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["t" /* topo */], "topo", __WEBPACK_IMPORTED_MODULE_2_gs_modelling_docs_json_gs_modelling_json___default.a);
+let List = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("List", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["h" /* list */], "list", __WEBPACK_IMPORTED_MODULE_2_gs_modelling_docs_json_gs_modelling_json___default.a);
+let Math = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Math", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["i" /* math */], "math", __WEBPACK_IMPORTED_MODULE_2_gs_modelling_docs_json_gs_modelling_json___default.a);
+let String = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("String", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["s" /* string */], "string", __WEBPACK_IMPORTED_MODULE_2_gs_modelling_docs_json_gs_modelling_json___default.a);
+let Calc = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Calc", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["b" /* calc */], "calc", __WEBPACK_IMPORTED_MODULE_2_gs_modelling_docs_json_gs_modelling_json___default.a);
+let Group = __WEBPACK_IMPORTED_MODULE_0__app_base_classes_code_CodeModule__["b" /* ModuleUtils */].createModule("Group", __WEBPACK_IMPORTED_MODULE_1_gs_modelling__["f" /* group */], "group", __WEBPACK_IMPORTED_MODULE_2_gs_modelling_docs_json_gs_modelling_json___default.a);
 
 //// version for dev
 

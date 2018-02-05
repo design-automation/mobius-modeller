@@ -2,12 +2,26 @@ import {IModule} from "./IModule";
 
 export class ModuleUtils{
 
-	static createModule(name: string, fn_list: any){
+	static createModule(name: string, fn_list: any, helpname?: string, help?: any){
+
+		let helpObj;
+		if(help && help.children){
+			helpObj = help.children.filter(function(child){
+				 let name: string = child.name;
+				 if(name.substr(1, name.length - 2)  == helpname){
+				 	return true;
+				 }
+				 else{
+				 	return false;
+				 }
+			})
+		}
 
 		let obj: IModule  =  {
 			_name: name, 
 			_version: 0.1, 
-			_author: "Patrick" 
+			_author: "Patrick",
+			_helpObj: helpObj
 		};
 
 		for (let prop in fn_list){
@@ -106,7 +120,7 @@ export class ModuleUtils{
 		let fn: {name: string, module: string, def: Function}[] = [];
 		let module_name = this.getName(mod);
 		let fns = Object.getOwnPropertyNames(mod).filter(function(prop){ 
-					return [ "length", "prototype", "name", "_name", "_author", "_version"].indexOf(prop) == -1;
+					return [ "length", "prototype", "name", "_name", "_author", "_version", "_helpObj"].indexOf(prop) == -1;
 				});
 
 
