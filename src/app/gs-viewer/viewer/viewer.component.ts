@@ -255,6 +255,8 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
       let objectData = loader.parse( scene_data );
       
       this.seVisible=false;
+
+      this.LineNo=0;
       // preprocessing
       if( objectData.children!==undefined){
         var radius=0;
@@ -286,7 +288,6 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
           }
         }
       }
-
       // setting controls
       this.controls.target.set(this.center.x,this.center.y,this.center.z);
       this.controls.update();

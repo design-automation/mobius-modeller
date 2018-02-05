@@ -1,11 +1,16 @@
 <div id="groupsview">
-	<!-- <mat-accordion>
-  	<mat-expansion-panel  *ngFor="let panel of panels">
-    <mat-expansion-panel-header>
-     {{panel.title}}
-    </mat-expansion-panel-header>
-    {{panel.content}}
-  </mat-expansion-panel>
-
-	</mat-accordion> -->
+	<mat-accordion>
+	  <mat-expansion-panel *ngFor="let group of groups">
+	  <mat-expansion-panel-header class="mat-header">
+	    <div class="mat-header" ><hr/><label id="groupname">{{group.name}}</label><hr/></div>
+	  </mat-expansion-panel-header>
+	    <div class="mat-list-text-parent"><span id="parent">PARENT : {{group.parent}} </span></div>
+	    <div class="mat-list-text"><hr/><span (click)="selectpoint(group)">POINT : {{group.point}} </span></div>
+	    <div class="mat-list-text"><span >VERTICE : {{group.vertice}} </span></div>
+	    <div class="mat-list-text"><span >EDGE : {{group.edge}} </span></div>
+	    <div class="mat-list-text"><span >WIRE : {{group.wire}} </span></div>
+	    <div class="mat-list-text"><span >FACE : {{group.face}} </span><hr/></div>
+	    <div class="mat-list-text" *ngFor="let prop of group.props"><span >{{prop[0]}} : {{prop[1]}} </span></div> 
+ 		</mat-expansion-panel>
+	</mat-accordion>
 </div>
