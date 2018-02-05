@@ -39,10 +39,10 @@
       <table border="1" cellspacing="0" cellpadding="0" id="table" name="table" bordercolor="#d0d0d0">
         <tr>
           <td name="Number" align=center width="100px" align=center>ID</td>
-          <td width="100px" align=center>X</td>
-          <td width="100px" align=center>Y</td>
-          <td width="100px" align=center>Z</td>
-          <td width="100px" align=center *ngFor="let name of point_name">{{name}}</td> 
+          <td width="20%" align=center>X</td>
+          <td width="20%" align=center>Y</td>
+          <td width="20%" align=center>Z</td>
+          <!-- <td width="100px" align=center *ngFor="let name of point_name">{{name}}</td>  -->
       </table>
       <table border="1" cellspacing="0" cellpadding="0" id="tablename" name="table" bordercolor="#d0d0d0" *ngFor="let datascale of attribute| paginate: { itemsPerPage: 50, currentPage: p1 }">
         <tr>
@@ -50,7 +50,7 @@
           <td width="20%" align=center>{{datascale.x}}</td>
           <td width="20%" align=center>{{datascale.y}}</td>
           <td width="20%" align=center>{{datascale.z}}</td>
-          <td width="20%" align=center>{{datascale.name}}</td>
+          <!-- <td width="20%" align=center>{{datascale.name}}</td> -->
         <tr>
       </table>
       <!-- <pagination-controls (pageChange)="p1 = $event"></pagination-controls>  -->
@@ -82,7 +82,7 @@
       <table border="1" cellspacing="0" cellpadding="0"  bordercolor="#d0d0d0" *ngFor="let datascale of attribute| paginate: { itemsPerPage: 50, currentPage: p3 }" width="40%">
         <tr>
           <!-- <button id="numberbutton"[class.selectid]="ID == datascale.id" (click)=clicktoshow(datascale.id) >{{datascale.id}}</button> -->
-          <button id="numberbutton" (click)=Onselect(datascale)>{{datascale.label}}</button>
+          <button id="numberbutton" (click)=Onselect(datascale)>{{datascale}}</button>
         </tr>
       </table>
       <!-- <pagination-controls (pageChange)="p3 = $event"></pagination-controls> -->
@@ -96,7 +96,7 @@
       </table>
       <table border="1" cellspacing="0" cellpadding="0"  bordercolor="#d0d0d0" *ngFor="let datascale of attribute| paginate: { itemsPerPage: 50, currentPage: p4 }" width="40%">
         <tr>
-          <button id="numberbutton" >{{datascale.label}}</button>
+          <button id="numberbutton" >{{datascale}}</button>
         </tr>
       </table>
       <!-- <pagination-controls (pageChange)="p4 = $event"></pagination-controls> -->
@@ -105,28 +105,30 @@
       <!-- <pagination-controls (pageChange)="p5 = $event"></pagination-controls> -->
       <table border="1" cellspacing="0" cellpadding="0"  bordercolor="#d0d0d0" width="60%">
         <tr>
-          <td  align=center width="30%">Face ID</td>
-          <td  align=center width="30%" *ngFor="let name of face_name">{{name}}</td> 
+          <td  align=center width="60%">Face ID</td>
+          <!-- <td  align=center width="30%" *ngFor="let name of face_name">{{name}}</td>  -->
         </tr>
       </table>
       <table border="1" cellspacing="0" cellpadding="0"  bordercolor="#d0d0d0" *ngFor="let datascale of attribute| paginate: { itemsPerPage: 50, currentPage: p5 }" width="60%">
         <tr>
-          <button id="numberbutton" >{{datascale.label}}</button>
-          <td  align=center  width="50%">{{datascale.name}}</td>
+          <button id="numberbutton" >{{datascale}}</button>
+          <!-- <td  align=center  width="50%">{{datascale.name}}</td> -->
         </tr>
       </table>
        <!-- <pagination-controls (pageChange)="p5 = $event"></pagination-controls> -->
     </div>
     <div *ngIf="Visible === 'Objs'">
       <!-- <pagination-controls (pageChange)="p6 = $event"></pagination-controls> -->
-      <table border="1" cellspacing="0" cellpadding="0"  bordercolor="#d0d0d0" width="40%">
+      <table border="1" cellspacing="0" cellpadding="0"  bordercolor="#d0d0d0" width="60%">
         <tr>
           <td name="Number" align=center  align=center>Object ID</td>
+          <td  align=center width="50%" *ngFor="let name of obj_name">{{name}}</td>
         </tr>
       </table>
-      <table border="1" cellspacing="0" cellpadding="0"  bordercolor="#d0d0d0" *ngFor="let datascale of attribute| paginate: { itemsPerPage: 50, currentPage: p6 } " width="40%">
+      <table border="1" cellspacing="0" cellpadding="0"  bordercolor="#d0d0d0" *ngFor="let datascale of attribute| paginate: { itemsPerPage: 50, currentPage: p6 } " width="60%">
         <tr>
           <button  id="numberbutton"  >{{datascale.label}}</button>
+          <td  align=center  width="50%">{{datascale.name}}</td>
         </tr>
       </table>
       <!-- <pagination-controls (pageChange)="p6 = $event"></pagination-controls> -->

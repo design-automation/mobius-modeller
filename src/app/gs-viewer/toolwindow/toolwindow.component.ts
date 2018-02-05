@@ -114,12 +114,12 @@ export class ToolwindowComponent extends DataSubscriber implements OnInit {
     var attrubtepoints=[];
     this.point_name=[];
     if(this.scene_and_maps.points_map!==null&&this.scene_and_maps.points_map.size!==0&&this.scene_and_maps.points_map!==undefined){
-      const point_attribs: gs.IEntAttrib[] = this.model.findAttribs(gs.EGeomType.points) as gs.IEntAttrib[];
+      /*const point_attribs: gs.IEntAttrib[] = this.model.findAttribs(gs.EGeomType.points) as gs.IEntAttrib[];
       for(var j=0;j<point_attribs.length;j++){
-        this.point_name.push(point_attribs[j].getName());
+        this.point_name.push(point_attribs[j].getName());*/
         for(var i=0;i<this.scene_and_maps.points_map.size;i++){
           const points: gs.IPoint = this.model.getGeom().getPoint(i) as gs.IPoint;
-          const points_attrib: gs.IEntAttrib=points.getAttribValue(point_attribs[j]);
+          //const points_attrib: gs.IEntAttrib=points.getAttribValue(point_attribs[j]);
           const label: string = points.getLabel();
           const verts_xyz: gs.XYZ = points.getLabelCentroid();
           var attributepoint:any=[];
@@ -128,11 +128,11 @@ export class ToolwindowComponent extends DataSubscriber implements OnInit {
             attributepoint.x=verts_xyz[0];
             attributepoint.y=verts_xyz[1];
             attributepoint.z=verts_xyz[2];
-            attributepoint.name=points_attrib;
+            //attributepoint.name=points_attrib;
             attrubtepoints.push(attributepoint);
           }
         }
-      }
+      //}
     }
     return attrubtepoints;
   }
@@ -142,10 +142,9 @@ export class ToolwindowComponent extends DataSubscriber implements OnInit {
     var points=this.getpoints();
     this.vertex_name=[];
     if(this.scene_and_maps.vertices_map!==null&&this.scene_and_maps.vertices_map.size!==0&&this.scene_and_maps.vertices_map!==undefined){
-      const vertex_attribs: gs.ITopoAttrib[] = this.model.findAttribs(gs.EGeomType.vertices) as gs.ITopoAttrib[];
-      //console.log(vertex_attribs);
+      /*const vertex_attribs: gs.ITopoAttrib[] = this.model.findAttribs(gs.EGeomType.vertices) as gs.ITopoAttrib[];
       for(var n=0;n<vertex_attribs.length;n++){
-        this.vertex_name.push(vertex_attribs[n].getName());
+        this.vertex_name.push(vertex_attribs[n].getName());*/
         for(var i =0;i<this.scene_and_maps.vertices_map.size;i++){
           const path: gs.ITopoPathData = this.scene_and_maps.vertices_map.get(i);
           const vertices: gs.IVertex = this.model.getGeom().getTopo(path) as gs.IVertex;
@@ -165,7 +164,7 @@ export class ToolwindowComponent extends DataSubscriber implements OnInit {
           attributes.path=path;
           attributevertix.push(attributes);
         }
-      }
+      //}
       this.dataService.addattrvertix(attributevertix);
     }
     return attributevertix;
@@ -175,20 +174,20 @@ export class ToolwindowComponent extends DataSubscriber implements OnInit {
     var attributeedge=[];
     this.edge_name=[];
     if(this.scene_and_maps.edges_map!==null&&this.scene_and_maps.edges_map.size!==0&&this.scene_and_maps.edges_map!==undefined){
-      const edge_attribs: gs.ITopoAttrib[] = this.model.findAttribs(gs.EGeomType.edges) as gs.ITopoAttrib[];
+      /*const edge_attribs: gs.ITopoAttrib[] = this.model.findAttribs(gs.EGeomType.edges) as gs.ITopoAttrib[];
        for(var j=0;j<edge_attribs.length;j++){
-        this.edge_name.push(edge_attribs[j].getName());
+        this.edge_name.push(edge_attribs[j].getName());*/
         //console.log(this.edge_name);
         for(var i =0;i<this.scene_and_maps.edges_map.size;i++){
           const path: gs.ITopoPathData = this.scene_and_maps.edges_map.get(i);
           const edge: gs.IEdge = this.model.getGeom().getTopo(path) as gs.IEdge;
           //const edge_attrib=edge.getAttribValue(edge_attribs[j]);
           const label: string = edge.getLabel();
-          var attributes:any=[];
-          attributes.label=label;
-          attributeedge.push(attributes);
+          //var attributes:any=[];
+          //attributes.label=label;
+          attributeedge.push(label);
         }
-      }
+      //}
     }
     return attributeedge;
   }
@@ -197,19 +196,19 @@ export class ToolwindowComponent extends DataSubscriber implements OnInit {
     var attributewire=[];
     this.wire_name=[];
     if(this.scene_and_maps.wires_map!==null&&this.scene_and_maps.wires_map.size!==0&&this.scene_and_maps.wires_map!==undefined){
-      const wire_attribs: gs.ITopoAttrib[] = this.model.findAttribs(gs.EGeomType.wires) as gs.ITopoAttrib[];
+      /*const wire_attribs: gs.ITopoAttrib[] = this.model.findAttribs(gs.EGeomType.wires) as gs.ITopoAttrib[];
       for(var j=0;j<wire_attribs.length;j++){
-        this.wire_name.push(wire_attribs[j].getName());
+        this.wire_name.push(wire_attribs[j].getName());*/
         for(var i =0;i<this.scene_and_maps.wires_map.size;i++){
           const path: gs.ITopoPathData = this.scene_and_maps.wires_map.get(i);
           const wire: gs.IWire = this.model.getGeom().getTopo(path) as gs.IWire;
-          var attributes:any=[];
+          //var attributes:any=[];
           const label: string = wire.getLabel();
-          attributes.label=label;
-          if(attributewire.indexOf(attributes)===-1)
-            attributewire.push(attributes);
+          //attributes.label=label;
+          if(attributewire.indexOf(label)===-1)
+            attributewire.push(label);
         }
-      }
+      //}
     }
     return attributewire;
   }
@@ -218,37 +217,54 @@ export class ToolwindowComponent extends DataSubscriber implements OnInit {
     var attributeface=[];
     this.face_name=[];
     if(this.scene_and_maps.faces_map!==null&&this.scene_and_maps.faces_map.size!==0&&this.scene_and_maps.faces_map!==undefined){
-      const face_attribs: gs.ITopoAttrib[] = this.model.findAttribs(gs.EGeomType.faces) as gs.ITopoAttrib[];
+      /*const face_attribs: gs.ITopoAttrib[] = this.model.findAttribs(gs.EGeomType.faces) as gs.ITopoAttrib[];
       for(var j=0;j<face_attribs.length;j++){
-      this.face_name.push(face_attribs[j].getName());
+      this.face_name.push(face_attribs[j].getName());*/
         for(var i =0;i<this.scene_and_maps.faces_map.size;i++){
           const path: gs.ITopoPathData = this.scene_and_maps.faces_map.get(i);
           const face: gs.IFace = this.model.getGeom().getTopo(path) as gs.IFace;
-          var attributes:any=[];
+          //var attributes:any=[];
           const label: string = face.getLabel();
-          attributes.label=label;
-          attributes.name=face.getAttribValue(face_attribs[j]);
-          attributeface.push(attributes);
+          //attributes.label=label;
+          if(attributeface.indexOf(label)===-1){
+          //attributes.name=face.getAttribValue(face_attribs[j]);
+            attributeface.push(label);
+          }
         }
       }
-    }
+    //}
     return attributeface;
   }
 
   getoject():Array<any>{
     var attributeobject=[];
+    this.obj_name=[];
     if(this.scene_and_maps.faces_map!==null&&this.scene_and_maps.faces_map.size!==0&&this.scene_and_maps.faces_map!==undefined){ 
+      const obj_attribs: gs.IEntAttrib[] = this.model.findAttribs(gs.EGeomType.objs) as gs.IEntAttrib[];
+      if(obj_attribs.length!==0){
+        for(var j=0;j<obj_attribs.length;j++){
+          this.obj_name.push(obj_attribs[j].getName());
+        }
+      }
       for(var i =0;i<this.scene_and_maps.faces_map.size;i++){
         const path: gs.ITopoPathData = this.scene_and_maps.faces_map.get(i);
         if(i===0||path.id!==this.scene_and_maps.faces_map.get(i-1).id){
           var attribute:any=[];
           const label: string = "o"+path.id;
-          attribute.label=label
+          attribute.label=label;
+          for(var j=0;j<obj_attribs.length;j++){
+            var obj: gs.IObj = this.model.getGeom().getObj(path.id) as gs.IObj;
+            attribute.name=obj.getAttribValue(obj_attribs[j]);
+          }
+          /*if(obj_attribs.length!==0){
+            var obj: gs.IObj = this.model.getGeom().getObj(path.id) as gs.IObj;
+            attribute.name=obj.getAttribValue(obj_attribs[j]);
+          }*/
           attributeobject.push(attribute);
         }
       }
-      const obj_attribs: gs.IEntAttrib[] = this.model.findAttribs(gs.EGeomType.objs) as gs.IEntAttrib[];
-      console.log(obj_attribs);
+      //const obj_attribs: gs.IEntAttrib[] = this.model.findAttribs(gs.EGeomType.objs) as gs.IEntAttrib[];
+      /*console.log(obj_attribs);
       if(obj_attribs.length!==0){
         for(var j=0;j<obj_attribs.length;j++){
           this.obj_name.push(obj_attribs[j].getName());
@@ -256,7 +272,7 @@ export class ToolwindowComponent extends DataSubscriber implements OnInit {
 
           }
         }
-      }
+      }*/
     }
     return attributeobject;
   }
@@ -423,7 +439,9 @@ export class ToolwindowComponent extends DataSubscriber implements OnInit {
             const face: gs.IFace = this.model.getGeom().getTopo(selecting[i]["path"]) as gs.IFace;
             const verts: gs.IEdge[] = face.getEdges();
             for(var n=0;n<verts.length;n++){
+              //var attributes:any=[];
               var label=verts[n].getLabel();
+              //attributes.label=label;
               if(label===edges[j]&&this.attribute.indexOf(edges[j]) == -1){
                 this.attribute.push(edges[j]);
               }
@@ -552,7 +570,7 @@ export class ToolwindowComponent extends DataSubscriber implements OnInit {
     if(selecting.length!==0){
       for(var i=0;i<selecting.length;i++){
         for(var j=0;j<object.length;j++){
-          if(selecting[i]["id"]===object[j]){
+          if(selecting[i]["id"]===object[j].label){
             this.attribute.push(object[j]);
           }
         }

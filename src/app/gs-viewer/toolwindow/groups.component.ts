@@ -11,7 +11,7 @@ import {ViewerComponent} from "../viewer/viewer.component";
   templateUrl: './groups.component.html',
   styleUrls: ['./groups.component.css']
 })
-export class GroupsComponent extends ViewerComponent implements OnInit {
+export class GroupsComponent extends DataSubscriber implements OnInit {
   myElement;
   model:gs.IModel;
   scene:THREE.Scene;
@@ -25,7 +25,7 @@ export class GroupsComponent extends ViewerComponent implements OnInit {
   groups:Array<any>;
 
   constructor(injector: Injector, myElement: ElementRef){
-  	super(injector,myElement);
+  	super(injector);
     this.scene=this.dataService.getScene();
     this.myElement = myElement;
   }
