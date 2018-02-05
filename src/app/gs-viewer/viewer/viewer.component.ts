@@ -89,8 +89,8 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
     }
 
     ///
-    let width: number = container.clientWidth;
-    let height: number = container.clientHeight;
+    let width: number = container.offsetWidth;//container.clientWidth;
+    let height: number = container.offsetHeight;//container.clientHeight;
 
     let scene: THREE.Scene = this.dataService.getScene(width, height);
     let renderer: THREE.WebGLRenderer = this.dataService.getRenderer();
@@ -212,8 +212,8 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
     }
 
     ///
-    let width: number = container.clientWidth;
-    let height: number = container.clientHeight;
+    let width: number = container.offsetWidth;//container.clientWidth;
+    let height: number = container.offsetHeight;//container.clientHeight;
     this.width = width;//event.ClientWidth;
     this.height = height;//event.ClientHeight;
     this.renderer.setSize(this.width,this.height);
@@ -543,9 +543,12 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
   }
 
   onDocumentMouseMove(event) {
-    this.mouse.x = ( event.offsetX / this.width) * 2 - 1;
-    this.mouse.y =-( event.offsetY / this.height ) * 2 + 1;
+    if(this.seVisible===true){
+      this.mouse.x = ( event.offsetX / this.width) * 2 - 1;
+      this.mouse.y =-( event.offsetY / this.height ) * 2 + 1;
+    }
   }
+
 
 
   addgrid(){

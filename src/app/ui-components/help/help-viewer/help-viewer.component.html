@@ -31,13 +31,13 @@
 								<span class="topic">{{pa.name}}: </span>
 								<!-- <span *ngIf="pa.type">Type: {{pa.type.type}}</span> -->
 								<!--<span class="topic">Description: </span>-->
-								<span class="descr" *ngIf="pa.comment">{{pa.comment.text}}</span>
+								<span class="descr" *ngIf="pa.comment" [innerHTML]="pa.comment.text"></span>
 							</div>
 						</div>
 
 						<div class="return-block">
 		    				<span class="topic">Returns: </span>
-		    				<span class="descr">{{fn.signatures[0].comment.returns}}</span>
+		    				<span class="descr" [innerHTML]="fn.signatures[0].comment.returns"></span>
 		    			</div>
 
 		    			
@@ -61,11 +61,17 @@
 		<h3>{{fnObj.name}}</h3>
 		
 		<div *ngIf='fnObj.content'>
-			{{fnObj.content.signatures[0].comment.shortText}}
-			Returns: {{fnObj.content.signatures[0].comment.returns}}
+			<div [innerHTML]="fnObj.content.signatures[0].comment.shortText"></div>
+			<div>
+				Returns: 
+				<div [innerHTML]="fnObj.content.signatures[0].comment.returns"></div>
+
+				<br><br>
+				
 				<a href="https://phtj.github.io/gs-modelling/docs/modules/{{getUrl(fnObj.module, fnObj.name)}}" target="_blank">
 				More
 				</a>
+		    </div>
 		</div>
 	
 		<hr>

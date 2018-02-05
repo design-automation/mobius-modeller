@@ -21,10 +21,6 @@ export class ConsoleComponent implements OnInit {
 		});
   }
 
-  ngAfterViewChecked() {        
-      this.scrollToBottom();        
-  } 
-
   ngOnInit() {
   	this._messages = this.consoleService.getContent();
     this.scrollToBottom();
