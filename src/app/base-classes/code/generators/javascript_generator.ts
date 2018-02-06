@@ -288,6 +288,7 @@ export class CodeGeneratorJS extends CodeGenerator{
 				}
 				else if(prod_type == ProcedureTypes.ElseControl){
 					statement = "else{";
+					code = "prodArr.push(" + procedure["id"] + ");\n" + code; 
 				}
 				else if(prod_type == ProcedureTypes.ForLoopControl){
 					statement = "for ( let " + procedure.getLeftComponent().expression + " of " + procedure.getRightComponent().expression + "){"
@@ -316,7 +317,7 @@ export class CodeGeneratorJS extends CodeGenerator{
 			}
 
 			// add procedure id to track failing
-			if(prodArr){ 
+			if(prodArr && prod_type != ProcedureTypes.ElseControl){ 
 				code = "prodArr.push(" + procedure["id"] + ");\n" + code; 
 			};
 
@@ -357,6 +358,7 @@ export class CodeGeneratorJS extends CodeGenerator{
 			}
 			catch(ex){
 				node.hasError();
+				console.log("CodeString:", str);
 
 				let prodWithError: number = prodArr.pop(); 
 
