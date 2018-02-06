@@ -402,6 +402,10 @@ export class FlowchartService {
     // print message to console
     this.consoleService.addMessage("Node Library was cleared.");
 
+    this.getNodes().map(function(node){
+      node.removeType();
+    })
+
     this.checkSavedNodes();
     this.update();
   }
