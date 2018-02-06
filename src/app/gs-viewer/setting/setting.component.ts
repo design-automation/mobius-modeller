@@ -12,7 +12,7 @@ import {DataService} from '../data/data.service';
 export class SettingComponent implements OnInit {
   viewer:ViewerComponent;
   scene:THREE.Scene;
-  alight:Array<THREE.AmbientLight>;
+  alight:THREE.HemisphereLight;
   gridVisible: boolean; 
   axisVisible: boolean; 
   shadowVisible: boolean; 
@@ -36,12 +36,12 @@ export class SettingComponent implements OnInit {
 
   ngOnInit(){
     if(this.hue == undefined) {
-        this.hue = 160;
+        this.hue = 0;
     } else {
       this.hue=this.dataService.hue;
     }
     if(this.saturation == undefined) {
-        this.saturation = 0;
+        this.saturation = 0.01;
     } else {
       this.saturation=this.dataService.saturation;
     }
@@ -113,7 +113,6 @@ export class SettingComponent implements OnInit {
     // avoid manipulating the scene here
     // shift to dataservice
     this.scene = this.dataService.getScene();
-    this.alight=[];
     this.alight=this.dataService.getalight();
     this.hue=this.dataService.hue;
     this.saturation=this.dataService.saturation;
@@ -153,7 +152,6 @@ export class SettingComponent implements OnInit {
       gridhelper.name="GridHelper";
       var vector=new THREE.Vector3(0,1,0);
       gridhelper.lookAt(vector);
-      //gridhelper.position.set(center.x,center.y,0);
       this.scene.add( gridhelper);
 
     }else{
@@ -261,10 +259,7 @@ export class SettingComponent implements OnInit {
     this.dataService.gethue(_hue);
     this.dataService.getsaturation(_saturation);
     this.dataService.getlightness(_lightness);
-    for(var i=0;i<alight.length;i++) {
-      var ambientLight=alight[i];
-      ambientLight.color.setHSL( _hue, _saturation,_lightness );
-    }
+    this.alight.color.setHSL( _hue, _saturation,_lightness );
   }
   
   changeframe(){

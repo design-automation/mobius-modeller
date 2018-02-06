@@ -91,11 +91,8 @@ mat-panel-description{
 
 mat-list{
 	.mat-subheader{
-		display: none; //not sure the purpose of this word
 		font-size: $fsize2;
-		color: $color1;
-		margin: 0;
-		padding: 0;
+		color: $color2;
 	}
 	mat-list-item{
 		h4{

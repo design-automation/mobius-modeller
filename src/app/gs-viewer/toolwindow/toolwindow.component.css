@@ -5,9 +5,10 @@
   background-color: #E6E6E6;
   float: left;
   width: 50%;
-  height: 28px;
+  height: 25px;
   left: 30px;
   margin-top:0px;
+  overflow: hidden !important;
 }
 #point{
   margin-left:25px;
@@ -84,9 +85,10 @@
   background-color: #E6E6E6;
   float: right;
   right: 0px;
-  height: 28px;
+  height: 25px;
   color:black !important;
   top:0px;
+  overflow: hidden !important;
 }
 .my-pagination /deep/ .ngx-pagination{
   margin:0px !important;

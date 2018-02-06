@@ -89,8 +89,8 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
     }
 
     ///
-    let width: number = container.clientWidth;
-    let height: number = container.clientHeight;
+    let width: number = container.offsetWidth;//container.clientWidth;
+    let height: number = container.offsetHeight;//container.clientHeight;
 
     let scene: THREE.Scene = this.dataService.getScene(width, height);
     let renderer: THREE.WebGLRenderer = this.dataService.getRenderer();
@@ -212,8 +212,8 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
     }
 
     ///
-    let width: number = container.clientWidth;
-    let height: number = container.clientHeight;
+    let width: number = container.offsetWidth;//container.clientWidth;
+    let height: number = container.offsetHeight;//container.clientHeight;
     this.width = width;//event.ClientWidth;
     this.height = height;//event.ClientHeight;
     this.renderer.setSize(this.width,this.height);
@@ -255,6 +255,8 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
       let objectData = loader.parse( scene_data );
       
       this.seVisible=false;
+
+      this.LineNo=0;
       // preprocessing
       if( objectData.children!==undefined){
         var radius=0;
@@ -286,7 +288,6 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
           }
         }
       }
-
       // setting controls
       this.controls.target.set(this.center.x,this.center.y,this.center.z);
       this.controls.update();
@@ -542,9 +543,12 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
   }
 
   onDocumentMouseMove(event) {
-    this.mouse.x = ( event.offsetX / this.width) * 2 - 1;
-    this.mouse.y =-( event.offsetY / this.height ) * 2 + 1;
+    if(this.seVisible===true){
+      this.mouse.x = ( event.offsetX / this.width) * 2 - 1;
+      this.mouse.y =-( event.offsetY / this.height ) * 2 + 1;
+    }
   }
+
 
 
   addgrid(){
@@ -606,7 +610,7 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
     if ( intersects.length > 0 ) {
       selectedObj=intersects[ 0 ].object;
       if(this.scenechildren[0].name === "All objs"){
-        const index:number=Math.floor(intersects[ 0 ].faceIndex/2);
+        const index:number=Math.floor(intersects[ 0 ].faceIndex);
         const path: gs.ITopoPathData = this.scene_and_maps.faces_map.get(index);
         const face: gs.IFace = this._model.getGeom().getTopo(path) as gs.IFace;
         const label: string = "o"+path.id;
@@ -620,8 +624,12 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
             for(var i=0;i<verts_xyz.length;i++){
               geometry.vertices.push(new THREE.Vector3(verts_xyz[i][0],verts_xyz[i][1],verts_xyz[i][2]));
             }
-            geometry.faces.push(new THREE.Face3(0,2,1));
-            geometry.faces.push(new THREE.Face3(0,3,2));
+            if(verts.length===4){
+              geometry.faces.push(new THREE.Face3(0,2,1));
+              geometry.faces.push(new THREE.Face3(0,3,2));
+            }else if(verts.length===3){
+              geometry.faces.push(new THREE.Face3(0,2,1));
+            }
             var mesh=new THREE.Mesh( geometry, new THREE.MeshPhongMaterial( { color:0x00ff00,side:THREE.DoubleSide} ));
             mesh["geometry"].computeVertexNormals();
             mesh.userData.id=label;
@@ -652,8 +660,12 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
               for(var i=0;i<verts_xyz.length;i++){
                 geometry.vertices.push(new THREE.Vector3(verts_xyz[i][0],verts_xyz[i][1],verts_xyz[i][2]));
               }
-              geometry.faces.push(new THREE.Face3(0,2,1));
-              geometry.faces.push(new THREE.Face3(0,3,2));
+              if(verts.length===4){
+                geometry.faces.push(new THREE.Face3(0,2,1));
+                geometry.faces.push(new THREE.Face3(0,3,2));
+              }else if(verts.length===3){
+                geometry.faces.push(new THREE.Face3(0,2,1));
+              }
               var mesh=new THREE.Mesh( geometry, new THREE.MeshPhongMaterial( { color:0x00ff00,side:THREE.DoubleSide} ));
               mesh.userData.id=label;
               mesh["geometry"].computeVertexNormals();
@@ -667,20 +679,28 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
       }
 
       if(this.scenechildren[0].name === "All faces"){
-        const index:number=Math.floor(intersects[ 0 ].faceIndex/2);
+        const index:number=Math.floor(intersects[ 0 ].faceIndex);
         const path: gs.ITopoPathData = this.scene_and_maps.faces_map.get(index);
         const face: gs.IFace = this._model.getGeom().getTopo(path) as gs.IFace;
         const label: string = face.getLabel();
         const label_xyz: gs.XYZ = face.getLabelCentroid();
         const verts: gs.IVertex[] = face.getVertices();
         const verts_xyz: gs.XYZ[] = verts.map((v) => v.getPoint().getPosition());
+        console.log(verts,verts_xyz);
         if(this.textlabels.length===0) {
           var geometry=new THREE.Geometry();
           for(var i=0;i<verts_xyz.length;i++){
             geometry.vertices.push(new THREE.Vector3(verts_xyz[i][0],verts_xyz[i][1],verts_xyz[i][2]));
           }
-          geometry.faces.push(new THREE.Face3(0,2,1));
-          geometry.faces.push(new THREE.Face3(0,3,2));
+          if(verts.length===4){
+            geometry.faces.push(new THREE.Face3(0,2,1));
+            geometry.faces.push(new THREE.Face3(0,3,2));
+          }else if(verts.length===3){
+            geometry.faces.push(new THREE.Face3(0,2,1));
+          }
+          /*for(var i=2;i<verts.length;i++){
+            geometry.faces.push(new THREE.Face3(0,2,1));
+          }*/
           var mesh=new THREE.Mesh( geometry, new THREE.MeshPhongMaterial( { color:0x00ff00,side:THREE.DoubleSide} ));
           mesh.userData.id=label;
           mesh["geometry"].computeVertexNormals();
@@ -706,8 +726,12 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
             for(var i=0;i<verts_xyz.length;i++){
               geometry.vertices.push(new THREE.Vector3(verts_xyz[i][0],verts_xyz[i][1],verts_xyz[i][2]));
             }
+            if(verts.length===4){
             geometry.faces.push(new THREE.Face3(0,2,1));
             geometry.faces.push(new THREE.Face3(0,3,2));
+            }else if(verts.length===3){
+              geometry.faces.push(new THREE.Face3(0,2,1));
+            }
             var mesh=new THREE.Mesh( geometry, new THREE.MeshPhongMaterial( { color:0x00ff00,side:THREE.DoubleSide} ));
             mesh.userData.id=label;
             mesh["geometry"].computeVertexNormals();

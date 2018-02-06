@@ -305,7 +305,9 @@ export class CodeGeneratorJS extends CodeGenerator{
 				// but parents should have childVars
 				let childVars = nodeVars.map(function(s){ return s; });
 				procedure.getChildren().map(function(child){ 
-					codeArr.push(prodFn(child, childVars, prodFn, prodArr));
+					if(!child.isDisabled()){
+						codeArr.push(prodFn(child, childVars, prodFn, prodArr));
+					}
 				});
 
 				// add ending

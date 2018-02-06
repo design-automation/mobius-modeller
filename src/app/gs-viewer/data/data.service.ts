@@ -138,12 +138,12 @@ export class DataService {
     scene.add( directional_light );
 
     // default ambient lighting
-    let default_hue: number = 160;
-    let default_saturation: number = 0;
+    let default_hue: number = 0;
+    let default_saturation: number = 0.01;
     let default_lightness: number = 0.47;
 
     var hemi_light = new THREE.HemisphereLight( 0xffffff, 0.5 );
-    hemi_light.color.setHSL( default_hue, default_saturation, default_saturation);
+    hemi_light.color.setHSL( default_hue, default_saturation, default_lightness);
     scene.add( hemi_light );
 
     this._scene = scene;
@@ -156,8 +156,8 @@ export class DataService {
     this._lightnessValue = default_lightness;
 
     // add it to alight - what does alight do?
-    this._alight = [];
-    this._alight.push(hemi_light);
+    this._alight = hemi_light;
+    //this._alight.push(hemi_light);
     
   }
 
