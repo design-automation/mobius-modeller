@@ -133,7 +133,6 @@ export abstract class Procedure implements IProcedure{
 	}
 
 	setParent(parent: IProcedure): void{
-		console.log(parent["_level"]);
 		if(parent && (parent["_level"]!==undefined)){
 			this._level = parent["_level"] + 1;
 		}
