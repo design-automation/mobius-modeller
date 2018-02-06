@@ -7,7 +7,6 @@ import docs from "gs-modelling/docs_json/gs-modelling.json";
 let Attrib: IModule = ModuleUtils.createModule("Attrib", GSS["attrib"], "attrib", docs);
 let Circle: IModule = ModuleUtils.createModule("Circle", GSS["circle"], "circle", docs);
 let Ellipse: IModule = ModuleUtils.createModule("Ellipse", GSS["ellipse"], "ellipse", docs);
-let Examples: IModule = ModuleUtils.createModule("Examples", GSS["examples"], "examples", docs);
 let Intersect: IModule = ModuleUtils.createModule("Intersect", GSS["intersect"], "intersect", docs);
 let Model: IModule = ModuleUtils.createModule("Model", GSS["model"], "model", docs);
 let Obj: IModule = ModuleUtils.createModule("Obj", GSS["object"], "object", docs);
@@ -25,6 +24,6 @@ let String: IModule = ModuleUtils.createModule("String", GSS["string"], "string"
 let Calc: IModule = ModuleUtils.createModule("Calc", GSS["calc"], "calc", docs);
 let Group: IModule = ModuleUtils.createModule("Group", GSS["group"], "group", docs);
 
-export {Calc,List, Math, String, Circle, Model, Attrib, Examples, Intersect, Obj, Plane, Pline, PMesh, Point, Query, Ray, Split, Topo, Group};
+export {Calc,List, Math, String, Circle, Model, Attrib, Intersect, Obj, Plane, Pline, PMesh, Point, Query, Ray, Split, Topo, Group};
 
 //// version for dev

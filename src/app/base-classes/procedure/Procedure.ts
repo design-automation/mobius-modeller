@@ -35,8 +35,10 @@ export abstract class Procedure implements IProcedure{
 
 	update(prodData: any, parent: IProcedure): void{
 		this._disabled = prodData._disabled; 
-		this._leftComponent = prodData._leftComponent;
-		this._rightComponent = prodData._rightComponent;
+
+		// todo: be careful
+		//this._leftComponent =  prodData._leftComponent; 
+		//this._rightComponent = prodData._rightComponent; 
 
 		this._parent = parent;
 		this._level = prodData._level;

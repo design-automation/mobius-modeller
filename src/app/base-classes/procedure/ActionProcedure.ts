@@ -1,4 +1,5 @@
 import {Procedure} from "./Procedure";
+import {IProcedure} from "./IProcedure";
 import {ProcedureTypes} from "./ProcedureTypes";
 import {IComponent} from "./IComponent";
 
@@ -31,6 +32,30 @@ export class ActionProcedure extends Procedure{
 		}
 
 		super.setRightComponent(right);
+	}
+
+
+	update(prodData: any, parent: IProcedure): void{
+		super.update(prodData, parent);
+
+		this._leftComponent = 	{ 
+									expression: prodData._leftComponent.expression,
+								 	isAction: false, 
+								 	module: undefined, 
+								 	category: undefined, 
+								 	fn_name: undefined,
+								 	params: undefined
+								};
+
+
+		this._rightComponent =  {  
+								  expression: prodData._rightComponent.expression, 
+								  isAction: true, 
+								  module: prodData._rightComponent.module, 
+								  category: undefined,//data.category, 
+								  fn_name: prodData._rightComponent.fn_name, 
+								  params: prodData._rightComponent.params.map(function(p){ return { type: p.type, value: p.value }; })
+								};
 	}
 
 }

@@ -1,4 +1,5 @@
 import {Procedure} from "./Procedure";
+import {IProcedure} from "./IProcedure";
 import {ProcedureTypes} from "./ProcedureTypes";
 import {IComponent} from "./IComponent";
 
@@ -27,6 +28,13 @@ export class DataProcedure extends Procedure{
 								}
 		super.setLeftComponent(left);
 		super.setRightComponent(right);
+	}
+
+	update(prodData: any, parent: IProcedure): void{
+		super.update(prodData, parent);
+
+		this._leftComponent.expression = prodData._leftComponent.expression;
+		this._rightComponent.expression = prodData._rightComponent.expression;
 	}
 
 }
