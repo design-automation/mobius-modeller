@@ -700,6 +700,7 @@ class CodeGeneratorJS extends __WEBPACK_IMPORTED_MODULE_0__CodeGenerator__["a" /
             }
             else if (prod_type == __WEBPACK_IMPORTED_MODULE_1__procedure_ProcedureModule__["b" /* ProcedureTypes */].ElseControl) {
                 statement = "else{";
+                code = "prodArr.push(" + procedure["id"] + ");\n" + code;
             }
             else if (prod_type == __WEBPACK_IMPORTED_MODULE_1__procedure_ProcedureModule__["b" /* ProcedureTypes */].ForLoopControl) {
                 statement = "for ( let " + procedure.getLeftComponent().expression + " of " + procedure.getRightComponent().expression + "){";
@@ -723,7 +724,7 @@ class CodeGeneratorJS extends __WEBPACK_IMPORTED_MODULE_0__CodeGenerator__["a" /
             code = codeArr.join("\n");
         }
         // add procedure id to track failing
-        if (prodArr) {
+        if (prodArr && prod_type != __WEBPACK_IMPORTED_MODULE_1__procedure_ProcedureModule__["b" /* ProcedureTypes */].ElseControl) {
             code = "prodArr.push(" + procedure["id"] + ");\n" + code;
         }
         ;
@@ -754,6 +755,7 @@ class CodeGeneratorJS extends __WEBPACK_IMPORTED_MODULE_0__CodeGenerator__["a" /
         }
         catch (ex) {
             node.hasError();
+            console.log("CodeString:", str);
             let prodWithError = prodArr.pop();
             let markError = function (prod, id) {
                 if (prod["id"] && id && prod["id"] == id) {
