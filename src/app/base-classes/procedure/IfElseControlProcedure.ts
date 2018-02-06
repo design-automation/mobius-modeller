@@ -27,14 +27,15 @@ export class IfElseControlProcedure extends Procedure{
 					data = {if_condition: undefined, el_condition: undefined}
 				}
 
-				let left: IComponent = { 
-									 expression: data.if_condition, 
-									 isAction: false, 
-									 module: undefined, 
-									 category: undefined, 
-									 fn_name: undefined,
-									 params: undefined
-								}
+				let left: IComponent =  { 
+											 expression: data.if_condition, 
+											 isAction: false, 
+											 module: undefined, 
+											 category: undefined, 
+											 fn_name: undefined,
+											 params: undefined
+										};
+										
 				this.setLeftComponent(left)
 			}
 			else if(title == ProcedureTypes.ElseControl){
