@@ -358,8 +358,8 @@ export class GraphNode implements IGraphNode{
 			if(type == ProcedureTypes.Data || type == ProcedureTypes.ForLoopControl || 
 				type ==ProcedureTypes.Action){
 				let var_name: string = prod.getLeftComponent().expression;
-				if(var_name.length > 0){
-					varList.push(var_name)
+				if(var_name && var_name.length > 0){
+					varList.push(var_name);
 				};
 			}
 		});

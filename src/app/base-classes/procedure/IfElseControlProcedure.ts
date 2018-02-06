@@ -53,4 +53,16 @@ export class IfElseControlProcedure extends Procedure{
 		}
 	}
 
+	update(prodData: any, parent: IProcedure): void{
+		super.update(prodData, parent);
+
+		if(prodData._leftComponent){
+			this._leftComponent.expression = prodData._leftComponent.expression;
+		}
+
+		if(prodData._rightComponent){
+			this._rightComponent.expression = prodData._rightComponent.expression;
+		}
+	}
+
 }
