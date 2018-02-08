@@ -3,12 +3,15 @@
   <input id="axis"  type="checkbox" [checked]="axisVisible" (click)="changeaxis()"> <label id="name" value="axisVisible">axis</label>
   <input id="shadow"  type="checkbox" [checked]="shadowVisible" (click)="changeshadow()"> <label id="name" value="shadowVisible">shadow</label>
   <input id="frame"  type="checkbox" [checked]="frameVisible" (click)="changeframe()"> <label id="name" value="frameVisible">frame</label><br/>
-  <input id="nomal"  type="checkbox" [checked]="normalVisible" (click)="changenormal()"> <label id="name" value="nomalVisible">nomal</label><br/>
+  <!-- <input id="nomal"  type="checkbox" [checked]="normalVisible" (click)="changenormal()"> <label id="name" value="nomalVisible">nomal</label> -->
+  <input id="point"  type="checkbox" [checked]="pointVisible" (click)="changepoint()"> <label id="name" value="pointVisible">point</label><br/>
   
   <hr/><label class="name" >Grid Center</label><br/>
-  <label class="name" >X</label><input type="text" name="center" id="centerx" #centerx value={{_centerx}} (change)=changecenter(centerx.value,centery.value,centerz.value)>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label id="name" >Y</label><input type="text" name="center" #centery id="centery" value={{_centery}} (change)=changecenter(centerx.value,centery.value,centerz.value)>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label id="name" >Z</label><input type="text" name="center"  #centerz id="centerz" value={{_centerz}} (change)=changecenter(centerx.value,centery.value,centerz.value)><br/>
+  <label class="name" >X</label><input type="text" name="center" id="centerx" #centerx value={{_centerx}} (change)=changecenter(centerx.value,centery.value,centerz.value,size.value)>
+  &nbsp;&nbsp;&nbsp;&nbsp;<label id="name" >Y</label><input type="text" name="center" #centery id="centery" value={{_centery}} (change)=changecenter(centerx.value,centery.value,centerz.value,size.value)>
+  &nbsp;&nbsp;&nbsp;&nbsp;<label id="name" >Z</label><input type="text" name="center"  #centerz id="centerz" value={{_centerz}} (change)=changecenter(centerx.value,centery.value,centerz.value,size.value)>
+  &nbsp;&nbsp;&nbsp;&nbsp;<label id="name" >Size</label><input type="text" name="center"  #size id="centersize" value={{_centersize}} (change)=changecenter(centerx.value,centery.value,centerz.value,size.value)>
+  &nbsp;&nbsp;&nbsp;&nbsp;<button (click)="getcenter()">Get</button><br/>
   <!--< button (click)="changecenter(centerx.value,centery.value,centerz.value)">Set</button> -->
   <!-- <hr/>&nbsp;&nbsp;&nbsp;&nbsp;<label id="name" >Raycaster Precision</label>&nbsp;&nbsp;<br/>-->
   <label class="name" >Line Precision</label>

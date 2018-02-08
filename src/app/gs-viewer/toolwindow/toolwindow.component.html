@@ -119,16 +119,16 @@
     </div>
     <div *ngIf="Visible === 'Objs'">
       <!-- <pagination-controls (pageChange)="p6 = $event"></pagination-controls> -->
-      <table border="1" cellspacing="0" cellpadding="0"  bordercolor="#d0d0d0" width="60%">
+      <table border="1" cellspacing="0" cellpadding="0"  bordercolor="#d0d0d0" class="table_ojbs">
         <tr>
-          <td name="Number" align=center  align=center>Object ID</td>
-          <td  align=center width="50%" *ngFor="let name of obj_name">{{name}}</td>
+          <td name="Number" align=center width="60px"><div style="width:100px;word-wrap:break-word;" >Object ID</div></td>
+          <td  align=center width="100px" *ngFor="let name of obj_name" ><div style="width:100px;word-wrap:break-word;" >{{name}}</div></td>
         </tr>
       </table>
-      <table border="1" cellspacing="0" cellpadding="0"  bordercolor="#d0d0d0" *ngFor="let datascale of attribute| paginate: { itemsPerPage: 50, currentPage: p6 } " width="60%">
+      <table border="1" cellspacing="0" cellpadding="0"  bordercolor="#d0d0d0" *ngFor="let datascale of attribute| paginate: { itemsPerPage: 50, currentPage: p6 } " class="table_ojbs">
         <tr>
-          <button  id="numberbutton"  >{{datascale.label}}</button>
-          <td  align=center  width="50%">{{datascale.name}}</td>
+          <td name="Number" align=center  width="60px"><div style="width:100px;word-wrap:break-word;" ><button  id="numberbutton">{{datascale.label}}</button></div></td>
+          <td  id="attrib" width="100px" align=center *ngFor="let name of obj_name; let idx=index"><div style="width:100px;word-wrap:break-word;" >{{datascale[idx]}}</div></td>
         </tr>
       </table>
       <!-- <pagination-controls (pageChange)="p6 = $event"></pagination-controls> -->

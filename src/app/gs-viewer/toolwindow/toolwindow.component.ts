@@ -52,6 +52,7 @@ export class ToolwindowComponent extends DataSubscriber implements OnInit {
   wire_name:Array<any>;
   face_name:Array<any>;
   obj_name:Array<any>;
+  attrib_name:Array<any>;
 
 
   constructor(injector: Injector, myElement: ElementRef){
@@ -239,13 +240,23 @@ export class ToolwindowComponent extends DataSubscriber implements OnInit {
   getoject():Array<any>{
     var attributeobject=[];
     this.obj_name=[];
+    this.attrib_name=[];
+    var atrib:any=[];
     if(this.scene_and_maps.faces_map!==null&&this.scene_and_maps.faces_map.size!==0&&this.scene_and_maps.faces_map!==undefined){ 
       const obj_attribs: gs.IEntAttrib[] = this.model.findAttribs(gs.EGeomType.objs) as gs.IEntAttrib[];
       if(obj_attribs.length!==0){
         for(var j=0;j<obj_attribs.length;j++){
-          this.obj_name.push(obj_attribs[j].getName());
+            this.obj_name.push(obj_attribs[j].getName());
+            for(var i =0;i<this.scene_and_maps.faces_map.size;i++){
+            const path: gs.ITopoPathData = this.scene_and_maps.faces_map.get(i);
+            var obj: gs.IObj = this.model.getGeom().getObj(path.id) as gs.IObj;
+            atrib[j]=obj.getAttribValue(obj_attribs[j]);
+            //console.log(atrib[j]);
+            this.attrib_name.push(atrib[j]);
+          }
         }
       }
+      //console.log(this.attrib_name);
       for(var i =0;i<this.scene_and_maps.faces_map.size;i++){
         const path: gs.ITopoPathData = this.scene_and_maps.faces_map.get(i);
         if(i===0||path.id!==this.scene_and_maps.faces_map.get(i-1).id){
@@ -254,25 +265,11 @@ export class ToolwindowComponent extends DataSubscriber implements OnInit {
           attribute.label=label;
           for(var j=0;j<obj_attribs.length;j++){
             var obj: gs.IObj = this.model.getGeom().getObj(path.id) as gs.IObj;
-            attribute.name=obj.getAttribValue(obj_attribs[j]);
+            attribute[j]=obj.getAttribValue(obj_attribs[j]);
           }
-          /*if(obj_attribs.length!==0){
-            var obj: gs.IObj = this.model.getGeom().getObj(path.id) as gs.IObj;
-            attribute.name=obj.getAttribValue(obj_attribs[j]);
-          }*/
           attributeobject.push(attribute);
         }
       }
-      //const obj_attribs: gs.IEntAttrib[] = this.model.findAttribs(gs.EGeomType.objs) as gs.IEntAttrib[];
-      /*console.log(obj_attribs);
-      if(obj_attribs.length!==0){
-        for(var j=0;j<obj_attribs.length;j++){
-          this.obj_name.push(obj_attribs[j].getName());
-          for(var i =0;i<this.scene_and_maps.faces_map.size;i++){
-
-          }
-        }
-      }*/
     }
     return attributeobject;
   }
@@ -430,9 +427,12 @@ export class ToolwindowComponent extends DataSubscriber implements OnInit {
     var selecting=this.dataService.getselecting();
     if(selecting.length!==0){
       for(var i=0;i<selecting.length;i++){
+        //if(selecting[i].type==="All edges"){
         for(var j=0;j<edges.length;j++){
-          if(selecting[i]["id"].indexOf(edges[j])>-1){
-            this.attribute.push(edges[j]);
+          if(selecting[i].type==="All edges"){
+            if(selecting[i]["id"].indexOf(edges[j])>-1){
+              this.attribute.push(edges[j]);
+            }
           }
           if(selecting[i]["type"]==="All faces"){
             //const path: gs.ITopoPathData = this.scene_and_maps.faces_map.get(selecting[i]["index"]);

@@ -1,17 +1,102 @@
+#setandgroup{
+  background-color: #F1F1F1 !important;
+  height: 100%;
+  width: 100%;
+  font-family: Roboto,"Helvetica Neue",sans-serif;
+  font-size: 12px !important;
+  line-height: 14px;
+  overflow: hidden;
+}
 #groupsview{
   color:black;
+  font-family: Roboto,"Helvetica Neue",sans-serif;
+  font-size: 12px !important;
+  overflow: hidden;
 }
-/*::ng-deep .mat-header .mat-expansion-panel-header{
-  background-color:green !important;
-}*/
+#settingview{
+  font-family: Roboto,"Helvetica Neue",sans-serif;
+  font-size: 12px !important;
+  line-height: 14px;
+}
+.check{
+  margin-left:10px;
+}
+
+#centerx{
+  width:50px;
+  margin-left:25px;
+}
+#centery{
+  width:50px;
+  margin-left:25px;
+}
+#centerz{
+  width:50px;
+  margin-left:25px;
+}
+#centersize{
+  width:50px;
+  margin-left:9px;
+}
+.name{
+  margin-left: 10px;
+}
+
+::ng-deep .mat-accent .mat-slider-thumb {
+    background-color: #395d73;
+    font-family:sans-serif;
+} 
+::ng-deep .mat-accent .mat-slider-thumb-label {
+    background-color: #395d73;
+    font-family:sans-serif;
+} 
+::ng-deep .mat-accent .mat-slider-track-fill {
+    background-color: #395d73;
+    font-family:sans-serif;
+}
+::ng-deep .mat-expansion-panel {
+  margin: 0px !important;
+  overflow: hidden !important;
+}
+
 .mat-expansion-panel{
    background-color: #F1F1F1 !important;
    border-color: #395d73;
-   line-height: 15px;
+   line-height: 14px;
    font-weight: bold !important;
    font-size: 12px !important;
 }
+.mat-tab-group{
+/*background-color: #F1F1F1 !important;
+  border-color: #395d73;
+  line-height: 14px;
+  font-weight: bold !important;
+  font-size: 12px !important;
+  color:#395d73;
+  border: 0;*/
+  border: 0px solid #F1F1F1;
+  color:#395d73;
+}
 
+/deep/.mat-tab-label, /deep/.mat-tab-label-active{
+  min-width: 3px!important;
+  padding: 3px!important;
+  margin: 3px!important;
+  color:#395d73;
+}
+/deep/.mat-tab-label{
+  height: 30px !important;
+}
+/deep/.mat-tab-header-pagination-controls-enabled .mat-tab-header-pagination{
+  display: none !important;
+}
+/deep/.mat-ink-bar{
+  background-color: #395d73 !important;
+}
+/*.mat-tab{
+  min-width: 30px !important;
+}
+*/
 #groupname{
   margin-right: 0px;
 }
@@ -26,9 +111,9 @@
   cursor :pointer;
   color:#f3a32a;
   font-family: sans-serif;
-  font-size: 15px;
+  font-size: 12px;
   font-weight: 700px;
-  line-height: 15px;
+  line-height: 14px;
   border-top: 2px !important;
   /*margin-top: 2px;*/
 }
@@ -37,9 +122,9 @@
   cursor :pointer;
   color:#f3a32a;
   font-family: sans-serif;
-  font-size: 15px;
+  font-size: 12px;
   font-weight: 700px;
-  line-height: 15px;
+  line-height: 14px;
   border-top: 2px !important;
   /*margin-top: 2px;*/
 }

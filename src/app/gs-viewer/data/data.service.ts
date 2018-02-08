@@ -77,8 +77,10 @@ export class DataService {
   centerx:number;
   centery:number;
   centerz:number;
+  centersize:number;
   pointsize:number;
   clickshow:Array<any>;
+  point:boolean=true;
 
   // ---- 
   // Subscription Handling
@@ -115,7 +117,7 @@ export class DataService {
 
     // camera settings
     let aspect_ratio: number = this._width/this._height
-    let camera = new THREE.PerspectiveCamera( 50, aspect_ratio, 0.01, 1000 );
+    let camera = new THREE.PerspectiveCamera( 50, aspect_ratio, 0.01, 1000 );//0.0001, 100000000 );
     camera.position.y=10;
     camera.up.set(0,0,1);
     camera.lookAt( scene.position );
@@ -283,6 +285,9 @@ export class DataService {
   getcenterz(centerz):void{
     this.centerz=centerz;
   }
+  getcentersize(centersize):void{
+    this.centersize=centersize;
+  }
 
   addGeom(Geom): void{
     this._Geom = Geom;
@@ -349,6 +354,10 @@ export class DataService {
   }
   addselect(select){
     this.selectcheck=select;
+  }
+
+  addpoint(point){
+  this.point=point;
   }
   getSelectingIndex(uuid):number {
    for(var i=0;i<this.selecting.length;i++){
