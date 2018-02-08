@@ -300,6 +300,7 @@ export class FlowchartService {
                          //{_name: "Ray", _version: 0.1, _author: "Patrick"},
                          {_name: "Split", _version: 0.1, _author: "Patrick"},
                          {_name: "String", _version: 0.1, _author: "Patrick"},
+                         {_name: "Xform", _version: 0.1, _author: "Patrick"},
                          //{_name: "Topo", _version: 0.1, _author: "Patrick"}
                       ]
                     );
@@ -705,12 +706,12 @@ export class FlowchartService {
 
     file["language"] = "js";
     file["modules"] = [];
-    file["flowchart"] = this._flowchart;
-
-    fileString = CircularJSON.stringify(file);
 
     if(local == true){
       // add file string to local storage
+      file["flowchart"] = this._flowchart;
+      fileString = CircularJSON.stringify(file);
+
       let myStorage = window.localStorage;
       let property = MOBIUS.PROPERTY.FLOWCHART;
       myStorage.setItem(property, fileString);
@@ -718,11 +719,17 @@ export class FlowchartService {
       this.consoleService.addMessage("Autosaved flowchart.");
     }
     else{
+
+      let newFlowchart: IFlowchart = FlowchartReader.readFlowchartFromData(this._flowchart);
+      file["flowchart"] = newFlowchart;
+      fileString = CircularJSON.stringify(file);
+
       this.downloadContent({
           type: 'text/plain;charset=utf-8',
           filename: 'Scene' + (new Date()).getTime() + ".mob",
           content: fileString
       });
+      
       this.consoleService.addMessage("File saved successfully");
     }
 
