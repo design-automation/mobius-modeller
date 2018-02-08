@@ -630,59 +630,60 @@ export class FlowchartService {
     }
     return this._flowchart.getNodeByIndex(this._selectedNode).getId() == node.getId();
   }
-  //
-  //
-  //
-  printConsole(consoleMessages: any[] /*[{name: string, value: any}]*/): void{
-      if(consoleMessages.length > 0){
-          let consoleHTML: string = "<div class='console-heading'>Printed Values</div>";
-
-          for(let i=0; i < consoleMessages.length; i++){
-
-               let variable_name: string = consoleMessages[i].name;
-               let variable_value: string = consoleMessages[i].value; 
-
-               if(Array.isArray(variable_value)){
-                   variable_value = "[" + variable_value + "]";
-               }
-
-               if(typeof variable_value == 'string'){
-                   variable_value = "\"" + variable_value + "\"";
-               }
-
-               consoleHTML += "<div class='console-line'>" +  "<span class='var-name'>Value of "  + variable_name + ": </span>" + 
-                       "<span class='var-value'>"  + variable_value +  "</div>"
-          }
-
-          this.consoleService.addMessage(consoleHTML, EConsoleMessageType.Print);
-      }
-  }
-
 
   // 
   //  run this flowchart
   //
   execute(): any{
 
-      let consoleMessages: any[] = [];
-      function printFunction(varName: string, value: any){
-        consoleMessages.push({name: varName, value: value});
+      let consoleMessages: string[] = [ "<div class='console-heading'>Printed Values</div>" ];
+
+      //
+      //  generates an HTML version of the values
+      //
+      let printFunction = function(varName: string, value: any){
+          let consoleHTML: string = "";
+          
+          let variable_name: string = varName;
+          let variable_value: string = value; 
+
+          if(Array.isArray(variable_value)){
+             variable_value = "[" + variable_value + "]";
+          }
+
+          if(typeof variable_value == 'string'){
+             variable_value = "\"" + variable_value + "\"";
+          }
+
+          consoleHTML += "<div class='console-line'>" +  "<span class='var-name'>Value of "  + variable_name + ": </span>" + 
+                 "<span class='var-value'>"  + variable_value +  "</div>";
+
+          consoleMessages.push(consoleHTML);
       }
 
       try{
           this._flowchart.execute(this.code_generator, this._moduleMap, printFunction);
-          this.printConsole(consoleMessages);
-          this.consoleService.addMessage("Flowchart was executed.");
-
+          
+          if(consoleMessages.length > 1){
+            this.consoleService.addMessage( consoleMessages.join(""), EConsoleMessageType.Print );
+          }
+          consoleMessages = null;
+          printFunction = null;
+          
+          this.consoleService.addMessage("Flowchart was successfully executed.");
       }
       catch(ex){
         
-        this.printConsole(consoleMessages);
+          if(consoleMessages.length > 1){
+            this.consoleService.addMessage( consoleMessages.join(""), EConsoleMessageType.Print );
+          }
+          consoleMessages = null;
+          printFunction = null;
 
-        let errorMessage: string = "<div class='error'>" + ex + "</div>";
-        this.consoleService.addMessage( errorMessage, EConsoleMessageType.Error );
+          let errorMessage: string = "<div class='error'>" + ex + "</div>";
+          this.consoleService.addMessage( errorMessage, EConsoleMessageType.Error );
 
-        this.layoutService.showConsole();
+          this.layoutService.showConsole();
       }
 
       this.update();
