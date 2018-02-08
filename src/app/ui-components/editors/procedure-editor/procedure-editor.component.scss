@@ -25,6 +25,9 @@
 	&.print{
 		background-color: #A5F3A5;
 	}
+	&.error{
+		background-color: red;
+	}
 }
 
 mat-expansion-panel-header{

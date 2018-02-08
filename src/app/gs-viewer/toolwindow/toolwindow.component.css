@@ -1,43 +1,63 @@
 #toolwindow{
   background-color:white;
+  overflow-x: scroll !important;
+  font-family:sans-serif;
 }
 #toolbar{
   background-color: #E6E6E6;
-  height: 28px;
+  float: left;
+  width: 50%;
+  height: 25px;
+  left: 30px;
+  margin-top:0px;
+  overflow: hidden !important;
+  font-family:sans-serif;
 }
+.table_ojbs{
+  table-layout:fixed;
+  overflow-x: scroll !important;
+  font-family:sans-serif;
+}
+.Number{
+  overflow:hidden; 
+  white-space:nowrap; 
+}
+/*#toolview{
+  overflow-x: scroll;
+}*/
 #point{
   margin-left:25px;
-  font-size:20px;
+  font-size:15px;
   background:transparent;
   border:0;
   font-family:sans-serif;
 }
 #vertice{
-  font-size:22px;
+  font-size:15px;
   background-color:transparent;
   border:0;
   font-family:sans-serif;
 }
 #edge{
-  font-size:22px;
+  font-size:15px;
   background-color:transparent;
   border:0;
   font-family:sans-serif;
 }
 #wire{
-  font-size:22px;
+  font-size:15px;
   background-color:transparent;
   border:0;
   font-family:sans-serif;
 }
 #face{
-  font-size:22px;
+  font-size:15px;
   background-color:transparent;
   border:0;
   font-family:sans-serif;
 }
 #object{
-  font-size:20px;
+  font-size:15px;
   background-color:transparent;
   border:0;
   font-family:sans-serif;
@@ -66,6 +86,12 @@
   width:100%;
   border:0;
 }
+#attrib{
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  table-layout:fixed !important;
+  white-space: nowrap !important;
+}
 /*.selectid{
   background-color:#66CCFF;
 }*/
@@ -73,4 +99,26 @@
   position: relative;
   float:right;
   margin-right: 30px;
+}
+#pagination{
+  position:relative;
+  width: 50%;
+  background-color: #E6E6E6;
+  float: right;
+  right: 0px;
+  height: 25px;
+  color:black !important;
+  top:0px;
+  overflow: hidden !important;
+}
+.my-pagination /deep/ .ngx-pagination{
+  margin:0px !important;
+  color:black !important;
+  float: right;
+  margin-right:20px !important;
+}
+.my-pagination /deep/ .ngx-pagination .current {
+  margin-top:0px;
+  color:black;
+  background-color: white;
 }

@@ -12,7 +12,7 @@ import * as CircularJSON from 'circular-json';
 
 import * as ModuleSet from "../../assets/modules/AllModules";
 
-import {ConsoleService} from "./console.service";
+import {ConsoleService, EConsoleMessageType} from "./console.service";
 import {LayoutService} from "./layout.service";
 
 import {MOBIUS} from './mobius.constants';
@@ -52,7 +52,7 @@ export class FlowchartService {
       this.newFile();
       this.checkSavedNodes();
       //this.checkSavedFile();
-      this.autoSave(60*5);
+      //this.autoSave(60*5);
   };
 
   autoSave(time_in_seconds: number): void{
@@ -60,6 +60,26 @@ export class FlowchartService {
         // console.log("saving file");
         this.saveFile(true);
     });
+  }
+
+  getLastSaved(): Date{
+
+      if(this._flowchart.getSavedTime()){
+        return this._flowchart.getSavedTime()
+      }
+      else{
+        let myStorage = window.localStorage;
+        let property = MOBIUS.PROPERTY.FLOWCHART;
+        let storageString = myStorage.getItem(property);
+
+        if(storageString){
+            let fc = CircularJSON.parse(storageString)["flowchart"]["_lastSaved"];
+            return (new Date(fc));
+        }
+        
+        return;
+      }
+
   }
 
   checkSavedFile(): void{
@@ -82,14 +102,17 @@ export class FlowchartService {
     }
 
     if(message){
-      if (confirm(message)) {
+      this.loadFile(storageString);
+      /*if (confirm(message)) {
          this.loadFile(storageString);
       } else {
           this.newFile();
-      }
+      }*/
     }
     else{
-      alert("Oops... We couldn't find a file in memory.");
+      this.consoleService.addMessage("Error loading file from memory", EConsoleMessageType.Error);
+      this.layoutService.showConsole();
+      this.newFile();
     }
 
     
@@ -189,7 +212,7 @@ export class FlowchartService {
       }
       catch(err){
         this.newFile();
-        this.consoleService.addMessage("Error loading file: " + err);
+        this.consoleService.addMessage("Error loading file: " + err, EConsoleMessageType.Error);
         this.layoutService.showConsole();
       }
 
@@ -224,7 +247,7 @@ export class FlowchartService {
               moduleMap[name] = modClass;
           }
           else{
-              console.warn(moduleMap[name] + " module not compatible. Please check version / author");
+              console.warn(name + " module not compatible. Please check version / author");
           }
     })
 
@@ -253,26 +276,32 @@ export class FlowchartService {
   //
   newFile(): IFlowchart{
     this._flowchart = new Flowchart(this._user);
-    this._selectedNode = 0;
-    this._selectedPort = 0;
+    this._selectedNode = undefined;
+    this._selectedPort = undefined;
+    this._selectedProcedure = undefined;
     this.update();
 
     this.loadModules(
                       [
-                        {_name: "String", _version: 0.1, _author: "Patrick"},
-                        {_name: "List", _version: 0.1, _author: "Patrick"},
-                        {_name: "Math", _version: 0.1, _author: "Patrick"},
-                        {_name: "Model", _version: 0.1, _author: "Patrick"},
-                        {_name: "Point", _version: 0.1, _author: "Patrick"},
-                        {_name: "Pline", _version: 0.1, _author: "Patrick"},
-                        {_name: "PMesh", _version: 0.1, _author: "Patrick"},
-                        {_name: "Circle", _version: 0.1, _author: "Patrick"},
-                        {_name: "Plane", _version: 0.1, _author: "Patrick"},
-                        {_name: "Split", _version: 0.1, _author: "Patrick"},
-                        {_name: "Intersect", _version: 0.1, _author: "Patrick"},
-                        {_name: "Calc", _version: 0.1, _author: "Patrick"},
-                        {_name: "Obj", _version: 0.1, _author: "Patrick"}
-                        //{_name: "Calc", _version: 0.1, _author: "Patrick"}
+                         //{_name: "Attrib", _version: 0.1, _author: "Patrick"},
+                         {_name: "Calc", _version: 0.1, _author: "Patrick"},
+                         {_name: "Circle", _version: 0.1, _author: "Patrick"},
+                         {_name: "Group", _version: 0.1, _author: "Patrick"},
+                         {_name: "Intersect", _version: 0.1, _author: "Patrick"},
+                         {_name: "List", _version: 0.1, _author: "Patrick"},
+                         {_name: "Math", _version: 0.1, _author: "Patrick"},
+                         {_name: "Model", _version: 0.1, _author: "Patrick"},
+                         {_name: "Obj", _version: 0.1, _author: "Patrick"},
+                         {_name: "Plane", _version: 0.1, _author: "Patrick"},
+                         {_name: "Pline", _version: 0.1, _author: "Patrick"},
+                         {_name: "PMesh", _version: 0.1, _author: "Patrick"},
+                         {_name: "Point", _version: 0.1, _author: "Patrick"},
+                         //{_name: "Query", _version: 0.1, _author: "Patrick"},
+                         //{_name: "Ray", _version: 0.1, _author: "Patrick"},
+                         {_name: "Split", _version: 0.1, _author: "Patrick"},
+                         {_name: "String", _version: 0.1, _author: "Patrick"},
+                         {_name: "Xform", _version: 0.1, _author: "Patrick"},
+                         //{_name: "Topo", _version: 0.1, _author: "Patrick"}
                       ]
                     );
 
@@ -355,8 +384,8 @@ export class FlowchartService {
       }
       catch(ex){
         this.consoleService.addMessage("Oops. Something went wrong while saving this node.\
-                                        Post the error message to the dev team on our Slack channel.");
-        this.consoleService.addMessage(ex);
+                                        Post the error message to the dev team on our Slack channel.", EConsoleMessageType.Error);
+        this.consoleService.addMessage(ex, EConsoleMessageType.Error);
         this.layoutService.showConsole();
       }
 
@@ -372,7 +401,11 @@ export class FlowchartService {
     let storageString = myStorage.removeItem(property);
 
     // print message to console
-    this.consoleService.addMessage("Node Library was cleared");
+    this.consoleService.addMessage("Node Library was cleared.");
+
+    this.getNodes().map(function(node){
+      node.removeType();
+    })
 
     this.checkSavedNodes();
     this.update();
@@ -552,6 +585,7 @@ export class FlowchartService {
   selectNode(nodeIndex: number, portIndex ?:number): void{
     this._selectedNode = nodeIndex;
     this._selectedPort = portIndex || 0;
+    this._selectedProcedure = undefined;
     this.update();
   }
 
@@ -598,53 +632,59 @@ export class FlowchartService {
     return this._flowchart.getNodeByIndex(this._selectedNode).getId() == node.getId();
   }
 
-  //
-  //
-  //
-  printConsole(consoleStrings: string[]): void{
-      if(consoleStrings.length > 0){
-          let consoleHTML: string = "<div>\
-          <div class='console-heading'>Console Messages:</div>";
-
-          for(let i=0; i < consoleStrings.length; i++){
-               let split = consoleStrings[i].split(":");
-               consoleHTML += "<div class='console-line'>" + 
-                       "<span class='var-name'>Value of "  + split[0] + ": " + 
-                       "<span class='var-value'>"  + split[1] + 
-                         "</div>"
-          }
-
-          consoleHTML += "</div>";
-
-          this.consoleService.addMessage(consoleHTML);
-      }
-  }
-
-
   // 
   //  run this flowchart
   //
   execute(): any{
 
-      let consoleStrings: any[] = [];
-      function printFunction(message: any){
-        consoleStrings.push(message);
+      let consoleMessages: string[] = [ "<div class='console-heading'>Printed Values</div>" ];
+
+      //
+      //  generates an HTML version of the values
+      //
+      let printFunction = function(varName: string, value: any){
+          let consoleHTML: string = "";
+          
+          let variable_name: string = varName;
+          let variable_value: string = value; 
+
+          if(Array.isArray(variable_value)){
+             variable_value = "[" + variable_value + "]";
+          }
+
+          if(typeof variable_value == 'string'){
+             variable_value = "\"" + variable_value + "\"";
+          }
+
+          consoleHTML += "<div class='console-line'>" +  "<span class='var-name'>Value of "  + variable_name + ": </span>" + 
+                 "<span class='var-value'>"  + variable_value +  "</div>";
+
+          consoleMessages.push(consoleHTML);
       }
 
       try{
           this._flowchart.execute(this.code_generator, this._moduleMap, printFunction);
-          this.printConsole(consoleStrings);
-          this.consoleService.addMessage("Flowchart was executed.");
-
+          
+          if(consoleMessages.length > 1){
+            this.consoleService.addMessage( consoleMessages.join(""), EConsoleMessageType.Print );
+          }
+          consoleMessages = null;
+          printFunction = null;
+          
+          this.consoleService.addMessage("Flowchart was successfully executed.");
       }
       catch(ex){
         
-        this.printConsole(consoleStrings);
+          if(consoleMessages.length > 1){
+            this.consoleService.addMessage( consoleMessages.join(""), EConsoleMessageType.Print );
+          }
+          consoleMessages = null;
+          printFunction = null;
 
-        let errorMessage: string = "<div class='error'>" + ex + "</div>";
-        this.consoleService.addMessage( errorMessage );
+          let errorMessage: string = "<div class='error'>" + ex + "</div>";
+          this.consoleService.addMessage( errorMessage, EConsoleMessageType.Error );
 
-        this.layoutService.showConsole();
+          this.layoutService.showConsole();
       }
 
       this.update();
@@ -661,16 +701,17 @@ export class FlowchartService {
     let file = {};
     let fileString: string;
 
-    this._flowchart.setSavedTime(new Date());
+    if(local)
+        this._flowchart.setSavedTime(new Date());
 
     file["language"] = "js";
     file["modules"] = [];
-    file["flowchart"] = this._flowchart;
-
-    fileString = CircularJSON.stringify(file);
 
     if(local == true){
       // add file string to local storage
+      file["flowchart"] = this._flowchart;
+      fileString = CircularJSON.stringify(file);
+
       let myStorage = window.localStorage;
       let property = MOBIUS.PROPERTY.FLOWCHART;
       myStorage.setItem(property, fileString);
@@ -678,11 +719,17 @@ export class FlowchartService {
       this.consoleService.addMessage("Autosaved flowchart.");
     }
     else{
+
+      let newFlowchart: IFlowchart = FlowchartReader.readFlowchartFromData(this._flowchart);
+      file["flowchart"] = newFlowchart;
+      fileString = CircularJSON.stringify(file);
+
       this.downloadContent({
           type: 'text/plain;charset=utf-8',
           filename: 'Scene' + (new Date()).getTime() + ".mob",
           content: fileString
       });
+      
       this.consoleService.addMessage("File saved successfully");
     }
 

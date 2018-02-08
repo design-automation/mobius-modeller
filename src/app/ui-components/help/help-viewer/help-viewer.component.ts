@@ -16,7 +16,7 @@ export class HelpViewerComponent implements OnInit {
   _url;
   private _subscription: Subscription;
 
-  _helpMods: any;
+  _loadedModules: any;
   _activeMod: string;
 
   fnObj: {module: string, name: string};
@@ -34,10 +34,20 @@ export class HelpViewerComponent implements OnInit {
           return m["_name"].toLowerCase();
       });
 
-      this._helpMods = docs.children.filter(function(child){
-          let mod_name: string = child.name.substring(1, child.name.length - 1);
-          return mods.indexOf(mod_name) > -1;
-      })
+      this._loadedModules = this.flowchartService.getModules();
+
+      for(let i=0; i < this._loadedModules.length; i++){
+        let mod = this._loadedModules[i];
+    
+        let originalName: string = mod._name; 
+        if(mod._helpObj[0]){
+          let n: string = mod._helpObj[0].name;
+          n = n.substr(1, n.length-2);
+          originalName = n;
+        }
+        mod["_url"] = "_" + originalName + "_.html";
+      }
+
 
   }
 
@@ -50,16 +60,15 @@ export class HelpViewerComponent implements OnInit {
       if(fnObj && fnObj.name){
         this.fnObj = fnObj;
 
-        for(let m=0; m < this._helpMods.length; m++){
+        for(let m=0; m < this._loadedModules.length; m++){
 
-            let mo = this._helpMods[m];
-            let mname = this.getModName(mo.name);
-
-            if(mname.toLowerCase() == fnObj.module.toLowerCase()){
+            if(this._loadedModules[m]._name.toLowerCase() == fnObj.module.toLowerCase()){
+              let mo = this._loadedModules[m]._helpObj[0];
               for(let f=0; f < mo.children.length; f++){
                   let child = mo.children[f];
                   if(fnObj.name.toLowerCase() == child.name.toLowerCase()){
                       fnObj["content"] = child;
+                      fnObj["_url"] = this._loadedModules[m]["_url"];
                   }
               }
             }
@@ -70,24 +79,6 @@ export class HelpViewerComponent implements OnInit {
           this._activeMod = fnObj.module.toUpperCase();
           this.fnObj = undefined;
       }
-  }
-
-  getUrl(name: string, fn: string): string{
-    if(name.startsWith("\"")){
-       return "_" + name.substring(1, name.length - 1).toLowerCase() + "_.html#" + fn.toLowerCase();  
-    }
-    else{
-       return "_" + name.toLowerCase() + "_.html#" + fn.toLowerCase(); 
-    }
-   
-  }
-
-  getModName(name: string): string{
-    return name.substring(1, name.length - 1).toUpperCase();
-  }
-
-  getHash(m, fn): string{
-    return this.getModName(m.name) + "/" + fn.name;
   }
 
   showAll(): void{

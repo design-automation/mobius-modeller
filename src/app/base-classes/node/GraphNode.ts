@@ -82,16 +82,18 @@ export class GraphNode implements IGraphNode{
 			// loading from file
 			this._id = nodeData["_id"];
 			this.position = nodeData["position"];
-			this._name = nodeData["_name"]
+			this._name = nodeData["_name"];
 		}
 		else{
 			// creating from library
 			this.position = [0,0];
 		}
 
+
 		// map direct properties
 		this.portCounter = nodeData["portCounter"];
 		this._isDisabled = nodeData["_isDisabled"];
+
 
 		// add inputs
 		let inputs: InputPort[] = nodeData["_inputs"];
@@ -102,7 +104,7 @@ export class GraphNode implements IGraphNode{
 			input.update(inp_data, "inp");
 			this._inputs.push(input);
 		}
-
+			
 		// add outputs
 		let outputs: OutputPort[] = nodeData["_outputs"];
 		for( let output_index in outputs ){
@@ -251,9 +253,13 @@ export class GraphNode implements IGraphNode{
 		this._hasExecuted = false;
 		this._hasError = false;
 
+		this._procedure.map(function(prod){
+			prod.reset();
+		});
+
 		this._outputs.map(function(output){
 			output.reset();
-		})
+		});
 
 		return (this._hasExecuted == false); 
 	}
@@ -352,8 +358,8 @@ export class GraphNode implements IGraphNode{
 			if(type == ProcedureTypes.Data || type == ProcedureTypes.ForLoopControl || 
 				type ==ProcedureTypes.Action){
 				let var_name: string = prod.getLeftComponent().expression;
-				if(var_name.length > 0){
-					varList.push(var_name)
+				if(var_name && var_name.length > 0){
+					varList.push(var_name);
 				};
 			}
 		});

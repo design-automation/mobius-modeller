@@ -36,7 +36,6 @@ export class FlowchartViewerComponent extends Viewer{
 
   showLibrary: boolean = false;
 
-
   showDialog: {status: boolean, position: number[]} = {status: false, position: [0,0]};
 
   constructor(injector: Injector, 
@@ -103,15 +102,35 @@ export class FlowchartViewerComponent extends Viewer{
 
   }
 
-  scale($event): void{
-    // let scaleFactor: number = 0.1;
-    // let value: number = this.zoom  + (Math.sign($event.wheelDelta))*scaleFactor;
-    
-    // if(value > 0.5 && value < 1.5){
-    //   this.zoom = Number( (value).toPrecision(2) );
-    //   this.updateEdges();
-    // }
+  //
+  //
+  //
+  pan($event): void{
+    //console.log("mousedown", $event);
+  }
 
+  //
+  //  node class is assigned a zoom value based on this value
+  //  this position of this node is absolute coordinates
+  //
+  scale($event): void{
+
+    $event.preventDefault();
+    $event.stopPropagation();
+
+    let scaleFactor: number = 0.1;
+    let value: number = this.zoom  + (Math.sign($event.wheelDelta))*scaleFactor;
+    
+    if(value > 0.5 && value < 1.5){
+      this.zoom = Number( (value).toPrecision(2) );
+      this.updateEdges();
+    }
+
+  }
+
+  lastSaved(): Date{
+    let date: Date = this.flowchartService.getLastSaved();
+    return date;
   }
 
   startPan($event): void{
@@ -143,7 +162,11 @@ export class FlowchartViewerComponent extends Viewer{
   updateEdges(): void{ 
     for(let e=0; e< this._edges.length; e++){
       let edge: IEdge = this._edges[e];
-      edge["path"] = this.getEdgePath(edge);
+        let output_position =  this.getPortPosition(edge.output_address[0], edge.output_address[1], "po");
+        let input_position = this.getPortPosition(edge.input_address[0], edge.input_address[1], "pi");
+    
+        edge["inputPosition"] = input_position;
+        edge["outputPosition"] = output_position;
     }
   }
 
@@ -277,9 +300,15 @@ export class FlowchartViewerComponent extends Viewer{
     this.pan_mode = false;
     let relX: number = $event.pageX - this.dragStart.x; 
     let relY: number = $event.pageY - this.dragStart.y;
-    node.position[0] += relX; 
-    node.position[1] += relY; 
+
+    // if node is going beyond canvas, do nothing
+    if( (node.position[0] + relX/this.zoom) < 0 || (node.position[1] + relY/this.zoom) < 0){
+      return;
+    }
     
+    node.position[0] += relX/this.zoom; 
+    node.position[1] += relY/this.zoom; 
+
     this.dragStart = {x: $event.pageX, y: $event.pageY};
 
     if(relX && relY){
@@ -301,6 +330,11 @@ export class FlowchartViewerComponent extends Viewer{
     this.pan_mode = false;
     let relX: number = $event.pageX - this.dragStart.x; 
     let relY: number = $event.pageY - this.dragStart.y;
+
+    if( (node.position[0] + relX/this.zoom) < 0 || (node.position[1] + relY/this.zoom) < 0){
+      return;
+    }
+    
     node.position[0] += relX; 
     node.position[1] += relY; 
 
@@ -358,8 +392,8 @@ export class FlowchartViewerComponent extends Viewer{
       let relX: number = $event.clientX - this.dragStart.x; 
       let relY: number = $event.clientY - this.dragStart.y;
 
-      this.mouse_pos.current.x += relX; 
-      this.mouse_pos.current.y += relY; 
+      this.mouse_pos.current.x += relX/this.zoom; 
+      this.mouse_pos.current.y += relY/this.zoom; 
 
       this.dragStart = {x: $event.clientX, y: $event.clientY}; 
   }
@@ -442,17 +476,23 @@ export class FlowchartViewerComponent extends Viewer{
 
     if(type == "pi"){
       x = node_pos[0];
-      y = node_pos[1] + port_pos_y + port_size/2;
+      y = node_pos[1] + (port_pos_y + port_size/2);
     } 
     else if(type == "po"){
       x = node_pos[0] + node_width;
-      y = node_pos[1] + port_pos_y + port_size/2;
+      y = node_pos[1] + (port_pos_y + port_size/2);
     }
     else{
       throw Error("Unknown port type");
     }
 
-    return {x: x, y: y}
+    return {x: x, y: y};
+  }
+
+
+  getZoomStyle(): string{
+    let value: string = "scale(" + this.zoom + ")";
+    return value;
   }
 
   //
@@ -460,9 +500,13 @@ export class FlowchartViewerComponent extends Viewer{
   //
   getEdgePath(edge: IEdge): string{
 
-    return this.edgeString( 
-          this.getPortPosition(edge.output_address[0], edge.output_address[1], "po"), 
-          this.getPortPosition(edge.input_address[0], edge.input_address[1], "pi") );
+    let output_position =  this.getPortPosition(edge.output_address[0], edge.output_address[1], "po");
+    let input_position = this.getPortPosition(edge.input_address[0], edge.input_address[1], "pi");
+    
+    edge["inputPosition"] = input_position;
+    edge["outputPosition"] = output_position;
+
+    return this.edgeString( output_position, input_position );
   }
 
 
@@ -599,7 +643,7 @@ export class FlowchartViewerComponent extends Viewer{
             console.log("Error reading file");
         }
     }
-    this.flowchartService.loadFile(url);
+    // this.flowchartService.loadFile(url);
   }
 
   loadFromMemory(): void{

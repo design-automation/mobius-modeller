@@ -44,7 +44,21 @@ export class TextViewerComponent extends Viewer implements OnInit {
 
 	getType(output: IPort): string{
 
-		if(output.getValue()){
+		let val = output.getValue();
+		if(val){
+
+			if(typeof(val) == "object"){
+
+				let strRep: string = val.toString();
+				if(strRep !== "[object Object]"){
+					return strRep.replace(/\n/g, '<br>');
+				}
+				else{
+					return CircularJSON.stringify(output.getValue());
+				}
+
+			}
+
 			return CircularJSON.stringify(output.getValue());
 		}
 		else{

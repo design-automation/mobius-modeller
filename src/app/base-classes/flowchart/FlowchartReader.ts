@@ -10,6 +10,7 @@ export abstract class FlowchartReader{
 
 	    // recreate the flowchart from data
 	    let fc: IFlowchart = new Flowchart(data["author"]);
+	    fc.setSavedTime(data["_lastSaved"]);
 
 	    let nodes: IGraphNode[] = data["_nodes"];
 	    let edges: IEdge[] = data["_edges"];
@@ -19,7 +20,6 @@ export abstract class FlowchartReader{
 	      let n_data = nodes[index];
 	      let node: IGraphNode = new GraphNode(n_data["name"], n_data["type"]);
 	      node.update(n_data);
-	      console.log("updated node");
 	      fc.addNode(node);
 	    }  
 

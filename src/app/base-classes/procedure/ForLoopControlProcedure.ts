@@ -1,6 +1,7 @@
 import {ProcedureTypes} from "./ProcedureTypes";
 import {IComponent} from "./IComponent";
 import {Procedure} from "./Procedure";
+import {IProcedure} from "./IProcedure";
 
 export class ForLoopControlProcedure extends Procedure{
 
@@ -18,7 +19,8 @@ export class ForLoopControlProcedure extends Procedure{
 								 fn_name: undefined,
 								 params: undefined
 								}
-		let right: IComponent = { expression: data.array_name, 
+		let right: IComponent = {
+							     expression: data.array_name, 
 								 isAction: false, 
 								 module: undefined, 
 								 category: undefined, 
@@ -28,6 +30,13 @@ export class ForLoopControlProcedure extends Procedure{
 		super.setLeftComponent(left);
 		super.setRightComponent(right);
 
+	}
+
+	update(prodData: any, parent: IProcedure): void{
+		super.update(prodData, parent);
+
+		this._leftComponent.expression = prodData._leftComponent.expression;
+		this._rightComponent.expression = prodData._rightComponent.expression;
 	}
 
 }

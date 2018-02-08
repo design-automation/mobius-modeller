@@ -56,7 +56,8 @@ export class DataService {
           faces_map: Map<number, gs.ITopoPathData>, 
           wires_map: Map<number, gs.ITopoPathData>, 
           edges_map: Map<number, gs.ITopoPathData>,
-          vertices_map: Map<number, gs.ITopoPathData>} ;
+          vertices_map: Map<number, gs.ITopoPathData>,
+          points_map: Map<number, gs.ITopoPathData>} ;
   scenechildren:Array<any>=[];
   red:number;
   green:number;
@@ -68,10 +69,18 @@ export class DataService {
           faces_map: Map<number, gs.ITopoPathData>, 
           wires_map: Map<number, gs.ITopoPathData>, 
           edges_map: Map<number, gs.ITopoPathData>,
-          vertices_map: Map<number, gs.ITopoPathData>} ;
+          vertices_map: Map<number, gs.ITopoPathData>,
+          points_map: Map<number, gs.ITopoPathData>} ;
   textlabels:Array<any>=[];
   attributevertix:Array<any>;
-
+  starsGeometry:THREE.Geometry = new THREE.Geometry();
+  centerx:number;
+  centery:number;
+  centerz:number;
+  centersize:number;
+  pointsize:number;
+  clickshow:Array<any>;
+  point:boolean=true;
 
   // ---- 
   // Subscription Handling
@@ -108,7 +117,7 @@ export class DataService {
 
     // camera settings
     let aspect_ratio: number = this._width/this._height
-    let camera = new THREE.PerspectiveCamera( 50, aspect_ratio, 0.01, 1000 );
+    let camera = new THREE.PerspectiveCamera( 50, aspect_ratio, 0.01, 1000 );//0.0001, 100000000 );
     camera.position.y=10;
     camera.up.set(0,0,1);
     camera.lookAt( scene.position );
@@ -131,12 +140,12 @@ export class DataService {
     scene.add( directional_light );
 
     // default ambient lighting
-    let default_hue: number = 160;
-    let default_saturation: number = 0;
+    let default_hue: number = 0;
+    let default_saturation: number = 0.01;
     let default_lightness: number = 0.47;
 
     var hemi_light = new THREE.HemisphereLight( 0xffffff, 0.5 );
-    hemi_light.color.setHSL( default_hue, default_saturation, default_saturation);
+    hemi_light.color.setHSL( default_hue, default_saturation, default_lightness);
     scene.add( hemi_light );
 
     this._scene = scene;
@@ -149,8 +158,8 @@ export class DataService {
     this._lightnessValue = default_lightness;
 
     // add it to alight - what does alight do?
-    this._alight = [];
-    this._alight.push(hemi_light);
+    this._alight = hemi_light;
+    //this._alight.push(hemi_light);
     
   }
 
@@ -164,7 +173,7 @@ export class DataService {
   setGsModel(model: gs.IModel){
     this._gsModel = model;
     if(this._gsModel!==undefined){
-      this.updateModel();
+      this.generateSceneMaps();
     }
     else{
       // remove all children from the scene
@@ -176,17 +185,20 @@ export class DataService {
     }
     this.sendMessage("model_update");
   }
-  updateModel():void{
-    var scene_and_maps: {
+
+  generateSceneMaps():void{
+    var scene_and_maps:any/*{
           scene: gs.IThreeScene, 
           faces_map: Map<number, gs.ITopoPathData>, 
           wires_map: Map<number, gs.ITopoPathData>, 
           edges_map: Map<number, gs.ITopoPathData>,
-          vertices_map: Map<number, gs.ITopoPathData>}= gs.genThreeOptModelAndMaps( this._gsModel );
+          vertices_map: Map<number, gs.ITopoPathData>,
+          points_map: Map<number, gs.ITopoPathData>}*/= gs.genThreeOptModelAndMaps( this._gsModel );
     this.scenemaps=scene_and_maps;
   }
   getscememaps():any{
     return this.scenemaps;
+
   }
 
   getScene(width?: number, height?: number): THREE.Scene{
@@ -213,12 +225,18 @@ export class DataService {
     return this._orbitControls;
   }
 
-
   //
   //
   //
   getalight():any{
     return this._alight;
+  }
+  addraycaster(raycaster){
+    this.raycaster=raycaster;
+  }
+
+  getraycaster():THREE.Raycaster{
+    return this.raycaster;
   }
 
   addlightvalue(hue,saturation,lightness){
@@ -226,7 +244,6 @@ export class DataService {
     this._saturationValue=saturation;
     this._lightnessValue=lightness;
   }
-
 
   gethue(_hue):any{
     this.hue = _hue;
@@ -253,6 +270,23 @@ export class DataService {
   }
   getblue(blue):any{
     this.blue=blue;
+  }
+
+  getpointsize(pointszie):void{
+    this.pointsize=pointszie;
+  }
+
+  getcenterx(centerx):void{
+    this.centerx=centerx;
+  }
+  getcentery(centery):void{
+    this.centery=centery;
+  }
+  getcenterz(centerz):void{
+    this.centerz=centerz;
+  }
+  getcentersize(centersize):void{
+    this.centersize=centersize;
   }
 
   addGeom(Geom): void{
@@ -294,6 +328,10 @@ export class DataService {
     return this.selecting;
   }
 
+  addclickshow(clickshow){
+    this.clickshow=clickshow;
+  }
+
   addattrvertix(attributevertix){
     this.attributevertix=attributevertix;
   }
@@ -316,6 +354,10 @@ export class DataService {
   }
   addselect(select){
     this.selectcheck=select;
+  }
+
+  addpoint(point){
+  this.point=point;
   }
   getSelectingIndex(uuid):number {
    for(var i=0;i<this.selecting.length;i++){
@@ -349,5 +391,100 @@ export class DataService {
    this.sendMessage();
    return this.scenechildren;
  }
+
+ //To add text labels just provide label text, label position[x,y,z] and its id
+  addTextLabel(label, label_xyz, id,index,path) {
+    //console.log(document.getElementsByTagName("app-viewer")[0].children.namedItem("container"));
+    //let container = this.myElement.nativeElement.children.namedItem("container");
+    let container = document.getElementsByTagName("app-viewer")[0].children.namedItem("container");
+    let star = this.creatStarGeometry(label_xyz);
+    let textLabel=this.createTextLabel(label, star, id,index,path);
+    this.starsGeometry.vertices.push( star );
+    this.textlabels.push(textLabel);
+    this.pushselecting(textLabel);
+    container.appendChild(textLabel.element);
+  }
+
+  //To remove text labels just provide its id
+  removeTextLabel(id) {
+    let i=0;
+    for(i=0; i<this.textlabels.length; i++) {
+      if(this.textlabels[i].id==id) {
+        // let container = this.myElement.nativeElement.children.namedItem("container");
+        let container = document.getElementsByTagName("app-viewer")[0].children.namedItem("container");
+        container.removeChild(this.textlabels[i].element);
+        let index = this.starsGeometry.vertices.indexOf(this.textlabels[i].parent);
+        if(index !== -1) {
+          this.starsGeometry.vertices.splice(index, 1);
+        }
+        break;
+      }
+    }
+    if(i<this.textlabels.length) {
+      this.textlabels.splice(i, 1);
+      this.spliceselecting(i, 1);
+    }
+  }
+
+  creatStarGeometry(label_xyz) {
+    let star = new THREE.Vector3();
+    star.x = label_xyz[0];
+    star.y = label_xyz[1];
+    star.z = label_xyz[2];
+    return star;
+  }
+
+  createTextLabel(label, star, id,index,path) {
+    let div = this.createLabelDiv();
+    var self=this;
+    let textLabel= {
+      id: id,
+      index:index,
+      path:path,
+      element: div,
+      parent: false,
+      position: new THREE.Vector3(0,0,0),
+      setHTML: function(html) {
+        this.element.innerHTML = html;
+      },
+      setParent: function(threejsobj) {
+        this.parent = threejsobj;
+      },
+      updatePosition: function() {
+        if(parent) {
+          this.position.copy(this.parent);
+        }
+        
+        var coords2d = this.get2DCoords(this.position, this.camera);
+        this.element.style.left = coords2d.x + 'px';
+        this.element.style.top = coords2d.y + 'px';
+      },
+      get2DCoords: function(position, camera) {
+        var vector = position.project(camera);
+        vector.x = (vector.x + 1)/2 * this.width;
+        vector.y = -(vector.y - 1)/2 * this.height;
+        return vector;
+      }
+    };
+    textLabel.setHTML(label);
+    textLabel.setParent(star);
+    return textLabel;
+  }
+
+  createLabelDiv() {
+    var div=document.createElement("div");
+    div.style.color= '#00f';
+    div.style.fontFamily= '"Fira Mono", Monaco, "Andale Mono", "Lucida Console", "Bitstream Vera Sans Mono", "Courier New", Courier, monospace';
+    div.style.margin='-5px 0 0 15px';
+    div.style.pointerEvents='none';
+    div.style.position = 'absolute';
+    div.style.width = '100';
+    div.style.height = '100';
+    div.style.top = '-1000';
+    div.style.left = '-1000';
+    div.style.textShadow="0px 0px 3px white";
+    div.style.color="black";
+    return div;
+   }
 
 }

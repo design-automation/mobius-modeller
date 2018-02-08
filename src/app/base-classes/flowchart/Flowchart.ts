@@ -384,6 +384,10 @@ export class Flowchart implements IFlowchart{
 				// console.log( JSON.stringify(model["_kernel"]["_objs"]) );
 				inputPort.setComputedValue( model );
 			}
+			else{
+				inputPort.setComputedValue( outVal );
+			}
+
 			
 
 

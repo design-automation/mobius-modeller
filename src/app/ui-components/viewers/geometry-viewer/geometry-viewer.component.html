@@ -1,6 +1,11 @@
 <div class="viewer">
 	<div class="container">
+		
+		<div class="default" *ngIf='!gs_dummy_data'>
+			No Model Available
+		</div>
+
 		<gs-viewer [data]="gs_dummy_data"></gs-viewer>
-		<!-- <div id="app-geometry-viewer"></div> -->
+	
 	</div>
 </div>

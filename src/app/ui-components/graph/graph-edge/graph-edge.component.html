@@ -1,0 +1,19 @@
+<div class="edge-container" 
+	style="position: absolute;"
+	[style.top.px]="getTop()"
+	[style.left.px]="getLeft()"
+	[style.width.px]="getWidth()"
+	[style.height.px]="getHeight()"
+	(click)="edgeClicked()">
+
+	<canvas #canvas id='edge{{edge.id}}'></canvas>
+	<!-- {{getPosition(edge)}} -->
+	<!-- <svg xmlns="http://www.w3.org/2000/svg">
+		<g class="edge">
+			<path 
+			  [attr.d]="edge.path" 
+			  stroke="#7469FF"
+			  stroke-width="3" fill="none" />
+			</g>
+	</svg> -->
+</div>
