@@ -116,7 +116,7 @@ export class CodeGeneratorJS extends CodeGenerator{
 			return fn_def;
 		}
 
-		getNodeCode(node: IGraphNode): string{ 	
+		getNodeCode(node: IGraphNode, prodArr ?: number[]): string{ 	
 			let nodeVars: string[] = [];
 			let fn_code :string = "";
 
@@ -169,8 +169,8 @@ export class CodeGeneratorJS extends CodeGenerator{
 					continue;
 				}
 
-				fn_code += "\n" +  this.generateProcedureCode(procedure, nodeVars, undefined); 
-
+				// if(prodArr)	fn_code += "\n" + "prodArr.push(" + procedure["id"] + ")";
+				fn_code += "\n" +  this.generateProcedureCode(procedure, nodeVars, undefined, prodArr); 
 
 			}
 
@@ -211,12 +211,12 @@ export class CodeGeneratorJS extends CodeGenerator{
 			return (nodeVars.indexOf( var_name ) > -1);
 		}
 
-		generateProcedureCode(procedure: IProcedure, nodeVars: string[]=[], prodFn ?: any){
+		generateProcedureCode(procedure: IProcedure, nodeVars: string[]=[], prodFn ?: any, prodArr ?: number[]){
 
 			// change based on type
 			let code: string; 
 			let prod_type = procedure.getType();
-			
+
 			if(prodFn == undefined){
 			 	prodFn = this.generateProcedureCode;
 			}
@@ -235,7 +235,7 @@ export class CodeGeneratorJS extends CodeGenerator{
 				code =  init + procedure.getLeftComponent().expression + " = " + procedure.getRightComponent().expression + ";";
 
 				if(procedure.printToConsole()){
-					code = code + "\n" + "print(" + "\'" + procedure.getLeftComponent().expression + ":\' +" + procedure.getLeftComponent().expression + ");\n";
+					code = code + "\n" + "print(" + "\'" + procedure.getLeftComponent().expression + "\', " + procedure.getLeftComponent().expression + ");\n";
 				}
 
 			}
@@ -271,7 +271,7 @@ export class CodeGeneratorJS extends CodeGenerator{
 						+ "." + right.fn_name + "( " + paramList.join(",") + " );\n";
 
 				if(procedure.printToConsole()){
-					code = code + "\n" + "print(" + "\'" + procedure.getLeftComponent().expression + ":\' +" + procedure.getLeftComponent().expression + ");\n";
+					code = code + "\n" + "print(" + "\'" + procedure.getLeftComponent().expression + "\', " + procedure.getLeftComponent().expression + ");\n";
 				}
 
 			}
@@ -288,6 +288,7 @@ export class CodeGeneratorJS extends CodeGenerator{
 				}
 				else if(prod_type == ProcedureTypes.ElseControl){
 					statement = "else{";
+					code = "prodArr.push(" + procedure["id"] + ");\n" + code; 
 				}
 				else if(prod_type == ProcedureTypes.ForLoopControl){
 					statement = "for ( let " + procedure.getLeftComponent().expression + " of " + procedure.getRightComponent().expression + "){"
@@ -301,14 +302,24 @@ export class CodeGeneratorJS extends CodeGenerator{
 
 
 				// add children
+				// children will have nodeVars from parents 
+				// but parents should have childVars
+				let childVars = nodeVars.map(function(s){ return s; });
 				procedure.getChildren().map(function(child){ 
-					codeArr.push(prodFn(child, nodeVars, prodFn));
-				})
+					if(!child.isDisabled()){
+						codeArr.push(prodFn(child, childVars, prodFn, prodArr));
+					}
+				});
 
 				// add ending
 				if (prod_type !== ProcedureTypes.IfElseControl) codeArr.push("}\n")
 				code = codeArr.join("\n");
 			}
+
+			// add procedure id to track failing
+			if(prodArr && prod_type != ProcedureTypes.ElseControl){ 
+				code = "prodArr.push(" + procedure["id"] + ");\n" + code; 
+			};
 
 			return code;
 		}
@@ -332,9 +343,11 @@ export class CodeGeneratorJS extends CodeGenerator{
 							Modules: IModule[], 
 							print: Function): any{
 
+			let prodArr: number[] = [];
+
 			//let gis = this._modules["gis"];
 			let str: string = "(function(){ \
-						" + this.getNodeCode(node) + "\n" + 
+						" + this.getNodeCode(node, prodArr) + "\n" + 
 							this.getFunctionCall(node, [], true) + "\n" + 
 							"return " + node.getName() + ";" + "})(); \
 						";
@@ -345,7 +358,41 @@ export class CodeGeneratorJS extends CodeGenerator{
 			}
 			catch(ex){
 				node.hasError();
-				throw Error(ex);
+				console.log("CodeString:", str);
+
+				let prodWithError: number = prodArr.pop(); 
+
+				let markError = function(prod: IProcedure, id: number){
+					if(prod["id"] && id && prod["id"] == id){
+						prod.setError(true);
+					}
+
+					if(prod.hasChildren){
+						prod.children.map(function(p){
+							markError(p, id);
+						});
+					}
+
+				}
+				
+				if(prodWithError){
+					node.getProcedure().map(function(prod: IProcedure){
+
+						if(prod["id"] == prodWithError){
+							prod.setError(true);
+						}
+
+						if(prod.hasChildren){
+							prod.children.map(function(p){
+								markError(p, prodWithError);
+							})
+						}
+
+					});
+				}
+
+				let error: Error = new Error(ex);
+				throw error;
 			}
 			
 			return result;//result;// return result of the node

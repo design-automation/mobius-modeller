@@ -3,7 +3,7 @@
 	<div class="container">
 
 		<div class="default" *ngIf='_inputs == undefined || _inputs.length == 0'>
-			This node has no inputs
+			No Inputs
 		</div>
  
 		<div class='paramater-container' *ngFor="let inp of _inputs" >
@@ -14,7 +14,6 @@
 					<span class='content'>{{ inp.getName() }}</span>
 				</div>
 			</div>
-	
 
 			<!-- if input type == Input -->
 			<div class="value" *ngIf="inp.getType() == InputPortTypes.Input">
@@ -34,6 +33,7 @@
 			<!-- if input type == Slider -->
 			<div class="value" 
 				*ngIf="inp.getType() == InputPortTypes.Slider">
+				<span class='content'>{{inp.getOpts().min}}</span>
 				<mat-slider min="{{inp.getOpts().min}}" 
 							max="{{inp.getOpts().max}}" 
 							step="{{inp.getOpts().step}}" 
@@ -42,6 +42,7 @@
 							[(ngModel)]="val.value"
 							(change)="updateComputedValue($event, inp, val.value)"
 							value="{{ getValue(inp) }}"></mat-slider>
+				<span class='content'>{{inp.getOpts().max}}</span>
 			</div>
 
 		</div>

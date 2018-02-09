@@ -1,5 +1,6 @@
 <div id="toolwindow">
   <div id="toolbar">
+<!--<<<<<<< HEAD
     <div class="sec1">
       <button id="point" [class.visible]="Visible === 'Points'" (click)="point(Visible)"><i class="fa fa-dot-circle-o"></i></button>
       <button id="vertice" [class.visible]="Visible === 'Vertices'" (click)="vertice(Visible)">V</button>
@@ -15,92 +16,139 @@
     </div>
 
     <div class="sec3" id="select">
+======= -->
+    <button id="point" [class.visible]="Visible === 'Points'" (click)="point(Visible)">P</button>
+    <button id="vertice" [class.visible]="Visible === 'Vertices'" (click)="vertice(Visible)">V</button>
+    <button id="edge" [class.visible]="Visible === 'Edges'" (click)="edge(Visible)">E</button>
+    <button id="wire" [class.visible]="Visible === 'Wires'" (click)="wire(Visible)">W</button>
+    <button id="face" [class.visible]="Visible === 'Faces'" (click)="face(Visible)">F</button>
+    <button id="object" [class.visible]="Visible === 'Objs'" (click)="object(Visible)">O</button>
+    <input id="selected" type="checkbox" (click)="changeselected()">
+    <label id="selectedname" value="selected">Show selected only</label>
+
+    <!-- <pagination-controls id="pagination" (pageChange)="p = $event"></pagination-controls> -->
+    <!-- <div id="pagination">
+    <ul>
+      <li *ngFor="let item of attribute | paginate: { itemsPerPage: 50, currentPage: p }">{{item}}</li>
+    </ul> 
+   <pagination-controls (pageChange)="p = $event"></pagination-controls>
+  </div> -->
+    <!-- <div id="select">
+>>>>>>> 4f62c47b90f3f47240db75e72579ad51fdb91b1f
       <button id="vertice" [class.selectvisible]="SelectVisible === 'Vertices'" (click)="verticeselect(SelectVisible)">V</button>
       <button id="edge" [class.selectvisible]="SelectVisible === 'Edges'" (click)="edgeselect(SelectVisible)">E</button>
       <button id="wire" [class.selectvisible]="SelectVisible === 'Wires'" (click)="wireselect(SelectVisible)">W</button>
       <button id="face" [class.selectvisible]="SelectVisible === 'Faces'" (click)="faceselect(SelectVisible)">F</button>
-    </div>
+      <button id="object" [class.selectvisible]="SelectVisible === 'Objs'" (click)="objectselect(SelectVisible)"><i class="fa fa-map"></i></button>
+    </div> -->
+
+  </div>
+  <div id="pagination">
+    <pagination-controls *ngIf="Visible === 'Points'" class="my-pagination" (pageChange)="p1 = $event"></pagination-controls> 
+    <pagination-controls *ngIf="Visible === 'Vertices'" class="my-pagination" (pageChange)="p2 = $event"></pagination-controls> 
+    <pagination-controls *ngIf="Visible === 'Edges'" class="my-pagination" (pageChange)="p3 = $event"></pagination-controls> 
+    <pagination-controls *ngIf="Visible === 'Wires'" class="my-pagination" (pageChange)="p4 = $event"></pagination-controls> 
+    <pagination-controls *ngIf="Visible === 'Faces'" class="my-pagination" (pageChange)="p5 = $event"></pagination-controls>
+    <pagination-controls *ngIf="Visible === 'Objs'" class="my-pagination" (pageChange)="p6 = $event"></pagination-controls>  
   </div>
   <div id="toolview">
     <div *ngIf="Visible === 'Points'">
+     <!-- <div class="pagination"> <pagination-controls  (pageChange)="p1 = $event"></pagination-controls> </div> -->
       <table border="1" cellspacing="0" cellpadding="0" id="table" name="table" bordercolor="#d0d0d0">
         <tr>
-          <td name="Number" align=center width="40%" align=center>ID</td>
+          <td name="Number" align=center width="100px" align=center>ID</td>
           <td width="20%" align=center>X</td>
           <td width="20%" align=center>Y</td>
           <td width="20%" align=center>Z</td>
-        </tr>
+          <!-- <td width="100px" align=center *ngFor="let name of point_name">{{name}}</td>  -->
       </table>
-      <table border="1" cellspacing="0" cellpadding="0" id="tablename" name="table" bordercolor="#d0d0d0" *ngFor="let datascale of attribute; ">
+      <table border="1" cellspacing="0" cellpadding="0" id="tablename" name="table" bordercolor="#d0d0d0" *ngFor="let datascale of attribute| paginate: { itemsPerPage: 50, currentPage: p1 }">
         <tr>
-          <button id="numberbutton">{{datascale.id}}</button>
+          <button id="numberbutton" (click)=Onselect(datascale)>{{datascale.id}}</button>
           <td width="20%" align=center>{{datascale.x}}</td>
           <td width="20%" align=center>{{datascale.y}}</td>
           <td width="20%" align=center>{{datascale.z}}</td>
-        </tr>
+          <!-- <td width="20%" align=center>{{datascale.name}}</td> -->
+        <tr>
       </table>
+      <!-- <pagination-controls (pageChange)="p1 = $event"></pagination-controls>  -->
     </div>
     <div *ngIf="Visible === 'Vertices'">
+      <!-- <pagination-controls (pageChange)="p2 = $event"></pagination-controls> -->
       <table border="1" cellspacing="0" cellpadding="0" bordercolor="#d0d0d0" width="50%">
         <tr>
-          <td  align=center width="25%">Vertices Lable</td>
+          <td  align=center width="25%">Vertices Label</td>
           <td  align=center width="25%">Points ID</td>
         </tr>
       </table>
-      <table border="1" cellspacing="0" cellpadding="0" bordercolor="#d0d0d0" *ngFor="let datascale of attribute" width="50%">
+      <table border="1" cellspacing="0" cellpadding="0" bordercolor="#d0d0d0" *ngFor="let datascale of attribute| paginate: { itemsPerPage: 50, currentPage: p2 }" width="50%">
         <tr>
-          <button id="numberbutton" [class.selectid]="ID == datascale.id" (click)=clicktoshow(datascale.id)>{{datascale.id}}</button>
+          <!-- <button id="numberbutton" [class.selectid]="ID == datascale.id" (click)=clicktoshow(datascale.id)>{{datascale.vertixlabel}}</button> -->
+          <button id="numberbutton" (click)=Onselect(datascale)>{{datascale.vertixlabel}}</button>
           <td  align=center  width="50%">{{datascale.pointid}}</td>
         </tr>
       </table>
+      <!-- <pagination-controls (pageChange)="p2 = $event"></pagination-controls> -->
     </div>
     <div *ngIf="Visible === 'Edges'">
+      <!-- <pagination-controls (pageChange)="p3 = $event"></pagination-controls> -->
       <table border="1" cellspacing="0" cellpadding="0"  bordercolor="#d0d0d0" width="40%">
         <tr>
           <td  align=center>Edge ID</td>
         </tr>
       </table>
-      <table border="1" cellspacing="0" cellpadding="0"  bordercolor="#d0d0d0" *ngFor="let datascale of attribute" width="40%">
+      <table border="1" cellspacing="0" cellpadding="0"  bordercolor="#d0d0d0" *ngFor="let datascale of attribute| paginate: { itemsPerPage: 50, currentPage: p3 }" width="40%">
         <tr>
           <!-- <button id="numberbutton"[class.selectid]="ID == datascale.id" (click)=clicktoshow(datascale.id) >{{datascale.id}}</button> -->
-          <button id="numberbutton">{{datascale}}</button>
+          <button id="numberbutton" (click)=Onselect(datascale)>{{datascale}}</button>
         </tr>
       </table>
+      <!-- <pagination-controls (pageChange)="p3 = $event"></pagination-controls> -->
     </div>
     <div *ngIf="Visible === 'Wires'">
+      <!-- <pagination-controls (pageChange)="p4 = $event"></pagination-controls> -->
       <table border="1" cellspacing="0" cellpadding="0"  bordercolor="#d0d0d0" width="40%">
         <tr>
           <td  align=center>Wire ID</td>
         </tr>
       </table>
-      <table border="1" cellspacing="0" cellpadding="0"  bordercolor="#d0d0d0" *ngFor="let datascale of attribute" width="40%">
+      <table border="1" cellspacing="0" cellpadding="0"  bordercolor="#d0d0d0" *ngFor="let datascale of attribute| paginate: { itemsPerPage: 50, currentPage: p4 }" width="40%">
         <tr>
           <button id="numberbutton" >{{datascale}}</button>
         </tr>
       </table>
+      <!-- <pagination-controls (pageChange)="p4 = $event"></pagination-controls> -->
     </div>
     <div *ngIf="Visible === 'Faces'">
-      <table border="1" cellspacing="0" cellpadding="0"  bordercolor="#d0d0d0" width="40%">
+      <!-- <pagination-controls (pageChange)="p5 = $event"></pagination-controls> -->
+      <table border="1" cellspacing="0" cellpadding="0"  bordercolor="#d0d0d0" width="60%">
         <tr>
-          <td  align=center>Face ID</td>
+          <td  align=center width="60%">Face ID</td>
+          <!-- <td  align=center width="30%" *ngFor="let name of face_name">{{name}}</td>  -->
         </tr>
       </table>
-      <table border="1" cellspacing="0" cellpadding="0"  bordercolor="#d0d0d0" *ngFor="let datascale of attribute" width="40%">
+      <table border="1" cellspacing="0" cellpadding="0"  bordercolor="#d0d0d0" *ngFor="let datascale of attribute| paginate: { itemsPerPage: 50, currentPage: p5 }" width="60%">
         <tr>
           <button id="numberbutton" >{{datascale}}</button>
+          <!-- <td  align=center  width="50%">{{datascale.name}}</td> -->
         </tr>
       </table>
+       <!-- <pagination-controls (pageChange)="p5 = $event"></pagination-controls> -->
     </div>
     <div *ngIf="Visible === 'Objs'">
-      <table border="1" cellspacing="0" cellpadding="0"  bordercolor="#d0d0d0" width="40%">
+      <!-- <pagination-controls (pageChange)="p6 = $event"></pagination-controls> -->
+      <table border="1" cellspacing="0" cellpadding="0"  bordercolor="#d0d0d0" width="60%">
         <tr>
           <td name="Number" align=center  align=center>Object ID</td>
+          <td  align=center width="50%" *ngFor="let name of obj_name">{{name}}</td>
         </tr>
       </table>
-      <table border="1" cellspacing="0" cellpadding="0"  bordercolor="#d0d0d0" *ngFor="let datascale of attribute " width="40%">
+      <table border="1" cellspacing="0" cellpadding="0"  bordercolor="#d0d0d0" *ngFor="let datascale of attribute| paginate: { itemsPerPage: 50, currentPage: p6 } " width="60%">
         <tr>
-          <button  id="numberbutton"  >{{datascale}}</button>
+          <button  id="numberbutton"  >{{datascale.label}}</button>
+          <td  align=center  width="50%">{{datascale.name}}</td>
         </tr>
       </table>
+      <!-- <pagination-controls (pageChange)="p6 = $event"></pagination-controls> -->
     </div>
   </div>

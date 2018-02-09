@@ -41,7 +41,7 @@ export class DataService {
   selecting:any = [];
   object:any;
   axis:boolean;
-  grid:boolean;
+  grid:boolean=true;
   shadow:boolean;
   frame:boolean;
   opacity:number;
@@ -55,12 +55,30 @@ export class DataService {
           scene: gs.IThreeScene, 
           faces_map: Map<number, gs.ITopoPathData>, 
           wires_map: Map<number, gs.ITopoPathData>, 
-          edges_map: Map<number, gs.ITopoPathData>} ;
+          edges_map: Map<number, gs.ITopoPathData>,
+          vertices_map: Map<number, gs.ITopoPathData>,
+          points_map: Map<number, gs.ITopoPathData>} ;
   scenechildren:Array<any>=[];
   red:number;
   green:number;
   blue:number;
-
+  center:THREE.Vector3;
+  radius:number;
+  scenemaps:{
+          scene: gs.IThreeScene, 
+          faces_map: Map<number, gs.ITopoPathData>, 
+          wires_map: Map<number, gs.ITopoPathData>, 
+          edges_map: Map<number, gs.ITopoPathData>,
+          vertices_map: Map<number, gs.ITopoPathData>,
+          points_map: Map<number, gs.ITopoPathData>} ;
+  textlabels:Array<any>=[];
+  attributevertix:Array<any>;
+  starsGeometry:THREE.Geometry = new THREE.Geometry();
+  centerx:number;
+  centery:number;
+  centerz:number;
+  pointsize:number;
+  clickshow:Array<any>;
 
   // ---- 
   // Subscription Handling
@@ -89,7 +107,6 @@ export class DataService {
     // scene
     let scene: THREE.Scene = new THREE.Scene();
     scene.background = new THREE.Color( 0xcccccc );
-    
 
     // renderer
     let renderer: THREE.WebGLRenderer =  new THREE.WebGLRenderer( {antialias: true} );
@@ -121,22 +138,14 @@ export class DataService {
     scene.add( directional_light );
 
     // default ambient lighting
-    let default_hue: number = 160;
-    let default_saturation: number = 0;
+    let default_hue: number = 0;
+    let default_saturation: number = 0.01;
     let default_lightness: number = 0.47;
 
     var hemi_light = new THREE.HemisphereLight( 0xffffff, 0.5 );
-    hemi_light.color.setHSL( default_hue, default_saturation, default_saturation);
+    hemi_light.color.setHSL( default_hue, default_saturation, default_lightness);
     scene.add( hemi_light );
 
-    // var self=this;
-    // self.;
-    // self._controls.addEventListener( 'change',  function() {
-    //   self.light.position.copy( self._camera.position );
-    // } );
-    // self.light.target.position.set( 0, 0, 0 );
-    // this._scene.add( self.light );
-    
     this._scene = scene;
     this._renderer = renderer;
     this._camera = camera; 
@@ -147,11 +156,10 @@ export class DataService {
     this._lightnessValue = default_lightness;
 
     // add it to alight - what does alight do?
-    this._alight = [];
-    this._alight.push(hemi_light);
+    this._alight = hemi_light;
+    //this._alight.push(hemi_light);
+    
   }
-
-
 
   //
   //  Getter and Setting for gs-model
@@ -162,25 +170,34 @@ export class DataService {
 
   setGsModel(model: gs.IModel){
     this._gsModel = model;
+    if(this._gsModel!==undefined){
+      this.generateSceneMaps();
+    }
+    else{
+      // remove all children from the scene
+      for(var i=0;i<this._scene.children.length;i++){
+        if(this._scene.children[i].type==="Scene"){
+          this._scene.remove(this._scene.children[i]);
+        }
+      }
+    }
     this.sendMessage("model_update");
   }
-  updateModel():any{
-    var scene_and_maps: {
+
+  generateSceneMaps():void{
+    var scene_and_maps:any/*{
           scene: gs.IThreeScene, 
           faces_map: Map<number, gs.ITopoPathData>, 
           wires_map: Map<number, gs.ITopoPathData>, 
-          edges_map: Map<number, gs.ITopoPathData>}= gs.genThreeOptModelAndMaps( this._gsModel );
-    return scene_and_maps;
+          edges_map: Map<number, gs.ITopoPathData>,
+          vertices_map: Map<number, gs.ITopoPathData>,
+          points_map: Map<number, gs.ITopoPathData>}*/= gs.genThreeOptModelAndMaps( this._gsModel );
+    this.scenemaps=scene_and_maps;
   }
+  getscememaps():any{
+    return this.scenemaps;
 
-
-  //
-  // Getter and Setter for Scene
-  //
-  // addScene(scene: THREE.Scene): void{
-  //   console.warn("Three Scene is being reset");
-  // 	this._scene = scene;
-  // }
+  }
 
   getScene(width?: number, height?: number): THREE.Scene{
     if(width && height){
@@ -206,12 +223,18 @@ export class DataService {
     return this._orbitControls;
   }
 
-
   //
   //
   //
   getalight():any{
     return this._alight;
+  }
+  addraycaster(raycaster){
+    this.raycaster=raycaster;
+  }
+
+  getraycaster():THREE.Raycaster{
+    return this.raycaster;
   }
 
   addlightvalue(hue,saturation,lightness){
@@ -219,7 +242,6 @@ export class DataService {
     this._saturationValue=saturation;
     this._lightnessValue=lightness;
   }
-
 
   gethue(_hue):any{
     this.hue = _hue;
@@ -246,6 +268,20 @@ export class DataService {
   }
   getblue(blue):any{
     this.blue=blue;
+  }
+
+  getpointsize(pointszie):void{
+    this.pointsize=pointszie;
+  }
+
+  getcenterx(centerx):void{
+    this.centerx=centerx;
+  }
+  getcentery(centery):void{
+    this.centery=centery;
+  }
+  getcenterz(centerz):void{
+    this.centerz=centerz;
   }
 
   addGeom(Geom): void{
@@ -286,6 +322,19 @@ export class DataService {
   getselecting(){
     return this.selecting;
   }
+
+  addclickshow(clickshow){
+    this.clickshow=clickshow;
+  }
+
+  addattrvertix(attributevertix){
+    this.attributevertix=attributevertix;
+  }
+
+  getattrvertix(){
+    return this.attributevertix;
+  }
+
   addgrid(grid){
     this.grid=grid;
   }
@@ -334,63 +383,99 @@ export class DataService {
    return this.scenechildren;
  }
 
-   zoomfit(){
-    if(this.selecting.length===0){
-      const obj=new THREE.Object3D();
-      for(var i=0;i<this._scene.children.length;i++){
-        if(this._scene.children[i].name!=="GridHelper"){
-          obj.children.push(this._scene.children[i]);
+ //To add text labels just provide label text, label position[x,y,z] and its id
+  addTextLabel(label, label_xyz, id,index,path) {
+    //console.log(document.getElementsByTagName("app-viewer")[0].children.namedItem("container"));
+    //let container = this.myElement.nativeElement.children.namedItem("container");
+    let container = document.getElementsByTagName("app-viewer")[0].children.namedItem("container");
+    let star = this.creatStarGeometry(label_xyz);
+    let textLabel=this.createTextLabel(label, star, id,index,path);
+    this.starsGeometry.vertices.push( star );
+    this.textlabels.push(textLabel);
+    this.pushselecting(textLabel);
+    container.appendChild(textLabel.element);
+  }
+
+  //To remove text labels just provide its id
+  removeTextLabel(id) {
+    let i=0;
+    for(i=0; i<this.textlabels.length; i++) {
+      if(this.textlabels[i].id==id) {
+        // let container = this.myElement.nativeElement.children.namedItem("container");
+        let container = document.getElementsByTagName("app-viewer")[0].children.namedItem("container");
+        container.removeChild(this.textlabels[i].element);
+        let index = this.starsGeometry.vertices.indexOf(this.textlabels[i].parent);
+        if(index !== -1) {
+          this.starsGeometry.vertices.splice(index, 1);
         }
+        break;
       }
-      var boxHelper = new THREE.BoxHelper(obj);
-      boxHelper["geometry"].computeBoundingBox();
-      boxHelper["geometry"].computeBoundingSphere();
-      var boundingSphere=boxHelper["geometry"].boundingSphere;
-      var center = boundingSphere.center;
-      var radius = boundingSphere.radius;
-      var fov=this._camera.fov * ( Math.PI / 180 );
-      var vec_centre_to_pos: THREE.Vector3 = new THREE.Vector3();
-      vec_centre_to_pos.subVectors(this._camera.position, center);
-      var tmp_vec=new THREE.Vector3( center.x+Math.abs( radius / Math.sin( fov / 2 )),
-                                     center.y+Math.abs( radius / Math.sin( fov / 2 ) ),
-                                     center.z+Math.abs( radius / Math.sin( fov / 2 )));
-      vec_centre_to_pos.setLength(tmp_vec.length());
-      var perspectiveNewPos: THREE.Vector3 = new THREE.Vector3();
-      perspectiveNewPos.addVectors(center, vec_centre_to_pos);
-      var newLookAt = new THREE.Vector3(center.x,center.y,center.z)
-      this._camera.position.copy(perspectiveNewPos);
-      this._camera.lookAt(newLookAt);
-      this._camera.updateProjectionMatrix();
-      this._orbitControls.target.set(newLookAt.x, newLookAt.y,newLookAt.z);
-    }else{
-      event.preventDefault();
-      var axisX,axisY,axisZ,centerX,centerY,centerZ=0;
-      var radius=0;
-      for(var i=0;i<this.selecting.length;i++){
-        axisX+=this.selecting[i].geometry.boundingSphere.center.x;
-        axisY+=this.selecting[i].geometry.boundingSphere.center.y;
-        axisZ+=this.selecting[i].geometry.boundingSphere.center.z;
-        radius=Math.max(this.selecting[i].geometry.boundingSphere.radius,radius);
-      }
-      centerX=axisX/this._scene.children[1].children.length;
-      centerY=axisY/this._scene.children[1].children.length;
-      centerY=axisY/this._scene.children[1].children.length;
-      var center = new THREE.Vector3(centerX,centerY,centerZ);
-      var fov=this._camera.fov * ( Math.PI / 180 );
-      var vec_centre_to_pos: THREE.Vector3 = new THREE.Vector3();
-      vec_centre_to_pos.subVectors(this._camera.position, center);
-      var tmp_vec=new THREE.Vector3(center.x+Math.abs( radius / Math.sin( fov / 2 )),
-                                    center.y+Math.abs( radius / Math.sin( fov / 2 ) ),
-                                    center.z+Math.abs( radius / Math.sin( fov / 2 )));
-      vec_centre_to_pos.setLength(tmp_vec.length());
-      var perspectiveNewPos: THREE.Vector3 = new THREE.Vector3();
-      perspectiveNewPos.addVectors(center, vec_centre_to_pos);
-      var newLookAt = new THREE.Vector3(center.x,center.y,center.z)
-      this._camera.position.copy(perspectiveNewPos);
-      this._camera.lookAt(newLookAt);
-      this._camera.updateProjectionMatrix();
-      this._orbitControls.target.set(newLookAt.x, newLookAt.y,newLookAt.z);
+    }
+    if(i<this.textlabels.length) {
+      this.textlabels.splice(i, 1);
+      this.spliceselecting(i, 1);
     }
   }
+
+  creatStarGeometry(label_xyz) {
+    let star = new THREE.Vector3();
+    star.x = label_xyz[0];
+    star.y = label_xyz[1];
+    star.z = label_xyz[2];
+    return star;
+  }
+
+  createTextLabel(label, star, id,index,path) {
+    let div = this.createLabelDiv();
+    var self=this;
+    let textLabel= {
+      id: id,
+      index:index,
+      path:path,
+      element: div,
+      parent: false,
+      position: new THREE.Vector3(0,0,0),
+      setHTML: function(html) {
+        this.element.innerHTML = html;
+      },
+      setParent: function(threejsobj) {
+        this.parent = threejsobj;
+      },
+      updatePosition: function() {
+        if(parent) {
+          this.position.copy(this.parent);
+        }
+        
+        var coords2d = this.get2DCoords(this.position, this.camera);
+        this.element.style.left = coords2d.x + 'px';
+        this.element.style.top = coords2d.y + 'px';
+      },
+      get2DCoords: function(position, camera) {
+        var vector = position.project(camera);
+        vector.x = (vector.x + 1)/2 * this.width;
+        vector.y = -(vector.y - 1)/2 * this.height;
+        return vector;
+      }
+    };
+    textLabel.setHTML(label);
+    textLabel.setParent(star);
+    return textLabel;
+  }
+
+  createLabelDiv() {
+    var div=document.createElement("div");
+    div.style.color= '#00f';
+    div.style.fontFamily= '"Fira Mono", Monaco, "Andale Mono", "Lucida Console", "Bitstream Vera Sans Mono", "Courier New", Courier, monospace';
+    div.style.margin='-5px 0 0 15px';
+    div.style.pointerEvents='none';
+    div.style.position = 'absolute';
+    div.style.width = '100';
+    div.style.height = '100';
+    div.style.top = '-1000';
+    div.style.left = '-1000';
+    div.style.textShadow="0px 0px 3px white";
+    div.style.color="black";
+    return div;
+   }
 
 }

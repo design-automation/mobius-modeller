@@ -27,3 +27,17 @@ export class HelpFundamentals implements OnInit {
   }
 
 }
+
+@Component({
+  selector: 'app-help-model',
+  templateUrl: './help.model.tpl.html',
+  styleUrls: ['./help.model.tpl.scss']
+})
+export class HelpModel implements OnInit {
+
+  constructor() { }
+
+  ngOnInit() {
+  }
+
+}

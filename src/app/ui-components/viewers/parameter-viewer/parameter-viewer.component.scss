@@ -44,12 +44,12 @@ div.mat-input-wrapper.mat-form-field-wrapper{
 			width:20%;
 				.param{
 					display: flex;
-					margin: 5px 0px;
+					//margin: 5px 0px;
 
 
 					height: 100%;
 					align-items: center;
-					justify-content: center;
+					//justify-content: center;
 
 					//.label{
 						//width: 80px; 
@@ -74,20 +74,8 @@ div.mat-input-wrapper.mat-form-field-wrapper{
 				align-items: center;
 				justify-content: center;
 				.content{
-					//vertical-align: center;
-
-					/*input{
-						color: $color1;
-						border:0;
-						border-style: solid !important;
-						border-bottom: 1px solid $color1;
-						&:hover{
-							background-color: $color4;
-						}
-						&:focus{
-							background-color: $color4;
-						}
-					}*/
+					font-size: $fsize2;
+					color: $color1;
 				}
 			}
 			//border-bottom: 1px solid $color2;

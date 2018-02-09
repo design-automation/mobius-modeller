@@ -18,7 +18,7 @@
 					</mat-panel-description>
 				</mat-expansion-panel-header>
 
-				<p>{{ output.getValue() }}</p>
+				<p [innerHTML]="getType(output)"></p>
 
 			</mat-expansion-panel>
 			

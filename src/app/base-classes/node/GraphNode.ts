@@ -82,16 +82,18 @@ export class GraphNode implements IGraphNode{
 			// loading from file
 			this._id = nodeData["_id"];
 			this.position = nodeData["position"];
-			this._name = nodeData["_name"]
+			this._name = nodeData["_name"];
 		}
 		else{
 			// creating from library
 			this.position = [0,0];
 		}
 
+
 		// map direct properties
 		this.portCounter = nodeData["portCounter"];
 		this._isDisabled = nodeData["_isDisabled"];
+
 
 		// add inputs
 		let inputs: InputPort[] = nodeData["_inputs"];
@@ -99,17 +101,17 @@ export class GraphNode implements IGraphNode{
 			let inp_data :InputPort = inputs[input_index];
 			let input :InputPort = new InputPort(inp_data["_name"]);
 
-			input.update(inp_data);
+			input.update(inp_data, "inp");
 			this._inputs.push(input);
 		}
-
+			
 		// add outputs
 		let outputs: OutputPort[] = nodeData["_outputs"];
 		for( let output_index in outputs ){
 			let output_data: OutputPort = outputs[output_index];
 			let output: OutputPort = new OutputPort(output_data["_name"]);
 
-			output.update(output_data);
+			output.update(output_data, "out");
 			this._outputs.push(output);
 		}
 
@@ -251,9 +253,13 @@ export class GraphNode implements IGraphNode{
 		this._hasExecuted = false;
 		this._hasError = false;
 
+		this._procedure.map(function(prod){
+			prod.reset();
+		});
+
 		this._outputs.map(function(output){
 			output.reset();
-		})
+		});
 
 		return (this._hasExecuted == false); 
 	}
@@ -330,4 +336,34 @@ export class GraphNode implements IGraphNode{
 	}
 
 
+	getVariableList(): string[]{
+
+		let varList: string[] = [];
+
+		//push undefined
+		varList.push("undefined");
+
+		//push names of inputs and outputs
+		this._inputs.map(function(inp){
+			varList.push(inp.getName());
+		});
+
+		this._outputs.map(function(out){
+			varList.push(out.getName());
+		});
+
+		// push names of left components in procedure
+		this._procedure.map(function(prod){
+			let type = prod.getType();
+			if(type == ProcedureTypes.Data || type == ProcedureTypes.ForLoopControl || 
+				type ==ProcedureTypes.Action){
+				let var_name: string = prod.getLeftComponent().expression;
+				if(var_name && var_name.length > 0){
+					varList.push(var_name);
+				};
+			}
+		});
+
+		return varList;
+	}
 }

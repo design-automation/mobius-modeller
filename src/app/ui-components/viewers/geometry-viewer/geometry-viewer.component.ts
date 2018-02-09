@@ -20,6 +20,7 @@ export class GeometryViewerComponent extends Viewer implements OnInit{
 	}
 
 	reset(){ 
+    this.gs_dummy_data = undefined;
 	}
 
 	ngOnInit(){

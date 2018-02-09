@@ -49,7 +49,7 @@
 		}
 		mat-expansion-panel-header{
 			background-color: $color3 !important;
-			border-top: 1px solid $color2 !important;
+			border-top: 0px !important;
 			border-bottom: 1px solid $color2 !important;
 			padding-left: $default-side-padding !important;
 			mat-panel-title{
@@ -71,7 +71,7 @@
 			background-color: $color3 !important;
 			padding-top: $default-side-padding/3;
 			padding-bottom: $default-side-padding/3;
-		}
+			}
 	}
 
 	span.module{

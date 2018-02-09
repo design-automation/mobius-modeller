@@ -5,7 +5,7 @@ import { LayoutService } from './global-services/layout.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent{
 
@@ -46,7 +46,11 @@ export class AppComponent{
 	    else if((navigator.userAgent.indexOf("MSIE") != -1 ) || (!!document["documentMode"] == true )) //IF IE > 10
 	    {
 	      brw = 'IE'; 
-	    }  
+	    } 
+	    else if(window.navigator.userAgent.indexOf("Edge") > -1) //IF IE > 10
+	    {
+	      brw = 'Edge'; 
+	    } 
 	    else 
 	    {
 	       brw = 'unknown';

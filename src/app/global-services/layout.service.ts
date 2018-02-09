@@ -1,6 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {Subject} from 'rxjs/Subject';
+
+//import {OutputPortTypes} from '../../../base-classes/Port/PortModule';
 import {EViewer} from '../ui-components/viewers/EViewer';
 
 @Injectable()

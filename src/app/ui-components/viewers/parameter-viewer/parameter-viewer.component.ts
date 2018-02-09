@@ -20,6 +20,7 @@ export class ParameterViewerComponent extends Viewer {
   	constructor(injector: Injector){  super(injector, "parameter-viewer"); }
 
   	ngOnInit() {
+      this.update();
   	}
 
     reset(): void{

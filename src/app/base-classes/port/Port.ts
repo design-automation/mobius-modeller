@@ -65,12 +65,22 @@ export abstract class Port implements IPort{
 	//
 	//
 	//
-	update(portData: IPort): void{
+	update(portData: IPort, type?: string): void{
 		this._id = portData["_id"];
+
 		this._type = portData["_type"];
-		this._selected = portData["_selected"];
+		if( typeof(this._type) == "number" && type == "inp"){
+			//this._type = (InputPortTypes)this._type; 
+			this._type = <InputPortTypes>Object.keys(InputPortTypes)[this._type]
+		}
+		else if( typeof(this._type) == "number" && type == "out"){
+			//this._type = <OutputPortTypes>Object.keys(OutputPortTypes)[this._type]
+		}
+
+		this._selected = false;
+		this._connected = false;
+		
 		this._disabled = portData["_disabled"];
-		this._connected = portData["_connected"];
 		this._default = portData["_default"];
 		this.opts = portData["opts"];
 		// todo: assign computed also??

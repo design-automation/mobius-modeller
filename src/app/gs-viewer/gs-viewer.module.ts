@@ -10,12 +10,19 @@ import { SettingComponent } from './setting/setting.component';
 import { ToolwindowComponent } from './toolwindow/toolwindow.component';
 import { DataService } from './data/data.service';
 import { GroupsComponent } from './toolwindow/groups.component';
+import {NgxPaginationModule} from 'ngx-pagination';
+import {MatExpansionModule} from '@angular/material/expansion';
+import { BrowserAnimationsModule ,NoopAnimationsModule} from '@angular/platform-browser/animations';
 
 
 @NgModule({
     imports: [ 	CommonModule,
     			AngularSplitModule,
-			   	MatSliderModule
+			   	MatSliderModule,
+                NgxPaginationModule,
+                MatExpansionModule,
+                BrowserAnimationsModule,
+                NoopAnimationsModule
 			 ],
     exports: [ GSViewerComponent ],
     declarations: [GSViewerComponent,

@@ -37,12 +37,13 @@ import { ConsoleComponent } from './ui-components/console/console.component';
 
 import { InfoViewerComponent } from './ui-components/help/info-viewer/info-viewer.component';
 import { HelpViewerComponent } from './ui-components/help/help-viewer/help-viewer.component';
-import { MobiusAbout, HelpFundamentals } from './ui-components/help/info-viewer/help.template';
+import { MobiusAbout, HelpFundamentals, HelpModel } from './ui-components/help/info-viewer/help.template';
 
 import { GSViewer } from './gs-viewer/gs-viewer.module';
 import { ConsoleService } from './global-services/console.service';
 
 import { FileLoadDialogComponent } from './ui-components/dialogs/file-load-dialog.component';
+import { GraphEdgeComponent } from './ui-components/graph/graph-edge/graph-edge.component';
 
 @NgModule({
   declarations: [
@@ -68,7 +69,9 @@ import { FileLoadDialogComponent } from './ui-components/dialogs/file-load-dialo
     InfoViewerComponent,
     MobiusAbout, 
     HelpFundamentals,
-    FileLoadDialogComponent
+    HelpModel,
+    FileLoadDialogComponent,
+    GraphEdgeComponent
   ],
   entryComponents: [
     ModuleboxComponent,

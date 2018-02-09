@@ -53,9 +53,15 @@
 mat-expansion-panel{
 	margin: 0 !important;
 	overflow: hidden !important;
+
+	mat-list{
+		overflow: hidden !important;
+		max-height: 100% !important;
+	}
 	mat-expansion-panel-header{
 		mat-panel-title{
 		color: $pcolor2 !important;
+		border-bottom: 0px !important;
 	}
 }
 
@@ -91,11 +97,8 @@ mat-panel-description{
 
 mat-list{
 	.mat-subheader{
-		display: none; //not sure the purpose of this word
 		font-size: $fsize2;
-		color: $color1;
-		margin: 0;
-		padding: 0;
+		color: $color2;
 	}
 	mat-list-item{
 		h4{

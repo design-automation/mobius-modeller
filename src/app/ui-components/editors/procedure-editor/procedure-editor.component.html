@@ -10,8 +10,13 @@
 						</mat-panel-description>
 					</mat-expansion-panel-header>
 
-
-					<div class="tree">    
+					
+					<!-- <button (click)="showProd=!showProd">Procedure</button>
+					<div *ngIf='showProd'> -->
+					<div class="tree">
+						<datalist id="variable-suggestions" >
+						    <option *ngFor='let v of _variableList' value="{{v}}"></option>
+						</datalist>
 
 						<tree-root #tree 	
 									[nodes]='_procedureArr' 
@@ -32,8 +37,8 @@
 
 						    				</div>-->
 								  			<div class = "seg1" 
-								  				[class.error]="prod.data.hasError" 
 								  				[class.print]="prod.data.printToConsole()"
+								  				[class.error]="prod.data.getError()" 
 								  				[class.disabled]="prod.data.isDisabled()">
 
 												<!-- template for data -->
@@ -41,7 +46,8 @@
 													<div class='procedure-item'>
 														<input matInput class="tree-input" 
 														[(ngModel)]="prod.data.getLeftComponent().expression" #ctrl="ngModel" required
-														(change)="updateProcedure($event, prod, 'left')" spellcheck="false">
+														(change)="updateProcedure($event, prod, 'left')" spellcheck="false" list="variable-suggestions">
+														
 
 														<!-- <input width=50 class="tree-input" [(ngModel)]="prod.data.getLeftComponent().expression" #ctrl="ngModel" required
 														(change)="updateProcedure($event, prod, 'left')"> -->
@@ -49,7 +55,7 @@
 											
 														<input matInput class="tree-input" 
 														[(ngModel)]="prod.data.getRightComponent().expression" #ctrl="ngModel" required
-														(change)="updateProcedure($event, prod, 'right')" spellcheck="false">
+														(change)="updateProcedure($event, prod, 'right')" spellcheck="false" list="variable-suggestions">
 
 														<!-- <input width=50 class="tree-input" [(ngModel)]="prod.data.getRightComponent().expression" #ctrl="ngModel" required
 														(change)="updateProcedure($event, prod, 'right')"> -->
@@ -80,7 +86,7 @@
 													 <span>for (</span> 
 													  <input matInput class="tree-input"  [(ngModel)]="prod.data.getLeftComponent().expression" #ctrl="ngModel" required (change)="updateProcedure($event, prod, 'left')" spellcheck="false">
 													 <span>in</span>  
-													  <input matInput class="tree-input" [(ngModel)]="prod.data.getRightComponent().expression" #ctrl="ngModel" required (change)="updateProcedure($event, prod, 'right')" spellcheck="false"> 
+													  <input matInput class="tree-input" [(ngModel)]="prod.data.getRightComponent().expression" #ctrl="ngModel" required (change)="updateProcedure($event, prod, 'right')" spellcheck="false" list="variable-suggestions"> 
 													  )
 													</div>
 												</div>
@@ -88,7 +94,7 @@
 												<div *ngIf="prod.data.getType() == 'Action'">
 													<div class='procedure-item'>
 														<input matInput class="tree-input" [(ngModel)]="prod.data.getLeftComponent().expression" #ctrl="ngModel" required
-														(change)="updateProcedure($event, prod, 'left')" spellcheck="false">
+														(change)="updateProcedure($event, prod, 'left')" spellcheck="false" list="variable-suggestions">
 														
 
 														<span class="equal">=</span>
@@ -105,7 +111,8 @@
 																	 [(ngModel)]="prod.data.getRightComponent().params[i].value"
 																	 #ctrl="ngModel" 
 																	 required
-																	 (change)="updateProcedure($event, prod, 'right')" spellcheck="false">
+																	 (change)="updateProcedure($event, prod, 'right')" spellcheck="false" 
+																	 list="variable-suggestions">
 
 																	<span *ngIf='i<prod.data.getRightComponent().params.length-1'>,</span>
 																	<!-- <input width=50 class="tree-input" [(ngModel)]="p" 
@@ -146,8 +153,10 @@
 						    			</div>
 								  </ng-template>
 						</tree-root> 
-						
-					</div>
+					</div>	
+					<!-- </div>	 -->					
+
+					
 		</mat-expansion-panel>
 	</mat-accordion>
 </div>

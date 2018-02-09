@@ -65,6 +65,43 @@ split-area{
 
 	}
 
+	.content-wrapper{
+		position: relative;
+		height: 100%;
+		width: 100%;
+		transform-origin: top left;
+	}
+
+	.info-container{
+		padding: 0px 30px; 
+		display: flex; 
+		flex-direction: row;
+		justify-content: space-between;
+
+		.info{
+			display: flex; 
+			flex-direction: column;
+
+			.label{
+				font-size: 12px;
+				font-weight: 100;
+				color: $color5;
+			}
+
+			.value{
+				color: $color1;
+				font-size: 11px;
+				font-weight: 600;
+			}
+			
+			.action{
+				cursor: pointer;
+				font-size: 11px;
+				color: $color2;
+			}
+		}
+	}
+
 	.graph-container{
 		position: absolute; 
 		//top: 0px; 
@@ -73,10 +110,12 @@ split-area{
 		width: 100%;
 		//box-sizing: content-box !important;
 		//overflow: auto !important;
+		
+		transform-origin: top left;
 
 		#graph-edges{
 			background-color: transparent;
-			z-index: 1;
+			z-index: 1000;
 
 			#temporary-edge{
 				.hidden{
@@ -88,15 +127,26 @@ split-area{
 		#graph-nodes{
 			background-color: transparent;
 			overflow: hidden;
-			z-index: 1;
+			z-index: 1000;
 		}
 	}
+	.info-container{
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		.label, .value{
+			margin-right: 5px;
+			font-weight: normal !important;
+		}
+	}
+
 
 	.node-container{
 		position: relative;
 	
 		.node{
 			position: absolute;
+			transform-origin: top left;
 			z-index: 3;
 			margin: 0px;
 			color: $color1;
@@ -153,7 +203,7 @@ split-area{
 					min-width: 70px;
 					width: auto;
 					border: 1px solid $color1;
-					background-color: white;
+					background-color: rgba(255, 255, 255, 0.7);
 					cursor: move;
 
 					&.disabled{

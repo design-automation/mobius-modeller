@@ -3,47 +3,60 @@
 }
 #toolbar{
   background-color: #E6E6E6;
-  height: 28px;
+  float: left;
+  width: 50%;
+  height: 25px;
+  left: 30px;
+  margin-top:0px;
+  overflow: hidden !important;
 }
 #point{
   margin-left:25px;
-  font-size:20px;
-  background-color:transparent;
+  font-size:15px;
+  background:transparent;
   border:0;
+  font-family:sans-serif;
 }
 #vertice{
-  font-size:22px;
+  font-size:15px;
   background-color:transparent;
   border:0;
+  font-family:sans-serif;
 }
 #edge{
-  font-size:22px;
+  font-size:15px;
   background-color:transparent;
   border:0;
+  font-family:sans-serif;
 }
 #wire{
-  font-size:22px;
+  font-size:15px;
   background-color:transparent;
   border:0;
+  font-family:sans-serif;
 }
 #face{
-  font-size:22px;
+  font-size:15px;
   background-color:transparent;
   border:0;
+  font-family:sans-serif;
 }
 #object{
-  font-size:20px;
+  font-size:15px;
   background-color:transparent;
   border:0;
+  font-family:sans-serif;
 }
 #selected{
   margin-left:30px;
 }
 .visible{
-  color: grey;
+  background-color: white !important;
+  color:#395d73;
 }
 .selectvisible{
-  color: grey;
+  background-color:  white !important;
+  color:#395d73;
 }
 #table{
   width:100% ;
@@ -58,11 +71,33 @@
   width:100%;
   border:0;
 }
-.selectid{
+/*.selectid{
   background-color:#66CCFF;
-}
+}*/
 #select{
   position: relative;
   float:right;
   margin-right: 30px;
+}
+#pagination{
+  position:relative;
+  width: 50%;
+  background-color: #E6E6E6;
+  float: right;
+  right: 0px;
+  height: 25px;
+  color:black !important;
+  top:0px;
+  overflow: hidden !important;
+}
+.my-pagination /deep/ .ngx-pagination{
+  margin:0px !important;
+  color:black !important;
+  float: right;
+  margin-right:20px !important;
+}
+.my-pagination /deep/ .ngx-pagination .current {
+  margin-top:0px;
+  color:black;
+  background-color: white;
 }

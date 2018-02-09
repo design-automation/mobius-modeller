@@ -57,4 +57,7 @@ export interface IGraphNode{
 	execute(code_generator: ICodeGenerator,  params:any, print: Function): void;
 	getResult(): Object;
 
+
+	getVariableList(): string[];
+
 }

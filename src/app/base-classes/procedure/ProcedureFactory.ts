@@ -41,7 +41,7 @@ export class ProcedureFactory{
 			procedure = ProcedureFactory.getProcedure(procedureData["_type"]);
 		}
 
-		procedure.update(procedureData, undefined);
+		procedure.update(procedureData, undefined); 
 
 		if(procedureData.children !== undefined){
 			for(let child=0; child < procedureData.children.length; child++){

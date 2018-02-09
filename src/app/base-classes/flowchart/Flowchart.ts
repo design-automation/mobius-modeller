@@ -72,6 +72,9 @@ export class Flowchart implements IFlowchart{
 		}
 
 		let edge: IEdge = { output_address: outputAddress, input_address: inputAddress };
+
+		this.getNodeByIndex(outputAddress[0]).getOutputByIndex(outputAddress[1]).connect();
+		this.getNodeByIndex(inputAddress[0]).getInputByIndex(inputAddress[1]).connect();
 		
 		// todo: check for valid input/output addresses and port address
 		this._edges.push(edge);
@@ -250,31 +253,67 @@ export class Flowchart implements IFlowchart{
 	}
 
 	//todo: provide a more efficient sort
+	//	Returns an ordering of the node IDs in order or execution
+	//
 	getNodeOrder(): number[]{
 
-		let rankedNodeOrder: number[] = [];
-		let incoming = [];
-
-		this._nodes.map(function(node, index){
-			incoming[index] = {count: 0, id: index};
+		let n_map = [];
+		n_map = this._nodes.map(function(node, index){
+			return {prevArr: [], nextArr: [], id: index};
 		})
 
 		for(let c=0; c < this._edges.length; c++){
 			let edge: IEdge = this._edges[c];
-			let in_nodeIndex = edge.input_address[0]; 
 			let out_nodeIndex = edge.output_address[0];
-			incoming[in_nodeIndex].count++;
-			incoming[out_nodeIndex].count--;
+			let in_nodeIndex = edge.input_address[0]; 
+
+			if(n_map[out_nodeIndex].nextArr.indexOf(in_nodeIndex) == -1){
+				n_map[out_nodeIndex].nextArr.push(in_nodeIndex);
+			}
+
+			if(n_map[in_nodeIndex].prevArr.indexOf(out_nodeIndex) == -1){
+				n_map[in_nodeIndex].prevArr.push(out_nodeIndex);
+			}
+
 		}
 
-		let an = this._nodes;
-		rankedNodeOrder = incoming.sort(function(a: any, b: any){
-			return a.count - b.count;
-		}).map(function(obj){ 
-			return obj.id;
-		});
+		let sortO = n_map[0].prevArr.concat([n_map[0].id]).concat(n_map[0].nextArr);
+		for(let i=1; i < n_map.length; i++){
+			let o = n_map[i];
 
-		return rankedNodeOrder;
+			if(sortO.indexOf(o.id) == -1){
+				sortO.push(o.id);
+			}
+			
+			let el_pos = sortO.indexOf(o.id);
+
+			if(o.prevArr.length == 0 && el_pos !== 0){
+				sortO.splice(el_pos, 1);
+				sortO.unshift(o.id);
+			}
+
+			o.prevArr.map(function(r){
+
+				let index = sortO.indexOf(r);
+
+				if(index == -1){
+					sortO.splice(el_pos -1, 1,  r);
+				}
+				else{
+					if(index > el_pos){
+						sortO.splice(index, 1);
+						sortO.splice(el_pos -1, 1, r);
+					}
+					else{
+						// do nothing
+					}
+				}
+				
+			});
+
+		}
+
+		return sortO;
 	}
 
 
@@ -334,8 +373,22 @@ export class Flowchart implements IFlowchart{
 			let outputPort = node.getOutputByIndex(edge.output_address[1]);
 			let inputPort = inputNode.getInputByIndex(edge.input_address[1]);
 
-			inputPort.setComputedValue(outputPort.getValue());
-			console.log(outputPort.getValue());
+
+			let outVal = outputPort.getValue();
+			if(outVal && outVal.constructor.name == "Model"){
+				let modelData: string = outVal.toJSON();
+				let model = new gs.Model(JSON.parse(modelData));
+				// todo: change in kernel
+        		//model["_kernel"]._objs = JSON.parse(JSON.stringify(outVal["_kernel"]._objs));
+        		//model["_kernel"]._points = JSON.parse(JSON.stringify(outVal["_kernel"]._points));
+				// console.log( JSON.stringify(model["_kernel"]["_objs"]) );
+				inputPort.setComputedValue( model );
+			}
+			else{
+				inputPort.setComputedValue( outVal );
+			}
+
+			
 
 
 			// let value = outputPort.getValue();
@@ -455,3 +508,4 @@ export class Flowchart implements IFlowchart{
 	}
 
 }
+

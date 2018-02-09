@@ -5,6 +5,8 @@ import {ICodeGenerator} from "../code/CodeModule";
 
 export abstract class Procedure implements IProcedure{
 
+	private _error: boolean;
+
 	private _level: number;
 
 	private _type: ProcedureTypes; 
@@ -28,18 +30,37 @@ export abstract class Procedure implements IProcedure{
 		
 		this.hasChildren = this.hasChildren;
 		this.children = this.children;
+		this._error = false;
 	}	
 
 	update(prodData: any, parent: IProcedure): void{
 		this._disabled = prodData._disabled; 
-		this._leftComponent = prodData._leftComponent;
-		this._rightComponent = prodData._rightComponent;
+
+		// todo: be careful
+		//this._leftComponent =  prodData._leftComponent; 
+		//this._rightComponent = prodData._rightComponent; 
 
 		this._parent = parent;
 		this._level = prodData._level;
 		
 		this.hasChildren = prodData.hasChildren;
 		this.children = [];
+		this._error = false; 
+	}
+
+	reset(): void{
+		this._error = false;
+		this.children.map(function(p){
+			p.reset();
+		})
+	}
+
+	setError(value: boolean): void{
+		this._error = value;
+	}
+
+	getError(): boolean{
+		return this._error;
 	}
 
 	getLevel(): number{
@@ -112,7 +133,6 @@ export abstract class Procedure implements IProcedure{
 	}
 
 	setParent(parent: IProcedure): void{
-		console.log(parent["_level"]);
 		if(parent && (parent["_level"]!==undefined)){
 			this._level = parent["_level"] + 1;
 		}

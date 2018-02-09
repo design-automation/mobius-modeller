@@ -28,6 +28,7 @@ export interface IProcedure{
 	getType(): ProcedureTypes; 
 
 	update(prodData: any, parent: IProcedure): void;
+	reset(): void;
 
 	isSelected(): boolean; 
 	select(): void;
@@ -35,6 +36,9 @@ export interface IProcedure{
 	isDisabled(): boolean; 
 	enable(): void;
 	disable(): void;
+
+	setError(value: boolean): void;
+	getError(): void;
 
 	printToConsole(): boolean;
 	enablePrint(): void;
