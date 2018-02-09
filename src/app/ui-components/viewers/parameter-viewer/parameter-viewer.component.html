@@ -33,16 +33,27 @@
 			<!-- if input type == Slider -->
 			<div class="value" 
 				*ngIf="inp.getType() == InputPortTypes.Slider">
-				<span class='content'>{{inp.getOpts().min}}</span>
-				<mat-slider min="{{inp.getOpts().min}}" 
-							max="{{inp.getOpts().max}}" 
-							step="{{inp.getOpts().step}}" 
-							[thumb-label]="true"
-							#val
-							[(ngModel)]="val.value"
-							(change)="updateComputedValue($event, inp, val.value)"
-							value="{{ getValue(inp) }}"></mat-slider>
-				<span class='content'>{{inp.getOpts().max}}</span>
+				<mat-form-field class="curr-value">
+					<textarea matInput 
+						matTextareaAutosize 
+						matAutosizeMinRows="1"
+            			matAutosizeMaxRows="5" 
+            			(change)="updateComputedValue($event, inp)"
+            			value="{{ getValue(inp) }}">
+            		</textarea>
+				</mat-form-field>
+				<div class="slider-container">
+					<span class='content'>{{inp.getOpts().min}}</span>
+					<mat-slider min="{{inp.getOpts().min}}" 
+								max="{{inp.getOpts().max}}" 
+								step="{{inp.getOpts().step}}" 
+								[thumb-label]="true"
+								#val
+								[(ngModel)]="val.value"
+								(change)="updateComputedValue($event, inp, val.value)"
+								value="{{ getValue(inp) }}"></mat-slider>
+					<span class='content'>{{inp.getOpts().max}}</span>
+				</div>
 			</div>
 
 		</div>

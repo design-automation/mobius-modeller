@@ -27,6 +27,7 @@
 		border-bottom: 1px solid $color2;
 		span{
 			display: block;
+			font-size: $fsize2;
 		}
 	}
 	.toolbox-content{
@@ -71,6 +72,7 @@
 			background-color: $color3 !important;
 			padding-top: $default-side-padding/3;
 			padding-bottom: $default-side-padding/3;
+			border-bottom: 1px solid $color2 !important;
 			}
 	}
 

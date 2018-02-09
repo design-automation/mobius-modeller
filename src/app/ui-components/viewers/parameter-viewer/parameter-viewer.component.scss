@@ -42,14 +42,12 @@ div.mat-input-wrapper.mat-form-field-wrapper{
 			padding: 0 $default-side-padding;
 			color: $color1;
 			width:20%;
+			max-width: 100px;
 				.param{
 					display: flex;
-					//margin: 5px 0px;
-
-
 					height: 100%;
 					align-items: center;
-					//justify-content: center;
+					justify-content: flex-end;
 
 					//.label{
 						//width: 80px; 
@@ -72,10 +70,21 @@ div.mat-input-wrapper.mat-form-field-wrapper{
 				//padding: $default-side-padding;
 				display: flex;
 				align-items: center;
-				justify-content: center;
-				.content{
-					font-size: $fsize2;
-					color: $color1;
+				//justify-content: flex-end;
+				width: 80%;
+				.curr-value{
+					width: 100px;
+					textarea{
+						//height: auto !important;
+					}
+				}
+				.slider-container{
+					padding: 0 $default-side-padding;
+					width: 100%;
+					.content{
+						font-size: $fsize2;
+						color: $color1;
+					}
 				}
 			}
 			//border-bottom: 1px solid $color2;
