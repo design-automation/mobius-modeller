@@ -156,11 +156,11 @@ split-gutter{
 		min-height: 18px;
 		&:hover{
 			background-color: rgba(240,191,160,0.3) !important;
-			.seg1{
-				width: 80% !important;
-				display: flex !important;
-				flex-flow: row wrap !important;
-			}
+			//.seg1{
+				//width: 80% !important;
+				//display: flex !important;
+				//flex-flow: row wrap !important;
+			//}
 		}
 		.full-container{
 			width: 100% !important;
@@ -172,12 +172,16 @@ split-gutter{
 
 			display: flex;
 			flex-flow: row nowrap!important;
-			overflow: hidden !important;
+			overflow-y: hidden !important;
+			overflow-x: auto !important;
 			justify-content: space-between !important;
 
 			&:hover{
 				.seg2{
 					display: flex !important;
+					position: absolute !important;
+					right: 5px !important;
+					background-color: rgba(240,191,160,1) !important;
 				}
 				.seg3{
 					visibility: visible !important;
@@ -189,14 +193,16 @@ split-gutter{
 				min-width: 80% !important; //change to min-width for single line
 				display: flex !important;
 				flex-flow: row nowrap!important; //nowrap
+				align-items: center !important;
 				justify-content: space-between !important;
-				flex-grow:1 !important;
+				//flex-grow:1 !important;
 				flex-shrink:0 !important;
 			}
 			.procedure-item{
 				color: $pcolor3 !important;
 				display: flex !important;
 				flex-flow: row wrap !important;
+				align-items: center !important;
 
 				//align-items: center !important;
 				//justify-content: center !important;
@@ -310,16 +316,15 @@ split-gutter{
 
 .node-content-wrapper.node-content-wrapper-active.node-content-wrapper-focused{
 	background-color: $color3 !important;
-	&:hover{
-		background-color: $color3 !important;
-	}
-	.seg1{
-		width: 80% !important;
+	.full-container{
 		display: flex !important;
-		flex-flow: row wrap !important;
-	}
-	.seg2{
-		display: flex !important;
+		flex-flow: row nowrap !important;
+		/*.seg2{
+			display: flex !important;
+			position: absolute !important;
+			right: 5px !important;
+			background-color: $color3 !important;
+		}*/
 	}
 }
 
@@ -380,6 +385,7 @@ span.addBtn{
 
 
 .mat-input-wrapper{
+	font-family: 'Ubuntu Mono', monospace !important;
 	padding: 0 !important;
 	border-bottom: 1px solid $color2 !important;
 	font-size: $fsize2 !important;
@@ -427,7 +433,7 @@ mat-dialog-container{
 }
 
 .mat-slider{
-	width: 80% !important;
+	width: 90% !important;
 }
 
 split-area{

@@ -79,12 +79,13 @@
 	span.module{
 		color: $pcolor2 !important;
 		font-weight: bold;
+		font-family: 'Ubuntu Mono', monospace;
 	}
 
 	span.function{
 		color: $pcolor4 !important;
 		font-weight: bold;
-
+		font-family: 'Ubuntu Mono', monospace;
 	}
 }
 
