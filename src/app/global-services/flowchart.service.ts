@@ -300,7 +300,7 @@ export class FlowchartService {
                          //{_name: "Ray", _version: 0.1, _author: "Patrick"},
                          {_name: "Split", _version: 0.1, _author: "Patrick"},
                          {_name: "String", _version: 0.1, _author: "Patrick"},
-                         {_name: "Xform", _version: 0.1, _author: "Patrick"},
+                         //{_name: "Xform", _version: 0.1, _author: "Patrick"},
                          //{_name: "Topo", _version: 0.1, _author: "Patrick"}
                       ]
                     );

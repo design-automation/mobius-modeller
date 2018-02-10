@@ -18,6 +18,7 @@
 	}*/
 
 	.port {
+		font-family: 'Ubuntu Mono', monospace;
 		display: flex; 
 		flex-flow: row nowrap; 
 		justify-content: space-between!important;
@@ -75,6 +76,7 @@
 
 			select{
 				font-size: $fsize2;
+				font-family: 'Ubuntu Mono', monospace;
 				width: 100px;
 				border: 0px !important;
 

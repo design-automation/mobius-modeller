@@ -46,9 +46,9 @@
 			color: $color1 !important;
 
 			&.error{
-				color: red !important;
-				font-weight: 300;
-				font-size: 14px;
+				color: $pcolor1 !important;
+				//font-weight: 300;
+				font-size: $fsize2;
 				padding: 5px;
 				display: inline;
 			}
@@ -57,25 +57,25 @@
 				padding: 5px;
 
 				.console-heading{
-					font-size: 14px; 
+					font-size: $fsize2; 
 					line-height: 20px;
+					color: $pcolor2;
 					text-decoration: underline;
-					color: blue;
 				}
 					
 				.console-line{
 
 					max-height: 150px; 
-					max-width: 400px;
+					max-width: 100%;
 					overflow: auto;
 
 					.var-name{
-						color: purple;
+						color: $pcolor4;
 					}
 
 					.var-value{
-						font-weight: 600;
-						color: green;
+						//font-weight: 600;
+						color: $pcolor3;
 						display: inline-block;
 						word-wrap: break-word;
 						max-width: 100%;

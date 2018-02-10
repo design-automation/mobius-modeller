@@ -1,4 +1,5 @@
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css");
+@import '~scss/globals';
 
 @font-face{
   font-family: "FontAwesome";
@@ -38,6 +39,8 @@ a { text-decoration: none; color: #fff; text-transform: uppercase; }
   display: block; float: left;
   padding: 0 16px;
 }
+
+
 /**
  * Carets
  */
@@ -55,6 +58,7 @@ a { text-decoration: none; color: #fff; text-transform: uppercase; }
 /**
  * Sub navigaton
  **/
+
 .sub { 
   min-width: 180px; margin: 20px;
   display: none; position: absolute; 
@@ -200,3 +204,5 @@ a { text-decoration: none; color: #fff; text-transform: uppercase; }
     border-bottom: 30px solid transparent;
 
 }
+
+
