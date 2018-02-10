@@ -6,6 +6,7 @@ div.mat-input-wrapper.mat-form-field-wrapper{
 }
 
 .viewer{
+	font-family: 'Ubuntu Mono', monospace;
 	display: flex; 
 	flex-direction: column;
 	flex-wrap: no-wrap;
@@ -42,14 +43,12 @@ div.mat-input-wrapper.mat-form-field-wrapper{
 			padding: 0 $default-side-padding;
 			color: $color1;
 			width:20%;
+			max-width: 100px;
 				.param{
 					display: flex;
-					margin: 5px 0px;
-
-
 					height: 100%;
 					align-items: center;
-					justify-content: center;
+					justify-content: flex-end;
 
 					//.label{
 						//width: 80px; 
@@ -70,24 +69,31 @@ div.mat-input-wrapper.mat-form-field-wrapper{
 			}*/
 			.value{
 				//padding: $default-side-padding;
+				font-family: 'Ubuntu Mono', monospace;
 				display: flex;
 				align-items: center;
-				justify-content: center;
-				.content{
-					//vertical-align: center;
+				justify-content: flex-end;
+				width: 80%;
+				flex-grow: 0;
+				flex-shrink:0;
+				.curr-value{
+					width: 100px;
+					textarea{
+						//height: auto !important;
+						font-family: 'Ubuntu Mono', monospace !important;
+					}
+				}
+				.slider-container{
+					display: flex;
+					flex-flow: row-reverse no-wrap;
 
-					/*input{
+					align-items: center;
+					padding: 0 $default-side-padding;
+					width: 100%;
+					.content{
+						font-size: $fsize2;
 						color: $color1;
-						border:0;
-						border-style: solid !important;
-						border-bottom: 1px solid $color1;
-						&:hover{
-							background-color: $color4;
-						}
-						&:focus{
-							background-color: $color4;
-						}
-					}*/
+					}
 				}
 			}
 			//border-bottom: 1px solid $color2;

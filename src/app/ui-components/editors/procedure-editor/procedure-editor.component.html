@@ -46,7 +46,7 @@
 													<div class='procedure-item'>
 														<input matInput class="tree-input" 
 														[(ngModel)]="prod.data.getLeftComponent().expression" #ctrl="ngModel" required
-														(change)="updateProcedure($event, prod, 'left')" spellcheck="false" list="variable-suggestions">
+														(change)="updateProcedure($event, prod, 'left')" spellcheck="false" list="variable-suggestions" >
 														
 
 														<!-- <input width=50 class="tree-input" [(ngModel)]="prod.data.getLeftComponent().expression" #ctrl="ngModel" required
@@ -126,25 +126,22 @@
 												</div>
 											</div>
 
-											<div class = "divider">
-											</div>
-
 											<div class = "seg2" *ngIf="prod.data.getType() != 'Else' && prod.data.getType() != 'If'">
 												<button mat-button 
 												    *ngIf="prod.data.getType() =='Action'"
-													(click)="openHelp($event, prod)">
+													(click)="openHelp($event, prod)" tabindex="-1">
 													<mat-icon>help_outline</mat-icon>
 												</button>
 											   <button mat-button
 											   		(click)="togglePrint(prod.data)" 
 											   		matTooltip="Print value to console"
-											   		*ngIf="prod.data.getType() =='Action' || prod.data.getType() =='Data'">
+											   		*ngIf="prod.data.getType() =='Action' || prod.data.getType() =='Data'" tabindex="-1">
 				    					    		<mat-icon>print</mat-icon>
 					    					    </button>
-												 <button mat-button (click)="toggle(prod.data)" matTooltip="Enable/Disable Line">
+												 <button mat-button (click)="toggle(prod.data)" matTooltip="Enable/Disable Line" tabindex="-1">
 				    					    		<mat-icon>check_circle</mat-icon>
 					    					    </button>
-										        <button mat-button (click)="deleteProcedure(prod)" matTooltip="Delete Line">
+										        <button mat-button (click)="deleteProcedure(prod)" matTooltip="Delete Line" tabindex="-1">
 				    					    		<mat-icon>delete</mat-icon>
 					    					    </button>
 					    					    <!-- <button (click)="disableProcedure(prod, $event)">Disable</button>

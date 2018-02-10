@@ -45,6 +45,7 @@ split-area{
 
 split-gutter{
 	border-right: 1px solid $color2 !important;
+	border-top: 1px solid $color2 !important;
 }
 
 .mat-tab-label{
@@ -155,11 +156,11 @@ split-gutter{
 		min-height: 18px;
 		&:hover{
 			background-color: rgba(240,191,160,0.3) !important;
-			.seg1{
-				width: 80% !important;
-				display: flex !important;
-				flex-flow: row wrap !important;
-			}
+			//.seg1{
+				//width: 80% !important;
+				//display: flex !important;
+				//flex-flow: row wrap !important;
+			//}
 		}
 		.full-container{
 			width: 100% !important;
@@ -171,12 +172,16 @@ split-gutter{
 
 			display: flex;
 			flex-flow: row nowrap!important;
-			overflow: hidden !important;
+			overflow-y: hidden !important;
+			overflow-x: auto !important;
 			justify-content: space-between !important;
 
 			&:hover{
 				.seg2{
 					display: flex !important;
+					position: absolute !important;
+					right: 5px !important;
+					background-color: rgba(240,191,160,1) !important;
 				}
 				.seg3{
 					visibility: visible !important;
@@ -188,14 +193,16 @@ split-gutter{
 				min-width: 80% !important; //change to min-width for single line
 				display: flex !important;
 				flex-flow: row nowrap!important; //nowrap
+				align-items: center !important;
 				justify-content: space-between !important;
-				flex-grow:1 !important;
+				//flex-grow:1 !important;
 				flex-shrink:0 !important;
 			}
 			.procedure-item{
 				color: $pcolor3 !important;
 				display: flex !important;
 				flex-flow: row wrap !important;
+				align-items: center !important;
 
 				//align-items: center !important;
 				//justify-content: center !important;
@@ -309,16 +316,15 @@ split-gutter{
 
 .node-content-wrapper.node-content-wrapper-active.node-content-wrapper-focused{
 	background-color: $color3 !important;
-	&:hover{
-		background-color: $color3 !important;
-	}
-	.seg1{
-		width: 80% !important;
+	.full-container{
 		display: flex !important;
-		flex-flow: row wrap !important;
-	}
-	.seg2{
-		display: flex !important;
+		flex-flow: row nowrap !important;
+		/*.seg2{
+			display: flex !important;
+			position: absolute !important;
+			right: 5px !important;
+			background-color: $color3 !important;
+		}*/
 	}
 }
 
@@ -379,6 +385,7 @@ span.addBtn{
 
 
 .mat-input-wrapper{
+	font-family: 'Ubuntu Mono', monospace !important;
 	padding: 0 !important;
 	border-bottom: 1px solid $color2 !important;
 	font-size: $fsize2 !important;
@@ -425,7 +432,70 @@ mat-dialog-container{
     border: 1px solid $pcolor3 !important;
 }
 
+.mat-slider{
+	width: 90% !important;
+}
 
+split-area{
+	div{
+		#splittoolwindow{
+		    height: 100%;
+		    overflow-y: auto;
+
+		    box-sizing: border-box;
+		    padding-bottom: $header-height;
+		    #toolwindow{
+		      	#toolbar{
+		      		background-color: $color3;
+			        height: $header-height;
+
+			        display: flex;
+			        flex-flow: row nowrap;
+			        justify-content: space-between;
+			        width: 100%;
+			        .sec1, .sec2, .sec3{
+						display: flex;
+						flex-flow: row nowrap;
+						margin: 0;
+						button{
+							font-size: $fsize2;
+							margin: 0;
+						}
+			        }
+
+			        .sec1{
+			        	display: flex;
+			        	flex-flow: row nowrap;
+			        	justify-content: flex-start;
+			        }
+			        .sec2{
+			        	display: flex;
+			        	flex-flow: row nowrap;
+			        	
+			        	align-items: center;
+			        	justify-content: center;
+
+			        	padding: 0px 5px;
+
+						label{
+							margin:0;
+							white-space: nowrap;
+							font-size: $fsize2;
+						}
+						input{
+							margin: 0;
+						}
+			        }
+			        .sec3{
+			        	display: flex;
+			        	flex-flow: row nowrap;
+			        	justify-content: flex-end;
+			        }
+			    }
+		    }
+		}
+	}
+}
 // split-area.sidebar.flowchart{
 // 	width: 150px !important;
 // }

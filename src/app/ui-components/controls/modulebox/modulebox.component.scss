@@ -27,6 +27,7 @@
 		border-bottom: 1px solid $color2;
 		span{
 			display: block;
+			font-size: $fsize2;
 		}
 	}
 	.toolbox-content{
@@ -49,7 +50,7 @@
 		}
 		mat-expansion-panel-header{
 			background-color: $color3 !important;
-			border-top: 1px solid $color2 !important;
+			border-top: 0px !important;
 			border-bottom: 1px solid $color2 !important;
 			padding-left: $default-side-padding !important;
 			mat-panel-title{
@@ -71,18 +72,20 @@
 			background-color: $color3 !important;
 			padding-top: $default-side-padding/3;
 			padding-bottom: $default-side-padding/3;
-		}
+			border-bottom: 1px solid $color2 !important;
+			}
 	}
 
 	span.module{
 		color: $pcolor2 !important;
 		font-weight: bold;
+		font-family: 'Ubuntu Mono', monospace;
 	}
 
 	span.function{
 		color: $pcolor4 !important;
 		font-weight: bold;
-
+		font-family: 'Ubuntu Mono', monospace;
 	}
 }
 

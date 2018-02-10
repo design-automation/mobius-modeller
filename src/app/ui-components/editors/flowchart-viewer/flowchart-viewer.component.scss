@@ -130,6 +130,16 @@ split-area{
 			z-index: 1000;
 		}
 	}
+	.info-container{
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		.label, .value{
+			margin-right: 5px;
+			font-weight: normal !important;
+		}
+	}
+
 
 	.node-container{
 		position: relative;

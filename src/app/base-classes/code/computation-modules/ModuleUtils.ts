@@ -120,7 +120,7 @@ export class ModuleUtils{
 		let fn: {name: string, module: string, def: Function}[] = [];
 		let module_name = this.getName(mod);
 		let fns = Object.getOwnPropertyNames(mod).filter(function(prop){ 
-					return [ "length", "prototype", "name", "_name", "_author", "_version", "_helpObj"].indexOf(prop) == -1;
+					return [ "length", "prototype", "name", "_name", "_author", "_version", "_helpObj", "_url"].indexOf(prop) == -1;
 				});
 
 

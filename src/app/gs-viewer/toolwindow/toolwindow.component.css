@@ -1,5 +1,7 @@
 #toolwindow{
   background-color:white;
+  overflow-x: scroll !important;
+  font-family:sans-serif;
 }
 #toolbar{
   background-color: #E6E6E6;
@@ -9,7 +11,20 @@
   left: 30px;
   margin-top:0px;
   overflow: hidden !important;
+  font-family:sans-serif;
 }
+.table_ojbs{
+  table-layout:fixed;
+  overflow-x: scroll !important;
+  font-family:sans-serif;
+}
+.Number{
+  overflow:hidden; 
+  white-space:nowrap; 
+}
+/*#toolview{
+  overflow-x: scroll;
+}*/
 #point{
   margin-left:25px;
   font-size:15px;
@@ -70,6 +85,12 @@
 #numberbutton{
   width:100%;
   border:0;
+}
+#attrib{
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  table-layout:fixed !important;
+  white-space: nowrap !important;
 }
 /*.selectid{
   background-color:#66CCFF;
