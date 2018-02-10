@@ -10,7 +10,7 @@ import {DataService} from '../data/data.service';
   styleUrls: ['./setting.component.css']
 })
 export class SettingComponent implements OnInit {
-  viewer:ViewerComponent;
+
   scene:THREE.Scene;
   alight:THREE.HemisphereLight;
   gridVisible: boolean; 
@@ -20,11 +20,6 @@ export class SettingComponent implements OnInit {
   saturation:number;
   lightness:number;
   frameVisible:boolean;
-  gridisChecked:boolean;
-  opacity:number;
-  red:number;
-  green:number;
-  blue:number;
   _centerx:number;
   _centery:number;
   _centerz:number;
@@ -52,31 +47,11 @@ export class SettingComponent implements OnInit {
     } else {
       this.lightness=this.dataService.lightness;
     }
-    if(this.opacity==undefined){
-      this.opacity=1;
-    }else{
-      this.opacity=this.dataService.opacity;
-    }
     this.gridVisible=this.dataService.grid;
     this.axisVisible=this.dataService.axis;
     this.shadowVisible=this.dataService.shadow;
     this.frameVisible=this.dataService.frame;
     this.pointVisible=this.dataService.point;
-    if(this.red==undefined){
-      this.red=0.8;
-    }else{
-      this.red=this.dataService.red;
-    }
-    if(this.green==undefined){
-      this.green=0.8;
-    }else{
-      this.green=this.dataService.green;
-    }
-    if(this.blue==undefined){
-      this.blue=0.8;
-    }else{
-      this.blue=this.dataService.blue;
-    }
     if(this._centerx==undefined){
       this._centerx=0;
     }else{
@@ -125,10 +100,6 @@ export class SettingComponent implements OnInit {
     this.hue=this.dataService.hue;
     this.saturation=this.dataService.saturation;
     this.lightness=this.dataService.lightness;
-    this.opacity=this.dataService.opacity;
-    this.red=this.dataService.red;
-    this.green=this.dataService.green;
-    this.blue=this.dataService.blue;
     this._centerx=this.dataService.centerx;
     this._centery=this.dataService.centery;
     this._centerz=this.dataService.centerz;
@@ -278,28 +249,6 @@ export class SettingComponent implements OnInit {
     }
   }
    this.dataService.addframe(this.frameVisible);
-  }
-
-  changeopa(_opacity){
-   this.opacity=_opacity;
-   this.dataService.getopacity(_opacity);   
-   for(var i=0;i<this.scene.children.length;i++){
-      if(this.scene.children[i].type==="Scene"){
-        if(this.scene.children[i].children[0].type==="Mesh"){
-          this.scene.children[i].children[0]["material"].opacity=_opacity;
-        }
-      }
-    }
-  }
-
-  changeback(_red,_green,_blue){
-    this.red=_red;
-    this.green=_green;
-    this.blue=_blue;
-    this.dataService.getred(_red);
-    this.dataService.getgreen(_green);
-    this.dataService.getblue(_blue);
-    this.scene.background=new THREE.Color(_red,_green,_blue);
   }
 
   changenormal(){

@@ -370,7 +370,7 @@ export class GroupsComponent extends DataSubscriber implements OnInit {
       point.label_xyz=verts_xyz;
       point.path=id;
       point.type="All points";
-      this.dataService.addclickshow(point);
+      //this.dataService.addclickshow(point);
       //this.addTextLabel(label,verts_xyz,label,null,null,"All points");
       //this.addTextLabel(label,verts_xyz, label,id,label,"All points");
     }

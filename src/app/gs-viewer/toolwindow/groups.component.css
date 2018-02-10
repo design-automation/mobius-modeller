@@ -5,34 +5,47 @@
   font-family: Roboto,"Helvetica Neue",sans-serif;
   font-size: 12px !important;
   line-height: 14px;
-  overflow: hidden;
+  overflow-x: hidden !important;
+  overflow-y: hidden !important;
 }
 #groupsview{
   color:black;
+  background-color: #F1F1F1 !important;
   font-family: Roboto,"Helvetica Neue",sans-serif;
   font-size: 12px !important;
-  overflow: hidden;
 }
 #settingview{
   font-family: Roboto,"Helvetica Neue",sans-serif;
+  background-color: #F1F1F1 !important;
   font-size: 12px !important;
   line-height: 14px;
+  overflow-x: hidden !important;
+  overflow-y: hidden !important;
+  width: 240px;
+  height: 600px;
 }
 .check{
   margin-left:10px;
 }
+#GridCenter{
+  margin-left: 10px;
+  margin-top: 3px !important;
+  height: 8px;
+  vertical-align: bottom;
+}
 
 #centerx{
   width:50px;
-  margin-left:25px;
+  margin-left: 10px;
+/*  margin-left:25px;*/
 }
 #centery{
   width:50px;
-  margin-left:25px;
+  /*margin-left:25px;*/
 }
 #centerz{
   width:50px;
-  margin-left:25px;
+  /*margin-left:25px;*/
 }
 #centersize{
   width:50px;

@@ -5,7 +5,6 @@ import { SettingComponent } from '../setting/setting.component';
 import * as gs from "gs-json";
 import {DataSubscriber} from "../data/DataSubscriber";
 import {NgxPaginationModule} from 'ngx-pagination';
-//import { ResizedEvent } from 'angular-resize-event';
 
 @Component({
   selector: 'app-viewer',
@@ -14,34 +13,19 @@ import {NgxPaginationModule} from 'ngx-pagination';
 })
 export class ViewerComponent extends DataSubscriber implements OnInit {
 
-
   _model: gs.IModel;
-
   scene: THREE.Scene;
   renderer: THREE.WebGLRenderer;
   camera: THREE.PerspectiveCamera;
   controls: THREE.OrbitControls;
-
   width: number;
   height: number;
-  
   raycaster:THREE.Raycaster;
   mouse:THREE.Vector2;
-
-  Visible:string="Objs";
-
-  // check what needs to be global and refactor
-  
+  // check what needs to be global and refactor  
   selecting:Array<any>;
   basicMat:THREE.MeshPhongMaterial;
-  selectMat:THREE.MeshPhongMaterial;
-  mousehovMat:THREE.MeshPhongMaterial;
-  basiclineMat:THREE.LineBasicMaterial;
-  selectlineMat:THREE.LineBasicMaterial;
-  mousehovlineMat:THREE.LineBasicMaterial;
-  basicwireMat:THREE.LineBasicMaterial;
   selectwireMat:THREE.LineBasicMaterial;
-  mousehovwireMat:THREE.LineBasicMaterial;
   scene_and_maps: {
           scene: gs.IThreeScene, 
           faces_map: Map<number, gs.ITopoPathData>, 
@@ -49,29 +33,19 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
           edges_map: Map<number, gs.ITopoPathData>,
           vertices_map: Map<number, gs.ITopoPathData>,
           points_map: Map<number, gs.ITopoPathData>} ;
-  
   myElement;
-  
-  mySprites: THREE.Sprite[] = [];
   scenechildren:Array<any>;
   textlabels: Array<any>=[];
   starsGeometry:THREE.Geometry = new THREE.Geometry();
-  scenechild:THREE.Scene;
   mDownTime: number;
   mUpTime: number;
   sphere:THREE.Mesh;
   center:THREE.Vector3;
   seVisible:boolean=false;
   SelectVisible:string='Objs';
-  containerx:number;
-  containery:number;
-  containerwidth:number;
-  containerheight:number;
-  distance:number;
   settingVisible:boolean=false;
   LineNo:number=0;
   clickatt:Array<any>;
-
 
   constructor(injector: Injector, myElement: ElementRef) { 
     super(injector);
@@ -81,7 +55,6 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
   ngOnInit() {
 
     let container = this.myElement.nativeElement.children.namedItem("container");
-
     /// check for container
     if(!container){
       console.error("No container in Three Viewer");
@@ -102,10 +75,8 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
     this.renderer = renderer;
     this.camera = camera;
     this.controls = controls;
-
     this.width = width;
     this.height = height;
-    
     this.updateModel();
 
     // todo: check and refactor what is required?
@@ -114,7 +85,6 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
     this.raycaster = new THREE.Raycaster();
     this.raycaster.linePrecision=0.05;
     this.scenechildren=this.dataService.getscenechild();
-    this.scenechild=new THREE.Scene();
 
     var geometry = new THREE.SphereGeometry( 0.3 );
     var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
@@ -124,48 +94,14 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
     this.scene.add( this.sphere );
 
     let self = this;
-    //self.animate(self);
-    controls.addEventListener( 'change', function(){ 
-                             //self.animate(self);
-                             self.render(self);
-                              });
-    /*function animate() {
-      self.raycaster.setFromCamera(self.mouse,self.camera);
-      self.scenechildren=self.dataService.getscenechild();
-      var intersects = self.raycaster.intersectObjects(self.scenechildren);
-      for (var i = 0; i < self.scenechildren.length; i++) {
-        var currObj=self.scenechildren[i];
-        if(self.dataService.getSelectingIndex(currObj.uuid)<0) {
-          if ( intersects[ 0 ]!=undefined&&intersects[ 0 ].object.uuid==currObj.uuid) {
-            if(self.seVisible===true){
-              self.sphere.visible = true;
-              self.sphere.position.copy( intersects[ 0 ].point );
-            }
-          } else {
-            self.sphere.visible = false;
-          }
-        }
-      }
-      for(var i=0; i<self.textlabels.length; i++) {
-        self.textlabels[i].updatePosition();
-      }
-      if(self.dataService.selecting.length!=0){
-        self.updateview();
-      }
-      if(self.dataService.clickshow!==undefined&&self.clickatt!==self.dataService.clickshow){
-        self.clickatt=self.dataService.clickshow;
-        self.clickshow();
-      }
-      self.renderer.render( self.scene, self.camera );
-
-    };*/
-    self.renderer.render( self.scene, self.camera );
+    controls.addEventListener( 'change', function(){self.render( self);});
+    
     for(var i=0;i<this.getchildren().length;i++){
       this.getchildren()[i]["material"].transparent=false;
     }
     this.dataService.addraycaster(this.raycaster);
     this.addgrid();
-    
+    self.renderer.render( self.scene, self.camera );
   }
   //
   //  checks if the data service has a data and calls update function for the viewer
@@ -174,7 +110,6 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
     if(message == "model_update" && this.scene){
       this.updateModel();
     }
-    
   }
 
   animate(self) {
@@ -185,10 +120,10 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
       var currObj=self.scenechildren[i];
       if(self.dataService.getSelectingIndex(currObj.uuid)<0) {
         if ( intersects[ 0 ]!=undefined&&intersects[ 0 ].object.uuid==currObj.uuid) {
-          if(self.seVisible===true){
+          //if(self.seVisible===true){
             self.sphere.visible = true;
             self.sphere.position.copy( intersects[ 0 ].point );
-          }
+          //}
         } else {
           self.sphere.visible = false;
         }
@@ -197,10 +132,7 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
     for(var i=0; i<self.textlabels.length; i++) {
       self.textlabels[i].updatePosition();
     }
-    if(self.dataService.selecting.length!=0){
-      self.updateview();
-    }
-    self.onResize();
+    //self.onResize();
     if(self.dataService.clickshow!==undefined&&self.clickatt!==self.dataService.clickshow){
       self.clickatt=self.dataService.clickshow;
       self.clickshow();
@@ -209,13 +141,16 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
   }
 
   render(self){
-    self.renderer.render( self.scene, self.camera );
-  }
-  /*requestAnimate(self){
-    if(this.seVisible===true){
-      this.animate(self);
+    for(var i=0; i<self.textlabels.length; i++) {
+      self.textlabels[i].updatePosition();
     }
-  }*/
+    if(self.dataService.clickshow!==undefined&&self.clickatt!==self.dataService.clickshow){
+      self.clickatt=self.dataService.clickshow;
+      self.clickshow();
+    }
+    self.renderer.render( self.scene, self.camera );
+    //requestAnimationFrame(self.render);
+  }
 
   /// clears all children from the scene
   clearScene(): void{
@@ -250,52 +185,35 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
       return;
     }
     ///
-    let width: number = container.offsetWidth;//container.clientWidth;
-    let height: number = container.offsetHeight;//container.clientHeight;
+    let width: number = container.offsetWidth;
+    let height: number = container.offsetHeight;
     if(width!==this.width||height!==this.height){
-      this.width = width;//event.ClientWidth;
-      this.height = height;//event.ClientHeight;
+      this.width = width;
+      this.height = height;
       this.renderer.setSize(this.width,this.height);
       this.camera.aspect=this.width/this.height;
       this.camera.updateProjectionMatrix();
     }
    // }
   }
-
-
   //
   // update mode
   // todo: optimize
   // 
   updateModel(): void{
-
     this._model = this.dataService.getGsModel(); 
-
     if( !this._model || !this.scene ){
       console.warn("Model or Scene not defined.");
       return;
     }
-
     try{
-      //this.scene_and_maps= gs.genThreeOptModelAndMaps( this._model );
       this.scene_and_maps= this.dataService.getscememaps();
-
       const scene_data = this.scene_and_maps.scene;
-      //[three_mode, egde_map, tri_map] = genThreeModelandMaps()
-      //[three_mode, label_data] = gs.getThreeWire(labels)
-      //gs.getThreeFace(label)
-      //gs.getThreeObj
-
       this.clearScene();
-
-
       let loader = new THREE.ObjectLoader();
-
       // loading data
       let objectData = loader.parse( scene_data );
-      
       this.seVisible=false;
-
       this.LineNo=0;
       // preprocessing
       if( objectData.children!==undefined){
@@ -331,10 +249,9 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
       // setting controls
       this.controls.target.set(this.center.x,this.center.y,this.center.z);
       this.controls.update();
-      
       // adding the object to the scene
-      this.scene.add(objectData);   
-
+      this.scene.add(objectData);  
+      this.render(this);
     }
     catch(ex){
       console.error("Error displaying model:", ex);
@@ -368,7 +285,6 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
       }
     return children;
   }
-
   clickshow(){
     var label=this.clickatt["label"];
     var id=this.clickatt["id"];
@@ -376,22 +292,6 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
     var path=this.clickatt["path"];
     this.addTextLabel(label,label_xyz,id,path, "All points");
   }
-
-  /*closestpoint():number{
-    var distance:number=0
-    for(var i=0;i<this._model.getGeom().getAllPoints().length-1;i++){
-      for(var j=i+1;j<this._model.getGeom().getAllPoints().length;j++){
-        var dx=this._model.getGeom().getAllPoints()[i].getPosition()[0]-this._model.getGeom().getAllPoints()[j].getPosition()[0];
-        var dy=this._model.getGeom().getAllPoints()[i].getPosition()[1]-this._model.getGeom().getAllPoints()[j].getPosition()[1];
-        var dz=this._model.getGeom().getAllPoints()[i].getPosition()[2]-this._model.getGeom().getAllPoints()[j].getPosition()[2];
-        if(distance<Math.sqrt( dx * dx + dy * dy + dz * dz )){
-          distance=Math.sqrt( dx * dx + dy * dy + dz * dz );
-        }
-      }
-    }
-    distance=Math.round(distance)/50;
-    return distance;
-  }*/
 
   select(seVisible){
     event.stopPropagation();
@@ -555,7 +455,6 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
       if(children[i].name==="All edges"||children[i].name==="Other lines") {children[i]["material"].opacity=0.1;children[i]["material"].color=this.basicMat;}
       if(children[i].name==="All vertices"){
         children[i]["material"].opacity=1;
-        //scenechildren.push(children[i]);
       }
       if(children[i].name==="All points"){
         scenechildren.push(children[i]);
@@ -589,8 +488,7 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
       this.animate(this);
       this.mouse.x = ( event.offsetX / this.width) * 2 - 1;
       this.mouse.y =-( event.offsetY / this.height ) * 2 + 1;
-    }
-    if(this.seVisible===false){
+    }else{
       this.render(this);
     }
   }
@@ -598,26 +496,12 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
 
 
   addgrid(){
-    /*var max=8;
-    var center=new THREE.Vector3(0,0,0);
-    var radius:number=0*/
     for(var i=0;i<this.scene.children.length;i++){
-      /*if(this.scene.children[i].type==="Scene"){
-        for(var j=0;j<this.scene.children[i].children.length;j++){
-          if(this.scene.children[i].children[j]["geometry"].boundingSphere.radius>radius){
-            center=this.scene.children[i].children[j]["geometry"].boundingSphere.center;
-            radius=this.scene.children[i].children[j]["geometry"].boundingSphere.radius;
-            max=Math.ceil(radius+Math.max(Math.abs(center.x),Math.abs(center.y),Math.abs(center.z)))*2;
-            break;
-          }
-        }
-      }*/
       if(this.scene.children[i].name==="GridHelper") {
             this.scene.remove(this.scene.children[i]);
             i=i-1;
       }
     }
-
     // todo: change grid -> grid_value
     if(this.dataService.grid){
       var gridhelper=new THREE.GridHelper( 100, 100);
@@ -1058,9 +942,9 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
       }
       
     } else {
-      for(var i=0;i<this.dataService.sprite.length;i++){
+      /*for(var i=0;i<this.dataService.sprite.length;i++){
         this.dataService.sprite[i].visible=false;
-      }
+      }*/
       for(var i=0;i<this.scene.children.length;i++){
         if(this.scene.children[i].name=="selects"){
           this.scene.remove(this.scene.children[i]);
@@ -1073,33 +957,6 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
       }
     }
 
-  }
-
-  updateview(){
-    this.Visible=this.dataService.visible;
-    var intersects = this.raycaster.intersectObjects(this.scenechildren);
-    if ( intersects.length > 0 ) {
-      if(this.dataService.selecting.length!=0){
-        for(var i=0;i<this.mySprites.length;i++){
-          if(this.mySprites[i].parent.name===this.Visible){
-            let spr: THREE.Sprite =this.mySprites[i];
-            if(Math.abs(intersects[0].point.x-this.mySprites[i].position.x)<0.05
-              &&Math.abs(intersects[0].point.y-this.mySprites[i].position.y)<0.05
-              &&Math.abs(intersects[0].point.z-this.mySprites[i].position.z)<0.05){
-              //let spr: THREE.Sprite =this.mySprites[i];
-              spr.visible = true; 
-            }else{
-              //let spr: THREE.Sprite =this.mySprites[i];
-              spr.visible = false; 
-            }
-          }
-        }
-      }
-    }
-    for(var i=0;i<this.dataService.sprite.length;i++){
-      let spr: THREE.Sprite =this.dataService.sprite[i];
-      spr.visible = true;
-    }
   }
 
   //To add text labels just provide label text, label position[x,y,z] and its id
@@ -1228,7 +1085,7 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
       var box:THREE.BoxHelper=this.selectbox();
       var center = new THREE.Vector3(box["geometry"].boundingSphere.center.x,box["geometry"].boundingSphere.center.y,box["geometry"].boundingSphere.center.z);
       var radius=box["geometry"].boundingSphere.radius;
-      if(radius===0) radius=4;
+      if(radius===0) radius=1;
       var fov=this.camera.fov * ( Math.PI / 180 );
       var vec_centre_to_pos: THREE.Vector3 = new THREE.Vector3();
       vec_centre_to_pos.subVectors(this.camera.position, center);
