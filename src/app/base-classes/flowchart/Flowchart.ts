@@ -72,16 +72,17 @@ export class Flowchart implements IFlowchart{
 		}
 
 		if( this.getNodeByIndex(outputAddress[0]).isDisabled() ||  this.getNodeByIndex(inputAddress[0]).isDisabled() ){
-			throw Error("Cannot connect to disabled nodes");
+			console.log("Cannot connect to disabled nodes");
 		}
+		else{
+			let edge: IEdge = { output_address: outputAddress, input_address: inputAddress };
 
-		let edge: IEdge = { output_address: outputAddress, input_address: inputAddress };
-
-		this.getNodeByIndex(outputAddress[0]).getOutputByIndex(outputAddress[1]).connect();
-		this.getNodeByIndex(inputAddress[0]).getInputByIndex(inputAddress[1]).connect();
-		
-		// todo: check for valid input/output addresses and port address
-		this._edges.push(edge);
+			this.getNodeByIndex(outputAddress[0]).getOutputByIndex(outputAddress[1]).connect();
+			this.getNodeByIndex(inputAddress[0]).getInputByIndex(inputAddress[1]).connect();
+			
+			// todo: check for valid input/output addresses and port address
+			this._edges.push(edge);
+		}
 
 		return this._edges.length;
 	};
@@ -109,10 +110,36 @@ export class Flowchart implements IFlowchart{
 
 	deleteNode(nodeIndex: number): number{
 
-		this.deleteEdges(this.disconnectEdgesWithNode(nodeIndex));
+		this.disconnectNode(nodeIndex);
+		
+		this._nodes.splice(nodeIndex, 1);
+
+		//this.deleteEdges(this.disconnectEdgesWithNode(nodeIndex));
+
+		for(let e=0; e < this._edges.length; e++){
+
+			let edge = this._edges[e];
+
+			let input_node = edge.input_address[0];
+			let output_node = edge.output_address[0];
+
+			if(input_node == nodeIndex || output_node == nodeIndex){
+				this.deleteEdge(e);
+			}
+
+			if(input_node > nodeIndex){
+				edge.input_address[0] = input_node - 1;
+			}
+
+			if(output_node > nodeIndex){
+				edge.output_address[0] = output_node - 1;
+			}
+
+		}
+
 
 		// todo: check for valid node index
-		this._nodes.splice(nodeIndex, 1);
+		// delete this._nodes[nodeIndex];
 
 		return this._nodes.length;
 	}
@@ -159,8 +186,6 @@ export class Flowchart implements IFlowchart{
   	disconnectNode(nodeIndex: number): void{
   		let _node = this.getNodeByIndex(nodeIndex);
 
-  		this.deleteEdges(this.disconnectEdgesWithNode(nodeIndex));
-
   		_node.getInputs().map(function(input){
   			input.disconnect();
   			input.setComputedValue(undefined);
@@ -170,6 +195,8 @@ export class Flowchart implements IFlowchart{
   			output.disconnect();
   			output.setComputedValue(undefined);
   		})
+
+  		this.deleteEdges(this.disconnectEdgesWithNode(nodeIndex));
 
   		// for(let i=0; i < _node.getInputs().length; i++){
   		// 	this.disconnectPort("input", i, nodeIndex)
