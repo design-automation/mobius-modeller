@@ -134,7 +134,7 @@
 														matTooltip="Delete Node">
 														<mat-icon>delete</mat-icon>
 													</div>
-													<div class="action-button" (click)="toggleNode(node)"
+													<div class="action-button" (click)="toggleNode(node, node_index)"
 														matTooltip="Disable Node">
 														<mat-icon *ngIf='!node.isDisabled()'>check_circle</mat-icon>
 														<mat-icon *ngIf='node.isDisabled()'>highlight_off</mat-icon>

@@ -13,6 +13,8 @@ export class GraphEdgeComponent implements OnInit {
   @Input() temporary;
   @ViewChild('canvas') canvas: ElementRef;
 
+  private visible: boolean = false;
+
   _buffer: number = 50;
 
   constructor() { }
@@ -152,14 +154,16 @@ export class GraphEdgeComponent implements OnInit {
   }
 
   ngOnInit() {
-        let canvas: HTMLCanvasElement = this.canvas.nativeElement;
-        let context  = canvas.getContext('2d');
+      let canvas: HTMLCanvasElement = this.canvas.nativeElement;
+      let context  = canvas.getContext('2d');
 
-        this.drawEdge();
+      this.drawEdge();
   }
 
   ngDoCheck(){
-    this.drawEdge()
+      if(this.edge != undefined){
+        this.drawEdge()
+      }
   }
 
 }

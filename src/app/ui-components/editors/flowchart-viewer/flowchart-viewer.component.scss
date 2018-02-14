@@ -151,6 +151,10 @@ split-area{
 			margin: 0px;
 			color: $color1;
 
+			    &.hidden{
+			    	display: none;
+			    }
+
 				.btn-container{
 				   position: absolute;
 				   right: -30px;

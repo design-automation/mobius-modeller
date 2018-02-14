@@ -80,7 +80,7 @@ export class FlowchartViewerComponent extends Viewer{
     this.flowchartService.deleteNode(node_index);
   }
 
-  toggleNode(node: IGraphNode): void{ 
+  toggleNode(node: IGraphNode, node_index: number): void{ 
     if(node.isDisabled()){
       node.enable();
     }
@@ -161,10 +161,10 @@ export class FlowchartViewerComponent extends Viewer{
   //
   updateEdges(): void{ 
     for(let e=0; e< this._edges.length; e++){
-      let edge: IEdge = this._edges[e];
+        let edge: IEdge = this._edges[e];
         let output_position =  this.getPortPosition(edge.output_address[0], edge.output_address[1], "po");
         let input_position = this.getPortPosition(edge.input_address[0], edge.input_address[1], "pi");
-    
+
         edge["inputPosition"] = input_position;
         edge["outputPosition"] = output_position;
     }
@@ -464,7 +464,7 @@ export class FlowchartViewerComponent extends Viewer{
     let name: string = "n" + nodeIndex + type + portIndex;
     let el: any = document.getElementById(name);
 
-    if(el == null){
+    if(el == null || this._nodes[nodeIndex] == undefined){
       return {x: 0, y: 0};
     }
 
@@ -500,13 +500,22 @@ export class FlowchartViewerComponent extends Viewer{
   //
   getEdgePath(edge: IEdge): string{
 
-    let output_position =  this.getPortPosition(edge.output_address[0], edge.output_address[1], "po");
-    let input_position = this.getPortPosition(edge.input_address[0], edge.input_address[1], "pi");
-    
-    edge["inputPosition"] = input_position;
-    edge["outputPosition"] = output_position;
+    let output_position, input_position;
+
+    try{
+      output_position =  this.getPortPosition(edge.output_address[0], edge.output_address[1], "po");
+      input_position = this.getPortPosition(edge.input_address[0], edge.input_address[1], "pi");
+      
+      edge["inputPosition"] = input_position;
+      edge["outputPosition"] = output_position;
+      
+    }
+    catch(ex){
+
+    }
 
     return this.edgeString( output_position, input_position );
+
   }
 
 

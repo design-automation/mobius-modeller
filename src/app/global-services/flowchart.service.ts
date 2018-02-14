@@ -562,13 +562,18 @@ export class FlowchartService {
       this._selectedPort = undefined;
       this._selectedProcedure = undefined;
 
-      //this.disconnectNode(node_index);
       this._flowchart.deleteNode(node_index);
 
       // print message to console
       this.consoleService.addMessage("Node was deleted");
 
       this.update();
+
+      // todo: bad bad bad
+      let self = this;
+      setTimeout(function(){
+        self.update();
+      }, 200)
   }
 
 

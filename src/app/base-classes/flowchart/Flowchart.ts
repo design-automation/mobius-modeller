@@ -71,13 +71,18 @@ export class Flowchart implements IFlowchart{
 			throw Error("Invalid arguments for edge");
 		}
 
-		let edge: IEdge = { output_address: outputAddress, input_address: inputAddress };
+		if( this.getNodeByIndex(outputAddress[0]).isDisabled() ||  this.getNodeByIndex(inputAddress[0]).isDisabled() ){
+			console.log("Cannot connect to disabled nodes");
+		}
+		else{
+			let edge: IEdge = { output_address: outputAddress, input_address: inputAddress };
 
-		this.getNodeByIndex(outputAddress[0]).getOutputByIndex(outputAddress[1]).connect();
-		this.getNodeByIndex(inputAddress[0]).getInputByIndex(inputAddress[1]).connect();
-		
-		// todo: check for valid input/output addresses and port address
-		this._edges.push(edge);
+			this.getNodeByIndex(outputAddress[0]).getOutputByIndex(outputAddress[1]).connect();
+			this.getNodeByIndex(inputAddress[0]).getInputByIndex(inputAddress[1]).connect();
+			
+			// todo: check for valid input/output addresses and port address
+			this._edges.push(edge);
+		}
 
 		return this._edges.length;
 	};
@@ -105,10 +110,36 @@ export class Flowchart implements IFlowchart{
 
 	deleteNode(nodeIndex: number): number{
 
-		this.deleteEdges(this.disconnectEdgesWithNode(nodeIndex));
+		this.disconnectNode(nodeIndex);
+		
+		this._nodes.splice(nodeIndex, 1);
+
+		//this.deleteEdges(this.disconnectEdgesWithNode(nodeIndex));
+
+		for(let e=0; e < this._edges.length; e++){
+
+			let edge = this._edges[e];
+
+			let input_node = edge.input_address[0];
+			let output_node = edge.output_address[0];
+
+			if(input_node == nodeIndex || output_node == nodeIndex){
+				this.deleteEdge(e);
+			}
+
+			if(input_node > nodeIndex){
+				edge.input_address[0] = input_node - 1;
+			}
+
+			if(output_node > nodeIndex){
+				edge.output_address[0] = output_node - 1;
+			}
+
+		}
+
 
 		// todo: check for valid node index
-		this._nodes.splice(nodeIndex, 1);
+		// delete this._nodes[nodeIndex];
 
 		return this._nodes.length;
 	}
@@ -155,8 +186,6 @@ export class Flowchart implements IFlowchart{
   	disconnectNode(nodeIndex: number): void{
   		let _node = this.getNodeByIndex(nodeIndex);
 
-  		this.deleteEdges(this.disconnectEdgesWithNode(nodeIndex));
-
   		_node.getInputs().map(function(input){
   			input.disconnect();
   			input.setComputedValue(undefined);
@@ -166,6 +195,8 @@ export class Flowchart implements IFlowchart{
   			output.disconnect();
   			output.setComputedValue(undefined);
   		})
+
+  		this.deleteEdges(this.disconnectEdgesWithNode(nodeIndex));
 
   		// for(let i=0; i < _node.getInputs().length; i++){
   		// 	this.disconnectPort("input", i, nodeIndex)
@@ -258,9 +289,10 @@ export class Flowchart implements IFlowchart{
 	getNodeOrder(): number[]{
 
 		let n_map = [];
+
 		n_map = this._nodes.map(function(node, index){
 			return {prevArr: [], nextArr: [], id: index};
-		})
+		});
 
 		for(let c=0; c < this._edges.length; c++){
 			let edge: IEdge = this._edges[c];
@@ -279,14 +311,20 @@ export class Flowchart implements IFlowchart{
 
 		let sortO = n_map[0].prevArr.concat([n_map[0].id]).concat(n_map[0].nextArr);
 		for(let i=1; i < n_map.length; i++){
-			let o = n_map[i];
 
+			let o = n_map[i];
+			
+			// if id of current node is not found in the sort array already 
+			// push it into the array
 			if(sortO.indexOf(o.id) == -1){
 				sortO.push(o.id);
 			}
 			
+			// find the index of the id of the current node
 			let el_pos = sortO.indexOf(o.id);
 
+			// if previous array length of this node is 0 and it is not already at the head of the array
+			// add it to the beginning of the array
 			if(o.prevArr.length == 0 && el_pos !== 0){
 				sortO.splice(el_pos, 1);
 				sortO.unshift(o.id);
@@ -294,15 +332,17 @@ export class Flowchart implements IFlowchart{
 
 			o.prevArr.map(function(r){
 
+				// find an element in the previous array in the sortO
 				let index = sortO.indexOf(r);
 
 				if(index == -1){
-					sortO.splice(el_pos -1, 1,  r);
+					// if not found, add it to the 
+					sortO.splice(el_pos, 0,  r);
 				}
 				else{
 					if(index > el_pos){
 						sortO.splice(index, 1);
-						sortO.splice(el_pos -1, 1, r);
+						sortO.splice(el_pos, 0, r);
 					}
 					else{
 						// do nothing
@@ -322,7 +362,12 @@ export class Flowchart implements IFlowchart{
 	//
 	reset(): void{
 		for(let n=0; n < this._nodes.length; n++){
-			this._nodes[n].reset();
+			let node: IGraphNode = this._nodes[n];
+			node.reset();
+
+			if(node.isDisabled()){
+				this.disconnectNode(n);
+			}
 		}
 	}
 
@@ -452,12 +497,11 @@ export class Flowchart implements IFlowchart{
 			let node = all_nodes[originalRank];
 
 			// check status of the node; don't rerun
-			if( node.hasExecuted() == true || node.isDisabled() ){
+			if( node.isDisabled() ){
 				continue;
 			}
 
 			node.execute(code_generator, modules, print);
-			//console.log(node.getName(), node.getResult());
 
 			this.updateDependentInputs(node, originalRank); 
 
