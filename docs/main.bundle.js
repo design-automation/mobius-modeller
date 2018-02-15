@@ -7715,7 +7715,7 @@ let ProcedureEditorComponent = class ProcedureEditorComponent extends __WEBPACK_
     }
     setProperties() {
         this._node = this.flowchartService.getSelectedNode();
-        this._procedureArr = []; //this._node.getProcedure();	
+        this._procedureArr = this._node.getProcedure();
         this._variableList = this._node.getVariableList();
     }
     update(message) {
