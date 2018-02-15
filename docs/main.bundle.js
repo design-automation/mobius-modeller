@@ -787,6 +787,8 @@ class CodeGeneratorJS extends __WEBPACK_IMPORTED_MODULE_0__CodeGenerator__["a" /
             let error = new Error(ex);
             throw error;
         }
+        prodArr = null;
+        print = null;
         return result; //result;// return result of the node
     }
 }
@@ -6870,14 +6872,20 @@ let FlowchartViewerComponent = class FlowchartViewerComponent extends __WEBPACK_
             current: { x: 0, y: 0 }
         };
         // bad bad bad!
-        let self = this;
-        document.addEventListener("keydown", function (e) {
-            if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
-                e.preventDefault();
-                self.save(true);
-                //your implementation or function calls
-            }
-        }, false);
+        /*let self = this;
+        document.addEventListener("keydown", function(e) {
+          if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey))      {
+            e.preventDefault();
+            self.save(true);
+            //your implementation or function calls
+          }
+        }, false);*/
+    }
+    ngOnDestroy() {
+        this.layoutService = null;
+        this.consoleService = null;
+        this._nodes = null;
+        this._edges = null;
     }
     reset() {
         if (this.flowchartService.getNodes().length) {
@@ -7707,7 +7715,7 @@ let ProcedureEditorComponent = class ProcedureEditorComponent extends __WEBPACK_
     }
     setProperties() {
         this._node = this.flowchartService.getSelectedNode();
-        this._procedureArr = this._node.getProcedure();
+        this._procedureArr = []; //this._node.getProcedure();	
         this._variableList = this._node.getVariableList();
     }
     update(message) {
@@ -9192,6 +9200,11 @@ let ViewerContainerComponent = class ViewerContainerComponent extends __WEBPACK_
                 this.switchToConsole();
             }
         });
+    }
+    ngOnDestroy() {
+        this._layout_subscription.unsubscribe();
+        this.group = null;
+        this._lock = null;
     }
     reset() {
     }
