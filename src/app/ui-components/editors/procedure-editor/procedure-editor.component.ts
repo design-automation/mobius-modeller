@@ -40,7 +40,7 @@ export class ProcedureEditorComponent extends Viewer implements OnInit{
 
 	setProperties(): void{
 		this._node = this.flowchartService.getSelectedNode();
-		this._procedureArr = this._node.getProcedure();	
+		this._procedureArr = [];//this._node.getProcedure();	
 		this._variableList = this._node.getVariableList();
 	}
 

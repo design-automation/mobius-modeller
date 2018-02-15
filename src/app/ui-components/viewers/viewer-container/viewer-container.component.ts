@@ -13,8 +13,8 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class ViewerContainerComponent extends Viewer implements OnInit {
 
-  	group: {value: number} = {value: 5};
   	private _layout_subscription: Subscription;
+  	group: {value: number} = {value: 5};
   	_lock:  boolean = false;
 
 	constructor(injector: Injector, private layoutService: LayoutService){ 
@@ -28,6 +28,12 @@ export class ViewerContainerComponent extends Viewer implements OnInit {
           		this.switchToConsole();
           	}
   		});
+	}
+
+	ngOnDestroy(){
+		this._layout_subscription.unsubscribe();
+		this.group = null;
+		this._lock = null;
 	}
 
 	reset(): void{

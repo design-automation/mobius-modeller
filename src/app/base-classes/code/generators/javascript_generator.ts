@@ -406,6 +406,8 @@ export class CodeGeneratorJS extends CodeGenerator{
 				throw error;
 			}
 			
+			prodArr = null; 
+			print = null; 
 			return result;//result;// return result of the node
 		}
 
