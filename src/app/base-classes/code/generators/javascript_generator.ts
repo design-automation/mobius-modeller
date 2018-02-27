@@ -79,7 +79,7 @@ export class CodeGeneratorJS extends CodeGenerator{
 
 			let inputs = node.getInputs();
 			for(let i=0; i < inputs.length; i++ ){
-				if(inputs[i].isConnected() == true ){
+				if(inputs[i].isConnected() == true){
 					let input_name:string = inputs[i].getName();
 					if( params ){
 
@@ -94,6 +94,9 @@ export class CodeGeneratorJS extends CodeGenerator{
 					else{
 						param_values.push( input_name );
 					}
+				}
+				else{
+					param_values.push(inputs[i].getValue());
 				}
 			}
 
@@ -136,14 +139,13 @@ export class CodeGeneratorJS extends CodeGenerator{
 				let inp = inputs[i];
 				nodeVars.push(inp.getName());
 
-				if( inp.isConnected() == true ){
+				if( 1/*inp.isConnected() == true*/ ){
 					params.push(inp.getName());
-
 				}
 				
 				let input_port_code: string = this.generateInputPortCode(inp);
 				if(input_port_code !== ""){
-					initializations.push( input_port_code );
+					//initializations.push( input_port_code );
 				}
 
 			}
@@ -348,7 +350,14 @@ export class CodeGeneratorJS extends CodeGenerator{
 		}
 
 		generateOutputPortCode(port: OutputPort): string{
-			return "let " + port.getName() + " = " + port.getDefaultValue(); 
+
+			let prepend: string = "let ";
+
+			if(port.isFunction()){
+				prepend = "const ";
+			}
+
+			return prepend + port.getName() + " = " + port.getDefaultValue(); 
 		}
 
 		executeNode(node: IGraphNode, params: any, 

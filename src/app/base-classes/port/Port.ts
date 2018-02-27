@@ -21,9 +21,19 @@ export abstract class Port implements IPort{
 	private _default: any = undefined;  
 	private _computed: any = undefined;
 
+	protected _isFunction: boolean = false;
+
 	constructor(name: string){ 
 		this._id =  IdGenerator.getId();
 		this._name = name;
+	}
+
+	isFunction(): boolean{
+		return this._isFunction;
+	}
+
+	setIsFunction(){
+		this._isFunction = true;
 	}
 
 	getId(): string{
@@ -82,7 +92,9 @@ export abstract class Port implements IPort{
 		
 		this._disabled = portData["_disabled"];
 		this._default = portData["_default"];
+		this._isFunction = portData["_isFunction"];
 		this.opts = portData["opts"];
+
 		// todo: assign computed also??
 	}	
 

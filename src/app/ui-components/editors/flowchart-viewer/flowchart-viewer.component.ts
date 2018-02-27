@@ -96,6 +96,11 @@ export class FlowchartViewerComponent extends Viewer{
     }
   }
 
+  addFunctionOutput(node_index){
+    this._nodes[node_index].addFnOutput( this.flowchartService.getCodeGenerator() );
+    this.update();
+  }
+
   //
   //
   //  Viewer Related Functions

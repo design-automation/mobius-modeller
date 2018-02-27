@@ -110,7 +110,6 @@ export class GraphNode implements IGraphNode{
 		for( let output_index in outputs ){
 			let output_data: OutputPort = outputs[output_index];
 			let output: OutputPort = new OutputPort(output_data["_name"]);
-
 			output.update(output_data, "out");
 			this._outputs.push(output);
 		}
@@ -165,6 +164,24 @@ export class GraphNode implements IGraphNode{
 		this.removeType();
 		
 		return this._outputs.length; 
+	}
+
+	addFnOutput( code_generator: ICodeGenerator ): number{
+		let index_output: number = this.addOutput(this.getName() + "_function");
+		let fnOutput: OutputPort = this.getOutputByIndex(index_output - 1);
+
+		let node_code: string =  code_generator.getNodeCode(this);
+		fnOutput.setDefaultValue( node_code );
+
+		fnOutput.setIsFunction();
+
+		return this._outputs.length; 
+	}
+
+	hasFnOutput(): boolean{
+		return this._outputs.filter(function(o){
+			return o.isFunction();
+		}).length > 0;
 	}
 
 	deleteInput(input_port_index: number): number{
@@ -311,6 +328,14 @@ export class GraphNode implements IGraphNode{
 
 		let params: any[] = [];
 		this.getInputs().map(function(i){ params[i.getName()] = i.getValue(); })
+
+		let self = this;
+		this.getOutputs().map(function(o){
+			if(o.isFunction()){
+				let node_code: string =  code_generator.getNodeCode(self);
+				o.setDefaultValue( node_code );
+			}
+		})
 
 		// use code generator to execute code
 		let result: any  = code_generator.executeNode(this, params, modules, print);
