@@ -44,16 +44,21 @@
 												<!-- template for data -->
 												<div *ngIf="prod.data.getType() == 'Data'"> 
 													<div class='procedure-item'>
-														<input matInput class="tree-input" [style.width.ch]="prod.data.getLeftComponent().expression.length + 4" 
+														<input matInput class="tree-input" 
 														[(ngModel)]="prod.data.getLeftComponent().expression" #ctrl="ngModel" required
 														(change)="updateProcedure($event, prod, 'left')" spellcheck="false" list="variable-suggestions" >
+														
 
+														<!-- <input width=50 class="tree-input" [(ngModel)]="prod.data.getLeftComponent().expression" #ctrl="ngModel" required
+														(change)="updateProcedure($event, prod, 'left')"> -->
 														<span class="equal">=</span>
 											
-														<input matInput class="tree-input" [style.width.ch]="prod.data.getRightComponent().expression.length + 4" 
+														<input matInput class="tree-input" 
 														[(ngModel)]="prod.data.getRightComponent().expression" #ctrl="ngModel" required
 														(change)="updateProcedure($event, prod, 'right')" spellcheck="false" list="variable-suggestions">
 
+														<!-- <input width=50 class="tree-input" [(ngModel)]="prod.data.getRightComponent().expression" #ctrl="ngModel" required
+														(change)="updateProcedure($event, prod, 'right')"> -->
 													</div>
 												</div>
 
@@ -65,9 +70,7 @@
 
 												<div *ngIf="prod.data.getType() == 'If'">
 													<div class='procedure-item'>
-													 <span>if</span> ( <input matInput class="tree-input" 
-													 					[style.width.ch]="prod.data.getLeftComponent().expression.length + 4"  
-													 					[(ngModel)]="prod.data.getLeftComponent().expression" #ctrl="ngModel" required
+													 <span>if</span> ( <input matInput class="tree-input"  [(ngModel)]="prod.data.getLeftComponent().expression" #ctrl="ngModel" required
 														(change)="updateProcedure($event, prod, 'left')" spellcheck="false"> )
 													</div>
 												</div>
@@ -81,28 +84,17 @@
 												<div *ngIf="prod.data.getType() == 'For Loop'">
 													<div class='procedure-item'>
 													 <span>for (</span> 
-													  
-													  <input matInput class="tree-input" 
-															[style.width.ch]="prod.data.getLeftComponent().expression.length + 4" 
-													  		[(ngModel)]="prod.data.getLeftComponent().expression" #ctrl="ngModel" required (change)="updateProcedure($event, prod, 'left')" spellcheck="false">
-													  
-													  <span style="margin: 0px 10px;">in</span>  
-													  
-													  <input matInput class="tree-input" 
-																[style.width.ch]="prod.data.getRightComponent().expression.length + 4" 
-													  			[(ngModel)]="prod.data.getRightComponent().expression" #ctrl="ngModel" 
-													  			required (change)="updateProcedure($event, prod, 'right')" spellcheck="false" list="variable-suggestions"> 
+													  <input matInput class="tree-input"  [(ngModel)]="prod.data.getLeftComponent().expression" #ctrl="ngModel" required (change)="updateProcedure($event, prod, 'left')" spellcheck="false">
+													 <span>in</span>  
+													  <input matInput class="tree-input" [(ngModel)]="prod.data.getRightComponent().expression" #ctrl="ngModel" required (change)="updateProcedure($event, prod, 'right')" spellcheck="false" list="variable-suggestions"> 
 													  )
 													</div>
 												</div>
 
 												<div *ngIf="prod.data.getType() == 'Action'">
 													<div class='procedure-item'>
-														
-														<input matInput class="tree-input" 
-															[style.width.ch]="prod.data.getLeftComponent().expression.length + 4" 
-															[(ngModel)]="prod.data.getLeftComponent().expression" #ctrl="ngModel" required
-															(change)="updateProcedure($event, prod, 'left')" spellcheck="false" list="variable-suggestions">
+														<input matInput class="tree-input" [(ngModel)]="prod.data.getLeftComponent().expression" #ctrl="ngModel" required
+														(change)="updateProcedure($event, prod, 'left')" spellcheck="false" list="variable-suggestions">
 														
 
 														<span class="equal">=</span>
@@ -113,11 +105,9 @@
 														  <span class="function">{{prod.data.getRightComponent().fn_name}}</span> 
 
 														( <span *ngIf="prod.data.getRightComponent().params.length>0">
-																<div class="param-container" 
-																	*ngFor="let p of prod.data.getRightComponent().params; let i=index">
+																<div class="param-container" 														*ngFor="let p of prod.data.getRightComponent().params; let i=index">
 																	
 																	<input matInput class="tree-input" 
-																	 [style.width.ch]="prod.data.getRightComponent().expression.length + 4" 
 																	 [(ngModel)]="prod.data.getRightComponent().params[i].value"
 																	 #ctrl="ngModel" 
 																	 required
@@ -125,6 +115,10 @@
 																	 list="variable-suggestions">
 
 																	<span *ngIf='i<prod.data.getRightComponent().params.length-1'>,</span>
+																	<!-- <input width=50 class="tree-input" [(ngModel)]="p" 
+																	 placeholder="Input something here" 
+																	 #ctrl="ngModel" required 
+																	 (change)="updateProcedure($event, prod, 'right')"> --> 
 																</div> 
 															</span>	)
 														

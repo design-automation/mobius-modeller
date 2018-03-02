@@ -1,7 +1,9 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
 import { AngularSplitModule } from 'angular-split';
-import {MatSliderModule } from '@angular/material/slider';
+import { MatSliderModule } from '@angular/material/slider';
+
 import { GSViewerComponent } from './gs-viewer.component';
 import { ViewerComponent } from './viewer/viewer.component';
 import { SettingComponent } from './setting/setting.component';
@@ -11,7 +13,6 @@ import { GroupsComponent } from './toolwindow/groups.component';
 import {NgxPaginationModule} from 'ngx-pagination';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { BrowserAnimationsModule ,NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {MatTabsModule} from '@angular/material/tabs';
 
 
 @NgModule({
@@ -21,8 +22,7 @@ import {MatTabsModule} from '@angular/material/tabs';
                 NgxPaginationModule,
                 MatExpansionModule,
                 BrowserAnimationsModule,
-                NoopAnimationsModule,
-                MatTabsModule
+                NoopAnimationsModule
 			 ],
     exports: [ GSViewerComponent ],
     declarations: [GSViewerComponent,
