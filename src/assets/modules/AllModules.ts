@@ -23,8 +23,8 @@ let Math: IModule = ModuleUtils.createModule("Math", GSS["math"], "math", docs);
 let String: IModule = ModuleUtils.createModule("String", GSS["string"], "string", docs);
 let Calc: IModule = ModuleUtils.createModule("Calc", GSS["calc"], "calc", docs);
 let Group: IModule = ModuleUtils.createModule("Group", GSS["group"], "group", docs);
-let Xform: IModule = ModuleUtils.createModule("Xform", GSS["xform"], "xform", docs);
+/*let Xform: IModule = ModuleUtils.createModule("Xform", GSS["xform"], "xform", docs);*/
 
-export {Calc,List, Math, String, Circle, Model, Attrib, Intersect, Obj, Plane, Pline, PMesh, Point, Query, Ray, Split, Topo, Group, Xform};
+export {Calc,List, Math, String, Circle, Model, Attrib, Intersect, Obj, Plane, Pline, PMesh, Point, Query, Ray, Split, Topo, Group};
 
 //// version for dev
