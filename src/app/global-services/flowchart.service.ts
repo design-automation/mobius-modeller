@@ -300,7 +300,6 @@ export class FlowchartService {
                          //{_name: "Ray", _version: 0.1, _author: "Patrick"},
                          {_name: "Split", _version: 0.1, _author: "Patrick"},
                          {_name: "String", _version: 0.1, _author: "Patrick"},
-                         //{_name: "Xform", _version: 0.1, _author: "Patrick"},
                          //{_name: "Topo", _version: 0.1, _author: "Patrick"}
                       ]
                     );
@@ -402,10 +401,6 @@ export class FlowchartService {
 
     // print message to console
     this.consoleService.addMessage("Node Library was cleared.");
-
-    this.getNodes().map(function(node){
-      node.removeType();
-    })
 
     this.checkSavedNodes();
     this.update();
@@ -562,18 +557,13 @@ export class FlowchartService {
       this._selectedPort = undefined;
       this._selectedProcedure = undefined;
 
+      //this.disconnectNode(node_index);
       this._flowchart.deleteNode(node_index);
 
       // print message to console
       this.consoleService.addMessage("Node was deleted");
 
       this.update();
-
-      // todo: bad bad bad
-      let self = this;
-      setTimeout(function(){
-        self.update();
-      }, 200)
   }
 
 
@@ -636,60 +626,59 @@ export class FlowchartService {
     }
     return this._flowchart.getNodeByIndex(this._selectedNode).getId() == node.getId();
   }
+  //
+  //
+  //
+  printConsole(consoleMessages: any[] /*[{name: string, value: any}]*/): void{
+      if(consoleMessages.length > 0){
+          let consoleHTML: string = "<div class='console-heading'>Printed Values</div>";
+
+          for(let i=0; i < consoleMessages.length; i++){
+
+               let variable_name: string = consoleMessages[i].name;
+               let variable_value: string = consoleMessages[i].value; 
+
+               if(Array.isArray(variable_value)){
+                   variable_value = "[" + variable_value + "]";
+               }
+
+               if(typeof variable_value == 'string'){
+                   variable_value = "\"" + variable_value + "\"";
+               }
+
+               consoleHTML += "<div class='console-line'>" +  "<span class='var-name'>Value of "  + variable_name + ": </span>" + 
+                       "<span class='var-value'>"  + variable_value +  "</div>"
+          }
+
+          this.consoleService.addMessage(consoleHTML, EConsoleMessageType.Print);
+      }
+  }
+
 
   // 
   //  run this flowchart
   //
   execute(): any{
 
-      let consoleMessages: string[] = [ "<div class='console-heading'>Printed Values</div>" ];
-
-      //
-      //  generates an HTML version of the values
-      //
-      let printFunction = function(varName: string, value: any){
-          let consoleHTML: string = "";
-          
-          let variable_name: string = varName;
-          let variable_value: string = value; 
-
-          if(Array.isArray(variable_value)){
-             variable_value = "[" + variable_value + "]";
-          }
-
-          if(typeof variable_value == 'string'){
-             variable_value = "\"" + variable_value + "\"";
-          }
-
-          consoleHTML += "<div class='console-line'>" +  "<span class='var-name'>Value of "  + variable_name + ": </span>" + 
-                 "<span class='var-value'>"  + variable_value +  "</div>";
-
-          consoleMessages.push(consoleHTML);
+      let consoleMessages: any[] = [];
+      function printFunction(varName: string, value: any){
+        consoleMessages.push({name: varName, value: value});
       }
 
       try{
           this._flowchart.execute(this.code_generator, this._moduleMap, printFunction);
-          
-          if(consoleMessages.length > 1){
-            this.consoleService.addMessage( consoleMessages.join(""), EConsoleMessageType.Print );
-          }
-          consoleMessages = null;
-          printFunction = null;
-          
-          this.consoleService.addMessage("Flowchart was successfully executed.");
+          this.printConsole(consoleMessages);
+          this.consoleService.addMessage("Flowchart was executed.");
+
       }
       catch(ex){
         
-          if(consoleMessages.length > 1){
-            this.consoleService.addMessage( consoleMessages.join(""), EConsoleMessageType.Print );
-          }
-          consoleMessages = null;
-          printFunction = null;
+        this.printConsole(consoleMessages);
 
-          let errorMessage: string = "<div class='error'>" + ex + "</div>";
-          this.consoleService.addMessage( errorMessage, EConsoleMessageType.Error );
+        let errorMessage: string = "<div class='error'>" + ex + "</div>";
+        this.consoleService.addMessage( errorMessage, EConsoleMessageType.Error );
 
-          this.layoutService.showConsole();
+        this.layoutService.showConsole();
       }
 
       this.update();
@@ -711,12 +700,12 @@ export class FlowchartService {
 
     file["language"] = "js";
     file["modules"] = [];
+    file["flowchart"] = this._flowchart;
+
+    fileString = CircularJSON.stringify(file);
 
     if(local == true){
       // add file string to local storage
-      file["flowchart"] = this._flowchart;
-      fileString = CircularJSON.stringify(file);
-
       let myStorage = window.localStorage;
       let property = MOBIUS.PROPERTY.FLOWCHART;
       myStorage.setItem(property, fileString);
@@ -724,17 +713,11 @@ export class FlowchartService {
       this.consoleService.addMessage("Autosaved flowchart.");
     }
     else{
-
-      let newFlowchart: IFlowchart = FlowchartReader.readFlowchartFromData(this._flowchart);
-      file["flowchart"] = newFlowchart;
-      fileString = CircularJSON.stringify(file);
-
       this.downloadContent({
           type: 'text/plain;charset=utf-8',
           filename: 'Scene' + (new Date()).getTime() + ".mob",
           content: fileString
       });
-      
       this.consoleService.addMessage("File saved successfully");
     }
 

@@ -2,12 +2,7 @@
     (mousemove)="onDocumentMouseMove($event)" 
     (mousedown)="mousedown($event)"
     (mouseup)="mouseup($event)"
-    (click)="render(this)"
 		(click)="onDocumentMouseDown($event)">
-
-
-    <!-- (mousemove)="requestanimate()" 
-    (click)="requestanimate()" -->
 
     <!-- (window:resize)="onResize($event)" -->
 
@@ -38,24 +33,28 @@
   		
   		<!-- <button id="selecting" [class.visible]="Visible === 'select'" (click)= "select($event, Visible)" ><i class="fa fa-mouse-pointer"></i></button> -->
   		
-  		<!-- <button id="setting" [class.selected]="settingVisible" (click)= "setting(settingVisible)"><i class="fa fa-cog"></i></button> -->
+  		<button id="setting" [class.selected]="settingVisible" (click)= "setting(settingVisible)"><i class="fa fa-cog"></i></button>
 
       <button id="selecting" [class.selected]="seVisible" (click)= "select(seVisible)" ><i class="fa fa-mouse-pointer"></i></button>
       <div id="shownumber">
         <tr>
-        <td  align=left style="width: 60px;">Triangles&nbsp;&nbsp;</td>
-        <td  align=left style="width: 10px;">{{renderer.info.render.faces}}</td>
+        <td  align=left width="60%">Triangles</td>
+        <td  align=center width="40%">{{renderer.info.render.faces}}</td>
         </tr>
         <tr>
-        <td  align=left style="width: 60px;">Lines</td>
-        <td  align=left style="width: 10px;">{{LineNo}}</td>
+        <td  align=left width="60%" >Lines</td>
+        <td  align=center width="40%">{{LineNo}}</td>
         </tr>
+        <!-- <tr>
+        <td  align=center width="50%">Vertices</td>
+        <td  align=center width="40%">{{renderer.info.render.vertices}}</td>
+        </tr> -->
       </div>
 
       	
       	<!--setting-->
       	
- 		<!-- <app-setting *ngIf="settingVisible == true"></app-setting> -->
+ 		<app-setting *ngIf="settingVisible == true"></app-setting>
     <div *ngIf="seVisible == true">
         <button id="points" [class.selectvisible]="SelectVisible === 'Points'" (click)="pointselect(SelectVisible)">P</button>
         <button id="vertices" [class.selectvisible]="SelectVisible === 'Vertices'" (click)="verticeselect(SelectVisible)">V</button>

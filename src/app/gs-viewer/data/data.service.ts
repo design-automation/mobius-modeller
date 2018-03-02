@@ -29,9 +29,9 @@ export class DataService {
   _saturation:any;
   _lightness:any;
   _alight:any;
-  /*_hueValue:number;
+  _hueValue:number;
   _saturationValue:number;
-  _lightnessValue:number;*/
+  _lightnessValue:number;
   _Geom:any;
   hue: number;
   saturation:number;
@@ -39,14 +39,31 @@ export class DataService {
   scenechange:any;
   INTERSECTEDColor:any;
   selecting:any = [];
+  object:any;
   axis:boolean;
   grid:boolean=true;
   shadow:boolean;
   frame:boolean;
+  opacity:number;
+  selectcheck:boolean;
+  mouse:THREE.Vector2;
   raycaster:THREE.Raycaster;
   visible:string;
+  sprite:THREE.Sprite[]=[];
+  selectedFaces:Array<any> = [];
+  scene_and_maps: {
+          scene: gs.IThreeScene, 
+          faces_map: Map<number, gs.ITopoPathData>, 
+          wires_map: Map<number, gs.ITopoPathData>, 
+          edges_map: Map<number, gs.ITopoPathData>,
+          vertices_map: Map<number, gs.ITopoPathData>,
+          points_map: Map<number, gs.ITopoPathData>} ;
   scenechildren:Array<any>=[];
+  red:number;
+  green:number;
+  blue:number;
   center:THREE.Vector3;
+  radius:number;
   scenemaps:{
           scene: gs.IThreeScene, 
           faces_map: Map<number, gs.ITopoPathData>, 
@@ -56,13 +73,12 @@ export class DataService {
           points_map: Map<number, gs.ITopoPathData>} ;
   textlabels:Array<any>=[];
   attributevertix:Array<any>;
+  starsGeometry:THREE.Geometry = new THREE.Geometry();
   centerx:number;
   centery:number;
   centerz:number;
-  centersize:number;
   pointsize:number;
   clickshow:Array<any>;
-  point:boolean=true;
 
   // ---- 
   // Subscription Handling
@@ -99,7 +115,7 @@ export class DataService {
 
     // camera settings
     let aspect_ratio: number = this._width/this._height
-    let camera = new THREE.PerspectiveCamera( 50, aspect_ratio, 0.01, 1000 );//0.0001, 100000000 );
+    let camera = new THREE.PerspectiveCamera( 50, aspect_ratio, 0.01, 1000 );
     camera.position.y=10;
     camera.up.set(0,0,1);
     camera.lookAt( scene.position );
@@ -134,6 +150,10 @@ export class DataService {
     this._renderer = renderer;
     this._camera = camera; 
     this._orbitControls = controls;
+
+    this._hueValue = default_hue; 
+    this._saturationValue = default_saturation;
+    this._lightnessValue = default_lightness;
 
     // add it to alight - what does alight do?
     this._alight = hemi_light;
@@ -172,7 +192,7 @@ export class DataService {
           edges_map: Map<number, gs.ITopoPathData>,
           vertices_map: Map<number, gs.ITopoPathData>,
           points_map: Map<number, gs.ITopoPathData>}*/= gs.genThreeOptModelAndMaps( this._gsModel );
-    ;this.scenemaps=scene_and_maps;
+    this.scenemaps=scene_and_maps;
   }
   getscememaps():any{
     return this.scenemaps;
@@ -217,6 +237,11 @@ export class DataService {
     return this.raycaster;
   }
 
+  addlightvalue(hue,saturation,lightness){
+    this._hueValue=hue;
+    this._saturationValue=saturation;
+    this._lightnessValue=lightness;
+  }
 
   gethue(_hue):any{
     this.hue = _hue;
@@ -227,7 +252,24 @@ export class DataService {
   getlightness(_lightness):any{
     this.lightness = _lightness;
   }
-  
+  getopacity(_opacity):any{
+    this.opacity = _opacity;
+  }
+  addbackvalue(red,green,blue){
+    this.red=red;
+    this.green=green;
+    this.blue=blue;
+  }
+  getred(red):any{
+    this.red=red;
+  }
+  getgreen(green):any{
+    this.green=green;
+  }
+  getblue(blue):any{
+    this.blue=blue;
+  }
+
   getpointsize(pointszie):void{
     this.pointsize=pointszie;
   }
@@ -240,9 +282,6 @@ export class DataService {
   }
   getcenterz(centerz):void{
     this.centerz=centerz;
-  }
-  getcentersize(centersize):void{
-    this.centersize=centersize;
   }
 
   addGeom(Geom): void{
@@ -308,8 +347,8 @@ export class DataService {
   addframe(frame){
     this.frame=frame;
   }
-  addpoint(point){
-  this.point=point;
+  addselect(select){
+    this.selectcheck=select;
   }
   getSelectingIndex(uuid):number {
    for(var i=0;i<this.selecting.length;i++){
@@ -318,6 +357,21 @@ export class DataService {
      }
    }
    return -1;
+ }
+  getFaceIndex(name):number {
+   for(var i=0;i<this.selectedFaces.length;i++){
+     if(this.selectedFaces[i].name==name){
+       return i;
+     }
+   }
+   return -1;
+ }
+ addsprite(sprite){
+   this.sprite.push(sprite);
+   this.sendMessage();
+ }
+ pushsprite(sprite){
+   this.sprite=sprite;
  }
 
  addscenechild(scenechildren){
@@ -330,7 +384,7 @@ export class DataService {
  }
 
  //To add text labels just provide label text, label position[x,y,z] and its id
-  /*addTextLabel(label, label_xyz, id,index,path) {
+  addTextLabel(label, label_xyz, id,index,path) {
     //console.log(document.getElementsByTagName("app-viewer")[0].children.namedItem("container"));
     //let container = this.myElement.nativeElement.children.namedItem("container");
     let container = document.getElementsByTagName("app-viewer")[0].children.namedItem("container");
@@ -423,5 +477,5 @@ export class DataService {
     div.style.color="black";
     return div;
    }
-*/
+
 }

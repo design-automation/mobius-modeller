@@ -6,6 +6,8 @@
 
 .editor{
 	@extend .viewer;
+	//float: left;
+	//overflow: auto;
 
 	background-color: white;
 
@@ -21,7 +23,7 @@
 	}
 
 	split-area{
-		overflow-y:auto !important;
+		overflow:auto !important;
 	}
 
 }

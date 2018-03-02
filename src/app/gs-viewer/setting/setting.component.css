@@ -28,10 +28,6 @@
   margin-left: 20px;
   font-family:sans-serif;
 }
-#point{
-  margin-left: 20px;
-  font-family:sans-serif;
-}
 #huerange{
   margin-left: 41px;
   width: 60%;
@@ -88,26 +84,20 @@
 }
 
 #centerx{
-  width:30px;
+  width:50px;
   margin-left:10px;
 }
 #centery{
-  width:30px;
+  width:50px;
   margin-left:10px;
 }
 #centerz{
-  width:30px;
+  width:50px;
   margin-left:10px;
-}
-#centersize{
-  width:30px;
-  margin-left:10px;
+  margin-right:30px;
 }
 .name{
-  margin-left: 10px;
-}
-.center{
-  margin-left: 10px;
+  margin-left: 15px;
 }
 
 

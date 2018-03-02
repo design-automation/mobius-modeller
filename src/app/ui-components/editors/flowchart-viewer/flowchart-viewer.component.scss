@@ -1,9 +1,7 @@
 @import '~scss/globals';
 
-split-area{
-	overflow: auto !important;
-}
-
+//split-area{
+	//overflow: auto !important;
 
 .viewer{
 
@@ -25,6 +23,13 @@ split-area{
 	width: 100%;
 	padding-bottom: $header-height;
 
+	.action-window{
+		height: 100%;
+		width: 100%;
+		overflow: auto !important;
+
+	}
+
 	.container{
 		position: relative;
 
@@ -44,7 +49,7 @@ split-area{
 			color: $color1;
 			white-space: nowrap;
 			overflow-x: hidden !important;
-			//overflow-y: auto !important;
+			overflow-y: auto !important;
 			section{
 				padding-left: $default-side-padding;
 				padding-bottom: $default-side-padding/3;
@@ -70,6 +75,7 @@ split-area{
 		height: 100%;
 		width: 100%;
 		transform-origin: top left;
+
 	}
 
 	.info-container{
@@ -78,25 +84,34 @@ split-area{
 		flex-direction: row;
 		justify-content: space-between;
 
+		position: absolute;
+		right: 5px;
+		bottom: 10px;
+
+		border: 0 !important;
+		.label, .value{
+			margin-right: 5px;
+			font-weight: normal !important;
+		}
+
 		.info{
 			display: flex; 
 			flex-direction: column;
 
 			.label{
-				font-size: 12px;
-				font-weight: 100;
+				font-size: $fsize2;
 				color: $color5;
 			}
 
 			.value{
 				color: $color1;
-				font-size: 11px;
-				font-weight: 600;
+				font-size: $fsize2;
+
 			}
 			
 			.action{
 				cursor: pointer;
-				font-size: 11px;
+				font-size: $fsize2;
 				color: $color2;
 			}
 		}
@@ -128,15 +143,6 @@ split-area{
 			background-color: transparent;
 			overflow: hidden;
 			z-index: 1000;
-		}
-	}
-	.info-container{
-		position: absolute;
-		right: 0;
-		bottom: 0;
-		.label, .value{
-			margin-right: 5px;
-			font-weight: normal !important;
 		}
 	}
 
