@@ -332,7 +332,7 @@ export class GraphNode implements IGraphNode{
 		let self = this;
 		this.getOutputs().map(function(o){
 			if(o.isFunction()){
-				let node_code: string =  code_generator.getNodeCode(self);
+				let node_code: string =  code_generator.getNodeCode(self, undefined, true);
 				o.setDefaultValue( node_code );
 			}
 		})

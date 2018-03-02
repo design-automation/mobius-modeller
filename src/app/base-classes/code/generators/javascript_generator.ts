@@ -52,7 +52,7 @@ export class CodeGeneratorJS extends CodeGenerator{
 				// check inputs connected to outputs
 				var nodeIndex = nodeOrder[c];
 				var node = all_nodes[nodeIndex];
-				code_defs.push(this.getNodeCode(node));
+				code_defs.push(this.getNodeCode(node, undefined, true));
 
 				if(connector_lines[nodeIndex] !== undefined){
 					fn_calls.push(connector_lines[nodeIndex].join("\n"));
@@ -125,7 +125,7 @@ export class CodeGeneratorJS extends CodeGenerator{
 			return fn_def;
 		}
 
-		getNodeCode(node: IGraphNode, prodArr ?: number[]): string{ 	
+		getNodeCode(node: IGraphNode, prodArr ?: number[], withoutFnOutput?: boolean): string{ 	
 			let nodeVars: string[] = [];
 			let fn_code :string = "";
 
@@ -162,7 +162,14 @@ export class CodeGeneratorJS extends CodeGenerator{
 				nodeVars.push(oname);
 
 				results.push( oname + " : " + oname);
-				opInits.push( this.generateOutputPortCode(outputs[o]) )
+
+				if(outputs[o].isFunction() && withoutFnOutput){
+					// do nothing
+				}
+				else{
+					opInits.push( this.generateOutputPortCode(outputs[o]) )
+				}
+
 			}
 			
 			// add initialization for outputs
