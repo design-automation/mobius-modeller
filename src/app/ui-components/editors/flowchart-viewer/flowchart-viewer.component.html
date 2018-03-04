@@ -51,34 +51,8 @@
 		
 				<split-area order="2" [size]="70"
 					style="overflow: hidden; position: relative; display: flex; flex-direction: column;" (wheel)="scale($event)">
-
-						<!-- zoom -->
-
-				    	<!--<div class="info-container" style="text-align: right; padding: 5px 15px; border-bottom: 1px solid #ddd;">
-				    		
-				    		<div class="info">
-				    			<span class="label">Last Saved </span>
-				    		</div>
-
-				    		<div class="info">
-				    			<span class="value">{{ (lastSaved() | date:'short') || "--" }}</span>
-				    		</div>
-
-				    		<div class="info">
-				    			<span class="action" (click)="loadFromMemory()" matTooltip="Reverts to last point saved with Ctrl+S">
-				    				[Revert] 
-				    			</span>
-				    		</div>
-
-				    		<!-- <div class="info">
-				    			<span class="label">Zoom Level</span>
-				    			<span class="value">{{zoom*100}}%</span>
-				    			<span class="action" (click)="zoom = 1">[Reset]</span>
-				    		</div> -->
-
-				    		
-				    	<!--</div> -->
 				    <div class ="action-window">
+				    	
 				    	<div class="info-container" style="text-align: right; padding: 5px 15px; border-bottom: 1px solid #ddd;">
 				    		
 				    		<div class="info">
@@ -94,15 +68,8 @@
 				    				[Revert] 
 				    			</span>
 				    		</div>
-
-				    		<!-- <div class="info">
-				    			<span class="label">Zoom Level</span>
-				    			<span class="value">{{zoom*100}}%</span>
-				    			<span class="action" (click)="zoom = 1">[Reset]</span>
-				    		</div> -->
-
-				    		
 				    	</div>
+				    	
 				    	<div class="content-wrapper" (wheel)="scale($event)" style="flex-grow: 1;">
 							<!-- div container for the flowchart -->
 							<div class="graph-container" [style.transform]="getZoomStyle()"
@@ -144,6 +111,10 @@
 														*ngIf="!isSaved(node)">
 														<mat-icon>file_download</mat-icon>
 													</div>
+													<!-- <div class="action-button" (click)="addFunctionOutput(node_index)" 
+														matTooltip="Add functional output" *ngIf="!node.hasFnOutput()">
+														<mat-icon>my_library_add</mat-icon>
+													</div> -->
 												</div>
 											</div>
 
@@ -195,12 +166,13 @@
 														*ngFor="let port of node.getOutputs(); let po=index;"
 														id="n{{node_index}}po{{po}}">
 
-														<span class="port-name">{{port.getName()}}</span>
+														<span class="port-name" [class.isFunction]="port.isFunction()">{{port.getName()}}</span>
 
 														<div class="port-grip" 
 															draggable=true
 															[class.selected]="isPortSelected(node_index, po)"
 															[class.connected]="port.isConnected()" 
+															[class.isFunction]="port.isFunction()" 
 															(click)="clickPort($event, node_index, po)"
 															(dragstart)="portDragStart($event, port, [node_index, po])" 
 															(drag)="portDragging($event, port)" 

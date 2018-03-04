@@ -22,7 +22,7 @@ export interface ICodeGenerator{
 		getDefinition(node: IGraphNode): string;
 		getFunctionCall(node: IGraphNode, params?: any): string;
 
-		getNodeCode(node: IGraphNode): string;
+		getNodeCode(node: IGraphNode, prodArr ?: number[], withoutFnOutput?: boolean): string;
 		getNodeOutputCode(node: IGraphNode, output_idx: number): string;
 
 		generateConnectionLine(input_node: IGraphNode, input_port: number, output_node: IGraphNode, output_port: number): string;

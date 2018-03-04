@@ -26,6 +26,9 @@ export interface IGraphNode{
 	deleteInput(inputIndex: number): number;
 	deleteOutput(outputIndex): number;
 
+	addFnOutput(code_generator: ICodeGenerator): void;
+	hasFnOutput(): boolean;
+
 	getInputs(): InputPort[];
 	getOutputs(): OutputPort[];
 	getInputByIndex(input_port_index: number): InputPort;

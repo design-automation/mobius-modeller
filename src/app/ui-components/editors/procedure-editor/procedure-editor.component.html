@@ -117,7 +117,7 @@
 																	*ngFor="let p of prod.data.getRightComponent().params; let i=index">
 																	
 																	<input matInput class="tree-input" 
-																	 [style.width.ch]="prod.data.getRightComponent().expression.length + 4" 
+																	 [style.width.ch]="prod.data.getRightComponent().params[i].value.length + 4" 
 																	 [(ngModel)]="prod.data.getRightComponent().params[i].value"
 																	 #ctrl="ngModel" 
 																	 required

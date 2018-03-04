@@ -282,8 +282,13 @@ split-area{
 								border: 1px solid $color1;
 								cursor: pointer;
 
+								&.isFunction{
+									border-style: dashed;
+								}
+
 								&.selected{
 									border: 2px solid $color2;
+									background-color: $color4;
 								}
 
 								&:hover{
@@ -293,6 +298,12 @@ split-area{
 							.port-name{
 								font-size: $fsize2;
 								margin: 0px 5px; 
+
+								&.isFunction{
+									color: $color2;
+									font-size: 0.8*$fsize2;
+								}
+
 							}
 
 							&.input{

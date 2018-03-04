@@ -44,15 +44,22 @@ export class FlowchartViewerComponent extends Viewer{
     super(injector, "FlowchartViewer");  
 
     // bad bad bad!
-    let self = this;
+    /*let self = this;
     document.addEventListener("keydown", function(e) {
       if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey))      {
         e.preventDefault();
         self.save(true);
         //your implementation or function calls
       }
-    }, false);
+    }, false);*/
 
+  }
+
+  ngOnDestroy(){
+    this.layoutService = null;
+    this.consoleService = null;
+    this._nodes = null; 
+    this._edges = null;
   }
 
   reset(){ 
@@ -87,6 +94,11 @@ export class FlowchartViewerComponent extends Viewer{
     else{
       node.disable();
     }
+  }
+
+  addFunctionOutput(node_index){
+    this._nodes[node_index].addFnOutput( this.flowchartService.getCodeGenerator() );
+    this.update();
   }
 
   //

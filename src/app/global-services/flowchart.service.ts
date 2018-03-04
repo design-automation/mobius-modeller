@@ -55,6 +55,10 @@ export class FlowchartService {
       //this.autoSave(60*5);
   };
 
+  getCodeGenerator(): ICodeGenerator{
+    return this.code_generator;
+  }
+
   autoSave(time_in_seconds: number): void{
     Observable.interval(1000 * time_in_seconds).subscribe(x => {
         // console.log("saving file");

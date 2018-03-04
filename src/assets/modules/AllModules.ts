@@ -6,7 +6,7 @@ import docs from "gs-modelling/docs_json/gs-modelling.json";
 //// version for dev
 let Attrib: IModule = ModuleUtils.createModule("Attrib", GSS["attrib"], "attrib", docs);
 let Circle: IModule = ModuleUtils.createModule("Circle", GSS["circle"], "circle", docs);
-let Ellipse: IModule = ModuleUtils.createModule("Ellipse", GSS["ellipse"], "ellipse", docs);
+/*let Ellipse: IModule = ModuleUtils.createModule("Ellipse", GSS["ellipse"], "ellipse", docs);*/
 let Intersect: IModule = ModuleUtils.createModule("Intersect", GSS["intersect"], "intersect", docs);
 let Model: IModule = ModuleUtils.createModule("Model", GSS["model"], "model", docs);
 let Obj: IModule = ModuleUtils.createModule("Obj", GSS["object"], "object", docs);
@@ -23,8 +23,8 @@ let Math: IModule = ModuleUtils.createModule("Math", GSS["math"], "math", docs);
 let String: IModule = ModuleUtils.createModule("String", GSS["string"], "string", docs);
 let Calc: IModule = ModuleUtils.createModule("Calc", GSS["calc"], "calc", docs);
 let Group: IModule = ModuleUtils.createModule("Group", GSS["group"], "group", docs);
-let Xform: IModule = ModuleUtils.createModule("Xform", GSS["xform"], "xform", docs);
+/*let Xform: IModule = ModuleUtils.createModule("Xform", GSS["xform"], "xform", docs);*/
 
-export {Calc,List, Math, String, Circle, Model, Attrib, Intersect, Obj, Plane, Pline, PMesh, Point, Query, Ray, Split, Topo, Group, Xform};
+export {Calc,List, Math, String, Circle, Model, Attrib, Intersect, Obj, Plane, Pline, PMesh, Point, Query, Ray, Split, Topo, Group};
 
 //// version for dev
