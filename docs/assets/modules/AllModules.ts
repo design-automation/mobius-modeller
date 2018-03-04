@@ -6,7 +6,7 @@ import docs from "gs-modelling/docs_json/gs-modelling.json";
 //// version for dev
 let Attrib: IModule = ModuleUtils.createModule("Attrib", GSS["attrib"], "attrib", docs);
 let Circle: IModule = ModuleUtils.createModule("Circle", GSS["circle"], "circle", docs);
-let Ellipse: IModule = ModuleUtils.createModule("Ellipse", GSS["ellipse"], "ellipse", docs);
+/*let Ellipse: IModule = ModuleUtils.createModule("Ellipse", GSS["ellipse"], "ellipse", docs);*/
 let Intersect: IModule = ModuleUtils.createModule("Intersect", GSS["intersect"], "intersect", docs);
 let Model: IModule = ModuleUtils.createModule("Model", GSS["model"], "model", docs);
 let Obj: IModule = ModuleUtils.createModule("Obj", GSS["object"], "object", docs);
