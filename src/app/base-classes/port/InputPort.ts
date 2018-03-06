@@ -1,4 +1,5 @@
 import {Port} from "./Port";
+import {IPort} from "./IPort";
 import {IGraphNode} from "../node/IGraphNode";
 import {InputPortTypes} from "./InputPortTypes";
 

@@ -71,15 +71,35 @@ export class Flowchart implements IFlowchart{
 			throw Error("Invalid arguments for edge");
 		}
 
+		let oNode = this.getNodeByIndex(outputAddress[0]);
+     	let iNode = this.getNodeByIndex(inputAddress[0]);
+
+     	// dont remove previous edges for outputs
+		let output = oNode.getOutputByIndex(outputAddress[1]);
+		let input = iNode.getInputByIndex(inputAddress[1]);
+		if( iNode.hasFnOutput() || ( oNode.hasFnOutput() && !output.isFunction() ) ){
+          throw Error("Non-functional inputs/outputs of higher-order nodes cannot be connected");
+      	}
+
+      	if (input.isConnected()){
+	        this.deleteEdges(this.disconnectEdgesWithPortIndex(inputAddress[0], inputAddress[1], "input"));
+	    }
+
 		if( this.getNodeByIndex(outputAddress[0]).isDisabled() ||  this.getNodeByIndex(inputAddress[0]).isDisabled() ){
 			console.log("Cannot connect to disabled nodes");
 		}
 		else{
 			let edge: IEdge = { output_address: outputAddress, input_address: inputAddress };
 
-			this.getNodeByIndex(outputAddress[0]).getOutputByIndex(outputAddress[1]).connect();
-			this.getNodeByIndex(inputAddress[0]).getInputByIndex(inputAddress[1]).connect();
+			input.setComputedValue({port: outputAddress});
+		    output.connect();
+		    input.connect();
 			
+			if(output.isFunction()){
+        		input.setIsFunction();
+        		input.setFnValue( oNode );
+      		}
+
 			// todo: check for valid input/output addresses and port address
 			this._edges.push(edge);
 		}

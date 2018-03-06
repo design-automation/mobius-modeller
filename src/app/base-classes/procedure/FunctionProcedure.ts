@@ -10,13 +10,14 @@ export class FunctionProcedure extends Procedure{
 	private node: IGraphNode = undefined;
 	private port: InputPort = undefined;
 
-	private params: any[] = [];
+	constructor(data?: {node: IGraphNode, port: InputPort}){
 
-	constructor(data: {node: IGraphNode, port: InputPort}){
 		super(ProcedureTypes.Function, false); 
 
-		this.node = data.node;
-		this.port = data.port;
+		if(data){
+			this.node = data.node;
+			this.port = data.port;
+		}
 
 		let left: IComponent = { 
 									expression: "new_variable", 
@@ -33,7 +34,7 @@ export class FunctionProcedure extends Procedure{
 									module: undefined, 
 									category: undefined,
 									fn_name: undefined,
-									params: [this.node.getInputs().map(function(inp){ return " "; })]
+									params: this.node ? [this.node.getInputs().map(function(inp){ return " "; })] : []
 								}
 
 		super.setLeftComponent(left);
@@ -81,9 +82,9 @@ export class FunctionProcedure extends Procedure{
 									expression: prodData._rightComponent.expression, 
 									isAction: true, 
 									module: undefined, 
-									category: undefined,//data.category, 
-									fn_name: prodData._rightComponent.fn_name, 
-									params: prodData._rightComponent.params.map(function(p){ return {type: p.type, value: p.value} })
+									category: prodData._rightComponent.category, 
+									fn_name: undefined,
+									params: prodData._rightComponent.params
 								};
 	}
 

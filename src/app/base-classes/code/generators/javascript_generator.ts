@@ -372,7 +372,7 @@ export class CodeGeneratorJS extends CodeGenerator{
 							print: Function): any{
 
 			let prodArr: number[] = [];
-			console.log(params);
+
 			//let gis = this._modules["gis"];
 			let str: string = "(function(){ \
 						" + this.getNodeCode(node, prodArr) + "\n" + 
@@ -380,8 +380,6 @@ export class CodeGeneratorJS extends CodeGenerator{
 							"return " + node.getName() + ";" + "})(); \
 						";
 			let result: any;
-
-			console.log(str);
 
 			try{
 				result = eval(str);

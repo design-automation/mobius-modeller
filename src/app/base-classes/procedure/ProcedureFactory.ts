@@ -41,6 +41,9 @@ export class ProcedureFactory{
 		else if (procedureData["_type"] == ProcedureTypes.ElseControl){
 			procedure = new IfElseControlProcedure( ProcedureTypes.ElseControl)
 		}
+		else if(procedureData["_type"] == "Function"){
+			//todo: do something!! 
+		}
 		else{
 			procedure = ProcedureFactory.getProcedure(procedureData["_type"]);
 		}

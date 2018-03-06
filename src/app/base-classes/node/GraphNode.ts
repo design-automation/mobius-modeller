@@ -110,6 +110,7 @@ export class GraphNode implements IGraphNode{
 		for( let output_index in outputs ){
 			let output_data: OutputPort = outputs[output_index];
 			let output: OutputPort = new OutputPort(output_data["_name"]);
+
 			output.update(output_data, "out");
 			this._outputs.push(output);
 		}
