@@ -111,10 +111,10 @@
 														*ngIf="!isSaved(node)">
 														<mat-icon>file_download</mat-icon>
 													</div>
-													<!-- <div class="action-button" (click)="addFunctionOutput(node_index)" 
+													<div class="action-button" (click)="addFunctionOutput(node_index)" 
 														matTooltip="Add functional output" *ngIf="!node.hasFnOutput()">
 														<mat-icon>my_library_add</mat-icon>
-													</div> -->
+													</div>
 												</div>
 											</div>
 
@@ -124,6 +124,7 @@
 												[class.library]="node.getType() !== undefined"
 												[class.error]="node._hasError"
 												[class.disabled] ="node.isDisabled()"
+												[class.function] ="node.hasFnOutput()"
 												(click)="clickNode($event, node_index)"
 												draggable=true  
 												(dragstart)="nodeDragStart($event, node)" 
@@ -149,6 +150,7 @@
 														<div class="port-grip" 
 															draggable=true
 															[class.connected]="port.isConnected()" 
+															[class.isFunction]="port.isFunction()" 
 															(dragstart)="portDragStart($event, port, [node_index, pi])" 
 															(drag)="portDragging($event, port)" 
 															(dragend)="portDragEnd($event, port)"

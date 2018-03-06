@@ -242,7 +242,7 @@ export class CodeGeneratorJS extends CodeGenerator{
 			 	prodFn = this.generateProcedureCode;
 			}
 
-			if(prod_type == ProcedureTypes.Data){
+			if(prod_type == ProcedureTypes.Data || prod_type == ProcedureTypes.Function){
 				let init: string;
 
 				if( CodeGeneratorJS.existsInNodeVars(nodeVars, procedure.getLeftComponent().expression) == false ){
@@ -372,7 +372,7 @@ export class CodeGeneratorJS extends CodeGenerator{
 							print: Function): any{
 
 			let prodArr: number[] = [];
-
+			console.log(params);
 			//let gis = this._modules["gis"];
 			let str: string = "(function(){ \
 						" + this.getNodeCode(node, prodArr) + "\n" + 
@@ -380,6 +380,8 @@ export class CodeGeneratorJS extends CodeGenerator{
 							"return " + node.getName() + ";" + "})(); \
 						";
 			let result: any;
+
+			console.log(str);
 
 			try{
 				result = eval(str);

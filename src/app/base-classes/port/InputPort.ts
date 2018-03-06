@@ -1,4 +1,5 @@
 import {Port} from "./Port";
+import {IGraphNode} from "../node/IGraphNode";
 import {InputPortTypes} from "./InputPortTypes";
 
 export class InputPort extends Port{
@@ -8,6 +9,8 @@ export class InputPort extends Port{
 	// input
 	// color
 	// file
+	private _fnValue: IGraphNode;
+
 	constructor(name: string, type?: {name: InputPortTypes, value: any}){ 
 		super(name);
 
@@ -28,6 +31,19 @@ export class InputPort extends Port{
 
 	getOpts(): any{
 		return this.opts;
+	}
+
+	disconnect(): void{
+		this._isFunction = false;
+		super.disconnect();
+	}
+
+	getFnValue(): IGraphNode{
+		return this._fnValue;
+	}
+
+	setFnValue(_fnValue: IGraphNode): void{
+		this._fnValue = _fnValue;
 	}
 
 }

@@ -64,4 +64,7 @@ export interface IGraphNode{
 
 	getVariableList(): string[];
 
+
+	addFunctionToProcedure(code_generator: ICodeGenerator): void;
+
 }

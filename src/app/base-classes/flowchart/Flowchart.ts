@@ -497,7 +497,7 @@ export class Flowchart implements IFlowchart{
 			let node = all_nodes[originalRank];
 
 			// check status of the node; don't rerun
-			if( node.isDisabled() ){
+			if( node.isDisabled() || node.hasFnOutput() ){
 				continue;
 			}
 

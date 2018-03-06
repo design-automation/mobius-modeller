@@ -137,8 +137,14 @@ export class ProcedureEditorComponent extends Viewer implements OnInit{
 
 		// todo: change this string attachment!
 		if(property == 'left' && prod.data._type !== "If"){
-			prod.data.getLeftComponent().expression = 
-				prod.data.getLeftComponent().expression.replace(/[^\w\[\]]/gi, '');
+			prod.data.getLeftComponent().expression = prod.data.getLeftComponent().expression.replace(/[^\w\[\]]/gi, '');
+		}
+
+		if(property == 'right' && prod.data._type == "Function"){
+			let rightC = prod.data.getRightComponent();
+			let paramStr = rightC.params.join(",");
+			let expr: string = prod.data.getFunctionName() + "(" + paramStr + ")" + "." + rightC.category;
+			rightC.expression = expr;
 		}
 
 		this._variableList = this._node.getVariableList();

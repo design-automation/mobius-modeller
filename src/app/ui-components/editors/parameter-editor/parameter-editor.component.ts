@@ -8,6 +8,7 @@ import { FlowchartService } from '../../../global-services/flowchart.service';
 
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import {ParameterSettingsDialogComponent} from './parameter-settings-dialog.component';
+import {IProcedure, ProcedureFactory, ProcedureTypes} from '../../../base-classes/procedure/ProcedureModule';
 
 @Component({
   selector: 'app-parameter-editor',
@@ -49,21 +50,15 @@ export class ParameterEditorComponent extends Viewer{
       this.isVisible = false;
     }
 
-    // addPort(nodeIndex: number, type: string): void{
-
-    //   // add port 
-    //   if(type == "in"){
-    //       this._node.addInput();
-    //   }
-    //   else if(type == "out"){
-    //       this._node.addOutput();
-    //   }
-    //   else{
-    //     throw Error("Unknown Port Type");
-    //   }  
-
-    //   this.flowchartService.update();
-    // }
+    portHasFunction(port: InputPort): boolean{
+      let value = port.getValue();
+      if(value && value.port !== undefined && value.port.length == 2){
+        return true;
+      }
+      else{
+        return false;
+      }
+    }
 
     deletePort(event, type: string, portIndex: number): void{
       event.stopPropagation();
@@ -183,6 +178,18 @@ export class ParameterEditorComponent extends Viewer{
         });
     }
 
+    addFunctionToProcedure(inp: InputPort): void{
+
+      // get functional graph node
+      let value = inp.getValue().port;
+
+      if(value){
+          let fn_node: IGraphNode = this.flowchartService.getNodes()[value[0]];
+          let prod: IProcedure = ProcedureFactory.getProcedure(ProcedureTypes.Function, {node: fn_node, port: inp});
+          this.flowchartService.addProcedure(prod);
+
+      }
+    }
 }
 
 

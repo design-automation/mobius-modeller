@@ -227,6 +227,11 @@ split-area{
 						background-color: $pcolor1;
 					}
 
+					&.function{
+						background-color: yellow; 
+						border: 1px dashed green;
+					}
+
 					.node-name{
 						font-family: sans-serif; 
 						font-size: $fsize2;
@@ -284,6 +289,8 @@ split-area{
 
 								&.isFunction{
 									border-style: dashed;
+									background-color: gray;
+									border-radius: 0px;
 								}
 
 								&.selected{
@@ -300,7 +307,7 @@ split-area{
 								margin: 0px 5px; 
 
 								&.isFunction{
-									color: $color2;
+									color: black;
 									font-size: 0.8*$fsize2;
 								}
 

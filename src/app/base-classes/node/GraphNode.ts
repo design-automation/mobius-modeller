@@ -170,8 +170,7 @@ export class GraphNode implements IGraphNode{
 		let index_output: number = this.addOutput(this.getName() + "_function");
 		let fnOutput: OutputPort = this.getOutputByIndex(index_output - 1);
 
-		let node_code: string =  code_generator.getNodeCode(this);
-		fnOutput.setDefaultValue( node_code );
+		fnOutput.setDefaultValue( this.getFunction(code_generator) );
 
 		fnOutput.setIsFunction();
 
@@ -327,7 +326,16 @@ export class GraphNode implements IGraphNode{
 	execute(code_generator: ICodeGenerator, modules: IModule[], print: Function): void{
 
 		let params: any[] = [];
-		this.getInputs().map(function(i){ params[i.getName()] = i.getValue(); })
+		this.getInputs().map(function(i){ 
+			if(i.isFunction()){
+				let oNode: IGraphNode = i.getFnValue();
+				let codeString: string = code_generator.getNodeCode(oNode);
+				params[i.getName()] = (new Function("return " + codeString))();
+			}
+			else{
+				params[i.getName()] = i.getValue(); 
+			}
+		});
 
 		let self = this;
 		this.getOutputs().map(function(o){
@@ -390,5 +398,14 @@ export class GraphNode implements IGraphNode{
 		});
 
 		return varList;
+	}
+
+	getFunction(code_generator: ICodeGenerator): string{
+		let node_code: string =  code_generator.getNodeCode(this);
+		return node_code;
+	}
+
+	addFunctionToProcedure(code_generator: ICodeGenerator): void{
+		let node_code: string = this.getFunction(code_generator);
 	}
 }

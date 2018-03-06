@@ -453,23 +453,35 @@ export class FlowchartService {
         return;
       }
 
-      // dont remove previous edges for outputs
-      let output: IPort = this._flowchart.getNodeByIndex(outputAddress[0]).getOutputByIndex(outputAddress[1]);
-      // if (output.isConnected()){
-      //   this._flowchart.deleteEdges(this._flowchart.disconnectEdgesWithPortIndex(outputAddress[0], outputAddress[1], "output"));
-      // }
+      let oNode = this._flowchart.getNodeByIndex(outputAddress[0]);
+      let iNode = this._flowchart.getNodeByIndex(inputAddress[0]);
 
-      // remove previous edges for inputs
-      let input = this._flowchart.getNodeByIndex(inputAddress[0]).getInputByIndex(inputAddress[1]);
+      // dont remove previous edges for outputs
+      let output: IPort = oNode.getOutputByIndex(outputAddress[1]);
+      let input = iNode.getInputByIndex(inputAddress[1]);
+
+
+      if( iNode.hasFnOutput() || ( oNode.hasFnOutput() && !output.isFunction() ) ){
+          this.consoleService.addMessage("Non-functional inputs/outputs of higher-order nodes cannot be connected", EConsoleMessageType.Error);
+          return;
+      }
+
+
       if (input.isConnected()){
         this._flowchart.deleteEdges(this._flowchart.disconnectEdgesWithPortIndex(inputAddress[0], inputAddress[1], "input"));
       }
 
       //
       this._flowchart.addEdge(outputAddress, inputAddress);
+
       input.setComputedValue({port: outputAddress});
       output.connect();
       input.connect();
+
+      if(output.isFunction()){
+        input.setIsFunction();
+        input.setFnValue( oNode );
+      }
 
       // print message to console
       this.consoleService.addMessage("New Edge was added");
@@ -769,7 +781,5 @@ export class FlowchartService {
           document.body.removeChild(link);
       }
   }
-
-
 
 }

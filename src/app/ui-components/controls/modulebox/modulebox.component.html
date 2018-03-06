@@ -7,7 +7,9 @@
 
 		<mat-list condensed>
 			<mat-list-item class="fn_name" *ngFor="let type of procedureTypes"
-								 		(click)="addProcedure($event, type)">Add {{getStringForProcedureType(type)}}</mat-list-item>
+								 		(click)="addProcedure($event, type)">
+					Add {{getStringForProcedureType(type)}}
+			</mat-list-item>
 		</mat-list>
 
 		<mat-accordion multi="true">
