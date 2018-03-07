@@ -1600,7 +1600,17 @@ class GraphNode {
             if (i.isFunction()) {
                 let oNode = i.getFnValue();
                 let codeString = code_generator.getNodeCode(oNode);
-                params[i.getName()] = (new Function("return " + codeString))();
+                // converts string to functin
+                let fn_def = Function("return " + codeString)();
+                // define a new function whicih has Modules in its scope
+                // extremely possible memory leak
+                /*let wrapper_fn = function(){
+                    let value = fn_def.bind({Modules: modules}).apply(arguments);
+                    return value;
+                }*/
+                //todo: fix! very bad - global scope 
+                window["Modules"] = modules;
+                params[i.getName()] = fn_def;
             }
             else {
                 params[i.getName()] = i.getValue();
