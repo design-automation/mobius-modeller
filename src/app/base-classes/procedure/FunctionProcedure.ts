@@ -41,8 +41,16 @@ export class FunctionProcedure extends Procedure{
 		super.setRightComponent(right);
 	}
 
+	getNode(): IGraphNode{
+		return this.node;
+	}
+
+	setNode(graphNode: IGraphNode): void{
+		this.node = graphNode;
+	}
+
 	getFunctionName(): string{
-		return this.port.getName();		
+		return this.port ? this.port.getName() : "";		
 	}
 
 	updateParams(): string[]{

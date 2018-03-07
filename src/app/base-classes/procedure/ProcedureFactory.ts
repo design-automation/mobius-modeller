@@ -43,6 +43,7 @@ export class ProcedureFactory{
 		}
 		else if(procedureData["_type"] == "Function"){
 			//todo: do something!! 
+			procedure = new FunctionProcedure({node: procedureData["node"], port: procedureData["port"]});
 		}
 		else{
 			procedure = ProcedureFactory.getProcedure(procedureData["_type"]);

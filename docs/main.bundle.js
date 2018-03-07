@@ -1283,6 +1283,8 @@ class Flowchart {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Flowchart__ = __webpack_require__("../../../../../src/app/base-classes/flowchart/Flowchart.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_NodeModule__ = __webpack_require__("../../../../../src/app/base-classes/node/NodeModule.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__procedure_ProcedureTypes__ = __webpack_require__("../../../../../src/app/base-classes/procedure/ProcedureTypes.ts");
+
 
 
 class FlowchartReader {
@@ -1292,12 +1294,14 @@ class FlowchartReader {
         fc.setSavedTime(data["_lastSaved"]);
         let nodes = data["_nodes"];
         let edges = data["_edges"];
+        let nodeMap = [];
         // add nodes
         for (let index = 0; index < nodes.length; index++) {
             let n_data = nodes[index];
             let node = new __WEBPACK_IMPORTED_MODULE_1__node_NodeModule__["a" /* GraphNode */](n_data["name"], n_data["type"]);
             node.update(n_data);
             fc.addNode(node);
+            nodeMap[node.getId()] = node;
         }
         // add edges
         for (let index in edges) {
@@ -1312,6 +1316,34 @@ class FlowchartReader {
             else {
             }
         }
+        let allNodes = fc.getNodes();
+        for (let i = 0; i < allNodes.length; i++) {
+            let n = allNodes[i];
+            let p = n.getProcedure();
+            for (let pr = 0; pr < p.length; pr++) {
+                let prod = p[pr];
+                if (prod.getType() == __WEBPACK_IMPORTED_MODULE_2__procedure_ProcedureTypes__["a" /* ProcedureTypes */].Function) {
+                    let fn_prod = prod;
+                    let node_id = fn_prod.getNode().getId();
+                    let actual_node = nodeMap[node_id];
+                    fn_prod.setNode(actual_node);
+                }
+            }
+        }
+        // relink procedure lines
+        /*nodes.map(function(node){
+
+            let procedure_arr = node.getProcedure();
+
+            procedure_arr.map(function(prod){
+
+                if(prod.getType() == "Function"){
+                    console.log(prod);
+                }
+
+            })
+
+        })*/
         return fc;
     }
 }
@@ -1434,7 +1466,25 @@ class GraphNode {
         // add procedure
         let procedureArr = nodeData["_procedure"];
         for (let prodIndex in procedureArr) {
-            let procedure = __WEBPACK_IMPORTED_MODULE_1__procedure_ProcedureModule__["a" /* ProcedureFactory */].getProcedureFromData(procedureArr[prodIndex], undefined);
+            let prodD = procedureArr[prodIndex];
+            let procedure;
+            // function with node and port
+            if (prodD["node"] && prodD["port"]) {
+                // replace node and port with actual node and port
+                let gNode = new GraphNode(prodD["node"]);
+                gNode.update(prodD["node"]);
+                prodD["node"] = gNode;
+                let portId = prodD["port"]["_id"];
+                for (let i = 0; i < this._inputs.length; i++) {
+                    if (this._inputs[i]["_id"] == portId) {
+                        prodD["port"] = this._inputs[i];
+                    }
+                }
+                procedure = __WEBPACK_IMPORTED_MODULE_1__procedure_ProcedureModule__["a" /* ProcedureFactory */].getProcedureFromData(prodD, undefined);
+            }
+            else {
+                procedure = __WEBPACK_IMPORTED_MODULE_1__procedure_ProcedureModule__["a" /* ProcedureFactory */].getProcedureFromData(prodD, undefined);
+            }
             this._procedure.push(procedure);
         }
     }
@@ -2118,8 +2168,14 @@ class FunctionProcedure extends __WEBPACK_IMPORTED_MODULE_0__Procedure__["a" /* 
         super.setLeftComponent(left);
         super.setRightComponent(right);
     }
+    getNode() {
+        return this.node;
+    }
+    setNode(graphNode) {
+        this.node = graphNode;
+    }
     getFunctionName() {
-        return this.port.getName();
+        return this.port ? this.port.getName() : "";
     }
     updateParams() {
         let inp_range = this.node.getInputs().map(function (inp) {
@@ -2434,6 +2490,7 @@ class ProcedureFactory {
         }
         else if (procedureData["_type"] == "Function") {
             //todo: do something!! 
+            procedure = new __WEBPACK_IMPORTED_MODULE_5__FunctionProcedure__["a" /* FunctionProcedure */]({ node: procedureData["node"], port: procedureData["port"] });
         }
         else {
             procedure = ProcedureFactory.getProcedure(procedureData["_type"]);
@@ -8367,7 +8424,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/ui-components/help/info-viewer/help.model.tpl.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h1>About the Model</h1>\r\n\r\n<p>Mobius v0.7.3</p>"
+module.exports = "<h1>About the Model</h1>\r\n\r\n<p>Mobius v0.7.4</p>"
 
 /***/ }),
 

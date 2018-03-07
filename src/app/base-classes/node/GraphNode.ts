@@ -118,7 +118,31 @@ export class GraphNode implements IGraphNode{
 		// add procedure
 		let procedureArr: IProcedure[] = nodeData["_procedure"];
 		for( let prodIndex in procedureArr ){
-			let procedure: IProcedure = ProcedureFactory.getProcedureFromData(procedureArr[prodIndex], undefined);
+
+			let prodD = procedureArr[prodIndex];
+			let procedure: IProcedure;
+
+			// function with node and port
+			if(prodD["node"] && prodD["port"]){
+				// replace node and port with actual node and port
+				let gNode: IGraphNode = new GraphNode(prodD["node"]);
+				gNode.update(prodD["node"]);
+				prodD["node"] = gNode;
+
+				let portId = prodD["port"]["_id"];
+				for(let i=0; i < this._inputs.length; i++){
+					if(this._inputs[i]["_id"] == portId){
+						prodD["port"] = this._inputs[i]; 
+					}
+				}
+
+				procedure = ProcedureFactory.getProcedureFromData(prodD, undefined);
+			}
+			else{
+				procedure = ProcedureFactory.getProcedureFromData(prodD, undefined);
+			}
+			
+
 			this._procedure.push(procedure);
 		}
 
