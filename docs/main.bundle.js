@@ -695,7 +695,7 @@ class CodeGeneratorJS extends __WEBPACK_IMPORTED_MODULE_0__CodeGenerator__["a" /
             }
             code = init + procedure.getLeftComponent().expression
                 + " = "
-                + "Modules."
+                + "__Mobius__Modules__."
                 + right.module.trim()
                 + "." + right.fn_name + "( " + paramList.join(",") + " );\n";
             if (procedure.printToConsole()) {
@@ -759,8 +759,9 @@ class CodeGeneratorJS extends __WEBPACK_IMPORTED_MODULE_0__CodeGenerator__["a" /
         }
         return prepend + port.getName() + " = " + port.getDefaultValue();
     }
-    executeNode(node, params, Modules, print) {
+    executeNode(node, params, __Mobius__Modules__, print) {
         let prodArr = [];
+        window["__Mobius__Modules__"] = __Mobius__Modules__;
         //let gis = this._modules["gis"];
         let str = "(function(){ \
 						" + this.getNodeCode(node, prodArr) + "\n" +
@@ -801,6 +802,7 @@ class CodeGeneratorJS extends __WEBPACK_IMPORTED_MODULE_0__CodeGenerator__["a" /
         }
         prodArr = null;
         print = null;
+        delete window["__Mobius__Modules__"];
         return result; //result;// return result of the node
     }
 }
@@ -1608,8 +1610,6 @@ class GraphNode {
                     let value = fn_def.bind({Modules: modules}).apply(arguments);
                     return value;
                 }*/
-                //todo: fix! very bad - global scope 
-                window["Modules"] = modules;
                 params[i.getName()] = fn_def;
             }
             else {
@@ -8367,7 +8367,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/ui-components/help/info-viewer/help.model.tpl.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h1>About the Model</h1>\r\n\r\n<p>Mobius v0.6.4</p>"
+module.exports = "<h1>About the Model</h1>\r\n\r\n<p>Mobius v0.7.3</p>"
 
 /***/ }),
 

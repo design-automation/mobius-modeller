@@ -287,7 +287,7 @@ export class CodeGeneratorJS extends CodeGenerator{
 
 				code = init + procedure.getLeftComponent().expression 
 						+ " = " 
-						+ "Modules."
+						+ "__Mobius__Modules__."
 						+ right.module.trim()
 						+ "." + right.fn_name + "( " + paramList.join(",") + " );\n";
 
@@ -368,10 +368,12 @@ export class CodeGeneratorJS extends CodeGenerator{
 		}
 
 		executeNode(node: IGraphNode, params: any, 
-							Modules: IModule[], 
+							__Mobius__Modules__: IModule[], 
 							print: Function): any{
 
 			let prodArr: number[] = [];
+
+			window["__Mobius__Modules__"] = __Mobius__Modules__;
 
 			//let gis = this._modules["gis"];
 			let str: string = "(function(){ \
@@ -424,6 +426,7 @@ export class CodeGeneratorJS extends CodeGenerator{
 			
 			prodArr = null; 
 			print = null; 
+			delete window["__Mobius__Modules__"]
 			return result;//result;// return result of the node
 		}
 

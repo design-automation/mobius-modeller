@@ -342,9 +342,6 @@ export class GraphNode implements IGraphNode{
 					return value;
 				}*/
 
-				//todo: fix! very bad - global scope 
-				window["Modules"] = modules;
-
 				params[i.getName()] = fn_def;
 			}
 			else{
