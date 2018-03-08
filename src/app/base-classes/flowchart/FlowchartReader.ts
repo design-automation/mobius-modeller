@@ -55,12 +55,10 @@ export abstract class FlowchartReader{
 	    		let prod = p[pr];
 
 	    		if(prod.getType() == ProcedureTypes.Function){
-
 	    			let fn_prod: FunctionProcedure = prod as FunctionProcedure;
 	    			let node_id = fn_prod.getNode().getId();
 	    			let actual_node = nodeMap[node_id];
 	    			fn_prod.setNode(actual_node);
-
 	    		}
 
 	    	}

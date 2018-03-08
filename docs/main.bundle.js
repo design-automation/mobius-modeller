@@ -2163,7 +2163,7 @@ class FunctionProcedure extends __WEBPACK_IMPORTED_MODULE_0__Procedure__["a" /* 
             module: undefined,
             category: undefined,
             fn_name: undefined,
-            params: this.node ? [this.node.getInputs().map(function (inp) { return " "; })] : []
+            params: this.node && this.node.getInputs ? [this.node.getInputs().map(function (inp) { return " "; })] : []
         };
         super.setLeftComponent(left);
         super.setRightComponent(right);
@@ -8424,7 +8424,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/ui-components/help/info-viewer/help.model.tpl.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h1>About the Model</h1>\r\n\r\n<p>Mobius v0.7.5</p>"
+module.exports = "<h1>About the Model</h1>\r\n\r\n<p>Mobius v0.7.6</p>"
 
 /***/ }),
 

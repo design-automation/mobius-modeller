@@ -34,7 +34,7 @@ export class FunctionProcedure extends Procedure{
 									module: undefined, 
 									category: undefined,
 									fn_name: undefined,
-									params: this.node ? [this.node.getInputs().map(function(inp){ return " "; })] : []
+									params: this.node && this.node.getInputs ? [this.node.getInputs().map(function(inp){ return " "; })] : []
 								}
 
 		super.setLeftComponent(left);
