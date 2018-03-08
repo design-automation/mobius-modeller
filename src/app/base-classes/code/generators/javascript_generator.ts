@@ -256,7 +256,7 @@ export class CodeGeneratorJS extends CodeGenerator{
 				code =  init + procedure.getLeftComponent().expression + " = " + procedure.getRightComponent().expression + ";";
 
 				if(procedure.printToConsole()){
-					code = code + "\n" + "print(" + "\'" + procedure.getLeftComponent().expression + "\', " + procedure.getLeftComponent().expression + ");\n";
+					code = code + "\n" + "__MOBIUS_PRINT__(" + "\'" + procedure.getLeftComponent().expression + "\', " + procedure.getLeftComponent().expression + ");\n";
 				}
 
 			}
@@ -287,12 +287,12 @@ export class CodeGeneratorJS extends CodeGenerator{
 
 				code = init + procedure.getLeftComponent().expression 
 						+ " = " 
-						+ "__Mobius__Modules__."
+						+ "__MOBIUS_MODULES__."
 						+ right.module.trim()
 						+ "." + right.fn_name + "( " + paramList.join(",") + " );\n";
 
 				if(procedure.printToConsole()){
-					code = code + "\n" + "print(" + "\'" + procedure.getLeftComponent().expression + "\', " + procedure.getLeftComponent().expression + ");\n";
+					code = code + "\n" + "__MOBIUS_PRINT__(" + "\'" + procedure.getLeftComponent().expression + "\', " + procedure.getLeftComponent().expression + ");\n";
 				}
 
 			}
@@ -373,7 +373,8 @@ export class CodeGeneratorJS extends CodeGenerator{
 
 			let prodArr: number[] = [];
 
-			window["__Mobius__Modules__"] = __Mobius__Modules__;
+			window["__MOBIUS_MODULES__"] = __Mobius__Modules__;
+			window["__MOBIUS_PRINT__"] = print;
 
 			//let gis = this._modules["gis"];
 			let str: string = "(function(){ \
@@ -426,7 +427,8 @@ export class CodeGeneratorJS extends CodeGenerator{
 			
 			prodArr = null; 
 			print = null; 
-			delete window["__Mobius__Modules__"]
+			delete window["__MOBIUS_MODULES__"]
+			delete window["__MOBIUS_PRINT__"]
 			return result;//result;// return result of the node
 		}
 

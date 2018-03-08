@@ -669,7 +669,7 @@ class CodeGeneratorJS extends __WEBPACK_IMPORTED_MODULE_0__CodeGenerator__["a" /
             }
             code = init + procedure.getLeftComponent().expression + " = " + procedure.getRightComponent().expression + ";";
             if (procedure.printToConsole()) {
-                code = code + "\n" + "print(" + "\'" + procedure.getLeftComponent().expression + "\', " + procedure.getLeftComponent().expression + ");\n";
+                code = code + "\n" + "__MOBIUS_PRINT__(" + "\'" + procedure.getLeftComponent().expression + "\', " + procedure.getLeftComponent().expression + ");\n";
             }
         }
         else if (prod_type == __WEBPACK_IMPORTED_MODULE_1__procedure_ProcedureModule__["b" /* ProcedureTypes */].Action) {
@@ -695,11 +695,11 @@ class CodeGeneratorJS extends __WEBPACK_IMPORTED_MODULE_0__CodeGenerator__["a" /
             }
             code = init + procedure.getLeftComponent().expression
                 + " = "
-                + "__Mobius__Modules__."
+                + "__MOBIUS_MODULES__."
                 + right.module.trim()
                 + "." + right.fn_name + "( " + paramList.join(",") + " );\n";
             if (procedure.printToConsole()) {
-                code = code + "\n" + "print(" + "\'" + procedure.getLeftComponent().expression + "\', " + procedure.getLeftComponent().expression + ");\n";
+                code = code + "\n" + "__MOBIUS_PRINT__(" + "\'" + procedure.getLeftComponent().expression + "\', " + procedure.getLeftComponent().expression + ");\n";
             }
         }
         else if (procedure.hasChildren) {
@@ -761,7 +761,8 @@ class CodeGeneratorJS extends __WEBPACK_IMPORTED_MODULE_0__CodeGenerator__["a" /
     }
     executeNode(node, params, __Mobius__Modules__, print) {
         let prodArr = [];
-        window["__Mobius__Modules__"] = __Mobius__Modules__;
+        window["__MOBIUS_MODULES__"] = __Mobius__Modules__;
+        window["__MOBIUS_PRINT__"] = print;
         //let gis = this._modules["gis"];
         let str = "(function(){ \
 						" + this.getNodeCode(node, prodArr) + "\n" +
@@ -802,7 +803,8 @@ class CodeGeneratorJS extends __WEBPACK_IMPORTED_MODULE_0__CodeGenerator__["a" /
         }
         prodArr = null;
         print = null;
-        delete window["__Mobius__Modules__"];
+        delete window["__MOBIUS_MODULES__"];
+        delete window["__MOBIUS_PRINT__"];
         return result; //result;// return result of the node
     }
 }
@@ -8424,7 +8426,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/ui-components/help/info-viewer/help.model.tpl.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h1>About the Model</h1>\r\n\r\n<p>Mobius v0.7.6</p>"
+module.exports = "<h1>About the Model</h1>\r\n\r\n<p>Mobius v0.7.7</p>"
 
 /***/ }),
 
