@@ -8485,7 +8485,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/ui-components/help/info-viewer/help.model.tpl.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h1>About the Model</h1>\r\n\r\n<p>Mobius v0.7.11</p>"
+module.exports = "<h1>About the Model</h1>\r\n\r\n<p>Mobius v0.7.12</p>"
 
 /***/ }),
 
