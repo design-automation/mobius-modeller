@@ -141,7 +141,7 @@ export class GraphNode implements IGraphNode{
 				replace(procedure);
 			}
 			else{
-				if(procedure["children"].length){
+				if(procedure.children && procedure["children"].length){
 					for(let i=0; i < procedure["children"].length; i++){
 						let childData = procedure["children"][i];
 						checkAndReplaceChildren(childData);

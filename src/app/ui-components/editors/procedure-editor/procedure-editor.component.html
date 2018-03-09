@@ -81,7 +81,7 @@
 																 <span *ngIf="i < prod.data.updateParams().length - 1"> , </span>
 															</div>
 														</span>)
-														:::
+														:::&nbsp;&nbsp;&nbsp;
 														<select (change)="updateProcedure($event, prod, 'right')" [(ngModel)]="prod.data.getRightComponent().category" #ctrl="ngModel">
 											         	    <option *ngFor="let otp of prod.data.getOutputs()" [value]="otp">{{otp}}</option>
 											            </select> 

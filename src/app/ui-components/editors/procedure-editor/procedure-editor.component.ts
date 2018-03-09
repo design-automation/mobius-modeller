@@ -142,6 +142,13 @@ export class ProcedureEditorComponent extends Viewer implements OnInit{
 
 		if(property == 'right' && prod.data._type == "Function"){
 			let rightC = prod.data.getRightComponent();
+
+			let reqParams = prod.data.updateParams().length
+			if(rightC.params.length > reqParams){
+				rightC.params = rightC.params.slice(0, reqParams);
+				console.log(rightC.params);
+			}
+
 			let paramStr = rightC.params.join(",");
 			let expr: string = prod.data.getFunctionName() + "(" + paramStr + ")" + "." + rightC.category;
 			rightC.expression = expr;
