@@ -1285,8 +1285,6 @@ class Flowchart {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Flowchart__ = __webpack_require__("../../../../../src/app/base-classes/flowchart/Flowchart.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_NodeModule__ = __webpack_require__("../../../../../src/app/base-classes/node/NodeModule.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__procedure_ProcedureTypes__ = __webpack_require__("../../../../../src/app/base-classes/procedure/ProcedureTypes.ts");
-
 
 
 class FlowchartReader {
@@ -1297,13 +1295,39 @@ class FlowchartReader {
         let nodes = data["_nodes"];
         let edges = data["_edges"];
         let nodeMap = [];
-        // add nodes
+        let higherOrderFn = [];
+        let normalNodes = [];
+        // split nodesS
         for (let index = 0; index < nodes.length; index++) {
             let n_data = nodes[index];
+            // check from outputs 
+            let outputs = n_data["_outputs"];
+            let flag = false;
+            for (let oIdx = 0; oIdx < outputs.length; oIdx++) {
+                let oData = outputs[oIdx];
+                // if output is function	
+                if (oData["_isFunction"]) {
+                    higherOrderFn.push(n_data);
+                    flag = true;
+                    break;
+                }
+            }
+            if (!flag) {
+                normalNodes.push(n_data);
+            }
+        }
+        // create nodes - higher order first
+        let orderedNodes = higherOrderFn.concat(normalNodes);
+        for (let index = 0; index < orderedNodes.length; index++) {
+            let n_data = orderedNodes[index];
             let node = new __WEBPACK_IMPORTED_MODULE_1__node_NodeModule__["a" /* GraphNode */](n_data["name"], n_data["type"]);
-            node.update(n_data);
-            fc.addNode(node);
+            node.update(n_data, nodeMap);
             nodeMap[node.getId()] = node;
+        }
+        // add nodes in order to the flowchart
+        for (let n = 0; n < nodes.length; n++) {
+            let createdNode = nodeMap[nodes[n]["_id"]];
+            fc.addNode(createdNode);
         }
         // add edges
         for (let index in edges) {
@@ -1318,20 +1342,25 @@ class FlowchartReader {
             else {
             }
         }
-        let allNodes = fc.getNodes();
-        for (let i = 0; i < allNodes.length; i++) {
+        /*let allNodes = fc.getNodes();
+        for(let i=0; i < allNodes.length; i++){
             let n = allNodes[i];
+
             let p = n.getProcedure();
-            for (let pr = 0; pr < p.length; pr++) {
+
+            for(let pr=0; pr < p.length; pr++){
                 let prod = p[pr];
-                if (prod.getType() == __WEBPACK_IMPORTED_MODULE_2__procedure_ProcedureTypes__["a" /* ProcedureTypes */].Function) {
-                    let fn_prod = prod;
+
+                if(prod.getType() == ProcedureTypes.Function){
+                    let fn_prod: FunctionProcedure = prod as FunctionProcedure;
                     let node_id = fn_prod.getNode().getId();
                     let actual_node = nodeMap[node_id];
                     fn_prod.setNode(actual_node);
                 }
+
             }
         }
+*/
         // relink procedure lines
         /*nodes.map(function(node){
 
@@ -1435,7 +1464,7 @@ class GraphNode {
     saved() {
         this._type = this._id;
     }
-    update(nodeData) {
+    update(nodeData, nodeMap) {
         if (nodeData["lib"] == undefined) {
             // loading from file
             this._id = nodeData["_id"];
@@ -1465,28 +1494,46 @@ class GraphNode {
             output.update(output_data, "out");
             this._outputs.push(output);
         }
+        // replace node function
+        let self = this;
+        let replace = function (prodD) {
+            let node_id = prodD["node"]["_id"];
+            let actual_node = nodeMap[node_id];
+            console.log("replace");
+            if (actual_node) {
+                prodD["node"] = actual_node;
+            }
+            else {
+                throw Error("Higher order not found");
+            }
+            let portId = prodD["port"]["_id"];
+            for (let i = 0; i < self._inputs.length; i++) {
+                if (self._inputs[i]["_id"] == portId) {
+                    prodD["port"] = self._inputs[i];
+                }
+            }
+        };
+        function checkAndReplaceChildren(procedure) {
+            if (procedure["_type"] == "Function") {
+                // update with the actual node
+                replace(procedure);
+            }
+            else {
+                if (procedure["children"].length) {
+                    for (let i = 0; i < procedure["children"].length; i++) {
+                        let childData = procedure["children"][i];
+                        checkAndReplaceChildren(childData);
+                    }
+                }
+            }
+        }
         // add procedure
         let procedureArr = nodeData["_procedure"];
         for (let prodIndex in procedureArr) {
             let prodD = procedureArr[prodIndex];
             let procedure;
-            // function with node and port
-            if (prodD["node"] && prodD["port"]) {
-                // replace node and port with actual node and port
-                let gNode = new GraphNode(prodD["node"]);
-                gNode.update(prodD["node"]);
-                prodD["node"] = gNode;
-                let portId = prodD["port"]["_id"];
-                for (let i = 0; i < this._inputs.length; i++) {
-                    if (this._inputs[i]["_id"] == portId) {
-                        prodD["port"] = this._inputs[i];
-                    }
-                }
-                procedure = __WEBPACK_IMPORTED_MODULE_1__procedure_ProcedureModule__["a" /* ProcedureFactory */].getProcedureFromData(prodD, undefined);
-            }
-            else {
-                procedure = __WEBPACK_IMPORTED_MODULE_1__procedure_ProcedureModule__["a" /* ProcedureFactory */].getProcedureFromData(prodD, undefined);
-            }
+            checkAndReplaceChildren(prodD);
+            procedure = __WEBPACK_IMPORTED_MODULE_1__procedure_ProcedureModule__["a" /* ProcedureFactory */].getProcedureFromData(prodD, undefined);
             this._procedure.push(procedure);
         }
     }
@@ -2191,7 +2238,6 @@ class FunctionProcedure extends __WEBPACK_IMPORTED_MODULE_0__Procedure__["a" /* 
         }).map(function (output) {
             return output.getName();
         });
-        //this._rightComponent.category = outputs[0];
         return outputs;
     }
     update(prodData, parent) {
@@ -8426,7 +8472,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/ui-components/help/info-viewer/help.model.tpl.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h1>About the Model</h1>\r\n\r\n<p>Mobius v0.7.7</p>"
+module.exports = "<h1>About the Model</h1>\r\n\r\n<p>Mobius v0.7.8</p>"
 
 /***/ }),
 

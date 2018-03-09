@@ -18,7 +18,7 @@ export interface IGraphNode{
 	saved(); 
 	
 	overwrite(node: IGraphNode): number; 
-	update(nodeData: IGraphNode);
+	update(nodeData: IGraphNode, higherOrder ?: any);
 
 	// get / set
 	addInput(name?: string): number;

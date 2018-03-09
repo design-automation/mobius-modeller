@@ -76,7 +76,7 @@ export class GraphNode implements IGraphNode{
 		this._type = this._id;
 	}
 
-	update(nodeData: IGraphNode): void{
+	update(nodeData: IGraphNode, nodeMap?: any): void{
 
 		if(nodeData["lib"] == undefined){
 			// loading from file
@@ -115,33 +115,50 @@ export class GraphNode implements IGraphNode{
 			this._outputs.push(output);
 		}
 
+		// replace node function
+		let self = this;
+		let replace = function (prodD){
+			let node_id = prodD["node"]["_id"];
+			let actual_node = nodeMap[node_id];
+			console.log("replace");
+			if(actual_node){
+				prodD["node"] = actual_node;
+			}
+			else{
+				throw Error("Higher order not found");
+			}
+
+			let portId = prodD["port"]["_id"];
+			for(let i=0; i < self._inputs.length; i++){
+				if(self._inputs[i]["_id"] == portId){
+					prodD["port"] = self._inputs[i]; 
+				}
+			}
+		}
+		function checkAndReplaceChildren(procedure){
+			if(procedure["_type"] == "Function"){
+				// update with the actual node
+				replace(procedure);
+			}
+			else{
+				if(procedure["children"].length){
+					for(let i=0; i < procedure["children"].length; i++){
+						let childData = procedure["children"][i];
+						checkAndReplaceChildren(childData);
+					}
+				}
+			}
+		}
+		
 		// add procedure
 		let procedureArr: IProcedure[] = nodeData["_procedure"];
 		for( let prodIndex in procedureArr ){
 
 			let prodD = procedureArr[prodIndex];
 			let procedure: IProcedure;
-
-			// function with node and port
-			if(prodD["node"] && prodD["port"]){
-				// replace node and port with actual node and port
-				let gNode: IGraphNode = new GraphNode(prodD["node"]);
-				gNode.update(prodD["node"]);
-				prodD["node"] = gNode;
-
-				let portId = prodD["port"]["_id"];
-				for(let i=0; i < this._inputs.length; i++){
-					if(this._inputs[i]["_id"] == portId){
-						prodD["port"] = this._inputs[i]; 
-					}
-				}
-
-				procedure = ProcedureFactory.getProcedureFromData(prodD, undefined);
-			}
-			else{
-				procedure = ProcedureFactory.getProcedureFromData(prodD, undefined);
-			}
 			
+			checkAndReplaceChildren(prodD);				
+			procedure = ProcedureFactory.getProcedureFromData(prodD, undefined);
 
 			this._procedure.push(procedure);
 		}

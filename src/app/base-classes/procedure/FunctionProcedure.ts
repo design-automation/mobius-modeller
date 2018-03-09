@@ -66,10 +66,6 @@ export class FunctionProcedure extends Procedure{
 		}).map(function(output){
 			return output.getName();
 		});
-
-
-		//this._rightComponent.category = outputs[0];
-
 		return outputs;
 	}	
 
