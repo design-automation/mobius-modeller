@@ -8006,6 +8006,12 @@ let ProcedureEditorComponent = class ProcedureEditorComponent extends __WEBPACK_
         this._node = this.flowchartService.getSelectedNode();
         this._procedureArr = this._node.getProcedure();
         this._variableList = this._node.getVariableList();
+        for (let i = 0; i < this._procedureArr.length; i++) {
+            let prod = this._procedureArr[i];
+            if (prod.getType() == __WEBPACK_IMPORTED_MODULE_1__base_classes_procedure_ProcedureModule__["b" /* ProcedureTypes */].Function) {
+                this.updateFunctionProd(prod);
+            }
+        }
     }
     update(message) {
         if (message == "procedure") {
@@ -8064,21 +8070,23 @@ let ProcedureEditorComponent = class ProcedureEditorComponent extends __WEBPACK_
         let moved_position = $event.to.index;
         moved_procedure.setParent(to_procedure);
     }
+    updateFunctionProd(prod) {
+        let rightC = prod.getRightComponent();
+        let reqParams = prod.updateParams().length;
+        if (rightC.params.length > reqParams) {
+            rightC.params = rightC.params.slice(0, reqParams);
+        }
+        let paramStr = rightC.params.join(",");
+        let expr = prod.getFunctionName() + "(" + paramStr + ")" + "." + rightC.category;
+        rightC.expression = expr;
+    }
     updateProcedure($event, prod, property) {
         // todo: change this string attachment!
         if (property == 'left' && prod.data._type !== "If") {
             prod.data.getLeftComponent().expression = prod.data.getLeftComponent().expression.replace(/[^\w\[\]]/gi, '');
         }
         if (property == 'right' && prod.data._type == "Function") {
-            let rightC = prod.data.getRightComponent();
-            let reqParams = prod.data.updateParams().length;
-            if (rightC.params.length > reqParams) {
-                rightC.params = rightC.params.slice(0, reqParams);
-                console.log(rightC.params);
-            }
-            let paramStr = rightC.params.join(",");
-            let expr = prod.data.getFunctionName() + "(" + paramStr + ")" + "." + rightC.category;
-            rightC.expression = expr;
+            this.updateFunctionProd(prod.data);
         }
         this._variableList = this._node.getVariableList();
     }
@@ -8477,7 +8485,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/ui-components/help/info-viewer/help.model.tpl.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h1>About the Model</h1>\r\n\r\n<p>Mobius v0.7.9</p>"
+module.exports = "<h1>About the Model</h1>\r\n\r\n<p>Mobius v0.7.10</p>"
 
 /***/ }),
 
