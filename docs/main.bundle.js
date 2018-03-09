@@ -8485,7 +8485,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/ui-components/help/info-viewer/help.model.tpl.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h1>About the Model</h1>\r\n\r\n<p>Mobius v0.7.10</p>"
+module.exports = "<h1>About the Model</h1>\r\n\r\n<p>Mobius v0.7.11</p>"
 
 /***/ }),
 
@@ -9411,16 +9411,22 @@ let TextViewerComponent = class TextViewerComponent extends __WEBPACK_IMPORTED_M
     getType(output) {
         let val = output.getValue();
         if (val) {
-            if (typeof (val) == "object") {
-                let strRep = val.toString();
-                if (strRep !== "[object Object]") {
-                    return strRep.replace(/\n/g, '<br>');
+            try {
+                if (typeof (val) == "object") {
+                    let strRep = val.toString();
+                    if (strRep !== "[object Object]") {
+                        return strRep.replace(/\n/g, '<br>');
+                    }
+                    else {
+                        return __WEBPACK_IMPORTED_MODULE_2_circular_json___default.a.stringify(output.getValue());
+                    }
                 }
-                else {
-                    return __WEBPACK_IMPORTED_MODULE_2_circular_json___default.a.stringify(output.getValue());
-                }
+                return __WEBPACK_IMPORTED_MODULE_2_circular_json___default.a.stringify(output.getValue());
             }
-            return __WEBPACK_IMPORTED_MODULE_2_circular_json___default.a.stringify(output.getValue());
+            catch (ex) {
+                console.log("Error in Text Viewer:", ex);
+                return "error-generating-value";
+            }
         }
         else {
             return "no-value-available";
