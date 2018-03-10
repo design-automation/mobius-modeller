@@ -3,6 +3,7 @@ import {DataProcedure} from "./DataProcedure";
 import {ActionProcedure} from "./ActionProcedure";
 import {IfElseControlProcedure} from "./IfElseControlProcedure";
 import {ForLoopControlProcedure} from "./ForLoopControlProcedure";
+import {FunctionProcedure} from "./FunctionProcedure";
 import {IProcedure} from "./IProcedure";
 
 export class ProcedureFactory{
@@ -21,6 +22,9 @@ export class ProcedureFactory{
 		else if(type == ProcedureTypes.ForLoopControl){
 			return new ForLoopControlProcedure(data);
 		}
+		else if(type == ProcedureTypes.Function){
+			return new FunctionProcedure(data);
+		}
 		else{
 			throw Error("Invalid control");
 		}
@@ -36,6 +40,10 @@ export class ProcedureFactory{
 		}
 		else if (procedureData["_type"] == ProcedureTypes.ElseControl){
 			procedure = new IfElseControlProcedure( ProcedureTypes.ElseControl)
+		}
+		else if(procedureData["_type"] == "Function"){
+			//todo: do something!! 
+			procedure = new FunctionProcedure({node: procedureData["node"], port: procedureData["port"]});
 		}
 		else{
 			procedure = ProcedureFactory.getProcedure(procedureData["_type"]);

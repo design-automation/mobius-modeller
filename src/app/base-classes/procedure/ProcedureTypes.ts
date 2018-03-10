@@ -4,5 +4,6 @@ export enum ProcedureTypes{
 	IfElseControl = "IfElse", 
 	IfControl = "If", 
 	ElseControl = "Else",
-	ForLoopControl = "For Loop"
+	ForLoopControl = "For Loop",
+	Function = "Function"
 }

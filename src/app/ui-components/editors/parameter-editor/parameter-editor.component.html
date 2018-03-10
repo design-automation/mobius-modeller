@@ -32,17 +32,21 @@
 								</span>
 							</div>
 
-							<div class='row'>
+							<div class='row' *ngIf='!inp.isFunction()'>
 								<!--<span class='label'>Type</span>-->
 								<span class='content'>
 									<select (change)="updateType($event.target.value, inp)">
-										         	    <option *ngFor="let x of inputPortOpts" [value]="x" [selected]="inp.getType() == x">{{getInputTypeName(x)}}</option>
-										            </select>
+						         	    <option *ngFor="let x of inputPortOpts" [value]="x" [selected]="inp.getType() == x">{{getInputTypeName(x)}}</option>
+						            </select>
 	
 								</span>
-
 							</div>
-
+	
+							<div class="row" *ngIf='inp.isFunction()'>
+								<span class="content" (click)="addFunctionToProcedure(inp)" matTooltip="Add function to procedure">
+									<!-- <mat-icon>add</mat-icon> --> [add]
+								</span>
+							</div>
 							
 
 							<!-- <div class='row'>

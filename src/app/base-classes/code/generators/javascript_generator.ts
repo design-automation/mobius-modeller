@@ -242,7 +242,7 @@ export class CodeGeneratorJS extends CodeGenerator{
 			 	prodFn = this.generateProcedureCode;
 			}
 
-			if(prod_type == ProcedureTypes.Data){
+			if(prod_type == ProcedureTypes.Data || prod_type == ProcedureTypes.Function){
 				let init: string;
 
 				if( CodeGeneratorJS.existsInNodeVars(nodeVars, procedure.getLeftComponent().expression) == false ){
@@ -256,7 +256,7 @@ export class CodeGeneratorJS extends CodeGenerator{
 				code =  init + procedure.getLeftComponent().expression + " = " + procedure.getRightComponent().expression + ";";
 
 				if(procedure.printToConsole()){
-					code = code + "\n" + "print(" + "\'" + procedure.getLeftComponent().expression + "\', " + procedure.getLeftComponent().expression + ");\n";
+					code = code + "\n" + "__MOBIUS_PRINT__(" + "\'" + procedure.getLeftComponent().expression + "\', " + procedure.getLeftComponent().expression + ");\n";
 				}
 
 			}
@@ -287,12 +287,12 @@ export class CodeGeneratorJS extends CodeGenerator{
 
 				code = init + procedure.getLeftComponent().expression 
 						+ " = " 
-						+ "Modules."
+						+ "__MOBIUS_MODULES__."
 						+ right.module.trim()
 						+ "." + right.fn_name + "( " + paramList.join(",") + " );\n";
 
 				if(procedure.printToConsole()){
-					code = code + "\n" + "print(" + "\'" + procedure.getLeftComponent().expression + "\', " + procedure.getLeftComponent().expression + ");\n";
+					code = code + "\n" + "__MOBIUS_PRINT__(" + "\'" + procedure.getLeftComponent().expression + "\', " + procedure.getLeftComponent().expression + ");\n";
 				}
 
 			}
@@ -368,10 +368,13 @@ export class CodeGeneratorJS extends CodeGenerator{
 		}
 
 		executeNode(node: IGraphNode, params: any, 
-							Modules: IModule[], 
+							__Mobius__Modules__: IModule[], 
 							print: Function): any{
 
 			let prodArr: number[] = [];
+
+			window["__MOBIUS_MODULES__"] = __Mobius__Modules__;
+			window["__MOBIUS_PRINT__"] = print;
 
 			//let gis = this._modules["gis"];
 			let str: string = "(function(){ \
@@ -424,6 +427,8 @@ export class CodeGeneratorJS extends CodeGenerator{
 			
 			prodArr = null; 
 			print = null; 
+			delete window["__MOBIUS_MODULES__"]
+			delete window["__MOBIUS_PRINT__"]
 			return result;//result;// return result of the node
 		}
 

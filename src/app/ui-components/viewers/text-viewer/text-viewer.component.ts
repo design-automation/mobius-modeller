@@ -47,19 +47,25 @@ export class TextViewerComponent extends Viewer implements OnInit {
 		let val = output.getValue();
 		if(val){
 
-			if(typeof(val) == "object"){
+			try{
+				if(typeof(val) == "object"){
 
-				let strRep: string = val.toString();
-				if(strRep !== "[object Object]"){
-					return strRep.replace(/\n/g, '<br>');
-				}
-				else{
-					return CircularJSON.stringify(output.getValue());
+					let strRep: string = val.toString();
+					if(strRep !== "[object Object]"){
+						return strRep.replace(/\n/g, '<br>');
+					}
+					else{
+						return CircularJSON.stringify(output.getValue());
+					}
+
 				}
 
+				return CircularJSON.stringify(output.getValue());
 			}
-
-			return CircularJSON.stringify(output.getValue());
+			catch(ex){
+				console.log("Error in Text Viewer:", ex);
+				return "error-generating-value";
+			}
 		}
 		else{
 			return "no-value-available";

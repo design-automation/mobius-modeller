@@ -97,8 +97,11 @@ export class FlowchartViewerComponent extends Viewer{
   }
 
   addFunctionOutput(node_index){
-    this._nodes[node_index].addFnOutput( this.flowchartService.getCodeGenerator() );
-    this.update();
+    this.flowchartService.disconnectNode(node_index);
+    
+    let node: IGraphNode = this._nodes[node_index];
+    node.addFnOutput( this.flowchartService.getCodeGenerator() );
+    this.flowchartService.update();
   }
 
   //

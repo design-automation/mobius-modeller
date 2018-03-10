@@ -57,6 +57,38 @@
 													</div>
 												</div>
 
+												<!-- template for a function call -->
+												<div *ngIf="prod.data.getType() == 'Function'">
+													<div class='procedure-item'>
+														
+														<input matInput class="tree-input" [style.width.ch]="prod.data.getLeftComponent().expression.length + 4" 
+															[(ngModel)]="prod.data.getLeftComponent().expression" #ctrl="ngModel" required
+															(change)="updateProcedure($event, prod, 'left')" spellcheck="false" list="variable-suggestions">
+
+														<span class="equal">=</span>
+
+														<span class="module">{{prod.data.getFunctionName()}}</span>
+														
+														(<span *ngIf="prod.data.getRightComponent().params.length > 0">
+															<div class="param-container" *ngFor="let p of prod.data.updateParams();let i=index;">
+																<input matInput class="tree-input" 
+																 [(ngModel)]="prod.data.getRightComponent().params[i]" #ctrl="ngModel"
+																 [style.width.ch]="p.length + 5" 
+																 (change)="updateProcedure($event, prod, 'right')"
+																 required
+																 list="variable-suggestions">
+
+																 <span *ngIf="i < prod.data.updateParams().length - 1"> , </span>
+															</div>
+														</span>)
+														:::&nbsp;&nbsp;&nbsp;
+														<select (change)="updateProcedure($event, prod, 'right')" [(ngModel)]="prod.data.getRightComponent().category" #ctrl="ngModel">
+											         	    <option *ngFor="let otp of prod.data.getOutputs()" [value]="otp">{{otp}}</option>
+											            </select> 
+
+													</div>
+												</div>
+
 												<div *ngIf="prod.data.getType() == 'IfElse'">
 													<div class='procedure-item'>
 														<span>if-else</span>
@@ -130,6 +162,7 @@
 														
 													</div>
 												</div>
+
 											</div>
 
 											<div class = "seg2" *ngIf="prod.data.getType() != 'Else' && prod.data.getType() != 'If'">
@@ -153,6 +186,7 @@
 					    					    <!-- <button (click)="disableProcedure(prod, $event)">Disable</button>
 					    					    <button (click)="go($event)">Copy</button> -->
 						    				</div>
+
 						    			</div>
 								  </ng-template>
 						</tree-root> 

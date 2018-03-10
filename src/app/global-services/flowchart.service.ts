@@ -453,26 +453,13 @@ export class FlowchartService {
         return;
       }
 
-      // dont remove previous edges for outputs
-      let output: IPort = this._flowchart.getNodeByIndex(outputAddress[0]).getOutputByIndex(outputAddress[1]);
-      // if (output.isConnected()){
-      //   this._flowchart.deleteEdges(this._flowchart.disconnectEdgesWithPortIndex(outputAddress[0], outputAddress[1], "output"));
-      // }
-
-      // remove previous edges for inputs
-      let input = this._flowchart.getNodeByIndex(inputAddress[0]).getInputByIndex(inputAddress[1]);
-      if (input.isConnected()){
-        this._flowchart.deleteEdges(this._flowchart.disconnectEdgesWithPortIndex(inputAddress[0], inputAddress[1], "input"));
+      try{
+        this._flowchart.addEdge(outputAddress, inputAddress);
+        this.consoleService.addMessage("New Edge was added");
       }
-
-      //
-      this._flowchart.addEdge(outputAddress, inputAddress);
-      input.setComputedValue({port: outputAddress});
-      output.connect();
-      input.connect();
-
-      // print message to console
-      this.consoleService.addMessage("New Edge was added");
+      catch(ex){
+        this.consoleService.addMessage(ex, EConsoleMessageType.Error);
+      }
 
       this.update();
   }
@@ -769,7 +756,5 @@ export class FlowchartService {
           document.body.removeChild(link);
       }
   }
-
-
 
 }

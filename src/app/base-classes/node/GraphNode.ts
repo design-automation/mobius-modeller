@@ -76,7 +76,7 @@ export class GraphNode implements IGraphNode{
 		this._type = this._id;
 	}
 
-	update(nodeData: IGraphNode): void{
+	update(nodeData: IGraphNode, nodeMap?: any): void{
 
 		if(nodeData["lib"] == undefined){
 			// loading from file
@@ -110,14 +110,56 @@ export class GraphNode implements IGraphNode{
 		for( let output_index in outputs ){
 			let output_data: OutputPort = outputs[output_index];
 			let output: OutputPort = new OutputPort(output_data["_name"]);
+
 			output.update(output_data, "out");
 			this._outputs.push(output);
 		}
 
+		// replace node function
+		let self = this;
+		let replace = function (prodD){
+			let node_id = prodD["node"]["_id"];
+			let actual_node = nodeMap[node_id];
+			console.log("replace");
+			if(actual_node){
+				prodD["node"] = actual_node;
+			}
+			else{
+				throw Error("Higher order not found");
+			}
+
+			let portId = prodD["port"]["_id"];
+			for(let i=0; i < self._inputs.length; i++){
+				if(self._inputs[i]["_id"] == portId){
+					prodD["port"] = self._inputs[i]; 
+				}
+			}
+		}
+		function checkAndReplaceChildren(procedure){
+			if(procedure["_type"] == "Function"){
+				// update with the actual node
+				replace(procedure);
+			}
+			else{
+				if(procedure.children && procedure["children"].length){
+					for(let i=0; i < procedure["children"].length; i++){
+						let childData = procedure["children"][i];
+						checkAndReplaceChildren(childData);
+					}
+				}
+			}
+		}
+		
 		// add procedure
 		let procedureArr: IProcedure[] = nodeData["_procedure"];
 		for( let prodIndex in procedureArr ){
-			let procedure: IProcedure = ProcedureFactory.getProcedureFromData(procedureArr[prodIndex], undefined);
+
+			let prodD = procedureArr[prodIndex];
+			let procedure: IProcedure;
+			
+			checkAndReplaceChildren(prodD);				
+			procedure = ProcedureFactory.getProcedureFromData(prodD, undefined);
+
 			this._procedure.push(procedure);
 		}
 
@@ -170,8 +212,7 @@ export class GraphNode implements IGraphNode{
 		let index_output: number = this.addOutput(this.getName() + "_function");
 		let fnOutput: OutputPort = this.getOutputByIndex(index_output - 1);
 
-		let node_code: string =  code_generator.getNodeCode(this);
-		fnOutput.setDefaultValue( node_code );
+		fnOutput.setDefaultValue( this.getFunction(code_generator) );
 
 		fnOutput.setIsFunction();
 
@@ -327,7 +368,27 @@ export class GraphNode implements IGraphNode{
 	execute(code_generator: ICodeGenerator, modules: IModule[], print: Function): void{
 
 		let params: any[] = [];
-		this.getInputs().map(function(i){ params[i.getName()] = i.getValue(); })
+		this.getInputs().map(function(i){ 
+			if(i.isFunction()){
+				let oNode: IGraphNode = i.getFnValue();
+				let codeString: string = code_generator.getNodeCode(oNode);
+
+				// converts string to functin
+				let fn_def = Function("return " + codeString)();
+
+				// define a new function whicih has Modules in its scope
+				// extremely possible memory leak
+				/*let wrapper_fn = function(){
+					let value = fn_def.bind({Modules: modules}).apply(arguments);
+					return value;
+				}*/
+
+				params[i.getName()] = fn_def;
+			}
+			else{
+				params[i.getName()] = i.getValue(); 
+			}
+		});
 
 		let self = this;
 		this.getOutputs().map(function(o){
@@ -390,5 +451,14 @@ export class GraphNode implements IGraphNode{
 		});
 
 		return varList;
+	}
+
+	getFunction(code_generator: ICodeGenerator): string{
+		let node_code: string =  code_generator.getNodeCode(this);
+		return node_code;
+	}
+
+	addFunctionToProcedure(code_generator: ICodeGenerator): void{
+		let node_code: string = this.getFunction(code_generator);
 	}
 }

@@ -42,6 +42,13 @@ export class ProcedureEditorComponent extends Viewer implements OnInit{
 		this._node = this.flowchartService.getSelectedNode();
 		this._procedureArr = this._node.getProcedure();	
 		this._variableList = this._node.getVariableList();
+
+		for(let i=0; i < this._procedureArr.length; i++){
+			let prod = this._procedureArr[i];
+			if(prod.getType() == ProcedureTypes.Function){
+				this.updateFunctionProd(prod);
+			}
+		}
 	}
 
 	update(message: string){
@@ -132,13 +139,30 @@ export class ProcedureEditorComponent extends Viewer implements OnInit{
 
 	}
 
+	updateFunctionProd(prod: any){
+			let rightC = prod.getRightComponent();
+			let reqParams = prod.updateParams().length;
+
+
+			if(rightC.params.length > reqParams){
+				rightC.params = rightC.params.slice(0, reqParams);
+			}
+
+			let paramStr = rightC.params.join(",");
+			let expr: string = prod.getFunctionName() + "(" + paramStr + ")" + "." + rightC.category;
+			rightC.expression = expr;
+	}
+
 
 	updateProcedure($event: Event, prod: any, property: string){
 
 		// todo: change this string attachment!
 		if(property == 'left' && prod.data._type !== "If"){
-			prod.data.getLeftComponent().expression = 
-				prod.data.getLeftComponent().expression.replace(/[^\w\[\]]/gi, '');
+			prod.data.getLeftComponent().expression = prod.data.getLeftComponent().expression.replace(/[^\w\[\]]/gi, '');
+		}
+
+		if(property == 'right' && prod.data._type == "Function"){
+			this.updateFunctionProd(prod.data);
 		}
 
 		this._variableList = this._node.getVariableList();
