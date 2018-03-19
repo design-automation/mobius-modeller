@@ -73,7 +73,7 @@
 															<div class="param-container" *ngFor="let p of prod.data.updateParams();let i=index;">
 																<input matInput class="tree-input" 
 																 [(ngModel)]="prod.data.getRightComponent().params[i]" #ctrl="ngModel"
-																 [style.width.ch]="p.length + 5" 
+																 [style.width.ch]="prod.data.getRightComponent().params[i] ? (prod.data.getRightComponent().params[i].length + 5) : 10" 
 																 (change)="updateProcedure($event, prod, 'right')"
 																 required
 																 list="variable-suggestions">
