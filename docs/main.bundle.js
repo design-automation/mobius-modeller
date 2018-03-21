@@ -775,6 +775,8 @@ class CodeGeneratorJS extends __WEBPACK_IMPORTED_MODULE_0__CodeGenerator__["a" /
         }
         catch (ex) {
             node.hasError();
+            // Unexpected Identifier
+            // Unexpected token
             let prodWithError = prodArr.pop();
             let markError = function (prod, id) {
                 if (prod["id"] && id && prod["id"] == id) {
@@ -798,7 +800,16 @@ class CodeGeneratorJS extends __WEBPACK_IMPORTED_MODULE_0__CodeGenerator__["a" /
                     }
                 });
             }
-            let error = new Error(ex);
+            let error;
+            if (ex.toString().indexOf("Unexpected Identifier") > -1) {
+                error = new Error("Unexpected Identifier error. Did you declare everything? Check that your strings are enclosed in quotes (\")");
+            }
+            else if (ex.toString().indexOf("Unexpected token") > -1) {
+                error = new Error("Unexpected token error. Check for stray spaces or reserved keywords?");
+            }
+            else {
+                error = new Error(ex);
+            }
             throw error;
         }
         prodArr = null;
@@ -9136,7 +9147,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/ui-components/help/info-viewer/help.model.tpl.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h1>About the Model</h1>\r\n\r\n<p>Mobius v0.7.16</p>"
+module.exports = "<h1>About the Model</h1>\r\n\r\n<p>Mobius v0.7.18</p>"
 
 /***/ }),
 
