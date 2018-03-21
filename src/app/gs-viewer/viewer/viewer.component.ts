@@ -12,7 +12,7 @@ import {NgxPaginationModule} from 'ngx-pagination';
   styleUrls: ['./viewer.component.css']
 })
 export class ViewerComponent extends DataSubscriber implements OnInit {
-
+  
   _model: gs.IModel;
   scene: THREE.Scene;
   renderer: THREE.WebGLRenderer;
@@ -42,10 +42,14 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
   sphere:THREE.Mesh;
   center:THREE.Vector3;
   seVisible:boolean=false;
+  imVisible:boolean=false;
   SelectVisible:string='Objs';
   settingVisible:boolean=false;
   LineNo:number=0;
   clickatt:Array<any>;
+  _updatemodel:boolean=true;
+  text:string;
+  _modelshow:boolean=true;
 
   constructor(injector: Injector, myElement: ElementRef) { 
     super(injector);
@@ -85,9 +89,11 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
     this.raycaster = new THREE.Raycaster();
     this.raycaster.linePrecision=0.05;
     this.scenechildren=this.dataService.getscenechild();
+    this.dataService.SelectVisible=this.SelectVisible;
 
-    var geometry = new THREE.SphereGeometry( 0.3 );
-    var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+    var geometry = new THREE.SphereGeometry( 0.1 );
+    //var geometry = new THREE.CircleGeometry( 5 );
+    var material = new THREE.MeshBasicMaterial( { color: 0x00ff00,transparent:true,opacity:0.5 } );
     this.sphere = new THREE.Mesh( geometry, material );
     this.sphere.visible = false;
     this.sphere.name="sphereInter";
@@ -120,10 +126,8 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
       var currObj=self.scenechildren[i];
       if(self.dataService.getSelectingIndex(currObj.uuid)<0) {
         if ( intersects[ 0 ]!=undefined&&intersects[ 0 ].object.uuid==currObj.uuid) {
-          //if(self.seVisible===true){
-            self.sphere.visible = true;
-            self.sphere.position.copy( intersects[ 0 ].point );
-          //}
+          self.sphere.visible = true;
+          self.sphere.position.copy( intersects[ 0 ].point );
         } else {
           self.sphere.visible = false;
         }
@@ -132,7 +136,6 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
     for(var i=0; i<self.textlabels.length; i++) {
       self.textlabels[i].updatePosition();
     }
-    //self.onResize();
     if(self.dataService.clickshow!==undefined&&self.clickatt!==self.dataService.clickshow){
       self.clickatt=self.dataService.clickshow;
       self.clickshow();
@@ -148,8 +151,8 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
       self.clickatt=self.dataService.clickshow;
       self.clickshow();
     }
+    //self.onDocumentMouseDown();
     self.renderer.render( self.scene, self.camera );
-    //requestAnimationFrame(self.render);
   }
 
   /// clears all children from the scene
@@ -204,9 +207,12 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
     this._model = this.dataService.getGsModel(); 
     if( !this._model || !this.scene ){
       console.warn("Model or Scene not defined.");
+      this._modelshow=false;
       return;
     }
     try{
+      this._updatemodel=true;
+      this._modelshow=true;
       this.scene_and_maps= this.dataService.getscememaps();
       const scene_data = this.scene_and_maps.scene;
       this.clearScene();
@@ -214,6 +220,7 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
       // loading data
       let objectData = loader.parse( scene_data );
       this.seVisible=false;
+      this.imVisible=false;
       this.LineNo=0;
       // preprocessing
       if( objectData.children!==undefined){
@@ -252,9 +259,12 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
       // adding the object to the scene
       this.scene.add(objectData);  
       this.render(this);
+      this.dataService.getpoints=[];
     }
     catch(ex){
       console.error("Error displaying model:", ex);
+      this._updatemodel=false;
+      this.text=ex;
     }
   }
 
@@ -322,11 +332,11 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
     event.stopPropagation();
     this.SelectVisible="Objs";
     this.dataService.visible="Objs";
-    document.getElementById("object").style.color=null;
-    document.getElementById("face").style.color=null;
-    document.getElementById("wire").style.color=null;
-    document.getElementById("edge").style.color=null;
-    document.getElementById("vertice").style.color=null;
+    document.getElementById("gsv-object").style.color=null;
+    document.getElementById("gsv-face").style.color=null;
+    document.getElementById("gsv-wire").style.color=null;
+    document.getElementById("gsv-edge").style.color=null;
+    document.getElementById("gsv-vertice").style.color=null;
     var scenechildren=[];
     var children=this.getchildren();
     var objsvisibel:boolean=true;
@@ -352,17 +362,18 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
       if(children[i].name==="All vertices") children[i]["material"].opacity=0;
     }
     this.dataService.addscenechild(scenechildren);
+    this.dataService.SelectVisible=this.SelectVisible;
   }
 
   faceselect(SelectVisible){
     event.stopPropagation();
     this.SelectVisible="Faces";
     this.dataService.visible="Faces";
-    document.getElementById("object").style.color="grey";
-    document.getElementById("face").style.color=null;
-    document.getElementById("wire").style.color=null;
-    document.getElementById("edge").style.color=null;
-    document.getElementById("vertice").style.color=null;
+    document.getElementById("gsv-object").style.color="grey";
+    document.getElementById("gsv-face").style.color=null;
+    document.getElementById("gsv-wire").style.color=null;
+    document.getElementById("gsv-edge").style.color=null;
+    document.getElementById("gsv-vertice").style.color=null;
     var scenechildren=[];
     var children=this.getchildren();
     for(var i=0;i<children.length;i++){
@@ -376,16 +387,25 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
       }
     }
     this.dataService.addscenechild(scenechildren);
+    this.dataService.SelectVisible=this.SelectVisible;
   }
 
   wireselect(SelectVisible){
     event.stopPropagation();
     this.SelectVisible="Wires";
-    document.getElementById("object").style.color="grey";
-    document.getElementById("face").style.color="grey";
-    document.getElementById("wire").style.color=null;
-    document.getElementById("edge").style.color=null;
-    document.getElementById("vertice").style.color=null;
+    var lineprecision=this.raycaster.linePrecision;
+    for(var i=0;i<this.scene.children.length;i++){
+      if(this.scene.children[i].name==="sphereInter"){
+        var geometry = new THREE.SphereGeometry( lineprecision*2);
+        this.scene.children[i]["geometry"]=geometry;
+        this.renderer.render(this.scene, this.camera);
+      }
+    }
+    document.getElementById("gsv-object").style.color="grey";
+    document.getElementById("gsv-face").style.color="grey";
+    document.getElementById("gsv-wire").style.color=null;
+    document.getElementById("gsv-edge").style.color=null;
+    document.getElementById("gsv-vertice").style.color=null;
     var scenechildren=[];
     var children=this.getchildren();
     for(var i=0;i<children.length;i++){
@@ -398,16 +418,25 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
       }
     }
     this.dataService.addscenechild(scenechildren);
+    this.dataService.SelectVisible=this.SelectVisible;
   }
 
   edgeselect(SelectVisible){
     event.stopPropagation();
     this.SelectVisible="Edges";
-    document.getElementById("object").style.color="grey";
-    document.getElementById("face").style.color="grey";
-    document.getElementById("wire").style.color="grey";
-    document.getElementById("edge").style.color=null;
-    document.getElementById("vertice").style.color=null;
+    var lineprecision=this.raycaster.linePrecision;
+    for(var i=0;i<this.scene.children.length;i++){
+      if(this.scene.children[i].name==="sphereInter"){
+        var geometry = new THREE.SphereGeometry( lineprecision*2);
+        this.scene.children[i]["geometry"]=geometry;
+        this.renderer.render(this.scene, this.camera);
+      }
+    }
+    document.getElementById("gsv-object").style.color="grey";
+    document.getElementById("gsv-face").style.color="grey";
+    document.getElementById("gsv-wire").style.color="grey";
+    document.getElementById("gsv-edge").style.color=null;
+    document.getElementById("gsv-vertice").style.color=null;
     var scenechildren=[];
     var children=this.getchildren();
     var edgevisible:boolean=true;
@@ -433,20 +462,65 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
       if(children[i].name==="All objs"||children[i].name==="All faces") children[i]["material"].opacity=0.1;
       if(children[i].name==="All wires") children[i]["material"].opacity=0.1;
       if(children[i].name==="All vertices") children[i]["material"].opacity=0.1;
-
-      
     }
     this.dataService.addscenechild(scenechildren);
+    this.dataService.SelectVisible=this.SelectVisible;
   }
 
   verticeselect(SelectVisible){
     event.stopPropagation();
     this.SelectVisible="Vertices";
-    document.getElementById("object").style.color="grey";
-    document.getElementById("face").style.color="grey";
-    document.getElementById("wire").style.color="grey";
-    document.getElementById("edge").style.color="grey";
-    document.getElementById("vertice").style.color=null;
+    var pointradius=this.dataService.pointradius;;
+    for(var i=0;i<this.scene.children.length;i++){
+      if(this.scene.children[i].name==="sphereInter"){
+        var geometry = new THREE.SphereGeometry( pointradius/4);
+        this.scene.children[i]["geometry"]=geometry;
+        this.renderer.render(this.scene, this.camera);
+      }
+    }
+    document.getElementById("gsv-object").style.color="grey";
+    document.getElementById("gsv-face").style.color="grey";
+    document.getElementById("gsv-wire").style.color="grey";
+    document.getElementById("gsv-edge").style.color="grey";
+    document.getElementById("gsv-vertice").style.color=null;
+    var scenechildren=[];
+    var children=this.getchildren();
+    for(var i=0;i<children.length;i++){
+      if(children[i].name==="All objs"||children[i].name==="All faces") children[i]["material"].opacity=0.1;
+      if(children[i].name==="All wires") children[i]["material"].opacity=0.1;
+      if(children[i].name==="All edges"||children[i].name==="Other lines") {children[i]["material"].opacity=0.1;children[i]["material"].color=this.basicMat;}
+      /*if(children[i].name==="All vertices"){
+        scenechildren.push(children[i]);
+      }*/
+      if(children[i].name==="All points"){
+        scenechildren.push(children[i]);
+        children[i]["material"].opacity=1;
+      }
+    }
+    this.dataService.addscenechild(scenechildren);
+    this.dataService.SelectVisible=this.SelectVisible;
+  }
+
+  pointselect(SelectVisible){
+    /*event.stopPropagation();
+    this.verticeselect("Vertices");
+    this.SelectVisible="Points";
+    this.dataService.SelectVisible=this.SelectVisible;*/
+    event.stopPropagation();
+    this.SelectVisible="Points";
+    var pointradius=this.dataService.pointradius;;
+    for(var i=0;i<this.scene.children.length;i++){
+      if(this.scene.children[i].name==="sphereInter"){
+        var geometry = new THREE.SphereGeometry( pointradius/4);
+        this.scene.children[i]["geometry"]=geometry;
+        this.renderer.render(this.scene, this.camera);
+      }
+    }
+    document.getElementById("gsv-object").style.color="grey";
+    document.getElementById("gsv-face").style.color="grey";
+    document.getElementById("gsv-wire").style.color="grey";
+    document.getElementById("gsv-edge").style.color="grey";
+    document.getElementById("gsv-vertice").style.color=null;
     var scenechildren=[];
     var children=this.getchildren();
     for(var i=0;i<children.length;i++){
@@ -461,12 +535,7 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
       }
     }
     this.dataService.addscenechild(scenechildren);
-  }
-
-  pointselect(SelectVisible){
-    event.stopPropagation();
-    this.verticeselect("Vertices");
-    this.SelectVisible="Points";
+    this.dataService.SelectVisible=this.SelectVisible;
   }
 
   //
@@ -543,7 +612,23 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
         const index:number=Math.floor(intersects[ 0 ].faceIndex);
         const path: gs.ITopoPathData = this.scene_and_maps.faces_map.get(index);
         const face: gs.IFace = this._model.getGeom().getTopo(path) as gs.IFace;
-        const label: string = "o"+path.id;
+        var label: string ="";
+        const id: string = "o"+path.id;
+        var getpoints:Array<any>;
+        var getpoints=this.dataService.getpoints;
+        var pointname=this.dataService.pointname;
+        if(getpoints!==undefined&&getpoints.length!==0){
+          for(var i=0;i<getpoints.length;i++){
+            if(id===getpoints[i].label){
+              if(this.dataService.checkobj===true) label= id;
+              for(var n=0;n<pointname.length;n++){
+                if(this.dataService.checkname[n]===true){
+                  label=label.concat('<br/>',pointname[n],":",getpoints[i][n]);
+                }
+              }
+            }
+          }
+        }
         const label_xyz: gs.XYZ = face.getLabelCentroid();
         const faces: gs.IFace[]= face.getObj().getFaces();
         if(this.textlabels.length===0) {
@@ -567,7 +652,7 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
             this.scene.add(mesh);*/
             var material=new THREE.LineBasicMaterial( { color:0x00ff00,side:THREE.DoubleSide} );
             const line = new THREE.Line( geometry, material);
-            line.userData.id=label;
+            line.userData.id=id;
             line["material"].needsUpdate=true;
             line.name="selects";
             this.scene.add(line);
@@ -575,14 +660,14 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
            this.addTextLabel(label,label_xyz, label,path,"All objs");
         }else{
           for(var j=0;j<this.scene.children.length;j++){
-            if(label===this.scene.children[j].userData.id){
+            if(id===this.scene.children[j].userData.id){
               select=true;
               this.scene.remove(this.scene.children[j]);
               j=j-1;
             }
           }
           for(var j=0;j<this.textlabels.length;j++){
-            if(label===this.textlabels[j]["id"]){
+            if(id===this.textlabels[j]["id"]){
               select=true;
               this.removeTextLabel(this.textlabels[j]["id"]);
               j=j-1;
@@ -596,25 +681,14 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
               for(var i=0;i<verts_xyz.length;i++){
                 geometry.vertices.push(new THREE.Vector3(verts_xyz[i][0],verts_xyz[i][1],verts_xyz[i][2]));
               }
-              if(verts.length===4){
-                geometry.faces.push(new THREE.Face3(0,2,1));
-                geometry.faces.push(new THREE.Face3(0,3,2));
-              }else if(verts.length===3){
-                geometry.faces.push(new THREE.Face3(0,2,1));
-              }
-              /*var mesh=new THREE.Mesh( geometry, new THREE.MeshPhongMaterial( { color:0x00ff00,side:THREE.DoubleSide} ));
-              mesh.userData.id=label;
-              mesh["geometry"].computeVertexNormals();
-              mesh.name="selects";
-              this.scene.add(mesh);*/
               var material=new THREE.LineBasicMaterial( { color:0x00ff00,side:THREE.DoubleSide} );
               const line = new THREE.Line( geometry, material);
-              line.userData.id=label;
+              line.userData.id=id;
               line["material"].needsUpdate=true;
               line.name="selects";
               this.scene.add(line);
             }
-            this.addTextLabel(label,label_xyz, label,path,"All objs");
+            this.addTextLabel(label,label_xyz, id,path,"All objs");
           }
         }
 
@@ -624,7 +698,22 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
         const index:number=Math.floor(intersects[ 0 ].faceIndex);
         const path: gs.ITopoPathData = this.scene_and_maps.faces_map.get(index);
         const face: gs.IFace = this._model.getGeom().getTopo(path) as gs.IFace;
-        const label: string = face.getLabel();
+        var label: string="";
+        var getpoints:Array<any>;
+        var getpoints=this.dataService.getpoints;
+        var pointname=this.dataService.pointname;
+        if(getpoints!==undefined&&getpoints.length!==0){
+          for(var i=0;i<getpoints.length;i++){
+            if(face.getLabel()===getpoints[i].label){
+              for(var n=0;n<pointname.length;n++){
+                if(this.dataService.checkface===true) label= face.getLabel();
+                if(this.dataService.checkname[n]===true){
+                  label=label.concat('<br/>',pointname[n],":",getpoints[i][n]);
+                }
+              }
+            }
+          }
+        }
         const label_xyz: gs.XYZ = face.getLabelCentroid();
         const verts: gs.IVertex[] = face.getVertices();
         const verts_xyz: gs.XYZ[] = verts.map((v) => v.getPoint().getPosition());
@@ -633,37 +722,22 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
           for(var i=0;i<verts_xyz.length;i++){
             geometry.vertices.push(new THREE.Vector3(verts_xyz[i][0],verts_xyz[i][1],verts_xyz[i][2]));
           }
-          /*if(verts.length===4){
-            geometry.faces.push(new THREE.Face3(0,2,1));
-            geometry.faces.push(new THREE.Face3(0,3,2));
-          }else if(verts.length===3){
-            geometry.faces.push(new THREE.Face3(0,2,1));
-          }
-          for(var i=2;i<verts.length;i++){
-            geometry.faces.push(new THREE.Face3(0,2,1));
-          }
-          var mesh=new THREE.Mesh( geometry, new THREE.MeshPhongMaterial( { color:0x00ff00,side:THREE.DoubleSide} ));
-          mesh.userData.id=label;
-          mesh["geometry"].computeVertexNormals();
-          mesh.name="selects";
-          this.scene.add(mesh);*/
           var material=new THREE.LineBasicMaterial( { color:0x00ff00,side:THREE.DoubleSide} );
           const line = new THREE.Line( geometry, material);
-          line.userData.id=label;
+          line.userData.id=face.getLabel();
           line["material"].needsUpdate=true;
           line.name="selects";
           this.scene.add(line);
-          this.addTextLabel(label,label_xyz, label,path, "All faces");
+          this.addTextLabel(label,label_xyz, face.getLabel(),path, "All faces");
         }else{
           for(var j=0;j<this.scene.children.length;j++){
-
-            if(label===this.scene.children[j].userData.id){
+            if(face.getLabel()===this.scene.children[j].userData.id){
               select=true;
               this.scene.remove(this.scene.children[j]);
             }
           }
           for(var j=0;j<this.textlabels.length;j++){
-            if(label===this.textlabels[j]["id"]){
+            if(face.getLabel()===this.textlabels[j]["id"]){
               select=true;
               this.removeTextLabel(this.textlabels[j]["id"]);
             }
@@ -673,24 +747,13 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
             for(var i=0;i<verts_xyz.length;i++){
               geometry.vertices.push(new THREE.Vector3(verts_xyz[i][0],verts_xyz[i][1],verts_xyz[i][2]));
             }
-            if(verts.length===4){
-            geometry.faces.push(new THREE.Face3(0,2,1));
-            geometry.faces.push(new THREE.Face3(0,3,2));
-            }else if(verts.length===3){
-              geometry.faces.push(new THREE.Face3(0,2,1));
-            }
-            /*var mesh=new THREE.Mesh( geometry, new THREE.MeshPhongMaterial( { color:0x00ff00,side:THREE.DoubleSide} ));
-            mesh.userData.id=label;
-            mesh["geometry"].computeVertexNormals();
-            mesh.name="selects";
-            this.scene.add(mesh);*/
             var material=new THREE.LineBasicMaterial( { color:0x00ff00,side:THREE.DoubleSide} );
             const line = new THREE.Line( geometry, material);
-            line.userData.id=label;
+            line.userData.id=face.getLabel();
             line["material"].needsUpdate=true;
             line.name="selects";
             this.scene.add(line);
-            this.addTextLabel(label,label_xyz,label,path, "All faces");
+            this.addTextLabel(label,label_xyz,face.getLabel(),path, "All faces");
           }
         }
       }
@@ -750,14 +813,31 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
           var path: gs.ITopoPathData = this.scene_and_maps.edges_map.get(index);
           var edge: gs.IEdge = this._model.getGeom().getTopo(path) as gs.IEdge;
           var id: string = edge.getLabel();
-          label=id;
+          var label_show=id;
           for(var i=1;i<intersects.length;i++){
             if(intersects[0].distance===intersects[i].distance){
               index=Math.floor(intersects[ i ].index/2);
               path = this.scene_and_maps.edges_map.get(index);
               edge= this._model.getGeom().getTopo(path) as gs.IEdge;
               id=edge.getLabel();
-              if(label!==id) label=label+"<br/>"+id;
+              if(label_show!==id) label_show=label_show+"<br/>"+id;
+            }
+          }
+          var getpoints:Array<any>;
+          var getpoints=this.dataService.getpoints;
+          var pointname=this.dataService.pointname;
+          if(getpoints!==undefined&&getpoints.length!==0){
+            for(var i=0;i<getpoints.length;i++){
+              if(edge.getLabel()===getpoints[i].label){
+                if(this.dataService.checkedgeid===true) {
+                  label=label_show;
+                }
+                for(var n=0;n<pointname.length;n++){
+                  if(this.dataService.checkname[n]===true){
+                    label=label.concat('<br/>',pointname[n],":",getpoints[i][n]);
+                  }
+                }
+              }
             }
           }
           const label_xyz: gs.XYZ = edge.getLabelCentroid();
@@ -770,20 +850,20 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
             }
             var material=new THREE.LineBasicMaterial( { color:0x00ff00,side:THREE.DoubleSide} );
             const line = new THREE.Line( geometry, material);
-            line.userData.id=label;
+            line.userData.id=edge.getLabel();
             line["material"].needsUpdate=true;
             line.name="selects";
             this.scene.add(line);
-            this.addTextLabel(label,label_xyz, label,path,"All edges");
+            this.addTextLabel(label,label_xyz, edge.getLabel(),path,"All edges");
           }else{
             for(var j=0;j<this.scene.children.length;j++){
-              if(label===this.scene.children[j].userData.id){
+              if(edge.getLabel()===this.scene.children[j].userData.id){
                 select=true;
                 this.scene.remove(this.scene.children[j]);
               }
             }
             for(var j=0;j<this.textlabels.length;j++){
-              if(label===this.textlabels[j]["id"]){
+              if(edge.getLabel()===this.textlabels[j]["id"]){
                 select=true;
                 this.removeTextLabel(this.textlabels[j]["id"]);
               }
@@ -795,10 +875,10 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
               }
               var material= new THREE.LineBasicMaterial( { color:0x00ff00,side:THREE.DoubleSide} );
               const line = new THREE.Line( geometry, material );
-              line.userData.id=label;
+              line.userData.id=edge.getLabel();
               line.name="selects";
               this.scene.add(line);
-              this.addTextLabel(label,label_xyz, label,path,"All edges");
+              this.addTextLabel(label,label_xyz, edge.getLabel(),path,"All edges");
             }
           }
         }
@@ -863,7 +943,6 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
           }
         }
       }
-
       if(this.scenechildren[0].name === "All points"){
         var distance:number=intersects[ 0 ].distanceToRay;
         var index:number=intersects[ 0 ].index;
@@ -876,27 +955,57 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
         var attributevertix=this.dataService.getattrvertix();
         var id:string=this._model.getGeom().getAllPoints()[index].getLabel();
         var label:string="";
-        if(this.SelectVisible=="Points"){
-          label=id;
-          for(var i=1;i<intersects.length;i++){
-            if(intersects[0].distance===intersects[i].distance){
-              var index:number=intersects[ i ].index;
-              var attributevertix=this.dataService.getattrvertix();
-              var id:string=this._model.getGeom().getAllPoints()[index].getLabel();
-              if(label!==id) label=label+"<br/>"+id;
+        var getpoints:Array<any>;
+        var getpoints=this.dataService.getpoints;
+        var pointname=this.dataService.pointname;
+        if(this.SelectVisible==="Points"){
+          if(getpoints!==undefined&&getpoints.length!==0){
+            for(var i=0;i<getpoints.length;i++){
+              if(id===getpoints[i].id){
+                if(this.dataService.checkpointid===true) {
+                  label=id;
+                  for(var j=1;j<intersects.length;j++){
+                    if(intersects[0].distance===intersects[j].distance){
+                      var index:number=intersects[ j ].index;
+                      var id:string=this._model.getGeom().getAllPoints()[index].getLabel();
+                      if(label!==id) label=label+"<br/>"+id;
+                    }
+                  }
+                }
+                if(this.dataService.checkX===true) label=label.concat('<br/>',"X:",getpoints[i].x);
+                if(this.dataService.checkY===true) label=label.concat('<br/>',"Y:",getpoints[i].y);
+                if(this.dataService.checkZ===true) label=label.concat('<br/>',"Z:",getpoints[i].z);
+                for(var n=0;n<pointname.length;n++){
+                  if(this.dataService.checkname[n]===true){
+                    label=label.concat('<br/>',pointname[n],":",getpoints[i][n]);
+                  }
+                }
+              }
             }
           }
-        }else{
-          for(var i=0;i<attributevertix.length;i++){
-            if(id===attributevertix[i].pointid){
-              var str:string=attributevertix[i].vertixlabel;
-              if(label==="") label=str;
-              else {if(label!==id) label=label+"<br/>"+str;}
+        }
+        if(this.SelectVisible==="Vertices"){
+          var pointid:string="";
+          if(getpoints!==undefined&&getpoints.length!==0){
+            for(var i=0;i<attributevertix.length;i++){
+              if(id===attributevertix[i].pointid){
+                pointid=id;
+                if(this.dataService.checkvertixid===true) {
+                  if(label==="") label=attributevertix[i].vertixlabel;
+                  else {label=label+"<br/>"+attributevertix[i].vertixlabel;}
+                }
+              }
+            }
+            if(this.dataService.pointid===true) {
+              if(pointid!==""){
+                if(label==="") label=id;
+                else {label=label+"<br/>"+id}
+              }
             }
           }
         }
         const verts_xyz: gs.XYZ = this._model.getGeom().getAllPoints()[index].getPosition();//vertices.getPoint().getPosition();
-        if(this.textlabels.length===0&&label!=="") {
+        if(this.textlabels.length===0) {
           var geometry=new THREE.Geometry();
           geometry.vertices.push(new THREE.Vector3(verts_xyz[0],verts_xyz[1],verts_xyz[2]));
           var pointsmaterial=new THREE.PointsMaterial( { color:0x00ff00,size:1} );
@@ -923,7 +1032,7 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
                 this.removeTextLabel(this.textlabels[j]["id"]);
               }
           }
-          if(select==false&&label!==""){
+          if(select==false){
             var geometry=new THREE.Geometry();
             geometry.vertices.push(new THREE.Vector3(verts_xyz[0],verts_xyz[1],verts_xyz[2]));
             var pointsmaterial=new THREE.PointsMaterial( { color:0x00ff00,size:1} );
@@ -938,8 +1047,95 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
             this.addTextLabel(label,verts_xyz, id,id,"All points");
           }
         }
-
       }
+
+      /*if(this.scenechildren[0].name === "All vertices"){
+        var distance:number=intersects[ 0 ].distanceToRay;
+        var index:number=intersects[ 0 ].index;
+        for(var i=1;i<intersects.length;i++){
+          if(distance>intersects[ i ].distanceToRay){
+            distance=intersects[ i ].distanceToRay;
+            index=intersects[ i ].index;
+          }
+        }
+        var id:string=this._model.getGeom().getAllPoints()[index].getLabel();
+        var label:string="";
+        var getpoints:Array<any>;
+        var getpoints=this.dataService.getpoints;
+        var pointname=this.dataService.pointname;
+
+        /*var path: gs.ITopoPathData = this.scene_and_maps.vertices_map.get(index);
+        var vertices: gs.IVertex = this._model.getGeom().getTopo(path) as gs.IVertex;
+        var id: string = "";
+        var attributevertix=this.dataService.getattrvertix();*/
+        //var vertices: gs.IVertex= this._model.getGeom().getTopo(path) as gs.IVertex;
+        //var id:string=this._model.getGeom().getAllPoints()[index].getLabel();
+        //console.log(vertices.getPoint().getPosition());
+
+        /*var label:string="";
+        var attributevertix=this.dataService.getattrvertix();
+        console.log(attributevertix);
+        for(var i=0;i<attributevertix.length;i++){
+          if(vertices.getLabel()===attributevertix[i].vertixlabel){
+            id=attributevertix[i].pointid;
+            label=vertices.getLabel();
+            break;
+          }
+        }
+        console.log(id);
+        if(id!==""){
+          for(var i=0;i<attributevertix.length;i++){
+            if(id===attributevertix[i].pointid){
+              var str=attributevertix[i].vertixlabel;
+              if(label!==str) label=label+"<br/>"+str;
+            }
+          }
+        }*/
+        /*const verts_xyz: gs.XYZ = vertices.getPoint().getPosition();//this._model.getGeom().getAllPoints()[index].getPosition();//vertices.getPoint().getPosition();
+        console.log(verts_xyz);
+        if(this.textlabels.length===0) {
+          var geometry=new THREE.Geometry();
+          geometry.vertices.push(new THREE.Vector3(verts_xyz[0],verts_xyz[1],verts_xyz[2]));
+          var pointsmaterial=new THREE.PointsMaterial( { color:0x00ff00,size:1} );
+          //pointsmaterial.sizeAttenuation=false;
+          if(this.dataService.pointsize!==undefined){
+            pointsmaterial.size=this.dataService.pointsize;
+          }
+          const points = new THREE.Points( geometry, pointsmaterial);
+          points.userData.id=id;
+          points["material"].needsUpdate=true;
+          points.name="selects";
+          this.scene.add(points);
+          this.addTextLabel(label,verts_xyz, id,id,"All points");
+        }else{
+          for(var j=0;j<this.scene.children.length;j++){
+            if(id===this.scene.children[j].userData.id){
+              select=true;
+              this.scene.remove(this.scene.children[j]);
+            }
+          }
+          for(var j=0;j<this.textlabels.length;j++){
+              if(id===this.textlabels[j]["id"]){
+                select=true;
+                this.removeTextLabel(this.textlabels[j]["id"]);
+              }
+          }
+          if(select==false){
+            var geometry=new THREE.Geometry();
+            geometry.vertices.push(new THREE.Vector3(verts_xyz[0],verts_xyz[1],verts_xyz[2]));
+            var pointsmaterial=new THREE.PointsMaterial( { color:0x00ff00,size:1} );
+            if(this.dataService.pointsize!==undefined){
+              pointsmaterial.size=this.dataService.pointsize;
+            }
+            const points = new THREE.Points( geometry, pointsmaterial);
+            points.userData.id=id;
+            points["material"].needsUpdate=true;
+            points.name="selects";
+            this.scene.add(points);
+            this.addTextLabel(label,verts_xyz, id,id,"All points");
+          }
+        }
+      }*/
       
     } else {
       /*for(var i=0;i<this.dataService.sprite.length;i++){
@@ -1123,6 +1319,32 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
     event.stopPropagation();
     this.settingVisible=!this.settingVisible;
    }
+
+  leaflet(){
+    event.stopPropagation();
+    this.imVisible=!this.imVisible;
+    this.dataService.imVisible=this.imVisible;
+
+
+    //console.log(this.dataService.imVisible);
+    /*for(var i=0;i<this.scene.children.length;i++){
+      if(this.scene.children[i].type!=="DirectionalLight"&&this.scene.children[i].type!=="HemisphereLight"){
+        this.scene.remove(this.scene.children[i]);
+      }
+    }*/
+    /*var mymap = L.map('map').setView([51.505, -0.09], 13);
+    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+    maxZoom: 18,
+    id: 'mapbox.streets',
+    accessToken: 'your.mapbox.access.token'
+    }).addTo(mymap);*/
+    /*let map = L.map("map").setView([38, -77], 13);
+    console.log(map);
+    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);*/
+  }
 
   /*getSceneChildren() {
     var scenechildren=[];

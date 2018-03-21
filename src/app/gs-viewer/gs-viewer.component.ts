@@ -8,11 +8,13 @@ import * as gs from "gs-json";
   styleUrls: ['./gs-viewer.component.scss']
 })
 export class GSViewerComponent {
+	imVisible:boolean=false;
 
 	// gs model data passed to the viewer
 	@Input() data: gs.IModel;
 
-	constructor(private dataService: DataService){};
+	constructor(private dataService: DataService){
+	};
 
 	setModel(data: gs.IModel): void{
 		try{
@@ -26,12 +28,16 @@ export class GSViewerComponent {
 
 	ngOnInit() {
 		this.setModel(this.data);
+		
 	}
 
 	ngDoCheck(){
 		if(this.dataService.getGsModel() !== this.data){
 			this.setModel(this.data);
 		}
+	}
+	leaflet(){
+		this.imVisible=this.dataService.imVisible;
 	}
 
 }

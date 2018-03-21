@@ -390,6 +390,8 @@ export class CodeGeneratorJS extends CodeGenerator{
 			catch(ex){
 				node.hasError();
 
+				// Unexpected Identifier
+				// Unexpected token
 				let prodWithError: number = prodArr.pop(); 
 
 				let markError = function(prod: IProcedure, id: number){
@@ -421,7 +423,16 @@ export class CodeGeneratorJS extends CodeGenerator{
 					});
 				}
 
-				let error: Error = new Error(ex);
+				let error: Error;
+				if(ex.toString().indexOf("Unexpected Identifier") > -1){
+					error = new Error("Unexpected Identifier error. Did you declare everything? Check that your strings are enclosed in quotes (\")");
+				}
+				else if(ex.toString().indexOf("Unexpected token") > -1){
+					error = new Error("Unexpected token error. Check for stray spaces or reserved keywords?");
+				}
+				else{
+				 	error = new Error(ex);
+				}
 				throw error;
 			}
 			

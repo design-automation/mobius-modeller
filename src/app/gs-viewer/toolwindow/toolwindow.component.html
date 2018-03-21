@@ -1,49 +1,16 @@
 <div id="toolwindow">
+  <div style="position:relative;">
   <div id="toolbar">
-<!--<<<<<<< HEAD
-    <div class="sec1">
-      <button id="point" [class.visible]="Visible === 'Points'" (click)="point(Visible)"><i class="fa fa-dot-circle-o"></i></button>
-      <button id="vertice" [class.visible]="Visible === 'Vertices'" (click)="vertice(Visible)">V</button>
-      <button id="edge" [class.visible]="Visible === 'Edges'" (click)="edge(Visible)">E</button>
-      <button id="wire" [class.visible]="Visible === 'Wires'" (click)="wire(Visible)">W</button>
-      <button id="face" [class.visible]="Visible === 'Faces'" (click)="face(Visible)">F</button>
-      <button id="object" [class.visible]="Visible === 'Objs'" (click)="object(Visible)"><i class="fa fa-map"></i></button>
-    </div>
-    
-    <div class="sec2">
-      <input id="selected" type="checkbox" (click)="changeselected()">
-      <label id="selectedname" value="selected">Show selected only</label>
-    </div>
-
-    <div class="sec3" id="select">
-======= -->
-    <button id="point" [class.visible]="Visible === 'Points'" (click)="point(Visible)">P</button>
-    <button id="vertice" [class.visible]="Visible === 'Vertices'" (click)="vertice(Visible)">V</button>
-    <button id="edge" [class.visible]="Visible === 'Edges'" (click)="edge(Visible)">E</button>
-    <button id="wire" [class.visible]="Visible === 'Wires'" (click)="wire(Visible)">W</button>
-    <button id="face" [class.visible]="Visible === 'Faces'" (click)="face(Visible)">F</button>
-    <button id="object" [class.visible]="Visible === 'Objs'" (click)="object(Visible)">O</button>
-    <input id="selected" type="checkbox" (click)="changeselected()">
+    <button id="gsv-point" class="gsv-toolbar" [class.visible]="Visible === 'Points'" (click)="point(Visible)"><span matTooltip="View Point Attributes">P</span></button>
+    <button id="gsv-vertice" class="gsv-toolbar" [class.visible]="Visible === 'Vertices'" (click)="vertice(Visible)"><span matTooltip="View Vertice Attributes">V</span></button>
+    <button id="gsv-edge" class="gsv-toolbar" [class.visible]="Visible === 'Edges'" (click)="edge(Visible)"><span matTooltip="View Edge Attributes">E</span></button>
+    <button id="gsv-wire" class="gsv-toolbar" [class.visible]="Visible === 'Wires'" (click)="wire(Visible)"><span matTooltip="View Wire Attributes">W</span></button>
+    <button id="gsv-face" class="gsv-toolbar" [class.visible]="Visible === 'Faces'" (click)="face(Visible)"><span matTooltip="View Face Attributes">F</span></button>
+    <button id="gsv-object" class="gsv-toolbar" [class.visible]="Visible === 'Objs'" (click)="object(Visible)"><span matTooltip="View Object Attributes">O</span></button>
+    <input id="gsv-selected" class="gsv-toolbar" type="checkbox" (click)="changeselected()">
     <label id="selectedname" value="selected">Show selected only</label>
-
-    <!-- <pagination-controls id="pagination" (pageChange)="p = $event"></pagination-controls> -->
-    <!-- <div id="pagination">
-    <ul>
-      <li *ngFor="let item of attribute | paginate: { itemsPerPage: 50, currentPage: p }">{{item}}</li>
-    </ul> 
-   <pagination-controls (pageChange)="p = $event"></pagination-controls>
-  </div> -->
-    <!-- <div id="select">
->>>>>>> 4f62c47b90f3f47240db75e72579ad51fdb91b1f
-      <button id="vertice" [class.selectvisible]="SelectVisible === 'Vertices'" (click)="verticeselect(SelectVisible)">V</button>
-      <button id="edge" [class.selectvisible]="SelectVisible === 'Edges'" (click)="edgeselect(SelectVisible)">E</button>
-      <button id="wire" [class.selectvisible]="SelectVisible === 'Wires'" (click)="wireselect(SelectVisible)">W</button>
-      <button id="face" [class.selectvisible]="SelectVisible === 'Faces'" (click)="faceselect(SelectVisible)">F</button>
-      <button id="object" [class.selectvisible]="SelectVisible === 'Objs'" (click)="objectselect(SelectVisible)"><i class="fa fa-map"></i></button>
-    </div> -->
-
   </div>
-  <div id="pagination">
+  <div id="pagination" >
     <pagination-controls *ngIf="Visible === 'Points'" class="my-pagination" (pageChange)="p1 = $event"></pagination-controls> 
     <pagination-controls *ngIf="Visible === 'Vertices'" class="my-pagination" (pageChange)="p2 = $event"></pagination-controls> 
     <pagination-controls *ngIf="Visible === 'Edges'" class="my-pagination" (pageChange)="p3 = $event"></pagination-controls> 
@@ -51,55 +18,53 @@
     <pagination-controls *ngIf="Visible === 'Faces'" class="my-pagination" (pageChange)="p5 = $event"></pagination-controls>
     <pagination-controls *ngIf="Visible === 'Objs'" class="my-pagination" (pageChange)="p6 = $event"></pagination-controls>  
   </div>
+</div>
   <div id="toolview">
     <div *ngIf="Visible === 'Points'">
-     <!-- <div class="pagination"> <pagination-controls  (pageChange)="p1 = $event"></pagination-controls> </div> -->
-      <table border="1" cellspacing="0" cellpadding="0" id="table" name="table" bordercolor="#d0d0d0">
+      <table border="1" cellspacing="0" cellpadding="0" bordercolor="#d0d0d0">
         <tr>
-          <td name="Number" align=center width="100px" align=center>ID</td>
-          <td width="20%" align=center>X</td>
-          <td width="20%" align=center>Y</td>
-          <td width="20%" align=center>Z</td>
-          <!-- <td width="100px" align=center *ngFor="let name of point_name">{{name}}</td>  -->
+          <td align=center width="180px"><div style="width:180px;word-wrap:break-word;" >Points ID <input type="checkbox" id="id" class="checkbox" style="float:right" [checked]="checkpointid" (click)="checkbox()"></div></td>
+          <td width="180px" align=center><div style="width:180px;word-wrap:break-word;" >X<input type="checkbox" style="float:right" id="X"  class="checkbox" [checked]="checkX" (click)="checkbox()"></div></td>
+          <td width="180px" align=center><div style="width:180px;word-wrap:break-word;" >Y<input type="checkbox" style="float:right" id="Y" class="checkbox" [checked]="checkY" (click)="checkbox()"></div></td>
+          <td width="180px" align=center><div style="width:180px;word-wrap:break-word;" >Z<input type="checkbox" style="float:right" id="Z" class="checkbox" [checked]="checkZ" (click)="checkbox()"></div></td>
+          <td  align=center width="180px" class="checkbox" *ngFor="let name of point_name;let idx=index"><div style="width:180px;word-wrap:break-word;" >{{name}}<input type="checkbox" id={{name}} style="float:right" (click)="checkbox()"></div></td>
       </table>
-      <table border="1" cellspacing="0" cellpadding="0" id="tablename" name="table" bordercolor="#d0d0d0" *ngFor="let datascale of attribute| paginate: { itemsPerPage: 50, currentPage: p1 }">
+      <table border="1" cellspacing="0" cellpadding="0"  bordercolor="#d0d0d0" *ngFor="let datascale of attribute| paginate: { itemsPerPage: 50, currentPage: p1 }">
         <tr>
-          <button id="numberbutton" (click)=Onselect(datascale)>{{datascale.id}}</button>
-          <td width="20%" align=center>{{datascale.x}}</td>
-          <td width="20%" align=center>{{datascale.y}}</td>
-          <td width="20%" align=center>{{datascale.z}}</td>
-          <!-- <td width="20%" align=center>{{datascale.name}}</td> -->
+          <td name="Number" align=center  width="180px"><div style="width:180px;word-wrap:break-word;" ><button width="180px" id="numberbutton" (click)=Onselect(datascale)>{{datascale.id}}</button></div></td>
+          <td width="180px" align=center><div style="width:180px;word-wrap:break-word;" >{{datascale.x}}</div></td>
+          <td width="180px" align=center><div style="width:180px;word-wrap:break-word;" >{{datascale.y}}</div></td>
+          <td width="180px" align=center><div style="width:180px;word-wrap:break-word;" >{{datascale.z}}</div></td>
+          <td  id="attrib" width="180px" align=center *ngFor="let name of point_name; let idx=index"><div style="width:180px;word-wrap:break-word;" >{{datascale[idx]}}</div></td> 
         <tr>
       </table>
-      <!-- <pagination-controls (pageChange)="p1 = $event"></pagination-controls>  -->
     </div>
     <div *ngIf="Visible === 'Vertices'">
-      <!-- <pagination-controls (pageChange)="p2 = $event"></pagination-controls> -->
-      <table border="1" cellspacing="0" cellpadding="0" bordercolor="#d0d0d0" width="50%">
+      <table border="1" cellspacing="0" cellpadding="0" bordercolor="#d0d0d0" >
         <tr>
-          <td  align=center width="25%">Vertices Label</td>
-          <td  align=center width="25%">Points ID</td>
+          <td  align=center width="180px"><div style="width:180px;word-wrap:break-word;" >Vertices Label<input type="checkbox" id="vertixid" style="float:right" [checked]="vertixid" (click)="checkbox()"></div></td>
+          <td  align=center width="180px"><div style="width:180px;word-wrap:break-word;" >Points ID<input type="checkbox" id="pointid" style="float:right"  [checked]="pointid" (click)="checkbox()"></div></td>
+          <td  align=center width="180px" *ngFor="let name of vertex_name"><div style="width:180px;word-wrap:break-word;" >{{name}}<input type="checkbox" id={{name}} style="float:right" (click)="checkbox()"></div></td>
         </tr>
       </table>
-      <table border="1" cellspacing="0" cellpadding="0" bordercolor="#d0d0d0" *ngFor="let datascale of attribute| paginate: { itemsPerPage: 50, currentPage: p2 }" width="50%">
+      <table border="1" cellspacing="0" cellpadding="0" bordercolor="#d0d0d0" *ngFor="let datascale of attribute| paginate: { itemsPerPage: 50, currentPage: p2 }">
         <tr>
-          <!-- <button id="numberbutton" [class.selectid]="ID == datascale.id" (click)=clicktoshow(datascale.id)>{{datascale.vertixlabel}}</button> -->
-          <button id="numberbutton" (click)=Onselect(datascale)>{{datascale.vertixlabel}}</button>
-          <td  align=center  width="50%">{{datascale.pointid}}</td>
+          <td name="Number" align=center  width="180px"><div style="width:180px;word-wrap:break-word;" ><button  id="numberbutton">{{datascale.vertixlabel}}</button></div></td>
+          <td  align=center  width="180px"><div style="width:180px;word-wrap:break-word;" >{{datascale.pointid}}</div></td>
+          <td  id="attrib" width="180px" align=center *ngFor="let name of vertex_name; let idx=index"><div style="width:180px;word-wrap:break-word;" >{{datascale[idx]}}</div></td> 
         </tr>
       </table>
-      <!-- <pagination-controls (pageChange)="p2 = $event"></pagination-controls> -->
     </div>
     <div *ngIf="Visible === 'Edges'">
       <table border="1" cellspacing="0" cellpadding="0"  bordercolor="#d0d0d0" >
         <tr>
-          <td  align=center width="60px"><div style="width:100px;word-wrap:break-word;" >Edge ID</div></td>
-          <td  align=center width="180px" *ngFor="let name of edge_name"><div style="width:180px;word-wrap:break-word;" >{{name}}</div></td> 
+          <td  align=center width="180px"><div style="width:180px;word-wrap:break-word;" >Edge ID<input type="checkbox" style="float:right" id="edgeid" (click)="checkbox()"></div></td>
+          <td  align=center width="180px" *ngFor="let name of edge_name"><div style="width:180px;word-wrap:break-word;" >{{name}}<input type="checkbox" style="float:right" id={{name}} (click)="checkbox()"></div></td> 
         </tr>
       </table>
-      <table border="1" cellspacing="0" cellpadding="0"  bordercolor="#d0d0d0" *ngFor="let datascale of attribute| paginate: { itemsPerPage: 50, currentPage: p5 }" >
+      <table border="1" cellspacing="0" cellpadding="0"  bordercolor="#d0d0d0" *ngFor="let datascale of attribute| paginate: { itemsPerPage: 50, currentPage: p3 }" >
         <tr>
-          <td name="Number" align=center  width="60px"><div style="width:100px;word-wrap:break-word;" ><button  id="numberbutton">{{datascale.label}}</button></div></td>
+          <td name="Number" align=center  width="180px"><div style="width:180px;word-wrap:break-word;" ><button  id="numberbutton">{{datascale.label}}</button></div></td>
           <td  id="attrib" width="180px" align=center *ngFor="let name of edge_name; let idx=index"><div style="width:180px;word-wrap:break-word;" >{{datascale[idx]}}</div></td>
         </tr>
       </table>
@@ -107,13 +72,13 @@
     <div *ngIf="Visible === 'Wires'">
       <table border="1" cellspacing="0" cellpadding="0"  bordercolor="#d0d0d0" >
         <tr>
-          <td  align=center width="60px"><div style="width:100px;word-wrap:break-word;" >Wire ID</div></td>
-          <td  align=center width="180px" *ngFor="let name of wire_name"><div style="width:180px;word-wrap:break-word;" >{{name}}</div></td> 
+          <td  align=center width="180px"><div style="width:180px;word-wrap:break-word;" >Wire ID<input type="checkbox" style="float:right" (click)="checkbox()"></div></td>
+          <td  align=center width="180px" *ngFor="let name of wire_name"><div style="width:180px;word-wrap:break-word;" >{{name}}<input type="checkbox" style="float:right" id={{name}} (click)="checkbox()"></div></td> 
         </tr>
       </table>
-      <table border="1" cellspacing="0" cellpadding="0"  bordercolor="#d0d0d0" *ngFor="let datascale of attribute| paginate: { itemsPerPage: 50, currentPage: p5 }" >
+      <table border="1" cellspacing="0" cellpadding="0"  bordercolor="#d0d0d0" *ngFor="let datascale of attribute| paginate: { itemsPerPage: 50, currentPage: p4 }" >
         <tr>
-          <td name="Number" align=center  width="60px"><div style="width:100px;word-wrap:break-word;" ><button  id="numberbutton">{{datascale.label}}</button></div></td>
+          <td name="Number" align=center  width="180px"><div style="width:180px;word-wrap:break-word;" ><button  id="numberbutton">{{datascale.label}}</button></div></td>
           <td  id="attrib" width="180px" align=center *ngFor="let name of wire_name; let idx=index"><div style="width:180px;word-wrap:break-word;" >{{datascale[idx]}}</div></td>
         </tr>
       </table>
@@ -121,27 +86,27 @@
     <div *ngIf="Visible === 'Faces'">
       <table border="1" cellspacing="0" cellpadding="0"  bordercolor="#d0d0d0" >
         <tr>
-          <td  align=center width="60px"><div style="width:100px;word-wrap:break-word;" >Face ID</div></td>
-          <td  align=center width="180px" *ngFor="let name of face_name"><div style="width:180px;word-wrap:break-word;" >{{name}}</div></td> 
+          <td  align=center width="180px"><div style="width:180px;word-wrap:break-word;" >Face ID<input type="checkbox" style="float:right" id="checkface" [checked]="checkface" (click)="checkbox()"></div></td>
+          <td  align=center width="180px" *ngFor="let name of face_name"><div style="width:180px;word-wrap:break-word;" >{{name}}<input type="checkbox" style="float:right" id={{name}} (click)="checkbox()"></div></td> 
         </tr>
       </table>
       <table border="1" cellspacing="0" cellpadding="0"  bordercolor="#d0d0d0" *ngFor="let datascale of attribute| paginate: { itemsPerPage: 50, currentPage: p5 }" >
         <tr>
-          <td name="Number" align=center  width="60px"><div style="width:100px;word-wrap:break-word;" ><button  id="numberbutton">{{datascale.label}}</button></div></td>
+          <td name="Number" align=center  width="180px"><div style="width:180px;word-wrap:break-word;" ><button  id="numberbutton">{{datascale.label}}</button></div></td>
           <td  id="attrib" width="180px" align=center *ngFor="let name of face_name; let idx=index"><div style="width:180px;word-wrap:break-word;" >{{datascale[idx]}}</div></td>
         </tr>
       </table>
     </div>
     <div *ngIf="Visible === 'Objs'">
-      <table border="1" cellspacing="0" cellpadding="0"  bordercolor="#d0d0d0" class="table_ojbs">
+      <table border="1" cellspacing="0" cellpadding="0"  bordercolor="#d0d0d0" class="table_ojbs" >
         <tr>
-          <td name="Number" align=center width="60px"><div style="width:100px;word-wrap:break-word;" >Object ID</div></td>
-          <td  align=center width="180px" *ngFor="let name of obj_name" ><div style="width:180px;word-wrap:break-word;" >{{name}}</div></td>
+          <td name="Number" align=center width="180px"><div style="width:180px;word-wrap:break-word;" >Object ID<input type="checkbox" style="float:right" id="checkobj" [checked]="checkobj" (click)="checkbox()"></div></td>
+          <td  align=center width="180px" *ngFor="let name of obj_name" ><div style="width:180px;word-wrap:break-word;" >{{name}}<input type="checkbox" style="float:right" (click)="checkbox()"></div></td>
         </tr>
       </table>
-      <table border="1" cellspacing="0" cellpadding="0"  bordercolor="#d0d0d0" *ngFor="let datascale of attribute| paginate: { itemsPerPage: 50, currentPage: p6 } " class="table_ojbs">
+      <table border="1" cellspacing="0" cellpadding="0"  bordercolor="#d0d0d0" *ngFor="let datascale of attribute| paginate: { itemsPerPage: 50, currentPage: p6 } " class="table_ojbs" >
         <tr>
-          <td name="Number" align=center  width="60px"><div style="width:100px;word-wrap:break-word;" ><button  id="numberbutton">{{datascale.label}}</button></div></td>
+          <td name="Number" align=center  width="180px"><div style="width:180px;word-wrap:break-word;" ><button  id="numberbutton">{{datascale.label}}</button></div></td>
           <td  id="attrib" width="180px" align=center *ngFor="let name of obj_name; let idx=index"><div style="width:180px;word-wrap:break-word;" >{{datascale[idx]}}</div></td>
         </tr>
       </table>
