@@ -4,6 +4,8 @@
     (mouseup)="mouseup($event)"
     (click)="render(this)"
 		(click)="onDocumentMouseDown($event)">
+    <div *ngIf="_updatemodel === false" style="position:absolute;color:red;margin-top: 50px;left:40%;width: auto;text-align: center;font-family:sans-serif;font-size: 14px;background-color: white;">Error displaying model:{{text}}</div>
+    <div *ngIf="_modelshow === false" style="position:absolute;color:red;margin-top: 50px;left:40%;width: auto;text-align: center;font-family:sans-serif;font-size: 14px;background-color: white;">Model or Scene not defined.</div>
 
 
     <!-- (mousemove)="requestanimate()" 
@@ -33,14 +35,14 @@
   		<button id="zoomingfit"  
   			[class.visible]="Visible === 'zoomfit'" 
   			(click)="zoomfit()">
-  			<i class="fa fa-arrows-alt"></i>
+  			<span matTooltip="zoom to fit"><i class="fa fa-arrows-alt"></i></span>
   		</button> 
   		
   		<!-- <button id="selecting" [class.visible]="Visible === 'select'" (click)= "select($event, Visible)" ><i class="fa fa-mouse-pointer"></i></button> -->
   		
   		<!-- <button id="setting" [class.selected]="settingVisible" (click)= "setting(settingVisible)"><i class="fa fa-cog"></i></button> -->
 
-      <button id="selecting" [class.selected]="seVisible" (click)= "select(seVisible)" ><i class="fa fa-mouse-pointer"></i></button>
+      <button id="selecting" [class.selected]="seVisible" (click)= "select(seVisible)" ><span matTooltip="select"><i class="fa fa-mouse-pointer"></i></span></button>
       <div id="shownumber">
         <tr>
         <td  align=left style="width: 60px;">Triangles&nbsp;&nbsp;</td>
@@ -52,17 +54,20 @@
         </tr>
       </div>
 
+      <!-- <button id="imagery"  
+        [class.selected]="imVisible" (click)="leaflet()">I
+      </button> -->
       	
       	<!--setting-->
       	
  		<!-- <app-setting *ngIf="settingVisible == true"></app-setting> -->
     <div *ngIf="seVisible == true">
-        <button id="points" [class.selectvisible]="SelectVisible === 'Points'" (click)="pointselect(SelectVisible)">P</button>
-        <button id="vertices" [class.selectvisible]="SelectVisible === 'Vertices'" (click)="verticeselect(SelectVisible)">V</button>
-        <button id="edges" [class.selectvisible]="SelectVisible === 'Edges'" (click)="edgeselect(SelectVisible)">E</button>
-        <button id="wires" [class.selectvisible]="SelectVisible === 'Wires'" (click)="wireselect(SelectVisible)">W</button>
-        <button id="faces" [class.selectvisible]="SelectVisible === 'Faces'" (click)="faceselect(SelectVisible)">F</button>
-        <button id="objects" [class.selectvisible]="SelectVisible === 'Objs'" (click)="objectselect(SelectVisible)">O</button>
+        <button id="points" [class.selectvisible]="SelectVisible === 'Points'" (click)="pointselect(SelectVisible)"><span matTooltip="Select Points">P</span></button>
+        <button id="vertices" [class.selectvisible]="SelectVisible === 'Vertices'" (click)="verticeselect(SelectVisible)"><span matTooltip="Select Vertices">V</span></button>
+        <button id="edges" [class.selectvisible]="SelectVisible === 'Edges'" (click)="edgeselect(SelectVisible)"><span matTooltip="Select Edges">E</span></button>
+        <button id="wires" [class.selectvisible]="SelectVisible === 'Wires'" (click)="wireselect(SelectVisible)"><span matTooltip="Select Wires">W</span></button>
+        <button id="faces" [class.selectvisible]="SelectVisible === 'Faces'" (click)="faceselect(SelectVisible)"><span matTooltip="Select Faces">F</span></button>
+        <button id="objects" [class.selectvisible]="SelectVisible === 'Objs'" (click)="objectselect(SelectVisible)"><span matTooltip="Select Objects">O</span></button>
       </div>
 </div>
 

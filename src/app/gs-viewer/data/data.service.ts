@@ -29,9 +29,6 @@ export class DataService {
   _saturation:any;
   _lightness:any;
   _alight:any;
-  /*_hueValue:number;
-  _saturationValue:number;
-  _lightnessValue:number;*/
   _Geom:any;
   hue: number;
   saturation:number;
@@ -61,8 +58,30 @@ export class DataService {
   centerz:number;
   centersize:number;
   pointsize:number;
+  materialpoint:number;
   clickshow:Array<any>;
   point:boolean=true;
+  click:boolean=false;
+  SelectVisible:string;
+  pointradius:number;
+  label:Array<any>;
+  checkX:boolean;
+  checkY:boolean;
+  checkZ:boolean;
+  checkvertixid:boolean;
+  pointid:boolean;
+  checkface:boolean;
+  checkpoint:boolean;
+  checkobj:boolean;
+  checkx:boolean;
+  checky:boolean;
+  checkz:boolean;
+  checkpointid:boolean=false;
+  checkedgeid:boolean=false;
+  checkname:Array<any>;
+  getpoints:Array<any>;
+  pointname:Array<any>;
+  imVisible:boolean=false;
 
   // ---- 
   // Subscription Handling
@@ -138,6 +157,8 @@ export class DataService {
     // add it to alight - what does alight do?
     this._alight = hemi_light;
     //this._alight.push(hemi_light);
+    this.checkname=[];
+    this.pointname=[];
     
   }
 
@@ -172,7 +193,7 @@ export class DataService {
           edges_map: Map<number, gs.ITopoPathData>,
           vertices_map: Map<number, gs.ITopoPathData>,
           points_map: Map<number, gs.ITopoPathData>}*/= gs.genThreeOptModelAndMaps( this._gsModel );
-    ;this.scenemaps=scene_and_maps;
+    this.scenemaps=scene_and_maps;
   }
   getscememaps():any{
     return this.scenemaps;
@@ -230,6 +251,12 @@ export class DataService {
   
   getpointsize(pointszie):void{
     this.pointsize=pointszie;
+  }
+  getmaterialpoint(materialpoint):void{
+    this.materialpoint=materialpoint;
+  }
+  getradius(point):void{
+    this.pointradius=point;
   }
 
   getcenterx(centerx):void{
@@ -328,6 +355,21 @@ export class DataService {
    this.sendMessage();
    return this.scenechildren;
  }
+ addlabel(label){
+   this.label=label;
+   this.sendMessage();
+ }
+ getlabel(){
+   this.sendMessage();
+   return this.label;
+ }
+ addgetpoints(getpoints){
+   this.getpoints=getpoints;
+ }
+ addpointname(pointname){
+   this.pointname=pointname;
+ }
+
 
  //To add text labels just provide label text, label position[x,y,z] and its id
   /*addTextLabel(label, label_xyz, id,index,path) {
