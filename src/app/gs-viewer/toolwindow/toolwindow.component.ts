@@ -5,6 +5,7 @@ import { DataService } from "../data/data.service";
 import * as gs from "gs-json";
 import {DataSubscriber} from "../data/DataSubscriber";
 import {ViewerComponent} from "../viewer/viewer.component";
+import {Sort} from '@angular/material';
 
 
 @Component({
@@ -47,6 +48,7 @@ export class ToolwindowComponent extends DataSubscriber implements OnInit {
   vertixid:boolean;
   checkobj:boolean;
   checkname:Array<any>;
+  sortedData;
 
 
   constructor(injector: Injector, myElement: ElementRef){
@@ -103,6 +105,7 @@ export class ToolwindowComponent extends DataSubscriber implements OnInit {
       }
     }
   }
+
 
   getpoints():Array<any>{
     var attrubtepoints=[];
@@ -367,6 +370,15 @@ export class ToolwindowComponent extends DataSubscriber implements OnInit {
     }
     this.dataService.visible=this.Visible;
     //this.clearsprite();
+    /*this.sortedData=[];
+    for(var i=0;i<this.attribute.length;i++){
+      var datas={};
+      datas["id"]=this.attribute[i].id;
+      datas["x"]=this.attribute[i].x;
+      datas["y"]=this.attribute[i].y;
+      datas["z"]=this.attribute[i].z;
+      this.sortedData[i]=datas;
+    }*/
   }
 
   pointcheck(){
@@ -807,6 +819,138 @@ export class ToolwindowComponent extends DataSubscriber implements OnInit {
       }
       this.dataService.addpointname(this.obj_name);
     }
+  }
+  sortData(sort: Sort) {
+    const data=this.attribute.slice();
+    if (!sort.active || sort.direction == '') {
+      this.attribute = data;
+      return;
+    }
+    if(this.Visible==="Points"){
+      this.attribute = data.sort((a, b) => {
+        let isAsc = sort.direction == 'asc';
+
+        switch (sort.active) {
+          case 'id': return this.compareid(a.id, b.id, isAsc);
+          case 'x': return this.compare(+a.x, +b.x, isAsc);
+          case 'y': return this.compare(+a.y, +b.y, isAsc);
+          case 'z': return this.compare(+a.z, +b.z, isAsc);
+          default: return 0;
+        }
+      });
+      for(var i=0;i<this.point_name.length;i++){
+        this.attribute = data.sort((a, b) => {
+        let isAsc = sort.direction == 'asc';
+          switch (sort.active) {
+          case this.point_name[i]: return this.compare(a[i], b[i], isAsc);
+          default: return 0;
+        }
+        });
+      }
+    }
+    if(this.Visible==="Vertices"){
+      var labelinitial:boolean=false;
+      this.attribute = data.sort((a, b) => {
+        let isAsc = sort.direction == 'asc';
+        switch (sort.active) {
+          case 'vertixlabel': labelinitial=true;return this.compare(a.vertixlabel, b.vertixlabel, isAsc);
+          case 'pointid': labelinitial=true;return this.compareid(a.pointid, b.pointid, isAsc);
+          default: return 0;
+        }
+      });
+      if(labelinitial===false){
+        for(var i=0;i<this.vertex_name.length;i++){
+          this.attribute = data.sort((a, b) => {
+          let isAsc = sort.direction == 'asc';
+            switch (sort.active) {
+            case this.vertex_name[i]: return this.compare(a[i], b[i], isAsc);
+            default: return 0;
+          }
+          });
+        }
+      }
+    }
+    if(this.Visible==="Edges"){
+      this.attribute = data.sort((a, b) => {
+        let isAsc = sort.direction == 'asc';
+        switch (sort.active) {
+          case 'label': return this.compare(a.label, b.label, isAsc);
+          default: return 0;
+        }
+      });
+      for(var i=0;i<this.edge_name.length;i++){
+        this.attribute = data.sort((a, b) => {
+        let isAsc = sort.direction == 'asc';
+          switch (sort.active) {
+          case this.edge_name[i]: return this.compare(a[i], b[i], isAsc);
+          default: return 0;
+        }
+        });
+      }
+    }
+    if(this.Visible==="Wires"){
+      this.attribute = data.sort((a, b) => {
+        let isAsc = sort.direction == 'asc';
+        switch (sort.active) {
+          case 'label': return this.compare(a.label, b.label, isAsc);
+          default: return 0;
+        }
+      });
+      for(var i=0;i<this.wire_name.length;i++){
+        this.attribute = data.sort((a, b) => {
+        let isAsc = sort.direction == 'asc';
+          switch (sort.active) {
+          case this.wire_name[i]: return this.compare(a[i], b[i], isAsc);
+          default: return 0;
+        }
+        });
+      }
+    }
+    if(this.Visible==="Faces"){
+      this.attribute = data.sort((a, b) => {
+        let isAsc = sort.direction == 'asc';
+        switch (sort.active) {
+          case 'label': return this.compare(a.label, b.label, isAsc);
+          default: return 0;
+        }
+      });
+      for(var i=0;i<this.face_name.length;i++){
+        this.attribute = data.sort((a, b) => {
+        let isAsc = sort.direction == 'asc';
+          switch (sort.active) {
+          case this.face_name[i]: return this.compare(a[i], b[i], isAsc);
+          default: return 0;
+        }
+        });
+      }
+    }
+    if(this.Visible==="Objs"){
+      var labelinitial:boolean=false;
+      this.attribute = data.sort((a, b) => {
+        let isAsc = sort.direction == 'asc';
+        switch (sort.active) {
+          case 'label': labelinitial=true;return this.compareid(a.label, b.label, isAsc);
+          default: return 0;
+        }
+      });
+      if(labelinitial===false){
+        for(var i=0;i<this.obj_name.length;i++){
+          this.attribute = data.sort((a, b) => {
+          let isAsc = sort.direction == 'asc';
+            switch (sort.active) {
+            case this.obj_name[i]: return this.compare(a[i], b[i], isAsc);
+            default: return 0;
+          }
+          });
+        }
+      }
+    }
+  }
+  compare(a, b, isAsc) {
+    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+  }
+  compareid(a, b, isAsc) {
+    return (Number(a.substring(1,a.length)) < Number(b.substring(1,b.length)) ? -1 : 1) * (isAsc ? 1 : -1);
   }
  
 }
