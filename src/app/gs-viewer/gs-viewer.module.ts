@@ -15,9 +15,8 @@ import {MatTabsModule} from '@angular/material/tabs';
 //import { BrowserModule } from '@angular/platform-browser';
 import { BrowserModule, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 import {MatTooltipModule} from '@angular/material/tooltip';
-//import { GestureConfig, MaterialModule } from '@angular/material';
-//import { BrowserAnimationsModule, MaterialModule, BrowserModule, HttpModule} from '@angular/platform-browser/animations';
-// import 'hammerjs';
+import {MatSortModule} from '@angular/material/sort';
+
 
 @NgModule({
     imports: [ 	CommonModule,
@@ -29,7 +28,8 @@ import {MatTooltipModule} from '@angular/material/tooltip';
                 NoopAnimationsModule,
                 MatTabsModule,
                 BrowserModule,
-                MatTooltipModule
+                MatTooltipModule,
+                MatSortModule
 			 ],
     exports: [ GSViewerComponent ],
     declarations: [GSViewerComponent,

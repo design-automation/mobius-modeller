@@ -46,7 +46,12 @@
 		<label class="name" >Size</label><input type="text" name="center"  #size id="centersize" value={{_centersize}} (change)=changecentersize(size.value)><br/>
 		<hr/><div style="margin-left: 10px;"><label  >Selection Settings:</label></div><!-- <br/> -->
 		<div class="name"><label >Line Precision</label></div><!-- <br/> -->
-  		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label class="name" >Radius</label>&nbsp;<input type="text" value={{_linepre}} #linetext (change)="changeline(linetext.value)" style="width: 30px; ">&nbsp;<span>0</span><mat-slider class="slider" name="range" id="linerange" min=0 max=1 step=0.01 thumbLabel=true value={{_linepre}} #linepre (change)="changeline(linepre.value.toPrecision(2))" ></mat-slider><span>1</span><br/>
+  		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label class="name" >Radius</label>&nbsp;<input type="text" value={{_linepre}} #linetext (change)="changeline(linetext.value)" style="width: 30px; ">&nbsp;<span>0</span>
+
+  		<mat-slider class="slider" name="range" id="linerange" min=0 max=1 step=0.01 thumbLabel=true value="_linepre" #linepre (change)="changeline(linepre.value.toPrecision(2))" >
+  		</mat-slider>
+
+  		<span>1</span><br/>
   		<div class="name"><label>Points Precision</label></div><!-- <br/> -->
   		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label class="name" >Radius</label>&nbsp;<input type="text" value={{_materialpoint}} #pointtext1 (change)="changeradius(pointtext1.value)" style="width: 30px; ">&nbsp;<span>0</span><mat-slider class="slider" name="range" id="sizerange" min=0 max=5 step=0.1 thumbLabel=true value={{_materialpoint}} #pointsize1 (change)="changeradius(pointsize1.value.toPrecision(2))" ></mat-slider><span>5</span><br/>
   		<!-- &nbsp;&nbsp;&nbsp;&nbsp;<label class="name" >Selected</label>&nbsp;<input type="text" value={{_pointsize}} #pointtext (change)="changepointsize(pointtext.value)" style="width: 30px; ">&nbsp;<span>0</span><mat-slider class="slider" name="range" id="sizerange" min=0 max=5 step=0.1 thumbLabel=true value={{_pointsize}} #pointsize (change)="changepointsize(pointsize.value.toPrecision(2))" ></mat-slider><span>5</span><br/> -->
