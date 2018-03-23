@@ -41,6 +41,25 @@ export class ProcedureEditorComponent extends Viewer implements OnInit{
 	setProperties(): void{
 		this._node = this.flowchartService.getSelectedNode();
 		this._procedureArr = this._node.getProcedure();	
+
+		// if procedure is selected, add it
+		let selectedProd = this.flowchartService.getSelectedProcedure();
+
+		if(selectedProd){
+			this._focusedProd = selectedProd;
+			
+		}
+		else{
+			if(this._procedureArr.length>1){
+				this._focusedProd = this._procedureArr[0];
+			}
+			else{
+				// do nothing
+			}
+		}
+
+		this.tree.treeModel.setFocusedNode(this._focusedProd )
+
 		this._variableList = this._node.getVariableList();
 
 		for(let i=0; i < this._procedureArr.length; i++){
@@ -49,12 +68,14 @@ export class ProcedureEditorComponent extends Viewer implements OnInit{
 				this.updateFunctionProd(prod);
 			}
 		}
+
 	}
 
 	update(message: string){
 		if(message == "procedure"){
 			this.tree.treeModel.update();
 			this._variableList = this._node.getVariableList();
+			this._focusedProd = this.flowchartService.getSelectedProcedure();
 		}
 		else{
 			this.setProperties();
