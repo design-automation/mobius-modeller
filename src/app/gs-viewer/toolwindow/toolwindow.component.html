@@ -1,6 +1,7 @@
 <div id="toolwindow">
   <div id="gsattri-bar" >
   <div id="toolbar">
+    <div style="width: 350px;position: relative;">
     <button id="gsv-point" class="gsv-toolbar" [class.visible]="Visible === 'Points'" (click)="point(Visible)"><span matTooltip="View Point Attributes">P</span></button>
     <button id="gsv-vertice" class="gsv-toolbar" [class.visible]="Visible === 'Vertices'" (click)="vertice(Visible)"><span matTooltip="View Vertice Attributes">V</span></button>
     <button id="gsv-edge" class="gsv-toolbar" [class.visible]="Visible === 'Edges'" (click)="edge(Visible)"><span matTooltip="View Edge Attributes">E</span></button>
@@ -9,6 +10,7 @@
     <button id="gsv-object" class="gsv-toolbar" [class.visible]="Visible === 'Objs'" (click)="object(Visible)"><span matTooltip="View Object Attributes">O</span></button>
     <input id="gsv-selected" class="gsv-toolbar" type="checkbox" (click)="changeselected()">
     <label id="selectedname" value="selected">Show selected only</label>
+  </div>
   </div>
   <div id="pagination" >
     <pagination-controls *ngIf="Visible === 'Points'" class="my-pagination" (pageChange)="p1 = $event"></pagination-controls> 

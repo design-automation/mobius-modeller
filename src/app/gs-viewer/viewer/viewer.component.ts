@@ -236,6 +236,9 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
               chd["geometry"].computeVertexNormals();
               chd["geometry"].computeBoundingBox();
               chd["geometry"].computeBoundingSphere();
+              if(chd.name==="All points"){
+                this.center=chd["geometry"].boundingSphere.center;
+              }
               if(chd.name==="All edges"){
                 this.basicMat=chd["material"].color;
               }else if(chd.name==="Other lines"){
@@ -573,7 +576,7 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
     }
     // todo: change grid -> grid_value
     if(this.dataService.grid){
-      var gridhelper=new THREE.GridHelper( 100, 100);
+      var gridhelper=new THREE.GridHelper( 100, 10);
       gridhelper.name="GridHelper";
       var vector=new THREE.Vector3(0,1,0);
       gridhelper.lookAt(vector);

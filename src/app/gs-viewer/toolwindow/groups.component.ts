@@ -150,7 +150,7 @@ export class GroupsComponent extends DataSubscriber implements OnInit {
   changegrid(){
     this.gridVisible = !this.gridVisible;
     if(this.gridVisible){
-      let gridhelper:THREE.GridHelper =new THREE.GridHelper( this._centersize, this._centersize);
+      let gridhelper:THREE.GridHelper =new THREE.GridHelper( this._centersize,10);
       gridhelper.name="GridHelper";
       let vector:THREE.Vector3=new THREE.Vector3(0,1,0);
       gridhelper.lookAt(vector);
@@ -288,7 +288,7 @@ export class GroupsComponent extends DataSubscriber implements OnInit {
       }
     }
     this.scene.remove(this.scene.getObjectByName("GridHelper"));
-    let gridhelper:THREE.GridHelper=new THREE.GridHelper(this._centersize,this._centersize);
+    let gridhelper:THREE.GridHelper=new THREE.GridHelper(this._centersize,10);
     gridhelper.name="GridHelper";
     let vector:THREE.Vector3=new THREE.Vector3(0,1,0);
     gridhelper.lookAt(vector);
