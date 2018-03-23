@@ -8816,6 +8816,20 @@ let ProcedureEditorComponent = class ProcedureEditorComponent extends __WEBPACK_
     setProperties() {
         this._node = this.flowchartService.getSelectedNode();
         this._procedureArr = this._node.getProcedure();
+        // if procedure is selected, add it
+        let selectedProd = this.flowchartService.getSelectedProcedure();
+        if (selectedProd) {
+            this._focusedProd = selectedProd;
+        }
+        else {
+            if (this._procedureArr.length > 1) {
+                this._focusedProd = this._procedureArr[0];
+            }
+            else {
+                // do nothing
+            }
+        }
+        this.tree.treeModel.setFocusedNode(this._focusedProd);
         this._variableList = this._node.getVariableList();
         for (let i = 0; i < this._procedureArr.length; i++) {
             let prod = this._procedureArr[i];
@@ -8828,6 +8842,7 @@ let ProcedureEditorComponent = class ProcedureEditorComponent extends __WEBPACK_
         if (message == "procedure") {
             this.tree.treeModel.update();
             this._variableList = this._node.getVariableList();
+            this._focusedProd = this.flowchartService.getSelectedProcedure();
         }
         else {
             this.setProperties();
@@ -9296,7 +9311,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/ui-components/help/info-viewer/help.model.tpl.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h1>About the Model</h1>\r\n\r\n<p>Mobius v0.7.22</p>"
+module.exports = "<h1>About the Model</h1>\r\n\r\n<p>Mobius v0.7.23</p>"
 
 /***/ }),
 
