@@ -1,4 +1,5 @@
 #setandgroup{
+  position: relative;
   background-color: #F1F1F1 !important;
   height: 100%;
   width: 100%;
@@ -6,7 +7,6 @@
   font-size: 12px !important;
   line-height: 14px;
   overflow-x: hidden !important;
-  overflow-y: hidden !important;
 }
 #groupsview{
   color:#395d73;
@@ -127,11 +127,16 @@
 /deep/.mat-tab-header-pagination-controls-enabled .mat-tab-header-pagination{
   display: none !important;
 }
+
+
 /deep/.mat-ink-bar{
   background-color: #395d73 !important;
 }
 .mat-tab{
   min-width: 30px !important;
+}
+/deep/.mat-tab-body-content{
+  overflow: hidden !important;
 }
 
 .mat-expansion-panel-spacing {
