@@ -309,7 +309,7 @@ export class GroupsComponent extends DataSubscriber implements OnInit {
     if(this.dataService.SelectVisible === 'Edges'||this.dataService.SelectVisible === 'Wires'){
       for(var i=0;i<this.scene.children.length;i++){
         if(this.scene.children[i].name==="sphereInter"){
-          let geometry:THREE.SphereGeometry = new THREE.SphereGeometry( lineprecision*2);
+          let geometry:THREE.SphereGeometry = new THREE.SphereGeometry( lineprecision*15);
           this.scene.children[i]["geometry"]=geometry;
         }
       }
@@ -342,7 +342,7 @@ export class GroupsComponent extends DataSubscriber implements OnInit {
     if(this.dataService.SelectVisible !== 'Edges'&&this.dataService.SelectVisible !== 'Wires'){
       for(var i=0;i<this.scene.children.length;i++){
         if(this.scene.children[i].name==="sphereInter"){
-          let geometry:THREE.SphereGeometry = new THREE.SphereGeometry( point/4);
+          let geometry:THREE.SphereGeometry = new THREE.SphereGeometry( point*10);
           this.scene.children[i]["geometry"]=geometry;
         }
       }

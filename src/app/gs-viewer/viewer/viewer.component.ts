@@ -91,12 +91,12 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
     this.scenechildren=this.dataService.getscenechild();
     this.dataService.SelectVisible=this.SelectVisible;
 
-    var geometry = new THREE.SphereGeometry( 0.1 );
-    //var geometry = new THREE.CircleGeometry( 5 );
+    var geometry = new THREE.SphereGeometry( 1 );
     var material = new THREE.MeshBasicMaterial( { color: 0x00ff00,transparent:true,opacity:0.5 } );
     this.sphere = new THREE.Mesh( geometry, material );
     this.sphere.visible = false;
     this.sphere.name="sphereInter";
+    this.sphere.scale.set(0.1,0.1,0.1);
     this.scene.add( this.sphere );
 
     let self = this;
@@ -180,6 +180,32 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
     }
   }
 
+  private lastChanged = undefined;
+  ngDoCheck(){
+    let container = this.myElement.nativeElement.children.namedItem("container");
+    let width: number = container.offsetWidth;
+    let height: number = container.offsetHeight;
+    // this is when dimensions change
+    if(width!==this.width||height!==this.height){    
+      // compute time difference from last changed
+      let nowTime = Date.now();
+      let difference = this.lastChanged - nowTime;
+      if( Math.abs(difference) < 400 ){
+        // do nothing
+        // dimensions still changing
+        //console.log("Threshold too low: " + Math.abs(difference) + "ms");
+      }
+      else{
+        //console.log("Threshold matched: " + Math.abs(difference) + "ms");
+        this.onResize();
+      }
+      // add dimension change script
+      this.lastChanged = Date.now();
+    }
+    
+  }
+
+  // TODO Refactor
   onResize() :void{
     let container = this.myElement.nativeElement.children.namedItem("container");
     /// check for container
@@ -190,14 +216,11 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
     ///
     let width: number = container.offsetWidth;
     let height: number = container.offsetHeight;
-    if(width!==this.width||height!==this.height){
-      this.width = width;
-      this.height = height;
-      this.renderer.setSize(this.width,this.height);
-      this.camera.aspect=this.width/this.height;
-      this.camera.updateProjectionMatrix();
-    }
-   // }
+    this.width = width;
+    this.height = height;
+    this.renderer.setSize(this.width,this.height);
+    this.camera.aspect=this.width/this.height;
+    this.camera.updateProjectionMatrix();
   }
   //
   // update mode
@@ -430,7 +453,7 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
     var lineprecision=this.raycaster.linePrecision;
     for(var i=0;i<this.scene.children.length;i++){
       if(this.scene.children[i].name==="sphereInter"){
-        var geometry = new THREE.SphereGeometry( lineprecision*2);
+        var geometry = new THREE.SphereGeometry( lineprecision*15);
         this.scene.children[i]["geometry"]=geometry;
         this.renderer.render(this.scene, this.camera);
       }
@@ -476,7 +499,7 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
     var pointradius=this.dataService.pointradius;;
     for(var i=0;i<this.scene.children.length;i++){
       if(this.scene.children[i].name==="sphereInter"){
-        var geometry = new THREE.SphereGeometry( pointradius/4);
+        var geometry = new THREE.SphereGeometry( pointradius*10);
         this.scene.children[i]["geometry"]=geometry;
         this.renderer.render(this.scene, this.camera);
       }
@@ -514,7 +537,7 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
     var pointradius=this.dataService.pointradius;;
     for(var i=0;i<this.scene.children.length;i++){
       if(this.scene.children[i].name==="sphereInter"){
-        var geometry = new THREE.SphereGeometry( pointradius/4);
+        var geometry = new THREE.SphereGeometry( pointradius*10);
         this.scene.children[i]["geometry"]=geometry;
         this.renderer.render(this.scene, this.camera);
       }
@@ -555,7 +578,7 @@ export class ViewerComponent extends DataSubscriber implements OnInit {
   }
 
   onDocumentMouseMove(event) {
-    this.onResize();
+    //this.onResize();
     if(this.seVisible===true){
       this.animate(this);
       this.mouse.x = ( event.offsetX / this.width) * 2 - 1;
