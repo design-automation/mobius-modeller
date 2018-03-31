@@ -555,6 +555,15 @@ class CodeGeneratorJS extends __WEBPACK_IMPORTED_MODULE_0__CodeGenerator__["a" /
                 param_values.push(inputs[i].getValue());
             }
         }
+        param_values = param_values.map(function (p) {
+            if (p === undefined) {
+                return "undefined";
+            }
+            else {
+                return p;
+            }
+        });
+        console.log(param_values);
         // make function call and assign to variable of same name
         fn_call = "let " + node.getName() + "=" + node.getName() + node.getVersion() + "( " + param_values.join(", ") + " );";
         if (node.isDisabled()) {
@@ -9332,7 +9341,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/ui-components/help/info-viewer/help.model.tpl.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h1>About the Model</h1>\r\n\r\n<p>Mobius v0.7.33</p>\r\n"
+module.exports = "<h1>About the Model</h1>\r\n\r\n<p>Mobius v0.7.34</p>\r\n"
 
 /***/ }),
 
