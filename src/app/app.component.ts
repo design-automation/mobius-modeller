@@ -24,9 +24,9 @@ export class AppComponent{
     		this.supported = false;
     	}
     }
-
+ 	
     checkBrowser(): string { 
-    	let brw: string = "";
+    	let brw: string = ""; 	
      	if((navigator.userAgent.indexOf("Opera") || navigator.userAgent.indexOf('OPR')) != -1 ) 
 	    {
 	        brw = 'Opera';
