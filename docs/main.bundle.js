@@ -74,6 +74,11 @@ let AppComponent = class AppComponent {
             alert("Oops... You seem to be using a browser not supported by Mobius. Please use Chrome.");
             this.supported = false;
         }
+        window.onbeforeunload = function (e) {
+            var dialogText = 'Dialog text here';
+            e.returnValue = dialogText;
+            return dialogText;
+        };
     }
     checkBrowser() {
         let brw = "";
@@ -9341,7 +9346,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/ui-components/help/info-viewer/help.model.tpl.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h1>About the Model</h1>\r\n\r\n<p>Mobius v0.7.39</p>\r\n"
+module.exports = "<h1>About the Model</h1>\r\n\r\n<p>Mobius v0.7.40</p>\r\n"
 
 /***/ }),
 

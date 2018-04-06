@@ -23,6 +23,14 @@ export class AppComponent{
     		alert("Oops... You seem to be using a browser not supported by Mobius. Please use Chrome.");
     		this.supported = false;
     	}
+
+    	window.onbeforeunload = function(e) {
+		  var dialogText = 'Dialog text here';
+		  e.returnValue = dialogText;
+		  return dialogText;
+		};
+
+
     }
  	
     checkBrowser(): string { 
