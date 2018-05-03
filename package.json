@@ -4,7 +4,7 @@
   "license": "MIT",
   "config": {
     "dev_url": "https://akshatamohanty.github.io/mobius-modeller/",
-    "prod_url": "https://phtj.github.io/mobius-modeller/"
+    "prod_url": "https://design-automation.github.io/mobius-modeller/"
   },
   "scripts": {
     "ng": "ng",
